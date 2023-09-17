@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "31090418784",
+    "project_id": "tech-knowl-edge-connect",
+    "storage_bucket": "tech-knowl-edge-connect.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31090418784:android:21094b8ea780f3d977cf05",
+        "android_client_info": {
+          "package_name": "com.example.tech_knowl_edge_connect"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4po_-2wO2OqwZOnW22zGEwvde6QMfF0s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

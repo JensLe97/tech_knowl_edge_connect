@@ -2,26 +2,26 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/square_tile.dart';
-import 'package:tech_knowl_edge_connect/pages/forgot_password_page.dart';
-import 'package:tech_knowl_edge_connect/services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final emailController = TextEditingController();
+
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 50),
                 Text(
-                  'Willkommen bei TechKnowlEdgeConnect',
+                  'Neuen Account erstellen',
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
                 ),
                 const SizedBox(height: 25),
@@ -58,73 +58,22 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 10),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const ForgotPasswordPage();
-                    }));
-                  },
-                  child: Text(
-                    'Passwort vergessen?',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 18),
-                  ),
+                LoginTextField(
+                  controller: confirmPasswordController,
+                  hintText: 'Passwort wiederholen',
+                  obscureText: true,
                 ),
                 const SizedBox(height: 25),
                 LoginButton(
-                  onTap: signUserIn,
-                  text: "Anmelden",
-                ),
-                const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Text(
-                          'Oder weiter mit',
-                          style: TextStyle(color: Colors.grey[700]),
-                        ),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          thickness: 1,
-                          color: Colors.grey[400],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 50),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SquareTile(
-                      imagePath: 'images/google.png',
-                      onTap: () => AuthService().signInWithGoogle(),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    SquareTile(
-                      imagePath: 'images/apple.png',
-                      onTap: () {},
-                    )
-                  ],
+                  onTap: signUserUp,
+                  text: "Registrieren",
                 ),
                 const SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Noch keinen Account?",
+                      "Bereits einen Account?",
                       style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(
@@ -133,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
                     GestureDetector(
                       onTap: widget.onTap,
                       child: const Text(
-                        "Jetzt registrieren",
+                        "Jetzt anmelden",
                         style: TextStyle(
                             color: Colors.blue, fontWeight: FontWeight.bold),
                       ),
@@ -148,7 +97,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  signUserIn() async {
+  signUserUp() async {
     showDialog(
       context: context,
       builder: (context) {
@@ -159,17 +108,26 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
-        password: passwordController.text,
-      );
-      if (mounted) Navigator.of(context).pop();
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        if (mounted) Navigator.of(context).pop();
+      } else {
+        if (mounted) Navigator.of(context).pop();
+        showErrorMessage('Passwörter nicht identisch!');
+      }
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
-      if (e.code == 'invalid-email' ||
-          e.code == 'INVALID_LOGIN_CREDENTIALS' ||
-          e.code == 'channel-error') {
-        showErrorMessage('Anmeldedaten falsch!');
+      if (e.code == 'weak-password') {
+        showErrorMessage('Passwort muss mindestens 6 Zeichen enthalten!');
+      } else if (e.code == 'channel-error') {
+        showErrorMessage('Bitte alle Felder korrekt ausfüllen!');
+      } else if (e.code == 'invalid-email') {
+        showErrorMessage('E-Mail Adresse ungültig!');
+      } else if (e.code == 'email-already-in-use') {
+        showErrorMessage('E-Mail Adresse ist bereits registriert!');
       }
     }
   }

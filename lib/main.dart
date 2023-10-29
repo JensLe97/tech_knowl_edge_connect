@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tech_knowl_edge_connect/pages/auth_page.dart';
+import 'package:tech_knowl_edge_connect/theme/dark_mode.dart';
+import 'package:tech_knowl_edge_connect/theme/light_mode.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -19,10 +21,8 @@ class TechKnowlEdgeConnect extends StatelessWidget {
     return MaterialApp(
       title: 'TechKnowlEdgeConnect',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo),
-        useMaterial3: true,
-      ),
+      theme: lightMode,
+      darkTheme: darkMode,
       home: const AuthPage(),
     );
   }

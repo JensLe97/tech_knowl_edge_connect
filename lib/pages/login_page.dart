@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -36,14 +36,15 @@ class _LoginPageState extends State<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 55),
-                const Icon(
+                Icon(
                   Icons.lock,
                   size: 100,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                 ),
                 const SizedBox(height: 50),
-                Text(
+                const Text(
                   'Willkommen bei TechKnowlEdgeConnect',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 25),
                 LoginTextField(
@@ -65,9 +66,9 @@ class _LoginPageState extends State<LoginPage> {
                       return const ForgotPasswordPage();
                     }));
                   },
-                  child: Text(
+                  child: const Text(
                     'Passwort vergessen?',
-                    style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                    style: TextStyle(fontSize: 18),
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -83,20 +84,22 @@ class _LoginPageState extends State<LoginPage> {
                       Expanded(
                         child: Divider(
                           thickness: 1,
-                          color: Colors.grey[400],
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                       ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           'Oder weiter mit',
-                          style: TextStyle(color: Colors.grey[700]),
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ),
                       Expanded(
                         child: Divider(
                           thickness: 1,
-                          color: Colors.grey[400],
+                          color: Theme.of(context).colorScheme.inversePrimary,
                         ),
                       ),
                     ],
@@ -123,9 +126,8 @@ class _LoginPageState extends State<LoginPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Noch keinen Account?",
-                      style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(
                       width: 4,

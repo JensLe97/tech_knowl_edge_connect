@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/login_button.dart';
@@ -12,6 +13,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
@@ -19,6 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
   @override
   void dispose() {
+    usernameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     confirmPasswordController.dispose();
@@ -46,6 +49,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: TextStyle(color: Colors.grey[700], fontSize: 18),
                 ),
                 const SizedBox(height: 25),
+                LoginTextField(
+                  controller: usernameController,
+                  hintText: 'Benutzername',
+                  obscureText: false,
+                ),
+                const SizedBox(height: 10),
                 LoginTextField(
                   controller: emailController,
                   hintText: 'E-Mail',
@@ -108,15 +117,21 @@ class _RegisterPageState extends State<RegisterPage> {
     );
 
     try {
-      if (passwordController.text == confirmPasswordController.text) {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      if (!RegExp(r'^[A-Za-z0-9_.]+$').hasMatch(usernameController.text)) {
+        if (mounted) Navigator.of(context).pop();
+        showErrorMessage('Benutzername ungültig!');
+      } else if (passwordController.text != confirmPasswordController.text) {
+        if (mounted) Navigator.of(context).pop();
+        showErrorMessage('Passwörter nicht identisch!');
+      } else {
+        UserCredential? userCredential =
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
+        createUserDocument(userCredential);
+
         if (mounted) Navigator.of(context).pop();
-      } else {
-        if (mounted) Navigator.of(context).pop();
-        showErrorMessage('Passwörter nicht identisch!');
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
@@ -147,5 +162,17 @@ class _RegisterPageState extends State<RegisterPage> {
         );
       },
     );
+  }
+
+  Future<void> createUserDocument(UserCredential? userCredential) async {
+    if (userCredential != null && userCredential.user != null) {
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({
+        'email': userCredential.user!.email,
+        'username': usernameController.text,
+      });
+    }
   }
 }

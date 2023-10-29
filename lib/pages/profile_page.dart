@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/bottom_sheet.dart';
 
@@ -36,24 +33,20 @@ class _ProfilePageState extends State<ProfilePage> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Platform.isIOS
-                      ? showCupertinoModalPopup(
-                          context: context,
-                          builder: (BuildContext context) => const MenuItems())
-                      : showModalBottomSheet(
-                          backgroundColor: Theme.of(context)
-                              .colorScheme
-                              .background, // bottomsheet color
-                          context: context,
-                          isScrollControlled: true,
-                          useRootNavigator: true,
-                          enableDrag: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          builder: (BuildContext context) => const MenuItems());
+                  showModalBottomSheet(
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .background, // bottomsheet color
+                      context: context,
+                      isScrollControlled: true,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (BuildContext context) => const MenuItems());
                 },
                 icon: const Icon(Icons.menu)),
           ]),

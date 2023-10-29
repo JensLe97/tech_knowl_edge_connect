@@ -35,10 +35,11 @@ class _HomePageState extends State<HomePage> {
         ),
       ]),
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Theme.of(context).colorScheme.inversePrimary,
-        unselectedItemColor: Theme.of(context).colorScheme.secondary,
+        selectedItemColor: Theme.of(context).textTheme.displayLarge!.color,
+        unselectedItemColor: Theme.of(context).textTheme.bodyLarge!.color,
         onTap: _onTap,
         items: const [
           BottomNavigationBarItem(

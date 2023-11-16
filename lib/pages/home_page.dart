@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/pages/profile_page.dart';
+import 'package:tech_knowl_edge_connect/pages/profile/profile_page.dart';
+import 'package:tech_knowl_edge_connect/pages/search/search_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,11 +11,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
   final user = FirebaseAuth.instance.currentUser!;
   final List<Widget> _tabs = const <Widget>[
     Text('Home'),
-    Text('Suche'),
+    SearchPage(),
     Text('Bibliothek'),
     ProfilePage(),
   ];
@@ -30,9 +31,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: IndexedStack(children: [
-        Center(
-          child: _tabs.elementAt(_currentIndex),
-        ),
+        _tabs.elementAt(_currentIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,

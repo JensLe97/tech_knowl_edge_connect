@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/pages/home_page.dart';
-import 'package:tech_knowl_edge_connect/pages/login_or_register_page.dart';
+import 'package:tech_knowl_edge_connect/pages/login/login_or_register_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -9,6 +9,7 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Theme.of(context).colorScheme.background,
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),

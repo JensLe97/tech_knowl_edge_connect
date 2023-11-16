@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/square_tile.dart';
-import 'package:tech_knowl_edge_connect/pages/forgot_password_page.dart';
+import 'package:tech_knowl_edge_connect/pages/login/forgot_password_page.dart';
 import 'package:tech_knowl_edge_connect/services/auth_service.dart';
 
 class LoginPage extends StatefulWidget {

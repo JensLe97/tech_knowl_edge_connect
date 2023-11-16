@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:tech_knowl_edge_connect/pages/auth_page.dart';
-import 'package:tech_knowl_edge_connect/theme/dark_mode.dart';
-import 'package:tech_knowl_edge_connect/theme/light_mode.dart';
+import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -21,8 +19,48 @@ class TechKnowlEdgeConnect extends StatelessWidget {
     return MaterialApp(
       title: 'TechKnowlEdgeConnect',
       debugShowCheckedModeBanner: false,
-      theme: lightMode,
-      darkTheme: darkMode,
+      theme: ThemeData(
+        brightness: Brightness.light,
+        colorScheme: ColorScheme.light(
+          background: Colors.grey.shade100,
+          primary: Colors.grey.shade200,
+          secondary: Colors.grey.shade400,
+          inversePrimary: Colors.grey.shade700,
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontSizeDelta: 3,
+              bodyColor: Colors.grey[850],
+              displayColor: Colors.black,
+            ),
+        primarySwatch: Colors.blueGrey,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade700,
+          elevation: 0,
+        ),
+        bottomSheetTheme:
+            const BottomSheetThemeData(backgroundColor: Colors.transparent),
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.dark(
+          background: Colors.grey.shade900,
+          primary: Colors.grey.shade800,
+          secondary: Colors.grey.shade700,
+          inversePrimary: Colors.grey.shade800,
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontSizeDelta: 3,
+              bodyColor: Colors.grey[300],
+              displayColor: Colors.white,
+            ),
+        primarySwatch: Colors.indigo,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade800,
+          elevation: 0,
+        ),
+        bottomSheetTheme:
+            const BottomSheetThemeData(backgroundColor: Colors.transparent),
+      ),
       home: const AuthPage(),
     );
   }

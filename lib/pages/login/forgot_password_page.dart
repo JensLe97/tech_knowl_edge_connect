@@ -23,23 +23,29 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[300],
+        backgroundColor: Theme.of(context).colorScheme.background,
+        iconTheme: IconThemeData(
+          color: Theme.of(context)
+              .colorScheme
+              .inversePrimary, //change your color here
+        ),
       ),
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Icon(
+                Icon(
                   Icons.lock,
                   size: 100,
+                  color: Theme.of(context).colorScheme.inversePrimary,
                 ),
                 const SizedBox(height: 50),
-                Text(
+                const Text(
                   'E-Mail zum Zurücksetzten des Passwortes',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 25),
                 LoginTextField(
@@ -120,7 +126,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           title: Center(
             child: Text(
               message,
-              style: TextStyle(color: Colors.grey[700]),
             ),
           ),
         );

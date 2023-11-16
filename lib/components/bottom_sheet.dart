@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/pages/settings.dart';
+import 'package:tech_knowl_edge_connect/pages/profile/settings.dart';
 
 class MenuItems extends StatelessWidget {
   const MenuItems({Key? key}) : super(key: key);

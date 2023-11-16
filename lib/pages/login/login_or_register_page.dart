@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/pages/login_page.dart';
-import 'package:tech_knowl_edge_connect/pages/register_page.dart';
+import 'package:tech_knowl_edge_connect/pages/login/login_page.dart';
+import 'package:tech_knowl_edge_connect/pages/login/register_page.dart';
 
 class LoginOrRegisterPage extends StatefulWidget {
   const LoginOrRegisterPage({super.key});

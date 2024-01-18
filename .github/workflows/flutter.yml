@@ -22,17 +22,16 @@ jobs:
         with:
           flutter-version: "3.16.0"
           channel: 'stable'
+          cache: true
       
       - uses: actions/setup-java@v3
         with:
           distribution: 'zulu'
           java-version: "17"
+          cache: 'gradle'
 
       - name: Get dependencies
         run: flutter pub get
-
-      - name: Build app
-        run: flutter run --release
 
       - name: Build App Bundle
         run: flutter build appbundle

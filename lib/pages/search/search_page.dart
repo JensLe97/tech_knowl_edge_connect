@@ -38,7 +38,7 @@ class _SearchPageState extends State<SearchPage> {
         context,
         MaterialPageRoute(
           builder: (context) => SubjectOverviewPage(subject: subjects[index]),
-        ));
+        )).then((value) => {subjectController.clear()});
   }
 
   @override
@@ -46,8 +46,11 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Center(
-          child: Text('Fächer'),
+        title: Center(
+          child: SearchTextField(
+            controller: subjectController,
+            hintText: 'Fächer, Themen, Aufgaben...',
+          ),
         ),
       ),
       body: SafeArea(
@@ -57,11 +60,6 @@ class _SearchPageState extends State<SearchPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 25),
-                SearchTextField(
-                  controller: subjectController,
-                  hintText: 'Fächer, Themen, Aufgaben',
-                ),
                 const SizedBox(height: 25),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.0),

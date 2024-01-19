@@ -12,22 +12,23 @@ class SearchTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: TextField(
-          controller: controller,
-          decoration: InputDecoration(
-            prefixIcon: const Icon(Icons.search),
-            border: InputBorder.none,
+    return Column(
+      children: [
+        const SizedBox(height: 5),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: SearchBar(
+            controller: controller,
+            leading: const Icon(Icons.search),
             hintText: hintText,
+            constraints: const BoxConstraints(minHeight: 36, maxHeight: 36),
+            onSubmitted: (String value) => controller.clear(),
+            shape: MaterialStateProperty.all(const ContinuousRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(12)),
+            )),
           ),
         ),
-      ),
+      ],
     );
   }
 }

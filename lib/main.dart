@@ -20,6 +20,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
       title: 'TechKnowlEdgeConnect',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
+        useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: ColorScheme.light(
           background: Colors.grey.shade100,

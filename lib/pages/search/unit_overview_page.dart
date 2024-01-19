@@ -80,7 +80,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                               ),
                               const SizedBox(height: 4),
                               SizedBox(
-                                height: 130,
+                                height: 145,
                                 child: ListView.builder(
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10),

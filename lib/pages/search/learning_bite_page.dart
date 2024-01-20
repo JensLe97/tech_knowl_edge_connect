@@ -23,6 +23,8 @@ class _LearningBitePageState extends State<LearningBitePage> {
           slivers: [
             SliverAppBar.large(
               flexibleSpace: FlexibleSpaceBar(
+                titlePadding:
+                    const EdgeInsetsDirectional.only(top: 10, bottom: 10),
                 title: Text(widget.learningBite.name),
                 background: Stack(children: [
                   OverflowBox(

@@ -23,10 +23,10 @@ List<LearningBite> htmlStructureLearningBites = [
       name: "HTML Struktur - Allgemein",
       type: LearningBiteType.text,
       data: data["HTML Struktur - Allgemein"]!,
-      iconData: FontAwesomeIcons.clipboard),
+      iconData: Icons.web),
   LearningBite(
       name: "HTML Struktur Elemente",
       type: LearningBiteType.video,
       data: data["HTML Struktur Elemente"]!,
-      iconData: FontAwesomeIcons.clipboardCheck),
+      iconData: FontAwesomeIcons.elementor),
 ];

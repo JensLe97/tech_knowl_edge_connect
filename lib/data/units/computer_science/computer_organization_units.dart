@@ -5,9 +5,9 @@ List<Unit> computerOrganizationUnits = [
   Unit(
       name: "Logische Bausteine",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.cubes),
   Unit(
       name: "Schaltungen und Gatter",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.waveSquare),
 ];

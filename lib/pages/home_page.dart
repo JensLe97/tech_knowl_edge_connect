@@ -14,9 +14,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 1;
   final user = FirebaseAuth.instance.currentUser!;
   final List<Widget> _tabs = const <Widget>[
-    Text('Home'),
+    Center(child: Text('Home')),
     SearchPage(),
-    Text('Bibliothek'),
+    Center(child: Text('Bibliothek')),
     ProfilePage(),
   ];
 

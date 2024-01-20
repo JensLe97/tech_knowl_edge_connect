@@ -23,10 +23,10 @@ List<LearningBite> cpuLearningBites = [
       name: "CPU - Einfach erklärt",
       type: LearningBiteType.text,
       data: data["CPU - Einfach erklärt"]!,
-      iconData: FontAwesomeIcons.clipboard),
+      iconData: FontAwesomeIcons.microchip),
   LearningBite(
       name: "CPU Aufbau",
       type: LearningBiteType.video,
       data: data["CPU Aufbau"]!,
-      iconData: FontAwesomeIcons.clipboardCheck),
+      iconData: Icons.view_list),
 ];

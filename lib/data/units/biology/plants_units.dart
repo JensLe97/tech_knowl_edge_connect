@@ -5,9 +5,9 @@ List<Unit> plantsUnits = [
   Unit(
       name: "Pflanzenaufbau",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.tree),
   Unit(
       name: "Fortpflanzung",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.venusMars),
 ];

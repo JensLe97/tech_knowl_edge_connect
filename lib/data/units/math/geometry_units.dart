@@ -5,9 +5,9 @@ List<Unit> geometryUnits = [
   Unit(
       name: "Winkel",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.drawPolygon),
   Unit(
       name: "Kreise",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.circle),
 ];

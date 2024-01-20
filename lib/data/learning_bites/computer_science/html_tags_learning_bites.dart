@@ -23,10 +23,10 @@ List<LearningBite> htmlTagsLearningBites = [
       name: "Der div Tag",
       type: LearningBiteType.text,
       data: data["Der div Tag"]!,
-      iconData: FontAwesomeIcons.clipboard),
+      iconData: FontAwesomeIcons.lessThan),
   LearningBite(
       name: "Der p Tag",
       type: LearningBiteType.video,
       data: data["Der p Tag"]!,
-      iconData: FontAwesomeIcons.clipboardCheck),
+      iconData: FontAwesomeIcons.paragraph),
 ];

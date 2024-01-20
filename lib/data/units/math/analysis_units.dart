@@ -5,9 +5,9 @@ List<Unit> analysisUnits = [
   Unit(
       name: "Zuordnungen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.rightLong),
   Unit(
       name: "Lineare Funktionen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.chartLine),
 ];

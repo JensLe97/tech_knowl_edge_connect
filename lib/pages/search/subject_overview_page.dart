@@ -26,6 +26,8 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
           slivers: [
             SliverAppBar.large(
               flexibleSpace: FlexibleSpaceBar(
+                titlePadding:
+                    const EdgeInsetsDirectional.only(top: 10, bottom: 10),
                 title: Text(widget.subject.name),
                 background: Stack(children: [
                   OverflowBox(

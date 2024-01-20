@@ -5,9 +5,9 @@ List<Unit> javaUnits = [
   Unit(
       name: "Grundlagen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.java),
   Unit(
       name: "Datenstrukturen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.buffer),
 ];

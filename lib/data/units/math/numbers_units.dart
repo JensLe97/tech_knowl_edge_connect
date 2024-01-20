@@ -5,9 +5,9 @@ List<Unit> numbersUnits = [
   Unit(
       name: "Zahlenarten",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.listOl),
   Unit(
       name: "Größen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.calculator),
+      iconData: FontAwesomeIcons.scaleUnbalanced),
 ];

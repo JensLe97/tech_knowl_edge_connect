@@ -25,10 +25,10 @@ List<LearningBite> mainboardLearningBites = [
       name: "Mainboard - Einfach erklärt",
       type: LearningBiteType.text,
       data: data["Mainboard - Einfach erklärt"]!,
-      iconData: FontAwesomeIcons.clipboard),
+      iconData: FontAwesomeIcons.pager),
   LearningBite(
       name: "Mainboardaufbau",
       type: LearningBiteType.video,
       data: data["Mainboardaufbau"]!,
-      iconData: FontAwesomeIcons.clipboardCheck),
+      iconData: Icons.view_compact),
 ];

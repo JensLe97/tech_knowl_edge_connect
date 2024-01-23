@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/data/topics/index.dart';
 import 'package:tech_knowl_edge_connect/models/category.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/subject.dart';
 
 List<Category> computerScienceCategories = [

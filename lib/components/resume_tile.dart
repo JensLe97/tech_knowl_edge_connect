@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/data/concepts/index.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/subject.dart';
 

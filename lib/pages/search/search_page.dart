@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
-import 'package:tech_knowl_edge_connect/models/subject.dart';
 import 'package:tech_knowl_edge_connect/pages/search/subject_overview_page.dart';
 
 class SearchPage extends StatefulWidget {

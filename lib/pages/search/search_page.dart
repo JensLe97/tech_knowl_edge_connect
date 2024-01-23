@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/models/subject.dart';
 import 'package:tech_knowl_edge_connect/pages/search/subject_overview_page.dart';
 
@@ -14,24 +15,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final subjectController = TextEditingController();
-
-  List<Subject> subjects = [
-    Subject(
-      name: "Mathematik",
-      color: Colors.blue.shade800,
-      iconData: FontAwesomeIcons.calculator,
-    ),
-    Subject(
-      name: "Informatik",
-      color: Colors.blueGrey.shade500,
-      iconData: FontAwesomeIcons.desktop,
-    ),
-    Subject(
-      name: "Biologie",
-      color: Colors.green.shade600,
-      iconData: FontAwesomeIcons.tree,
-    ),
-  ];
 
   void navigateToSubjectPage(int index) {
     Navigator.push(
@@ -74,10 +57,10 @@ class _SearchPageState extends State<SearchPage> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: subjects.length,
-                    itemBuilder: (BuildContext context, int index) {
+                    itemBuilder: (BuildContext context, int subjectIndex) {
                       return SubjectTile(
-                        onTap: () => navigateToSubjectPage(index),
-                        subject: subjects[index],
+                        onTap: () => navigateToSubjectPage(subjectIndex),
+                        subject: subjects[subjectIndex],
                       );
                     },
                   ),

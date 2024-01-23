@@ -39,7 +39,8 @@ class SubjectTile extends StatelessWidget {
               flex: 8,
               child: Text(
                 subject.name,
-                style: const TextStyle(fontSize: 22),
+                style:
+                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
               ),
             ),
           ],

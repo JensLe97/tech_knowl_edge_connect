@@ -1,7 +1,12 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_knowl_edge_connect/components/learning_bite_tile.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/index.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
@@ -106,18 +111,54 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                   widget
                                                       .unit.name]![conceptIndex]
                                               .learningBites[learningBiteIndex],
-                                          onTap: () =>
-                                              navigateToLearningBitePage(
-                                            conceptMap[widget.subjectName]![
+                                          onTap: () => navigateToLearningBitePage(
+                                              conceptMap[widget.subjectName]![
+                                                              widget
+                                                                  .categoryName]![
+                                                          widget
+                                                              .topicName]![widget
+                                                          .unit
+                                                          .name]![conceptIndex]
+                                                      .learningBites[
+                                                  learningBiteIndex],
+                                              [
+                                                // subjectIndex
+                                                conceptMap.keys
+                                                    .toList()
+                                                    .indexWhere((element) =>
+                                                        element ==
+                                                        widget.subjectName),
+                                                // categoryIndex
+                                                conceptMap[widget.subjectName]!
+                                                    .keys
+                                                    .toList()
+                                                    .indexWhere((element) =>
+                                                        element ==
+                                                        widget.categoryName),
+                                                // topicIndex
+                                                conceptMap[widget.subjectName]![
+                                                        widget.categoryName]!
+                                                    .keys
+                                                    .toList()
+                                                    .indexWhere((element) =>
+                                                        element ==
+                                                        widget.topicName),
+                                                // unitIndex
+                                                learningBiteMap[widget
+                                                                .subjectName]![
                                                             widget
                                                                 .categoryName]![
-                                                        widget
-                                                            .topicName]![widget
-                                                        .unit
-                                                        .name]![conceptIndex]
-                                                    .learningBites[
-                                                learningBiteIndex],
-                                          ),
+                                                        widget.topicName]!
+                                                    .keys
+                                                    .toList()
+                                                    .indexWhere((element) =>
+                                                        element ==
+                                                        widget.unit.name),
+                                                // conceptIndex
+                                                conceptIndex,
+                                                // learningBiteIndex
+                                                learningBiteIndex
+                                              ]),
                                         ),
                                       ],
                                     );
@@ -135,7 +176,20 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
         ));
   }
 
-  void navigateToLearningBitePage(LearningBite learningBite) {
+  void setResumeSubjects(List<List<int>> resSubs) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("resumeSubjects", jsonEncode(resSubs));
+  }
+
+  void navigateToLearningBitePage(
+      LearningBite learningBite, List<int> indices) {
+    setResumeSubjects(resumeSubjects);
+    if (resumeSubjects.elementAt(indices.first).isEmpty) {
+      resumeSubjects.removeAt(indices.first);
+      resumeSubjects.insert(indices.first, indices);
+    } else {
+      resumeSubjects.elementAt(indices.first).replaceRange(0, 6, indices);
+    }
     Navigator.push(
       context,
       MaterialPageRoute(

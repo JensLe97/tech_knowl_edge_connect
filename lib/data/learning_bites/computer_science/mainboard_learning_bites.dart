@@ -6,7 +6,7 @@ import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 Map<String, List<Widget>> data = const {
   "Mainboard - Einfach erklärt": [
     Text(
-        "Auf dem Mainboard befinden sich verschiedene Komponenten eines Computers, die über kurze Distanzen verbunden sind und miteinander kommonizieren."),
+        "Auf dem Mainboard befinden sich verschiedene Komponenten eines Computers, die über kurze Distanzen verbunden sind und miteinander kommunizieren."),
     Divider(
       thickness: 1,
     ),

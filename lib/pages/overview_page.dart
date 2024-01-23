@@ -1,22 +1,22 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/pages/home/home_page.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/search_page.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class OverviewPage extends StatefulWidget {
+  const OverviewPage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<OverviewPage> createState() => _OverviewPageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  int _currentIndex = 1;
+class _OverviewPageState extends State<OverviewPage> {
+  int _currentIndex = 0;
   final user = FirebaseAuth.instance.currentUser!;
   final List<Widget> _tabs = const <Widget>[
-    Center(child: Text('Home')),
+    HomePage(),
     SearchPage(),
-    Center(child: Text('Bibliothek')),
     ProfilePage(),
   ];
 
@@ -46,8 +46,6 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(label: 'Suche', icon: Icon(Icons.search)),
-          BottomNavigationBarItem(
-              label: 'Bibliothek', icon: Icon(Icons.library_books)),
           BottomNavigationBarItem(label: 'Profil', icon: Icon(Icons.person)),
         ],
       ),

@@ -1,5 +1,10 @@
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/data/topics/index.dart';
 import 'package:tech_knowl_edge_connect/models/category.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/subject.dart';
 
 List<Category> computerScienceCategories = [
   Category(name: "Hardware", topics: topicMap["Informatik"]!["Hardware"]!),
@@ -26,3 +31,23 @@ Map<String, List<Category>> categoryMap = {
   "Mathematik": mathCategories,
   "Biologie": biologyCategories
 };
+
+List<Subject> subjects = [
+  Subject(
+    name: "Informatik",
+    color: Colors.blueGrey.shade500,
+    iconData: Icons.computer,
+  ),
+  Subject(
+    name: "Mathematik",
+    color: Colors.blue.shade800,
+    iconData: FontAwesomeIcons.calculator,
+  ),
+  Subject(
+    name: "Biologie",
+    color: Colors.green.shade600,
+    iconData: FontAwesomeIcons.tree,
+  ),
+];
+
+List<List<int>> resumeSubjects = [];

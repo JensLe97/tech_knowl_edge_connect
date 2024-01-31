@@ -5,11 +5,13 @@ import "package:tech_knowl_edge_connect/models/learning_bite.dart";
 class LearingBiteTile extends StatelessWidget {
   final LearningBite learningBite;
   final void Function()? onTap;
+  final bool completed;
 
   const LearingBiteTile({
     super.key,
     required this.learningBite,
     required this.onTap,
+    required this.completed,
   });
 
   @override
@@ -24,24 +26,41 @@ class LearingBiteTile extends StatelessWidget {
         margin: const EdgeInsets.all(8),
         padding: const EdgeInsets.all(8),
         width: 200,
-        child: Column(
+        child: Stack(
           children: [
-            Expanded(
-              flex: 5,
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: FaIcon(learningBite.iconData, size: 30),
+            Column(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Center(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: FaIcon(learningBite.iconData, size: 30),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Text(
+                    learningBite.name,
+                    style: const TextStyle(fontSize: 20),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(5),
+              child: Align(
+                alignment: Alignment.topRight,
+                child: Icon(
+                  completed || learningBite.completed
+                      ? FontAwesomeIcons.circleCheck
+                      : FontAwesomeIcons.circle,
+                  size: 25,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Text(
-                learningBite.name,
-                style: const TextStyle(fontSize: 20),
-              ),
-            ),
+            )
           ],
         ),
       ),

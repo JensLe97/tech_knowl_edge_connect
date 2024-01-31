@@ -1,13 +1,14 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_knowl_edge_connect/components/resume_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,15 +21,28 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future<dynamic> getUserDetails() async {
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
+    // Reset fields
+    // await FirebaseFirestore.instance
+    //     .collection("Users")
+    //     .doc(currentUser!.email)
+    //     .update({
+    //   'completedLearningBites': jsonEncode([]),
+    //   'resumeSubjects': jsonEncode([[], [], []]),
+    // });
+
     return await FirebaseFirestore.instance
         .collection("Users")
         .doc(currentUser!.email)
         .get();
   }
 
-  Future<SharedPreferences> getSharedPreferences() async {
-    return await SharedPreferences.getInstance();
+  final confettiController = ConfettiController();
+
+  @override
+  void dispose() {
+    confettiController.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       body: FutureBuilder(
-          future: Future.wait([getUserDetails(), getSharedPreferences()]),
+          future: getUserDetails(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -50,18 +64,24 @@ class _HomePageState extends State<HomePage> {
             } else if (snapshot.hasError) {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
             } else if (snapshot.hasData) {
-              final userData =
-                  snapshot.data![0] as DocumentSnapshot<Map<String, dynamic>>;
-              Map<String, dynamic>? user = userData.data();
-
-              final SharedPreferences prefs = snapshot.data![1];
+              Map<String, dynamic>? user = snapshot.data!.data();
               List<List<int>> tmpResumeSubjects = [];
               final sharedResumeSubjects =
-                  prefs.getString("resumeSubjects") ?? "[[], [], []]";
+                  user!['resumeSubjects'] ?? "[[], [], []]";
               for (var resumeSubject in jsonDecode(sharedResumeSubjects)) {
                 tmpResumeSubjects.add(List<int>.from(resumeSubject));
               }
               resumeSubjects = tmpResumeSubjects;
+
+              List<List<int>> tmpCompletedLearningBites = [];
+              final sharedCompletedLearningBites =
+                  user['completedLearningBites'] ?? "[]";
+              for (var completedLearningBite
+                  in jsonDecode(sharedCompletedLearningBites)) {
+                tmpCompletedLearningBites
+                    .add(List<int>.from(completedLearningBite));
+              }
+              completedLearningBites = tmpCompletedLearningBites;
 
               return SafeArea(
                 child: SingleChildScrollView(
@@ -79,14 +99,14 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    "Hallo",
+                                    "Hello",
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
-                                    "${user!['username']}!",
+                                    "${user['username']}!",
                                     style: const TextStyle(
                                         fontSize: 26,
                                         fontWeight: FontWeight.bold),
@@ -171,9 +191,8 @@ class _HomePageState extends State<HomePage> {
                                           resumeSubjects[index].elementAt(0)],
                                       onTap: () => navigateToLearningBitePage(
                                           learningBiteMap.values
-                                              .elementAt(
-                                                  resumeSubjects[index]
-                                                      .elementAt(0))
+                                              .elementAt(resumeSubjects[index]
+                                                  .elementAt(0))
                                               .values
                                               .elementAt(resumeSubjects[index]
                                                   .elementAt(1))
@@ -187,7 +206,8 @@ class _HomePageState extends State<HomePage> {
                                               .elementAt(resumeSubjects[index]
                                                   .elementAt(4))
                                               .elementAt(resumeSubjects[index]
-                                                  .elementAt(5))),
+                                                  .elementAt(5)),
+                                          resumeSubjects[index]),
                                     )
                                   : const SizedBox.shrink();
                             },
@@ -203,12 +223,130 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void navigateToLearningBitePage(LearningBite learningBite) {
+  void setResumeSubjects(List<List<int>> resSubs, List<int> indices) async {
+    if (indices.length == 1 &&
+        resumeSubjects.elementAt(indices.first).isNotEmpty) {
+      resumeSubjects.elementAt(indices.first).clear();
+    } else {
+      if (resumeSubjects.elementAt(indices.first).isEmpty) {
+        resumeSubjects.removeAt(indices.first);
+        resumeSubjects.insert(indices.first, indices);
+      } else {
+        resumeSubjects.elementAt(indices.first).replaceRange(0, 6, indices);
+      }
+    }
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      'resumeSubjects': jsonEncode(resSubs),
+    });
+  }
+
+  void setCompletedLearningBites(List<List<int>> complLearnBites) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      'completedLearningBites': jsonEncode(complLearnBites),
+    });
+  }
+
+  void navigateToLearningBitePage(
+      LearningBite learningBite, List<int> indices) {
+    String subjectName = learningBiteMap.keys.elementAt(indices[0]);
+    setResumeSubjects(resumeSubjects, indices);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LearningBitePage(learningBite: learningBite),
+        builder: (context) => LearningBitePage(
+          learningBite: learningBite,
+          tasks: learningBite.type == LearningBiteType.lesson
+              ? learningBite.tasks!
+              : [],
+        ),
       ),
+    ).then(
+      (completed) => setState(() {
+        completed = completed ?? false;
+
+        bool confetti = false;
+        int numLearningBites = learningBiteMap[subjectName]!
+            .values
+            .elementAt(indices[1])
+            .values
+            .elementAt(indices[2])
+            .values
+            .elementAt(indices[3])
+            .values
+            .elementAt(indices[4])
+            .length;
+        if (completed &&
+            !completedLearningBites
+                .any((e) => const ListEquality().equals(e, indices))) {
+          learningBite.completed = true;
+          List<int> indcs = List.from(indices);
+          completedLearningBites.add(indcs);
+          setCompletedLearningBites(completedLearningBites);
+          int numCompletedLearningBites = 0;
+          List<int> tmpIndcs = List.from(indices);
+          for (var i = 0; i < numLearningBites; i++) {
+            tmpIndcs.last = i;
+            if (completedLearningBites
+                .any((e) => const ListEquality().equals(e, tmpIndcs))) {
+              numCompletedLearningBites++;
+            }
+          }
+
+          if (numCompletedLearningBites == numLearningBites) {
+            confetti = true;
+            List<int> tmpEndIndcs = List.from(indices);
+            confettiController.play();
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: ConfettiWidget(
+                          confettiController: confettiController,
+                          blastDirectionality: BlastDirectionality.explosive,
+                          emissionFrequency: 0.05,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 300),
+                        child: AlertDialog(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          title: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Center(
+                              child: Text(
+                                "Du hat alle Lektionen zum Thema ${learningBiteMap[subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          }
+        }
+        if (completed) {
+          if (!confetti && indices[5] + 1 < numLearningBites) {
+            indices.replaceRange(5, 6, [indices[5] + 1]);
+            setResumeSubjects(resumeSubjects, indices);
+          } else {
+            setResumeSubjects(resumeSubjects, [indices[0]]);
+          }
+        }
+      }),
     );
   }
 }

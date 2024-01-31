@@ -1,13 +1,17 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:confetti/confetti.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech_knowl_edge_connect/components/learning_bite_tile.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/index.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 import 'package:tech_knowl_edge_connect/models/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 
@@ -30,6 +34,14 @@ class UnitOverviewPage extends StatefulWidget {
 }
 
 class _UnitOverviewPageState extends State<UnitOverviewPage> {
+  final confettiController = ConfettiController();
+
+  @override
+  void dispose() {
+    confettiController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -101,64 +113,53 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                       .length,
                                   itemBuilder: (BuildContext context,
                                       int learningBiteIndex) {
+                                    LearningBite learningBite =
+                                        conceptMap[widget.subjectName]![
+                                                        widget.categoryName]![
+                                                    widget.topicName]![
+                                                widget.unit.name]![conceptIndex]
+                                            .learningBites[learningBiteIndex];
+                                    List<int> indices = [
+                                      // subjectIndex
+                                      conceptMap.keys.toList().indexWhere(
+                                          (element) =>
+                                              element == widget.subjectName),
+                                      // categoryIndex
+                                      conceptMap[widget.subjectName]!
+                                          .keys
+                                          .toList()
+                                          .indexWhere((element) =>
+                                              element == widget.categoryName),
+                                      // topicIndex
+                                      conceptMap[widget.subjectName]![
+                                              widget.categoryName]!
+                                          .keys
+                                          .toList()
+                                          .indexWhere((element) =>
+                                              element == widget.topicName),
+                                      // unitIndex
+                                      learningBiteMap[widget.subjectName]![
+                                                  widget.categoryName]![
+                                              widget.topicName]!
+                                          .keys
+                                          .toList()
+                                          .indexWhere((element) =>
+                                              element == widget.unit.name),
+                                      // conceptIndex
+                                      conceptIndex,
+                                      // learningBiteIndex
+                                      learningBiteIndex
+                                    ];
                                     return Row(
                                       children: [
                                         LearingBiteTile(
-                                          learningBite: conceptMap[widget
-                                                              .subjectName]![
-                                                          widget.categoryName]![
-                                                      widget.topicName]![
-                                                  widget
-                                                      .unit.name]![conceptIndex]
-                                              .learningBites[learningBiteIndex],
-                                          onTap: () => navigateToLearningBitePage(
-                                              conceptMap[widget.subjectName]![
-                                                              widget
-                                                                  .categoryName]![
-                                                          widget
-                                                              .topicName]![widget
-                                                          .unit
-                                                          .name]![conceptIndex]
-                                                      .learningBites[
-                                                  learningBiteIndex],
-                                              [
-                                                // subjectIndex
-                                                conceptMap.keys
-                                                    .toList()
-                                                    .indexWhere((element) =>
-                                                        element ==
-                                                        widget.subjectName),
-                                                // categoryIndex
-                                                conceptMap[widget.subjectName]!
-                                                    .keys
-                                                    .toList()
-                                                    .indexWhere((element) =>
-                                                        element ==
-                                                        widget.categoryName),
-                                                // topicIndex
-                                                conceptMap[widget.subjectName]![
-                                                        widget.categoryName]!
-                                                    .keys
-                                                    .toList()
-                                                    .indexWhere((element) =>
-                                                        element ==
-                                                        widget.topicName),
-                                                // unitIndex
-                                                learningBiteMap[widget
-                                                                .subjectName]![
-                                                            widget
-                                                                .categoryName]![
-                                                        widget.topicName]!
-                                                    .keys
-                                                    .toList()
-                                                    .indexWhere((element) =>
-                                                        element ==
-                                                        widget.unit.name),
-                                                // conceptIndex
-                                                conceptIndex,
-                                                // learningBiteIndex
-                                                learningBiteIndex
-                                              ]),
+                                          completed: completedLearningBites.any(
+                                              (e) => const ListEquality()
+                                                  .equals(e, indices)),
+                                          learningBite: learningBite,
+                                          onTap: () =>
+                                              navigateToLearningBitePage(
+                                                  learningBite, indices),
                                         ),
                                       ],
                                     );
@@ -176,25 +177,129 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
         ));
   }
 
-  void setResumeSubjects(List<List<int>> resSubs) async {
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("resumeSubjects", jsonEncode(resSubs));
+  void setResumeSubjects(List<List<int>> resSubs, List<int> indices) async {
+    if (indices.length == 1 &&
+        resumeSubjects.elementAt(indices.first).isNotEmpty) {
+      resumeSubjects.elementAt(indices.first).clear();
+    } else {
+      if (resumeSubjects.elementAt(indices.first).isEmpty) {
+        resumeSubjects.removeAt(indices.first);
+        resumeSubjects.insert(indices.first, indices);
+      } else {
+        resumeSubjects.elementAt(indices.first).replaceRange(0, 6, indices);
+      }
+    }
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      'resumeSubjects': jsonEncode(resSubs),
+    });
+  }
+
+  void setCompletedLearningBites(List<List<int>> complLearnBites) async {
+    User? currentUser = FirebaseAuth.instance.currentUser;
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(currentUser!.email)
+        .update({
+      'completedLearningBites': jsonEncode(complLearnBites),
+    });
   }
 
   void navigateToLearningBitePage(
       LearningBite learningBite, List<int> indices) {
-    setResumeSubjects(resumeSubjects);
-    if (resumeSubjects.elementAt(indices.first).isEmpty) {
-      resumeSubjects.removeAt(indices.first);
-      resumeSubjects.insert(indices.first, indices);
-    } else {
-      resumeSubjects.elementAt(indices.first).replaceRange(0, 6, indices);
-    }
+    setResumeSubjects(resumeSubjects, indices);
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LearningBitePage(learningBite: learningBite),
+        builder: (context) => LearningBitePage(
+          learningBite: learningBite,
+          tasks: learningBite.type == LearningBiteType.lesson
+              ? learningBite.tasks!
+              : [],
+        ),
       ),
+    ).then(
+      (completed) => setState(() {
+        completed = completed ?? false;
+
+        bool confetti = false;
+        int numLearningBites = learningBiteMap[widget.subjectName]!
+            .values
+            .elementAt(indices[1])
+            .values
+            .elementAt(indices[2])
+            .values
+            .elementAt(indices[3])
+            .values
+            .elementAt(indices[4])
+            .length;
+        if (completed &&
+            !completedLearningBites
+                .any((e) => const ListEquality().equals(e, indices))) {
+          learningBite.completed = true;
+          List<int> indcs = List.from(indices);
+          completedLearningBites.add(indcs);
+          setCompletedLearningBites(completedLearningBites);
+          int numCompletedLearningBites = 0;
+          List<int> tmpIndcs = List.from(indices);
+          for (var i = 0; i < numLearningBites; i++) {
+            tmpIndcs.last = i;
+            if (completedLearningBites
+                .any((e) => const ListEquality().equals(e, tmpIndcs))) {
+              numCompletedLearningBites++;
+            }
+          }
+
+          if (numCompletedLearningBites == numLearningBites) {
+            confetti = true;
+            List<int> tmpEndIndcs = List.from(indices);
+            confettiController.play();
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Container(
+                        alignment: Alignment.topCenter,
+                        child: ConfettiWidget(
+                          confettiController: confettiController,
+                          blastDirectionality: BlastDirectionality.explosive,
+                          emissionFrequency: 0.05,
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 300),
+                        child: AlertDialog(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.primary,
+                          title: Padding(
+                            padding: const EdgeInsets.all(12),
+                            child: Center(
+                              child: Text(
+                                "Du hat alle Lektionen zum Thema ${learningBiteMap[widget.subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                });
+          }
+        }
+        if (completed) {
+          if (!confetti && indices[5] + 1 < numLearningBites) {
+            indices.replaceRange(5, 6, [indices[5] + 1]);
+            setResumeSubjects(resumeSubjects, indices);
+          } else {
+            setResumeSubjects(resumeSubjects, [indices[0]]);
+          }
+        }
+      }),
     );
   }
 }

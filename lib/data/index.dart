@@ -33,7 +33,7 @@ Map<String, List<Category>> categoryMap = {
 List<Subject> subjects = [
   Subject(
     name: "Informatik",
-    color: Colors.blueGrey.shade500,
+    color: Colors.blueGrey.shade400,
     iconData: Icons.computer,
   ),
   Subject(
@@ -49,3 +49,4 @@ List<Subject> subjects = [
 ];
 
 List<List<int>> resumeSubjects = [];
+List<List<int>> completedLearningBites = [];

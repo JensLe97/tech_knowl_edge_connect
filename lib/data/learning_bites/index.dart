@@ -2,6 +2,8 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/cpu
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_structure_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_tags_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/mainboard_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/math/infinity_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/math/numbers_naming_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 
 // ===== Concepts =====
@@ -17,6 +19,10 @@ Map<String, List<LearningBite>> htmlLearningBites = {
 };
 
 // Math
+Map<String, List<LearningBite>> numbersNamingLearningBites = {
+  "Zahlenarten benennen": importantNumbersLearningBites,
+  "Unendlichkeit": infinityLearningBites,
+};
 
 // Biology
 
@@ -31,6 +37,9 @@ Map<String, Map<String, List<LearningBite>>> webLangLearningBites = {
 };
 
 // Math
+Map<String, Map<String, List<LearningBite>>> numbersLearningBites = {
+  "Zahlenarten": numbersNamingLearningBites,
+};
 
 // Biology
 
@@ -54,7 +63,7 @@ Map<String, Map<String, Map<String, List<LearningBite>>>>
 // Math
 Map<String, Map<String, Map<String, List<LearningBite>>>>
     foundationalMathLearningBites = {
-  "Zahlen": {},
+  "Zahlen": numbersLearningBites,
   "Geometrie": {},
 };
 Map<String, Map<String, Map<String, List<LearningBite>>>>

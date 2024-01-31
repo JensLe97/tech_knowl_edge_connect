@@ -20,7 +20,7 @@ class AuthService {
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(gUser.email)
-          .set({
+          .update({
         'email': gUser.email,
         'username': gUser.displayName,
       });

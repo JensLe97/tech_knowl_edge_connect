@@ -1,5 +1,6 @@
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/component_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/html_concepts.dart';
+import 'package:tech_knowl_edge_connect/data/concepts/math/number_categories_concepts.dart';
 import 'package:tech_knowl_edge_connect/models/concept.dart';
 
 // ===== Units =====
@@ -13,6 +14,9 @@ Map<String, List<Concept>> webLangConcepts = {
 };
 
 // Math
+Map<String, List<Concept>> numbersConcepts = {
+  "Zahlenarten": numberCategoriesConcepts,
+};
 
 // Biology
 
@@ -32,7 +36,7 @@ Map<String, Map<String, List<Concept>>> theoryComputerScienceConcepts = {
 
 // Math
 Map<String, Map<String, List<Concept>>> foundationalMathConcepts = {
-  "Zahlen": {},
+  "Zahlen": numbersConcepts,
   "Geometrie": {},
 };
 Map<String, Map<String, List<Concept>>> advancedMathConcepts = {

@@ -169,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(userCredential.user!.email)
-          .set({
+          .update({
         'email': userCredential.user!.email,
         'username': usernameController.text,
       });

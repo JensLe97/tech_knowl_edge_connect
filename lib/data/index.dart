@@ -38,13 +38,33 @@ List<Subject> subjects = [
   ),
   Subject(
     name: "Mathematik",
-    color: Colors.blue.shade800,
+    color: Colors.blue.shade700,
     iconData: FontAwesomeIcons.calculator,
   ),
   Subject(
     name: "Biologie",
-    color: Colors.green.shade600,
+    color: Colors.green.shade400,
     iconData: FontAwesomeIcons.tree,
+  ),
+  Subject(
+    name: "Deutsch",
+    color: Colors.red.shade400,
+    iconData: FontAwesomeIcons.book,
+  ),
+  Subject(
+    name: "Psychologie",
+    color: Colors.purple.shade400,
+    iconData: FontAwesomeIcons.brain,
+  ),
+  Subject(
+    name: "AGD",
+    color: Colors.yellow.shade700,
+    iconData: FontAwesomeIcons.school,
+  ),
+  Subject(
+    name: "Erziehungswissenschaften ",
+    color: Colors.orange.shade400,
+    iconData: FontAwesomeIcons.child,
   ),
 ];
 

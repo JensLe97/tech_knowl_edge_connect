@@ -99,7 +99,7 @@ class _HomePageState extends State<HomePage> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   const Text(
-                                    "Hello",
+                                    "Hallo",
                                     style: TextStyle(
                                         fontSize: 20,
                                         fontWeight: FontWeight.bold),
@@ -125,32 +125,28 @@ class _HomePageState extends State<HomePage> {
                           ),
                           const SizedBox(height: 15),
                           resumeSubjects.every((element) => element.isEmpty)
-                              ? Column(
+                              ? const Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Row(
                                       children: [
-                                        const Text(
+                                        Text(
                                           "Starte eine Lektion über die  ",
                                           style: TextStyle(fontSize: 20),
                                         ),
                                         Column(
                                           children: [
-                                            const Icon(Icons.search),
+                                            Icon(Icons.search),
                                             Text(
                                               "Suche",
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .inversePrimary),
+                                              style: TextStyle(fontSize: 12),
                                             )
                                           ],
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(height: 2),
-                                    const Text(
+                                    SizedBox(height: 2),
+                                    Text(
                                       "in der unteren Navigationsleiste",
                                       style: TextStyle(fontSize: 20),
                                     ),
@@ -327,7 +323,7 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(12),
                             child: Center(
                               child: Text(
-                                "Du hat alle Lektionen zum Thema ${learningBiteMap[subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
+                                "Du hast alle Lektionen zum Thema ${learningBiteMap[subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
                               ),
                             ),
                           ),

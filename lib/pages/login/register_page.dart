@@ -31,7 +31,7 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[300],
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -44,9 +44,9 @@ class _RegisterPageState extends State<RegisterPage> {
                   size: 100,
                 ),
                 const SizedBox(height: 50),
-                Text(
+                const Text(
                   'Neuen Account erstellen',
-                  style: TextStyle(color: Colors.grey[700], fontSize: 18),
+                  style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 25),
                 LoginTextField(
@@ -81,9 +81,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       "Bereits einen Account?",
-                      style: TextStyle(color: Colors.grey[700]),
                     ),
                     const SizedBox(
                       width: 4,
@@ -169,7 +168,7 @@ class _RegisterPageState extends State<RegisterPage> {
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(userCredential.user!.email)
-          .update({
+          .set({
         'email': userCredential.user!.email,
         'username': usernameController.text,
       });

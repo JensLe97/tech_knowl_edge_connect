@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/pages/search/subject_overview_page.dart';
@@ -27,12 +26,7 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: Center(
-          child: SearchTextField(
-            controller: subjectController,
-            hintText: 'Fächer, Themen, Aufgaben...',
-          ),
-        ),
+        title: const Center(child: Text("Suche")),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -45,7 +39,7 @@ class _SearchPageState extends State<SearchPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.0),
                   child: Text(
-                    "Naturwissenschaften",
+                    "Fächer",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),

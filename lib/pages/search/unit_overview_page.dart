@@ -279,7 +279,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                             padding: const EdgeInsets.all(12),
                             child: Center(
                               child: Text(
-                                "Du hat alle Lektionen zum Thema ${learningBiteMap[widget.subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
+                                "Du hast alle Lektionen zum Thema ${learningBiteMap[widget.subjectName]!.values.elementAt(tmpEndIndcs[1]).values.elementAt(tmpEndIndcs[2]).values.elementAt(tmpEndIndcs[3]).keys.elementAt(tmpEndIndcs[4])} abgeschlossen!",
                               ),
                             ),
                           ),

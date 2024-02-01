@@ -11,7 +11,16 @@ class AuthService {
     final credential = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-    createUserDocument(gUser);
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(gUser.email)
+        .get()
+        .then((data) {
+      if (!data.exists) {
+        createUserDocument(gUser);
+      }
+    });
+
     return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
@@ -20,7 +29,7 @@ class AuthService {
       await FirebaseFirestore.instance
           .collection("Users")
           .doc(gUser.email)
-          .update({
+          .set({
         'email': gUser.email,
         'username': gUser.displayName,
       });

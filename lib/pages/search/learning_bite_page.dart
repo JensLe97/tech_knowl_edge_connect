@@ -99,39 +99,43 @@ class _LearningBitePageState extends State<LearningBitePage>
                 itemCount: maxPageNum + 1,
                 itemBuilder: (context, index) {
                   return index == maxPageNum
-                      ? Center(
-                          child: Column(
-                          children: [
-                            const SizedBox(
-                              height: 200,
+                      ? SingleChildScrollView(
+                          child: Center(
+                              child: Column(
+                            children: [
+                              const SizedBox(
+                                height: 200,
+                              ),
+                              points / maxTaskNum >= 0.5
+                                  ? points / maxTaskNum >= 0.9
+                                      ? const Text("Super gemacht!",
+                                          style: TextStyle(fontSize: 22))
+                                      : const Text("Gut gemacht!",
+                                          style: TextStyle(fontSize: 22))
+                                  : const Text("Übe weiter!",
+                                      style: TextStyle(fontSize: 22)),
+                              const SizedBox(
+                                height: 50,
+                              ),
+                              Text(
+                                  "Du hast $points von $maxTaskNum Punkten erhalten."),
+                            ],
+                          )),
+                        )
+                      : SingleChildScrollView(
+                          child: Center(
+                            child: Column(
+                              children: index < maxTextNum
+                                  ? [
+                                      const SizedBox(height: 30),
+                                      widget.learningBite.data[index]
+                                    ]
+                                  : [
+                                      const SizedBox(height: 30),
+                                      Text(widget.learningBite
+                                          .tasks![index - maxTextNum].question)
+                                    ],
                             ),
-                            points / maxTaskNum >= 0.5
-                                ? points / maxTaskNum >= 0.9
-                                    ? const Text("Super gemacht!",
-                                        style: TextStyle(fontSize: 22))
-                                    : const Text("Gut gemacht!",
-                                        style: TextStyle(fontSize: 22))
-                                : const Text("Übe weiter!",
-                                    style: TextStyle(fontSize: 22)),
-                            const SizedBox(
-                              height: 50,
-                            ),
-                            Text(
-                                "Du hast $points von $maxTaskNum Punkten erhalten."),
-                          ],
-                        ))
-                      : Center(
-                          child: Column(
-                            children: index < maxTextNum
-                                ? [
-                                    const SizedBox(height: 30),
-                                    widget.learningBite.data[index]
-                                  ]
-                                : [
-                                    const SizedBox(height: 30),
-                                    Text(widget.learningBite
-                                        .tasks![index - maxTextNum].question)
-                                  ],
                           ),
                         );
                 },
@@ -227,7 +231,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                               ? (_isCorrect[currentPage - maxTextNum]
                                   ? Colors.green
                                   : Colors.red)
-                              : Theme.of(context).colorScheme.primary),
+                              : Theme.of(context).colorScheme.secondary),
                   ]),
       ),
     );

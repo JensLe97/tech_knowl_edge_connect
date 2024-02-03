@@ -59,35 +59,37 @@ class _ProfilePageState extends State<ProfilePage> {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
             } else if (snapshot.hasData) {
               Map<String, dynamic>? user = snapshot.data!.data();
-              return Center(
-                child: Column(
-                  children: [
-                    const SizedBox(height: 50),
-                    Container(
-                      decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.primary,
-                          borderRadius: BorderRadius.circular(24)),
-                      padding: const EdgeInsets.all(25),
-                      child: const Icon(
-                        Icons.person,
-                        size: 64,
+              return SingleChildScrollView(
+                child: Center(
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 50),
+                      Container(
+                        decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.primary,
+                            borderRadius: BorderRadius.circular(24)),
+                        padding: const EdgeInsets.all(25),
+                        child: const Icon(
+                          Icons.person,
+                          size: 64,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 25),
-                    Text(
-                      user!['username'],
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      user['email'],
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.inversePrimary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ],
+                      const SizedBox(height: 25),
+                      Text(
+                        user!['username'],
+                        style: const TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        user['email'],
+                        style: TextStyle(
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  ),
                 ),
               );
             } else {

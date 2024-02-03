@@ -16,15 +16,13 @@ class LessonButton extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-            color: color ?? Theme.of(context).colorScheme.primary,
+            color: color ?? Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.circular(10)),
-        child: Center(
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 18,
-            ),
+        child: Text(
+          text,
+          style: const TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
           ),
         ),
       ),

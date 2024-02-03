@@ -14,7 +14,7 @@ class _IntroPage2State extends State<IntroPage2> {
     return Center(
       child: Column(
         children: [
-          const SizedBox(height: 123),
+          const SizedBox(height: 83),
           const Text("Erhalte jederzeit Zugriff auf Fachwissen",
               style: TextStyle(fontSize: 18)),
           const SizedBox(height: 5),

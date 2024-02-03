@@ -14,7 +14,7 @@ class _IntroPage1State extends State<IntroPage1> {
     return Center(
       child: Column(
         children: [
-          const SizedBox(height: 120),
+          const SizedBox(height: 80),
           const Text("Gude Friends", style: TextStyle(fontSize: 22)),
           const SizedBox(height: 15),
           const Text("Willkommen bei TechKnowlEdgeConnect",

@@ -22,70 +22,76 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          PageView(
-            controller: _controller,
-            onPageChanged: (index) {
-              setState(() {
-                onLastPage = (index == 2);
-              });
-            },
-            children: const [
-              IntroPage1(),
-              IntroPage2(),
-              IntroPage3(),
-            ],
-          ),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  onLastPage
-                      ? const SizedBox(
-                          height: 20,
-                          width: 130,
-                        )
-                      : IntroButton(
-                          text: "Überspringen",
-                          onTap: () {
-                            leaveOnBording();
-                          },
-                        ),
-                  SmoothPageIndicator(
-                    controller: _controller,
-                    count: 3,
-                    effect: ExpandingDotsEffect(
-                        activeDotColor:
-                            Theme.of(context).colorScheme.inversePrimary,
-                        dotColor: Theme.of(context).colorScheme.secondary,
-                        spacing: 10,
-                        dotHeight: 22,
-                        dotWidth: 22),
+      resizeToAvoidBottomInset: true,
+      body: SafeArea(
+        child: PageView(
+          physics: const NeverScrollableScrollPhysics(),
+          controller: _controller,
+          onPageChanged: (index) {
+            setState(() {
+              onLastPage = (index == 2);
+            });
+          },
+          children: const [
+            SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: IntroPage1(),
+            ),
+            SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: IntroPage2(),
+            ),
+            SingleChildScrollView(
+              physics: NeverScrollableScrollPhysics(),
+              child: IntroPage3(),
+            ),
+          ],
+        ),
+      ),
+      bottomSheet: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            onLastPage
+                ? const SizedBox(
+                    height: 20,
+                    width: 130,
+                  )
+                : IntroButton(
+                    text: "Überspringen",
+                    onTap: () {
+                      leaveOnBording();
+                    },
                   ),
-                  onLastPage
-                      ? IntroButton(
-                          text: "Loslegen!",
-                          onTap: () {
-                            leaveOnBording();
-                          },
-                        )
-                      : IntroButton(
-                          text: "Weiter",
-                          onTap: () {
-                            _controller.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                          },
-                        ),
-                  const SizedBox(height: 250),
-                ],
-              )
-            ],
-          )
-        ],
+            SmoothPageIndicator(
+              controller: _controller,
+              count: 3,
+              effect: ExpandingDotsEffect(
+                  activeDotColor: Theme.of(context).colorScheme.inversePrimary,
+                  dotColor: Theme.of(context).colorScheme.secondary,
+                  spacing: 10,
+                  dotHeight: 22,
+                  dotWidth: 22),
+            ),
+            onLastPage
+                ? IntroButton(
+                    text: "Loslegen!",
+                    onTap: () {
+                      leaveOnBording();
+                    },
+                  )
+                : IntroButton(
+                    text: "Weiter",
+                    onTap: () {
+                      _controller.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.easeIn);
+                    },
+                  ),
+          ],
+        ),
       ),
     );
   }

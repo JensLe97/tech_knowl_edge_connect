@@ -14,7 +14,7 @@ class _IntroPage3State extends State<IntroPage3> with TickerProviderStateMixin {
     return Center(
       child: Column(
         children: [
-          const SizedBox(height: 123),
+          const SizedBox(height: 83),
           const Text("Starte jetzt durch mit", style: TextStyle(fontSize: 18)),
           const SizedBox(height: 5),
           const Text("TechKnowlEdgeConnect", style: TextStyle(fontSize: 22)),

@@ -39,9 +39,10 @@ class _RegisterPageState extends State<RegisterPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 55),
-                const Icon(
+                Icon(
                   Icons.lock,
                   size: 100,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 50),
                 const Text(

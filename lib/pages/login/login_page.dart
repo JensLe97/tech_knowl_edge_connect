@@ -39,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icon(
                   Icons.lock,
                   size: 100,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 50),
                 const Text(
@@ -84,22 +84,19 @@ class _LoginPageState extends State<LoginPage> {
                       Expanded(
                         child: Divider(
                           thickness: 1,
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10.0),
                         child: Text(
                           'Oder weiter mit',
-                          style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary),
                         ),
                       ),
                       Expanded(
                         child: Divider(
                           thickness: 1,
-                          color: Theme.of(context).colorScheme.inversePrimary,
+                          color: Theme.of(context).colorScheme.secondary,
                         ),
                       ),
                     ],

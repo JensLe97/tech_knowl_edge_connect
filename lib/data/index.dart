@@ -23,11 +23,16 @@ List<Category> biologyCategories = [
   Category(name: "Mittelstufe", topics: topicMap["Biologie"]!["Mittelstufe"]!),
 ];
 
+// List<Category> germanCategories = [
+//   Category(name: "Mittelstufe", topics: topicMap["Deutsch"]!["Mittelstufe"]!),
+// ];
+
 // ===== Global =====
 Map<String, List<Category>> categoryMap = {
   "Informatik": computerScienceCategories,
   "Mathematik": mathCategories,
-  "Biologie": biologyCategories
+  "Biologie": biologyCategories,
+  // "Deutsch": germanCategories,
 };
 
 List<Subject> subjects = [

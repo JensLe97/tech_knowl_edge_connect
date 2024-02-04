@@ -71,10 +71,6 @@ class TechKnowlEdgeConnect extends StatelessWidget {
             const BottomSheetThemeData(backgroundColor: Colors.transparent),
       ),
       home: const AuthPage(),
-      builder: (context, child) {
-        child ??= const SizedBox();
-        return kIsWeb ? WebSafeAreaInsets(child: child) : child;
-      },
     );
   }
 }

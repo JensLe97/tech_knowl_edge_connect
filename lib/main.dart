@@ -66,11 +66,8 @@ class TechKnowlEdgeConnect extends StatelessWidget {
             elevation: 0,
           ),
           bottomSheetTheme: const BottomSheetThemeData(
-            dragHandleColor: Colors.transparent,
-            modalBarrierColor: Colors.transparent,
-            surfaceTintColor: Colors.transparent,
             shadowColor: Colors.transparent,
-            modalBackgroundColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
             backgroundColor: Colors.transparent,
           )),
       home: const AuthPage(),

@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:safe_area_insets/safe_area_insets.dart';
 import 'package:tech_knowl_edge_connect/pages/home/home_page.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/search_page.dart';

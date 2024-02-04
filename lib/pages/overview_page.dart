@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:safe_area_insets/safe_area_insets.dart';
-import 'package:tech_knowl_edge_connect/components/bottom_navigation_bar.dart';
 import 'package:tech_knowl_edge_connect/pages/home/home_page.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/search_page.dart';
@@ -36,8 +35,48 @@ class _OverviewPageState extends State<OverviewPage> {
       body: IndexedStack(children: [
         _tabs.elementAt(_currentIndex),
       ]),
-      bottomNavigationBar:
-          BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
+      bottomNavigationBar: kIsWeb
+          ? WebSafeAreaInsets(
+              child: BottomNavigationBar(
+                backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+                currentIndex: _currentIndex,
+                type: BottomNavigationBarType.fixed,
+                selectedItemColor:
+                    Theme.of(context).textTheme.displayLarge!.color,
+                unselectedItemColor:
+                    Theme.of(context).textTheme.bodyLarge!.color,
+                onTap: _onTap,
+                items: const [
+                  BottomNavigationBarItem(
+                    label: 'Home',
+                    icon: Icon(Icons.home),
+                  ),
+                  BottomNavigationBarItem(
+                      label: 'Suche', icon: Icon(Icons.search)),
+                  BottomNavigationBarItem(
+                      label: 'Profil', icon: Icon(Icons.person)),
+                ],
+              ),
+            )
+          : BottomNavigationBar(
+              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+              currentIndex: _currentIndex,
+              type: BottomNavigationBarType.fixed,
+              selectedItemColor:
+                  Theme.of(context).textTheme.displayLarge!.color,
+              unselectedItemColor: Theme.of(context).textTheme.bodyLarge!.color,
+              onTap: _onTap,
+              items: const [
+                BottomNavigationBarItem(
+                  label: 'Home',
+                  icon: Icon(Icons.home),
+                ),
+                BottomNavigationBarItem(
+                    label: 'Suche', icon: Icon(Icons.search)),
+                BottomNavigationBarItem(
+                    label: 'Profil', icon: Icon(Icons.person)),
+              ],
+            ),
     );
   }
 

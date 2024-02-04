@@ -37,7 +37,9 @@ class _OverviewPageState extends State<OverviewPage> {
         _tabs.elementAt(_currentIndex),
       ]),
       bottomNavigationBar: kIsWeb
-          ? BottomNavBar(onTap: _onTap, currentIndex: _currentIndex)
+          ? WebSafeAreaInsets(
+              child: BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
+            )
           : BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
     );
   }

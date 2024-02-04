@@ -68,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text(
                     'Passwort vergessen?',
-                    style: TextStyle(fontSize: 18),
+                    style: TextStyle(fontSize: 20),
                   ),
                 ),
                 const SizedBox(height: 25),

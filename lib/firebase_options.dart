@@ -66,7 +66,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
-    iosBundleId: 'com.example.techKnowlEdgeConnect',
+    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -75,6 +75,6 @@ class DefaultFirebaseOptions {
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
-    iosBundleId: 'com.example.techKnowlEdgeConnect.RunnerTests',
+    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect.RunnerTests',
   );
 }

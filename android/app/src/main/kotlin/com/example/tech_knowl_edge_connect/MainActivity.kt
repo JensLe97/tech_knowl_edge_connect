@@ -1,4 +1,4 @@
-package com.example.tech_knowl_edge_connect
+package com.jenslemke.tech_knowl_edge_connect
 
 import io.flutter.embedding.android.FlutterActivity
 

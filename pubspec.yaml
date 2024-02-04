@@ -1,5 +1,5 @@
 name: tech_knowl_edge_connect
-description: A new Flutter project.
+description: Education app for learning in school and university.
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: "none" # Remove this line if you wish to publish to pub.dev

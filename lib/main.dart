@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -47,26 +48,27 @@ class TechKnowlEdgeConnect extends StatelessWidget {
             const BottomSheetThemeData(backgroundColor: Colors.transparent),
       ),
       darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.dark(
-          background: Colors.grey.shade900,
-          primary: Colors.grey.shade800,
-          secondary: Colors.grey.shade700,
-          inversePrimary: Colors.grey.shade800,
-        ),
-        textTheme: Theme.of(context).textTheme.apply(
-              fontSizeDelta: 3,
-              bodyColor: Colors.grey[300],
-              displayColor: Colors.white,
-            ),
-        primarySwatch: Colors.indigo,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade800,
-          elevation: 0,
-        ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.transparent),
-      ),
+          brightness: Brightness.dark,
+          colorScheme: ColorScheme.dark(
+            background: Colors.grey.shade900,
+            primary: Colors.grey.shade800,
+            secondary: Colors.grey.shade700,
+            inversePrimary: Colors.grey.shade800,
+          ),
+          textTheme: Theme.of(context).textTheme.apply(
+                fontSizeDelta: 3,
+                bodyColor: Colors.grey[300],
+                displayColor: Colors.white,
+              ),
+          primarySwatch: Colors.indigo,
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.grey.shade800,
+            elevation: 0,
+          ),
+          bottomSheetTheme: const BottomSheetThemeData(
+            modalBackgroundColor: Colors.transparent,
+            backgroundColor: Colors.transparent,
+          )),
       home: const AuthPage(),
     );
   }

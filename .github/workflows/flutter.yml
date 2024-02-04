@@ -7,9 +7,9 @@ name: Flutter
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -21,14 +21,14 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "3.16.0"
-          channel: 'stable'
+          channel: "stable"
           cache: true
-      
+
       - uses: actions/setup-java@v3
         with:
-          distribution: 'zulu'
+          distribution: "zulu"
           java-version: "17"
-          cache: 'gradle'
+          cache: "gradle"
 
       - name: Get dependencies
         run: flutter pub get

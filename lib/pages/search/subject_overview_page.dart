@@ -25,6 +25,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
         body: CustomScrollView(
           slivers: [
             SliverAppBar.large(
+              elevation: 0,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
                     const EdgeInsetsDirectional.only(top: 10, bottom: 10),

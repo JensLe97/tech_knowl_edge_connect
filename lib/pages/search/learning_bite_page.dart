@@ -60,6 +60,7 @@ class _LearningBitePageState extends State<LearningBitePage>
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
+        elevation: 0,
         toolbarHeight: 100,
         flexibleSpace: FlexibleSpaceBar(
             titlePadding: const EdgeInsetsDirectional.only(

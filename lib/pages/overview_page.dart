@@ -36,11 +36,8 @@ class _OverviewPageState extends State<OverviewPage> {
       body: IndexedStack(children: [
         _tabs.elementAt(_currentIndex),
       ]),
-      bottomNavigationBar: kIsWeb
-          ? WebSafeAreaInsets(
-              child: BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
-            )
-          : BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
+      bottomNavigationBar:
+          BottomNavBar(onTap: _onTap, currentIndex: _currentIndex),
     );
   }
 

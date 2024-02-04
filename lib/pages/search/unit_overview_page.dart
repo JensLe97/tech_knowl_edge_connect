@@ -49,6 +49,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
           slivers: [
             SliverAppBar.large(
               elevation: 0,
+              shadowColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
                     const EdgeInsetsDirectional.only(top: 10, bottom: 10),

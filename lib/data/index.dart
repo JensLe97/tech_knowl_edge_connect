@@ -67,9 +67,9 @@ List<Subject> subjects = [
     iconData: FontAwesomeIcons.school,
   ),
   Subject(
-    name: "Erziehungswissenschaften ",
+    name: "Erziehungswissenschaften",
     color: Colors.orange.shade400,
-    iconData: FontAwesomeIcons.child,
+    iconData: FontAwesomeIcons.children,
   ),
 ];
 

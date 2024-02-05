@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -20,10 +21,16 @@ class _IntroPage1State extends State<IntroPage1> {
           const Text("Willkommen bei TechKnowlEdgeConnect",
               style: TextStyle(fontSize: 20)),
           const SizedBox(height: 15),
-          Lottie.asset(
-            'images/animations/technology_animation.json',
-            height: 375,
-          ),
+          kIsWeb
+              ? SizedBox(
+                  height: 500,
+                  child: Image.asset(
+                      'images/learning_bites/math/numbers_naming/numbers.png'),
+                )
+              : Lottie.asset(
+                  'images/animations/technology_animation.json',
+                  height: 375,
+                ),
           const SizedBox(height: 40),
           const Text("Wachse mit deinem Wissen", style: TextStyle(fontSize: 18))
         ],

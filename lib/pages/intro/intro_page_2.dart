@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -21,10 +22,16 @@ class _IntroPage2State extends State<IntroPage2> {
           const Text("aus Schule, Universität und Alltag",
               style: TextStyle(fontSize: 18)),
           const SizedBox(height: 15),
-          Lottie.asset(
-            'images/animations/knowledge_animation.json',
-            height: 400,
-          ),
+          kIsWeb
+              ? SizedBox(
+                  height: 500,
+                  child: Image.asset(
+                      'images/learning_bites/math/numbers_naming/numbers.png'),
+                )
+              : Lottie.asset(
+                  'images/animations/knowledge_animation.json',
+                  height: 400,
+                ),
           const SizedBox(height: 30),
           const Text("Einfach und anschaulich lernen",
               style: TextStyle(fontSize: 18))

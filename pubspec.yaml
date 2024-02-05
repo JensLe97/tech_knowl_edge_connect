@@ -96,7 +96,7 @@ flutter:
     # <a href='https://pngtree.com/freepng/this-planet-fantasy-and-rocket-landmark_4123956.html'>png image from pngtree.com/</a>
     - images/rocket.png
     - images/technology.png
-    - images/learning.png
+    - images/knowledge.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

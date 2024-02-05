@@ -23,9 +23,8 @@ class _IntroPage1State extends State<IntroPage1> {
           const SizedBox(height: 15),
           kIsWeb
               ? SizedBox(
-                  height: 500,
-                  child: Image.asset(
-                      'images/learning_bites/math/numbers_naming/numbers.png'),
+                  height: 375,
+                  child: Image.asset('images/technology.png'),
                 )
               : Lottie.asset(
                   'images/animations/technology_animation.json',

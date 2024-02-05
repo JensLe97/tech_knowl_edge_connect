@@ -21,9 +21,8 @@ class _IntroPage3State extends State<IntroPage3> with TickerProviderStateMixin {
           const Text("TechKnowlEdgeConnect", style: TextStyle(fontSize: 22)),
           kIsWeb
               ? SizedBox(
-                  height: 500,
-                  child: Image.asset(
-                      'images/learning_bites/math/numbers_naming/numbers.png'),
+                  height: 400,
+                  child: Image.asset('images/rocket.png'),
                 )
               : Lottie.asset(
                   'images/animations/rocket_animation.json',

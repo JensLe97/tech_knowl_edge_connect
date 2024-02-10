@@ -28,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     //     .doc(currentUser!.email)
     //     .update({
     //   'completedLearningBites': jsonEncode([]),
-    //   'resumeSubjects': jsonEncode([[], [], []]),
+    //   'resumeSubjects': jsonEncode([[], [], [], [], [], [], []]),
     // });
 
     return await FirebaseFirestore.instance
@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
               Map<String, dynamic>? user = snapshot.data!.data();
               List<List<int>> tmpResumeSubjects = [];
               final sharedResumeSubjects =
-                  user!['resumeSubjects'] ?? "[[], [], []]";
+                  user!['resumeSubjects'] ?? "[[], [], [], [], [], [], []]";
               for (var resumeSubject in jsonDecode(sharedResumeSubjects)) {
                 tmpResumeSubjects.add(List<int>.from(resumeSubject));
               }

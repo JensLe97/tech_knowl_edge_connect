@@ -27,12 +27,21 @@ List<Category> biologyCategories = [
 //   Category(name: "Mittelstufe", topics: topicMap["Deutsch"]!["Mittelstufe"]!),
 // ];
 
+List<Category> educationScienceCategories = [
+  Category(
+      name: "Studium",
+      topics: topicMap["Erziehungswissenschaften"]!["Studium"]!),
+];
+
 // ===== Global =====
 Map<String, List<Category>> categoryMap = {
   "Informatik": computerScienceCategories,
   "Mathematik": mathCategories,
   "Biologie": biologyCategories,
-  // "Deutsch": germanCategories,
+  "Deutsch": List.empty(),
+  "Psychologie": List.empty(),
+  "AGD": List.empty(),
+  "Erziehungswissenschaften": educationScienceCategories,
 };
 
 List<Subject> subjects = [
@@ -71,6 +80,15 @@ List<Subject> subjects = [
     color: Colors.orange.shade400,
     iconData: FontAwesomeIcons.children,
   ),
+
+  // Motivation
+  // Wie wird Motivation theoretisch gefasst?
+  // Wie liegt die Bedeutung der Motivation für das schulische Lernen?
+  // Stellen Sie heraus, welche organisatorischen, pädagogischen, und didakitschen Bedingungen an einer Grundschule gegeben sein müssen, um motiviertes Lernen zu ermöglichen.
+
+  // Lernstrategien
+  // Erläutern Sie die mögliche Bedeutung von Lernstrategien in der Grundschulpödagogik.
+  // Gehen Sie dabei auf unterschiedlichen Formen von Strategien ein und diskutieren Sie den möglichen Einsatz im Grundschulunterricht.
 ];
 
 List<List<int>> resumeSubjects = [];

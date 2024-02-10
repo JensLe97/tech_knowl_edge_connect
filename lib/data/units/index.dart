@@ -5,6 +5,8 @@ import 'package:tech_knowl_edge_connect/data/units/computer_science/computer_uni
 import 'package:tech_knowl_edge_connect/data/units/computer_science/data_base_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/computer_science/java_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/computer_science/web_lang_units.dart';
+import 'package:tech_knowl_edge_connect/data/units/education_science/learning_strategies_units.dart';
+import 'package:tech_knowl_edge_connect/data/units/education_science/motivation_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/analysis_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/geometry_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/linear_algebra_units.dart';
@@ -41,6 +43,12 @@ Map<String, List<Unit>> foundationalBiologyUnits = {
   "Pflanzen": plantsUnits,
 };
 
+// Education Science
+Map<String, List<Unit>> universityEducationScienceUnits = {
+  "Motivation": movationUnits,
+  "Lernstrategien": learningStrategiesUnits,
+};
+
 // ===== Categories =====
 Map<String, Map<String, List<Unit>>> computerScienceUnits = {
   "Hardware": hardwareComputerScienceUnits,
@@ -57,10 +65,18 @@ Map<String, Map<String, List<Unit>>> biologyUnits = {
   "Mittelstufe": foundationalBiologyUnits,
 };
 
+Map<String, Map<String, List<Unit>>> educationScienceUnits = {
+  "Studium": universityEducationScienceUnits,
+};
+
 // ===== Global =====
 // Informatik, Hardware, Computer, Komponenten
 Map<String, Map<String, Map<String, List<Unit>>>> unitMap = {
   "Informatik": computerScienceUnits,
   "Mathematik": mathUnits,
   "Biologie": biologyUnits,
+  "Deutsch": {},
+  "Psychologie": {},
+  "AGD": {},
+  "Erziehungswissenschaften": educationScienceUnits,
 };

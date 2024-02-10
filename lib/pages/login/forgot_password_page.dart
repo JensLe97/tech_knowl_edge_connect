@@ -77,6 +77,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     );
 
     try {
+      await FirebaseAuth.instance.setLanguageCode("de");
       await FirebaseAuth.instance.sendPasswordResetEmail(
         email: emailController.text.trim(),
       );

@@ -2,6 +2,10 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/cpu
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_structure_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_tags_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/mainboard_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/motivation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/value_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/volition_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/math/infinity_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/math/numbers_naming_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
@@ -24,6 +28,21 @@ Map<String, List<LearningBite>> numbersNamingLearningBites = {
   "Unendlichkeit": infinityLearningBites,
 };
 
+// Education Science
+Map<String, List<LearningBite>> theoryEducationScienceLearningBites = {
+  "Einführung": motivationLearningBites,
+  "Erwartungskomponente": expectationLearningBites,
+  "Wertkomponente": valueLearningBites,
+  "Volition": volationLearningBites,
+};
+
+Map<String, List<LearningBite>> practiceEducationScienceLearningBites = {
+  "Einführung": motivationLearningBites,
+  "Erwartungskomponente": expectationLearningBites,
+  "Wertkomponente": valueLearningBites,
+  "Volition": volationLearningBites,
+};
+
 // Biology
 
 // ===== Units =====
@@ -42,6 +61,13 @@ Map<String, Map<String, List<LearningBite>>> numbersLearningBites = {
 };
 
 // Biology
+
+// Education Science
+Map<String, Map<String, List<LearningBite>>>
+    motivationEducationScienceLearningBites = {
+  "Theorie": theoryEducationScienceLearningBites,
+  "Praxis": practiceEducationScienceLearningBites,
+};
 
 // ===== Topics =====
 // Computer Sciene
@@ -79,6 +105,13 @@ Map<String, Map<String, Map<String, List<LearningBite>>>>
   "Pflanzen": {},
 };
 
+// Education Science
+Map<String, Map<String, Map<String, List<LearningBite>>>>
+    universityEducationScienceLearningBites = {
+  "Motivation": motivationEducationScienceLearningBites,
+  "Lernstrategien": {},
+};
+
 // ===== Categories =====
 Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>
     computerScienceLearningBites = {
@@ -98,6 +131,11 @@ Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>
   "Mittelstufe": foundationalBiologyLearningBites,
 };
 
+Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>
+    educationScienceLearningBites = {
+  "Studium": universityEducationScienceLearningBites,
+};
+
 // ===== Global =====
 // Subject   , Category, Topic   , Unit       , Concept  , LearningBite
 // Informatik, Hardware, Computer, Komponenten, Mainboard, Mainboard - Einfach erklärt (Text)
@@ -107,4 +145,8 @@ Map<String,
   "Informatik": computerScienceLearningBites,
   "Mathematik": mathLearningBites,
   "Biologie": biologyLearningBites,
+  "Deutsch": {},
+  "Psychologie": {},
+  "AGD": {},
+  "Erziehungswissenschaften": educationScienceLearningBites,
 };

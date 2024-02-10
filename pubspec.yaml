@@ -97,6 +97,7 @@ flutter:
     - images/rocket.png
     - images/technology.png
     - images/knowledge.png
+    - images/learning_bites/education_science/motivation/motivation.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

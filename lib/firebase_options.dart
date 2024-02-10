@@ -54,7 +54,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyC4po_-2wO2OqwZOnW22zGEwvde6QMfF0s',
-    appId: '1:31090418784:android:21094b8ea780f3d977cf05',
+    appId: '1:31090418784:android:c6e2431b3b9cc4d277cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
@@ -62,19 +62,23 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
-    appId: '1:31090418784:ios:5c461798510f84a277cf05',
+    appId: '1:31090418784:ios:c565ee0244fea1cc77cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
+    androidClientId: '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+    iosClientId: '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
-    appId: '1:31090418784:ios:26ad4a5bf0fabbf877cf05',
+    appId: '1:31090418784:ios:ebdf030b7edd1a0777cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
+    androidClientId: '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+    iosClientId: '31090418784-f24rvngfd427jjajtof4nkuigs920vp1.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect.RunnerTests',
   );
 }

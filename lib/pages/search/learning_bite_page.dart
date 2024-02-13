@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/lesson_button.dart';
+import 'package:tech_knowl_edge_connect/components/answer_field.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
+import 'package:tech_knowl_edge_connect/models/task_type.dart';
+import 'package:collection/collection.dart';
 
 class LearningBitePage extends StatefulWidget {
   final LearningBite learningBite;
@@ -21,12 +24,15 @@ class _LearningBitePageState extends State<LearningBitePage>
     with TickerProviderStateMixin {
   late final AnimationController controller;
   late final PageController pageController;
+  late final TextEditingController textFieldController;
+  late List<TextEditingController> answersControllers = [];
 
   @override
   void initState() {
     controller =
         AnimationController(vsync: this, duration: const Duration(seconds: 1));
     pageController = PageController();
+    textFieldController = TextEditingController();
 
     super.initState();
   }
@@ -35,6 +41,10 @@ class _LearningBitePageState extends State<LearningBitePage>
   void dispose() {
     pageController.dispose();
     controller.dispose();
+    textFieldController.dispose();
+    for (final TextEditingController answersController in answersControllers) {
+      answersController.dispose();
+    }
     super.dispose();
   }
 
@@ -49,14 +59,29 @@ class _LearningBitePageState extends State<LearningBitePage>
 
   int points = 0;
   bool firstTry = true;
+  List<String> correctAnswers = [];
+  List<String> question = [];
+  IterableZip<String> answers = IterableZip([]);
+  bool initFreeTextCloze = true;
+  bool allCorrect = false;
 
   @override
   Widget build(BuildContext context) {
-    int maxTextNum = widget.learningBite.data.length;
-    int maxTaskNum = widget.learningBite.tasks != null
-        ? widget.learningBite.tasks!.length
-        : 0;
-    int maxPageNum = maxTextNum + maxTaskNum;
+    List<Widget> data = widget.learningBite.data;
+    List<Task> tasks = widget.learningBite.tasks ?? List.empty();
+    int maxDataNum = data.length;
+    int maxTaskNum = tasks.length;
+    int maxPageNum = maxDataNum + maxTaskNum;
+    int currentTask = currentPage - maxDataNum;
+    if (0 <= currentTask && currentTask < maxTaskNum) {
+      correctAnswers = tasks[currentTask].correctAnswer.split('{}');
+      question = tasks[currentTask].question.split('{}');
+      answers = IterableZip([question, correctAnswers]);
+      answersControllers = initFreeTextCloze
+          ? List.generate(
+              correctAnswers.length, (index) => TextEditingController())
+          : answersControllers;
+    }
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
@@ -76,7 +101,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                   curve: Curves.easeInOut,
                   tween: Tween<double>(
                     begin: 0,
-                    end: currentPage.toDouble() / (maxTextNum + maxTaskNum),
+                    end: currentPage.toDouble() / maxPageNum,
                   ),
                   builder: (context, value, _) => LinearProgressIndicator(
                     value: value,
@@ -98,15 +123,13 @@ class _LearningBitePageState extends State<LearningBitePage>
                 physics: const NeverScrollableScrollPhysics(),
                 controller: pageController,
                 itemCount: maxPageNum + 1,
-                itemBuilder: (context, index) {
-                  return index == maxPageNum
+                itemBuilder: (context, currentPageIndex) {
+                  return currentPageIndex == maxPageNum
                       ? SingleChildScrollView(
                           child: Center(
                               child: Column(
                             children: [
-                              const SizedBox(
-                                height: 200,
-                              ),
+                              const SizedBox(height: 200),
                               points / maxTaskNum >= 0.5
                                   ? points / maxTaskNum >= 0.9
                                       ? const Text("Super gemacht!",
@@ -115,9 +138,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                                           style: TextStyle(fontSize: 22))
                                   : const Text("Übe weiter!",
                                       style: TextStyle(fontSize: 22)),
-                              const SizedBox(
-                                height: 50,
-                              ),
+                              const SizedBox(height: 50),
                               Text(
                                   "Du hast $points von $maxTaskNum Punkten erhalten."),
                             ],
@@ -126,15 +147,15 @@ class _LearningBitePageState extends State<LearningBitePage>
                       : SingleChildScrollView(
                           child: Center(
                             child: Column(
-                              children: index < maxTextNum
+                              children: currentPageIndex < maxDataNum
                                   ? [
                                       const SizedBox(height: 30),
-                                      widget.learningBite.data[index]
+                                      data[currentPageIndex]
                                     ]
                                   : [
                                       const SizedBox(height: 30),
-                                      Text(widget.learningBite
-                                          .tasks![index - maxTextNum].question)
+                                      taskContent(
+                                          tasks, currentPageIndex - maxDataNum)
                                     ],
                             ),
                           ),
@@ -147,7 +168,7 @@ class _LearningBitePageState extends State<LearningBitePage>
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
-        child: currentPage < maxTextNum || currentPage == maxPageNum
+        child: currentPage < maxDataNum || currentPage == maxPageNum
             ? Wrap(direction: Axis.horizontal, children: [
                 LessonButton(
                   onTap: () async {
@@ -170,71 +191,242 @@ class _LearningBitePageState extends State<LearningBitePage>
                       : "Weiter",
                 )
               ])
-            : Wrap(
-                direction: Axis.horizontal,
-                alignment: WrapAlignment.center,
-                children: [
-                    for (var answerIndex = 0;
-                        answerIndex <
-                            widget.learningBite.tasks![currentPage - maxTextNum]
-                                .answers.length;
-                        answerIndex++)
-                      LessonButton(
-                          onTap: () async {
-                            bool correct = false;
-                            setState(() {
-                              answeredIndex = answerIndex;
-                              _isAnswered[currentPage - maxTextNum] = true;
-                              correct = widget
-                                      .learningBite
-                                      .tasks![currentPage - maxTextNum]
-                                      .answers[answerIndex] ==
-                                  widget
-                                      .learningBite
-                                      .tasks![currentPage - maxTextNum]
-                                      .correctAnswer;
-                              _isCorrect[currentPage - maxTextNum] = correct;
-                            });
-                            if (currentPage < maxPageNum) {
-                              await Future.delayed(const Duration(seconds: 1));
-                              setState(() {
-                                _isAnswered =
-                                    List.generate(maxTaskNum, (i) => false);
-                              });
-
-                              if (correct && pageController.hasClients) {
-                                setState(() {
-                                  currentPage++;
-                                  if (firstTry) {
-                                    points++;
-                                  }
-                                  firstTry = true;
-                                });
-                                pageController.nextPage(
-                                  duration: const Duration(milliseconds: 400),
-                                  curve: Curves.easeInOut,
-                                );
-                              } else {
-                                setState(() {
-                                  firstTry = false;
-                                });
-                              }
-                            } else {
-                              Navigator.pop(context);
-                            }
-                          },
-                          text: widget
-                              .learningBite
-                              .tasks![currentPage - maxTextNum]
-                              .answers[answerIndex],
-                          color: answerIndex == answeredIndex &&
-                                  _isAnswered[currentPage - maxTextNum]
-                              ? (_isCorrect[currentPage - maxTextNum]
-                                  ? Colors.green
-                                  : Colors.red)
-                              : Theme.of(context).colorScheme.secondary),
-                  ]),
+            : taskBottom(tasks, currentTask, maxPageNum, maxTaskNum, context),
       ),
     );
+  }
+
+  Widget taskContent(List<Task> tasks, int currentTask) {
+    switch (tasks[currentTask].type) {
+      case TaskType.singleChoice:
+        return Text(tasks[currentTask].question);
+      case TaskType.singleChoiceCloze:
+        return Text.rich(
+          TextSpan(children: <InlineSpan>[
+            for (final pairs in answers) ...[
+              TextSpan(
+                text: pairs.first,
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: AnswerField(
+                  setAllCorrect: () => setAllCorrect(
+                      tasks[currentTask].correctAnswer.split('{}')),
+                  controller: textFieldController,
+                  answer: pairs.last,
+                  enabled: false,
+                ),
+              )
+            ],
+            TextSpan(
+              text: question.last,
+            ),
+          ], style: const TextStyle(fontSize: 18)),
+        );
+      case TaskType.freeTextFieldCloze:
+        return Text.rich(
+          TextSpan(children: <InlineSpan>[
+            for (var correctAnswersIndex = 0;
+                correctAnswersIndex < answers.length;
+                correctAnswersIndex++) ...[
+              TextSpan(
+                text: answers.elementAt(correctAnswersIndex).first,
+              ),
+              WidgetSpan(
+                alignment: PlaceholderAlignment.middle,
+                child: AnswerField(
+                  setAllCorrect: () => setAllCorrect(correctAnswers),
+                  controller: answersControllers[correctAnswersIndex],
+                  answer: answers.elementAt(correctAnswersIndex).last,
+                  enabled: true,
+                ),
+              )
+            ],
+            TextSpan(
+              text: question.last,
+            ),
+          ], style: const TextStyle(fontSize: 18)),
+        );
+      default:
+        return Text(tasks[currentTask].question);
+    }
+  }
+
+  Widget taskBottom(List<Task> tasks, int currentTask, int maxPageNum,
+      int maxTaskNum, BuildContext context) {
+    switch (tasks[currentTask].type) {
+      case TaskType.singleChoiceCloze:
+        return Wrap(
+            direction: Axis.horizontal,
+            alignment: WrapAlignment.center,
+            children: [
+              for (var answerIndex = 0;
+                  answerIndex < tasks[currentTask].answers.length;
+                  answerIndex++)
+                LessonButton(
+                    onTap: () async {
+                      bool correct = false;
+                      setState(() {
+                        answeredIndex = answerIndex;
+                        _isAnswered[currentTask] = true;
+                        correct = tasks[currentTask].answers[answerIndex] ==
+                            tasks[currentTask].correctAnswer;
+                        _isCorrect[currentTask] = correct;
+                        if (correct) {
+                          textFieldController.text =
+                              tasks[currentTask].correctAnswer;
+                        }
+                      });
+                      if (currentPage < maxPageNum) {
+                        await Future.delayed(const Duration(seconds: 1));
+                        setState(() {
+                          _isAnswered = List.generate(maxTaskNum, (i) => false);
+                          textFieldController.text = "";
+                        });
+
+                        if (correct && pageController.hasClients) {
+                          setState(() {
+                            currentPage++;
+                            if (firstTry) {
+                              points++;
+                            }
+                            firstTry = true;
+                          });
+                          pageController.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          setState(() {
+                            firstTry = false;
+                          });
+                        }
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: tasks[currentTask].answers[answerIndex],
+                    color: answerIndex == answeredIndex &&
+                            _isAnswered[currentTask]
+                        ? (_isCorrect[currentTask] ? Colors.green : Colors.red)
+                        : Theme.of(context).colorScheme.secondary),
+            ]);
+      case TaskType.singleChoice:
+        return Wrap(
+            direction: Axis.horizontal,
+            alignment: WrapAlignment.center,
+            children: [
+              for (var answerIndex = 0;
+                  answerIndex < tasks[currentTask].answers.length;
+                  answerIndex++)
+                LessonButton(
+                    onTap: () async {
+                      bool correct = false;
+                      setState(() {
+                        answeredIndex = answerIndex;
+                        _isAnswered[currentTask] = true;
+                        correct = tasks[currentTask].answers[answerIndex] ==
+                            tasks[currentTask].correctAnswer;
+                        _isCorrect[currentTask] = correct;
+                      });
+                      if (currentPage < maxPageNum) {
+                        await Future.delayed(const Duration(seconds: 1));
+                        setState(() {
+                          _isAnswered = List.generate(maxTaskNum, (i) => false);
+                        });
+
+                        if (correct && pageController.hasClients) {
+                          setState(() {
+                            currentPage++;
+                            if (firstTry) {
+                              points++;
+                            }
+                            firstTry = true;
+                          });
+                          pageController.nextPage(
+                            duration: const Duration(milliseconds: 400),
+                            curve: Curves.easeInOut,
+                          );
+                        } else {
+                          setState(() {
+                            firstTry = false;
+                          });
+                        }
+                      } else {
+                        Navigator.pop(context);
+                      }
+                    },
+                    text: tasks[currentTask].answers[answerIndex],
+                    color: answerIndex == answeredIndex &&
+                            _isAnswered[currentTask]
+                        ? (_isCorrect[currentTask] ? Colors.green : Colors.red)
+                        : Theme.of(context).colorScheme.secondary),
+            ]);
+      case TaskType.multipleChoice:
+        return Text(tasks[currentTask].question);
+      case TaskType.freeTextFieldCloze:
+        return allCorrect
+            ? Wrap(direction: Axis.horizontal, children: [
+                LessonButton(
+                  onTap: () async {
+                    if (currentPage < maxPageNum) {
+                      if (allCorrect && pageController.hasClients) {
+                        setState(() {
+                          currentPage++;
+                          if (firstTry) {
+                            points++;
+                          }
+                          firstTry = true;
+                        });
+                        initFreeTextCloze = true;
+
+                        pageController.nextPage(
+                          duration: const Duration(milliseconds: 400),
+                          curve: Curves.easeInOut,
+                        );
+                      } else {
+                        setState(() {
+                          firstTry = false;
+                        });
+                      }
+                    } else {
+                      Navigator.pop(context);
+                    }
+                  },
+                  text: "Weiter",
+                )
+              ])
+            : const SizedBox.shrink();
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  Iterable<T> zip<T>(Iterable<T> a, Iterable<T> b) sync* {
+    final ita = a.iterator;
+    final itb = b.iterator;
+    bool hasa, hasb;
+    while ((hasa = ita.moveNext()) | (hasb = itb.moveNext())) {
+      if (hasa) yield ita.current;
+      if (hasb) yield itb.current;
+    }
+  }
+
+  void setAllCorrect(List<String> correctAnswers) {
+    initFreeTextCloze = false;
+    for (var correctAnswerIndex = 0;
+        correctAnswerIndex < correctAnswers.length;
+        correctAnswerIndex++) {
+      if (correctAnswers[correctAnswerIndex] !=
+          answersControllers[correctAnswerIndex].text) {
+        setState(() {
+          allCorrect = false;
+        });
+        return;
+      }
+    }
+    setState(() {
+      allCorrect = true;
+    });
   }
 }

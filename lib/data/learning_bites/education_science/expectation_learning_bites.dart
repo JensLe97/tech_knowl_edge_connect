@@ -3,12 +3,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
+import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
   "Erwartungsarten": [
     Column(
       children: [
-        const Text("Zahlen von 1 bis unendlich. Also 1, 2, 3, 4, ..."),
+        const Text("""
+Motivation kann als Bedingung des Lern- und Leistungsverhaltens im Unterricht angesehen werden.\n
+Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine Art Handlungsantrieb.
+        """),
         SizedBox(
           height: 500,
           child: Image.asset(
@@ -35,20 +39,24 @@ Map<String, List<Widget>> data = {
 Map<String, List<Task>> tasks = {
   "Erwartungsarten": [
     Task(
+        type: TaskType.singleChoice,
         question: "Ist die Zahl 5 eine natürliche Zahl?",
         correctAnswer: "Ja",
         answers: ["Ja", "Nein", "Vielleicht"]),
     Task(
+        type: TaskType.singleChoice,
         question: "Ist die Zahl -2 eine natürliche Zahl?",
         correctAnswer: "Nein",
         answers: ["Ja", "Nein"]),
   ],
   "Fähigkeitsselbstkonzept": [
     Task(
+        type: TaskType.singleChoice,
         question: "Ist die Zahl 5 eine ganze Zahl?",
         correctAnswer: "Ja",
         answers: ["Ja", "Nein"]),
     Task(
+        type: TaskType.singleChoice,
         question: "Ist die Zahl -2 eine ganze Zahl?",
         correctAnswer: "Ja",
         answers: ["Ja", "Nein"]),

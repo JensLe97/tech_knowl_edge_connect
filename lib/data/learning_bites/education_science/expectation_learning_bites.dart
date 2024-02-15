@@ -10,8 +10,8 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-Motivation kann als Bedingung des Lern- und Leistungsverhaltens im Unterricht angesehen werden.\n
-Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine Art Handlungsantrieb.
+Entscheidend für die Lern- un Leistungsmotivation ist die Erfolgserwartung.\n
+Man spricht von einer hohen Erfolgserwartung, wenn SuS überzeugt sind, bei einer Arbeit eine gute Leistung zu erzielen.
         """),
         SizedBox(
           height: 500,
@@ -24,8 +24,9 @@ Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine A
   "Fähigkeitsselbstkonzept": [
     Column(
       children: [
-        const Text(
-            "Natürliche Zahlen und negative ganzzahlige (..., -2, -1, 0, 1, 2, ...)."),
+        const Text("""
+Das Fähigkeitsselbstkonzept beschreibt kognitive Repräsentationen eigener Fähigkeiten und Begabungen.\n
+        """),
         SizedBox(
           height: 500,
           child: Image.asset(
@@ -39,27 +40,61 @@ Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine A
 Map<String, List<Task>> tasks = {
   "Erwartungsarten": [
     Task(
-        type: TaskType.singleChoice,
-        question: "Ist die Zahl 5 eine natürliche Zahl?",
-        correctAnswer: "Ja",
-        answers: ["Ja", "Nein", "Vielleicht"]),
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Die Erfolgserwartung bezeichnet die {} Einschätzung, mit welcher Wahrscheinlichkeit Erfolg eintritt.",
+        correctAnswer: "subjektive",
+        answers: ["subjektive", "objektive"]),
     Task(
         type: TaskType.singleChoice,
-        question: "Ist die Zahl -2 eine natürliche Zahl?",
-        correctAnswer: "Nein",
+        question:
+            "Die Erwartungen bilden sich in der prädezisionalen Phase aus.",
+        correctAnswer: "Ja",
         answers: ["Ja", "Nein"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Die Handlungs-Ergebnis-Erwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis durch {} herbeigeführt wird.",
+        correctAnswer: "eigenes Handeln",
+        answers: ["die Situation", "eigenes Handeln"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Die Situations-Ergebniserwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis durch {} herbeigeführt wird.",
+        correctAnswer: "die Situation",
+        answers: ["die Situation", "eigenes Handeln"]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die Ergebnis-Folgen-Erwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis zu den gewünschten {} führt.",
+        correctAnswer: "Folgen",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die Ergebnis-Folgen-Erwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis zu den gewünschten {} führt.",
+        correctAnswer: "Folgen",
+        answers: []),
   ],
   "Fähigkeitsselbstkonzept": [
     Task(
-        type: TaskType.singleChoice,
-        question: "Ist die Zahl 5 eine ganze Zahl?",
-        correctAnswer: "Ja",
-        answers: ["Ja", "Nein"]),
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die Wirkung des Fähigkeitsselbstkonzeptes auf die aktuelle Motivation ist sehr groß. Es beeinflusst die schulischen Leistungen, was als {} bezeichnet wird.",
+        correctAnswer: "self enhancement",
+        answers: []),
     Task(
-        type: TaskType.singleChoice,
-        question: "Ist die Zahl -2 eine ganze Zahl?",
-        correctAnswer: "Ja",
-        answers: ["Ja", "Nein"]),
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Es wurde ein positiver Einfluss von {}erwartungen auf die Motivation von SuS erkannt. Das heiß",
+        correctAnswer: "Lehrkräfte",
+        answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Die Erwartungskomponente spiegelt die Einschätzung der {} eines erwünschten Zustandes wider.",
+        correctAnswer: "Realisierbarkeit",
+        answers: ["Realisierbarkeit", "Nützlichkeit"]),
   ],
 };
 

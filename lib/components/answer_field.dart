@@ -57,7 +57,7 @@ class _AnswerFieldState extends State<AnswerField> {
                             : false))
                     ? Colors.green
                     : Colors.red
-                : Theme.of(context).colorScheme.secondary,
+                : Theme.of(context).textTheme.displayLarge!.color,
             fontSize: 18,
           ),
           maxLength: answerLength,
@@ -69,10 +69,18 @@ class _AnswerFieldState extends State<AnswerField> {
             currentValue = value;
             widget.setAllCorrect!();
           }),
-          cursorColor: Theme.of(context).colorScheme.secondary,
-          decoration: const InputDecoration(
+          cursorColor: Theme.of(context).textTheme.displayLarge!.color,
+          decoration: InputDecoration(
+            enabledBorder: UnderlineInputBorder(
+              borderSide:
+                  BorderSide(color: Theme.of(context).colorScheme.secondary),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                  color: Theme.of(context).textTheme.displayLarge!.color!),
+            ),
             isDense: true,
-            contentPadding: EdgeInsets.symmetric(vertical: 0),
+            contentPadding: const EdgeInsets.symmetric(vertical: 0),
             counterText: '',
           ),
         ),

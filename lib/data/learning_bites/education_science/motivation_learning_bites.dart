@@ -45,7 +45,7 @@ Diese lassen sich auch wie folgt beschreiben:\n
     1. Prädezisionale Phase
     2. Präaktionale Phase
     3. Aktionale Phase
-    4. Postaktional Phase
+    4. Postaktionale Phase
         """),
         SizedBox(
           height: 400,

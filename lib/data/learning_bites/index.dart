@@ -4,6 +4,8 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/htm
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/mainboard_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/motivation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/support_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/training_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/value_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/volition_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/math/infinity_learning_bites.dart';
@@ -37,10 +39,8 @@ Map<String, List<LearningBite>> theoryEducationScienceLearningBites = {
 };
 
 Map<String, List<LearningBite>> practiceEducationScienceLearningBites = {
-  "Einführung": motivationLearningBites,
-  "Erwartungskomponente": expectationLearningBites,
-  "Wertkomponente": valueLearningBites,
-  "Volition": volationLearningBites,
+  "Förderung der Lern- & Leistungsmotivation": supportLearningBites,
+  "Trainings": trainingLearningBites,
 };
 
 // Biology

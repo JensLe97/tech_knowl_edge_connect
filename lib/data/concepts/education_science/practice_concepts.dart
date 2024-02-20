@@ -3,13 +3,13 @@ import 'package:tech_knowl_edge_connect/models/concept.dart';
 
 List<Concept> practiceCategoriesConcepts = [
   Concept(
-    name: "Zahlenarten benennen",
-    learningBites: learningBiteMap["Mathematik"]!["Unter- und Mittelstufe"]![
-        "Zahlen"]!["Zahlenarten"]!["Zahlenarten benennen"]!,
+    name: "Förderung der Lern- & Leistungsmotivation",
+    learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
+        "Motivation"]!["Praxis"]!["Förderung der Lern- & Leistungsmotivation"]!,
   ),
   Concept(
-    name: "Unendlichkeit",
-    learningBites: learningBiteMap["Mathematik"]!["Unter- und Mittelstufe"]![
-        "Zahlen"]!["Zahlenarten"]!["Unendlichkeit"]!,
-  )
+    name: "Trainings",
+    learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
+        "Motivation"]!["Praxis"]!["Trainings"]!,
+  ),
 ];

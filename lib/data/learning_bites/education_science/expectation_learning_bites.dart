@@ -86,7 +86,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Es wurde ein positiver Einfluss von {}erwartungen auf die Motivation von SuS erkannt. Das heiß",
+            "Es wurde ein positiver Einfluss von {}erwartungen auf die Motivation von SuS erkannt.",
         correctAnswer: "Lehrkräfte",
         answers: []),
     Task(

@@ -377,8 +377,9 @@ class _LearningBitePageState extends State<LearningBitePage>
                             points++;
                           }
                           firstTry = true;
+                          allCorrect = false;
+                          initFreeTextCloze = true;
                         });
-                        initFreeTextCloze = true;
 
                         pageController.nextPage(
                           duration: const Duration(milliseconds: 400),

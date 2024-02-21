@@ -10,23 +10,7 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-In der Selbstbestimmungstheorie der Motivation nach Deci & Ryan werden Beweggründe für das Handeln dargestellt.\n
-Hier spielen wertbezogene Aspekte eine Rolle, also die Bedeutsamkeit des Erreichens eines bestimmten Zustandes.
-        """),
-        SizedBox(
-          height: 500,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-    Column(
-      children: [
-        const Text("""
-Es lassen sich drei Beweggründe unterscheiden:\n
-    1. Intrinsische Motivation
-    2. Extrinsische Motivation
-    3. Amotivation
+Motivationstrainings werden häufig mit der Vermittlung von Fachwissen und Lernstrategien kombiniert, da Wissenslücken gefüllt werden müssen.
         """),
         SizedBox(
           height: 500,
@@ -40,14 +24,27 @@ Es lassen sich drei Beweggründe unterscheiden:\n
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Dieses Training addressiert verschiedene motivationale Komponenten.\n
         """),
         SizedBox(
           height: 500,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+    Column(
+      children: [
+        const Text("""
+Schüler und Schülerinnen...\n
+    1. erhalten motivational günstiges Feedback
+    2. lernen Erfolge und Misserfolge attributional zu attribuieren
+    3. entwickeln Lernstrategien
+    4. entwickeln die Überzeugung, eigene Fähigkeiten verändern zu können
+    5. und das Gelernte über verschiedene Fächer hinweg zu generalieren
+        """),
+        SizedBox(
+          height: 300,
           child: Image.asset(
               'images/learning_bites/education_science/motivation/motivation.png'),
         ),
@@ -58,8 +55,7 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     Column(
       children: [
         const Text("""
-Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung des Fortschrittes bereit.
+Ziel hierbei ist, das Fähigkeitsselbstkonzept und Erfolgserwartung zu stärken und günstige Attributionen für Erfolg und Misserfolg zu fördern.\n
         """),
         SizedBox(
           height: 400,
@@ -74,167 +70,111 @@ Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung 
 Map<String, List<Task>> tasks = {
   "Reattributionstrainings": [
     Task(
-        type: TaskType.singleChoice,
+        type: TaskType.freeTextFieldCloze,
         question:
-            "Speist sich aus den antizipierten Konsequenzen einer Handlung.",
-        correctAnswer: "Extrinsische Motivation",
+            "Wenn motivationsabträgliche durch motivationsförderliche Attributionen (Ursachenzuschreibungen) ersetzt werden, spricht man von {}.",
+        correctAnswer: "Reattributionstraining",
+        answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question: "Dies wird häufig durch attributionales {} gemacht.",
+        correctAnswer: "Feedback",
+        answers: ["Aufschreiben", "Feedback"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "'Diese Aufgabe war in der Tat nicht leicht.'",
+        correctAnswer: "Schwierige Aufgabenstellung",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Hohe Fähigkeiten",
+          "Hohe Anstrengung",
+          "Mangelnde Anstrengung",
+          "Schwierige Aufgabenstellung",
+          "Pech"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "'Du hast sehr sorgfältig gearbeitet.'",
+        correctAnswer: "Hohe Anstrengung",
+        answers: [
+          "Hohe Fähigkeiten",
+          "Hohe Anstrengung",
+          "Mangelnde Anstrengung",
+          "Schwierige Aufgabenstellung",
+          "Pech"
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Stellt einen nicht zielgerichteten Antrieb für Handlungen dar.",
-        correctAnswer: "Amotivation",
+            "'Auf für schwierige Textaufgaben hast du die notwendigen Fähigkeiten.'",
+        correctAnswer: "Hohe Fähigkeiten",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Hohe Fähigkeiten",
+          "Hohe Anstrengung",
+          "Mangelnde Anstrengung",
+          "Schwierige Aufgabenstellung",
+          "Pech"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "'Kopf hoch, das war einfach nicht dein Tag.'",
+        correctAnswer: "Pech",
+        answers: [
+          "Hohe Fähigkeiten",
+          "Hohe Anstrengung",
+          "Mangelnde Anstrengung",
+          "Schwierige Aufgabenstellung",
+          "Pech"
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Beruht auf der Antizipation einer als befriedigend oder positiv erlebten Ausführung einer Handlung.",
-        correctAnswer: "Intrinsische Motivation",
+            "'Wenn du das an deiner Bearbeitung änderst, kannst du Aufgaben besser lösen.'",
+        correctAnswer: "Mangelnde Anstrengung",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Hohe Fähigkeiten",
+          "Hohe Anstrengung",
+          "Mangelnde Anstrengung",
+          "Schwierige Aufgabenstellung",
+          "Pech"
         ]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Personen lernen, wenn die Konsequenzen einer Handlung für sie persönlich bedeutsam sind: {}-extrinsisch.",
-        correctAnswer: "Selbstbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Der Beweggrund liegt in externalen Belohnungen, Sanktionen, Regeln oder Normen: {}-extrinsisch.",
-        correctAnswer: "Fremdbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Studien zeigen, dass {} motivierte Lerner bessere Lernstrategien verwenden.",
-        correctAnswer: "intrinsisch",
-        answers: ["intrinsisch", "extrinsisch"]),
   ],
   "Münchner Motivationstraining": [
     Task(
         type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
-        answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
-        ]),
-    Task(
-        type: TaskType.singleChoiceCloze,
         question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
+            "Beim Münchner Motivationstraining wird der {} Handlungsverlauf in den Fokus genommen.",
+        correctAnswer: "komplette",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "initiale",
+          "komplette",
         ]),
     Task(
         type: TaskType.freeTextFieldCloze,
-        question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
+        question: "SuS lernen dabei, Erfolge und Misserfolge {} zu {}.",
+        correctAnswer: "funktional{}attribuieren",
         answers: []),
   ],
   "Training nach Rheinberg und Krug": [
     Task(
         type: TaskType.freeTextFieldCloze,
-        question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
-        answers: []),
-    Task(
-        type: TaskType.singleChoice,
         question:
-            "Schlechte Leistungen vermeiden und Kompetenzdefizite verbergen",
-        correctAnswer: "Vermeidungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Geringen Lernzuwachs oder falsches Verständnis vermeiden",
-        correctAnswer: "Vermeidungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Eigene Kompetenzen erweitern und Verständnis erlangen",
-        correctAnswer: "Annäherungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Vorgegebene Anforderungen mit möglichst wenig Aufwand erfüllen",
-        correctAnswer: "Arbeitsvermeidungsziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Gute Leistungen zeigen und eigene Kompetenzen demonstrieren",
-        correctAnswer: "Annäherungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Relevanz von Bezugspersonen für die Wertkomponente nennt man auch {}.",
-        correctAnswer: "Sozialisationseffekt",
+            "Die SuS erhalten bei der Leistungsbewertung {} nach individueller Berzugsnorm.",
+        correctAnswer: "Feedback",
         answers: []),
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
-        correctAnswer: "Klassenzielstruktur",
+            "Die SuS können Aufgaben mit für sie passenden Schwierigkeitsanforderungen wählen. Dies ermöglicht {}.",
+        correctAnswer: "Erfolgserlebnisse",
         answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question: "Es sollen {} Attributionen vermittelt werden.",
+        correctAnswer: "realistische",
+        answers: [
+          "realistische",
+          "gängige",
+        ]),
   ],
 };
 

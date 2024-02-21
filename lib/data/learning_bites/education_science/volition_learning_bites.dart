@@ -107,40 +107,40 @@ Map<String, List<Task>> tasks = {
           "Lokation oder Internalität"
         ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Fähigkeit, Begabung.",
         correctAnswer: "Internal",
         answers: ["Internal", "External"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Fähigkeit, Begabung.",
         correctAnswer: "Unkontrollierbar",
         answers: ["Kontrollierbar", "Unkontrollierbar"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Fähigkeit, Begabung.",
         correctAnswer: "Stabil",
         answers: ["Stabil", "Variabel"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Hilfe anderer.",
         correctAnswer: "External",
         answers: ["Internal", "External"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Hilfe anderer.",
         correctAnswer: "Kontrollierbar",
         answers: ["Kontrollierbar", "Unkontrollierbar"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Hilfe anderer.",
         correctAnswer: "Variabel",
         answers: ["Stabil", "Variabel"]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
             "Erfolge werden eher dem Zufall zugeschrieben und nicht auf eigene Fähigkeiten: {}.",
-        correctAnswer: "hohes Fähigkeitsselbstkonzept",
+        correctAnswer: "niedriges Fähigkeitsselbstkonzept",
         answers: [
           "hohes Fähigkeitsselbstkonzept",
           "niedriges Fähigkeitsselbstkonzept"

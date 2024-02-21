@@ -23,7 +23,6 @@ class SubjectTile extends StatelessWidget {
         ),
         margin: const EdgeInsets.all(10),
         padding: const EdgeInsets.all(10),
-        height: 65,
         child: Row(
           children: [
             Expanded(

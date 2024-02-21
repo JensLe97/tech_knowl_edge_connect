@@ -10,23 +10,7 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-In der Selbstbestimmungstheorie der Motivation nach Deci & Ryan werden Beweggründe für das Handeln dargestellt.\n
-Hier spielen wertbezogene Aspekte eine Rolle, also die Bedeutsamkeit des Erreichens eines bestimmten Zustandes.
-        """),
-        SizedBox(
-          height: 500,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-    Column(
-      children: [
-        const Text("""
-Es lassen sich drei Beweggründe unterscheiden:\n
-    1. Intrinsische Motivation
-    2. Extrinsische Motivation
-    3. Amotivation
+Mit der Herstellung von situativem Interesse lässt sich die Erfolgserwartung und der Wert der Lernhandlung erhöhen.
         """),
         SizedBox(
           height: 500,
@@ -40,11 +24,11 @@ Es lassen sich drei Beweggründe unterscheiden:\n
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Nach der Selbstbestimmungstheorie der Motivation sollen bestimmte motivationale Grundbedürfnisse nach\n
+    - Autonomie
+    - Kompetenzerleben und
+    - sozialer Eingebundenheit
+gefördert werden.
         """),
         SizedBox(
           height: 500,
@@ -58,8 +42,7 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     Column(
       children: [
         const Text("""
-Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung des Fortschrittes bereit.
+Ziele setzen und eine motivations- und lernförderliche Zielstruktur im Unterricht herstellen, funktioniert besonders gut wenn diese SMART formuliert werden.\n
         """),
         SizedBox(
           height: 400,
@@ -75,166 +58,221 @@ Map<String, List<Task>> tasks = {
   "Wert- und Erfolgserwartung": [
     Task(
         type: TaskType.singleChoice,
-        question:
-            "Speist sich aus den antizipierten Konsequenzen einer Handlung.",
-        correctAnswer: "Extrinsische Motivation",
+        question: "Betonung der Bedeutsamkeit des Lerngegenstandes",
+        correctAnswer: "Förderung von Wert",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Artikulierung des eigenen Interesses an den Lerninhalten",
+        correctAnswer: "Förderung von Wert",
+        answers: [
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "An ähnliche, bereits bewältigte Aufgaben erinnern",
+        correctAnswer: "Förderung von Erfolgserwartung",
+        answers: [
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Stellt einen nicht zielgerichteten Antrieb für Handlungen dar.",
-        correctAnswer: "Amotivation",
+            "Herstellung von praktischen Anwendungsmöglichkeiten und Alltagsbezügen",
+        correctAnswer: "Förderung von Wert",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Beruht auf der Antizipation einer als befriedigend oder positiv erlebten Ausführung einer Handlung.",
-        correctAnswer: "Intrinsische Motivation",
+            "Lehrziele und passende Lehrmethodik einer Unterrichtseinheit verdeutlichen",
+        correctAnswer: "Förderung von Erfolgserwartung",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
         ]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Personen lernen, wenn die Konsequenzen einer Handlung für sie persönlich bedeutsam sind: {}-extrinsisch.",
-        correctAnswer: "Selbstbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
+        type: TaskType.singleChoice,
+        question: "Aufgabenstellungen klar verständlich kommunizieren",
+        correctAnswer: "Förderung von Erfolgserwartung",
+        answers: [
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "Der Beweggrund liegt in externalen Belohnungen, Sanktionen, Regeln oder Normen: {}-extrinsisch.",
-        correctAnswer: "Fremdbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
+            "Induzieren kognitiver Konflikte (Widersprüche zum vorhandenen Wissen)",
+        correctAnswer: "Förderung von Wert",
+        answers: [
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Studien zeigen, dass {} motivierte Lerner bessere Lernstrategien verwenden.",
-        correctAnswer: "intrinsisch",
-        answers: ["intrinsisch", "extrinsisch"]),
+        type: TaskType.singleChoice,
+        question: "Herangehensweisen und Lösungsschritte bewusst machen",
+        correctAnswer: "Förderung von Erfolgserwartung",
+        answers: [
+          "Förderung von Erfolgserwartung",
+          "Förderung von Wert",
+        ]),
   ],
   "Motivation und Interesse": [
     Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die Selbstbestimmungstheorie der Motivation besagt, dass die Erfüllung der Bedürfnisse nach {}, {} und {} intrinsische Motivation und Interesse begünstigt.",
+        correctAnswer: "Autonomie{}Kompetenzerleben{}sozialer Eingebundenheit",
+        answers: []),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Einsatz von Gruppenarbeitsmethoden.",
+        correctAnswer: "Soziale Eingebundenheit",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Autonomie",
+          "Kompetenzerleben",
+          "Soziale Eingebundenheit",
         ]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
+        type: TaskType.singleChoice,
+        question: "Gemeinsames Aushandeln von Verhaltensregeln.",
+        correctAnswer: "Autonomie",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Autonomie",
+          "Kompetenzerleben",
+          "Soziale Eingebundenheit",
         ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
+            "Klare, verhaltensorientierte Rückmeldung zu Erfolgen und Unterstützung bei Schwierigkeiten.",
+        correctAnswer: "Kompetenzerleben",
+        answers: [
+          "Autonomie",
+          "Kompetenzerleben",
+          "Soziale Eingebundenheit",
+        ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
-        answers: []),
+            "Mitbestimmungsmöglichkeiten bei Lernzielen, Lerngegenständen und Lernwegen.",
+        correctAnswer: "Autonomie",
+        answers: [
+          "Autonomie",
+          "Kompetenzerleben",
+          "Soziale Eingebundenheit",
+        ]),
   ],
   "Ziele setzen": [
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
-        answers: []),
-    Task(
         type: TaskType.singleChoice,
         question:
-            "Schlechte Leistungen vermeiden und Kompetenzdefizite verbergen",
-        correctAnswer: "Vermeidungsperformanzziel",
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3'",
+        correctAnswer: "Spezifisch",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Geringen Lernzuwachs oder falsches Verständnis vermeiden",
-        correctAnswer: "Vermeidungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Eigene Kompetenzen erweitern und Verständnis erlangen",
-        correctAnswer: "Annäherungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Vorgegebene Anforderungen mit möglichst wenig Aufwand erfüllen",
-        correctAnswer: "Arbeitsvermeidungsziel",
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3.'",
+        correctAnswer: "Spezifisch",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
         ]),
     Task(
         type: TaskType.singleChoice,
-        question: "Gute Leistungen zeigen und eigene Kompetenzen demonstrieren",
-        correctAnswer: "Annäherungsperformanzziel",
+        question:
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich eine bestimmte Anzahl an Vokabeln kann.'",
+        correctAnswer: "Messbar",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
         ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Die Relevanz von Bezugspersonen für die Wertkomponente nennt man auch {}.",
-        correctAnswer: "Sozialisationseffekt",
-        answers: []),
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich alle Vokabeln kann.'",
+        correctAnswer: "Anspruchsvoll",
+        answers: [
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
+        ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
-        correctAnswer: "Klassenzielstruktur",
-        answers: []),
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich maximal 3 Vokabeln kann.'",
+        correctAnswer: "Realistisch",
+        answers: [
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich maximal 3 Vokabeln nicht kann und zwar direkt nach den Hausaufgaben.'",
+        correctAnswer: "Terminiert",
+        answers: [
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Gewährung von ausreichender Bearbeitungszeit und Ausrichtung an leistugsschwächeren SuS",
+        correctAnswer: "Timing",
+        answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Verwendung von individuellen und kriterialen Bezugsnormen bei der Aufgabenbewertung",
+        correctAnswer: "Evaluation",
+        answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Entwicklungsangemessene Übertragung der Verantwortung für das Lernen und die Zusammenarbeit",
+        correctAnswer: "Authority",
+        answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Nutzung von abwechsungsreichen, vielfältigen, persönlich bedeutsamen, sinnhaften, emotionsreichen Aufgabenstellungen",
+        correctAnswer: "Task",
+        answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Anerkennung von Anstrengung durch Lob, positive emotionale Reaktionen und Belohnung",
+        correctAnswer: "Recognition",
+        answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
   ],
 };
 

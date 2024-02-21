@@ -157,57 +157,60 @@ class _HomePageState extends State<HomePage> {
                                   style: TextStyle(fontSize: 20),
                                 ),
                           const SizedBox(height: 5),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: resumeSubjects.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return resumeSubjects[index].length == 6
-                                  ? ResumeTile(
-                                      path:
-                                          """${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).keys.elementAt(resumeSubjects[index].elementAt(1))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).keys.elementAt(resumeSubjects[index].elementAt(2))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).values.elementAt(resumeSubjects[index].elementAt(2)).keys.elementAt(resumeSubjects[index].elementAt(3))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).values.elementAt(resumeSubjects[index].elementAt(2)).values.elementAt(resumeSubjects[index].elementAt(3)).keys.elementAt(resumeSubjects[index].elementAt(4))}""",
-                                      learningBite: learningBiteMap.values
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(0))
-                                          .values
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(1))
-                                          .values
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(2))
-                                          .values
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(3))
-                                          .values
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(4))
-                                          .elementAt(resumeSubjects[index]
-                                              .elementAt(5)),
-                                      subject: subjects[
-                                          resumeSubjects[index].elementAt(0)],
-                                      onTap: () => navigateToLearningBitePage(
-                                          learningBiteMap.values
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(0))
-                                              .values
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(1))
-                                              .values
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(2))
-                                              .values
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(3))
-                                              .values
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(4))
-                                              .elementAt(resumeSubjects[index]
-                                                  .elementAt(5)),
-                                          resumeSubjects[index]),
-                                    )
-                                  : const SizedBox.shrink();
-                            },
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: ListView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemCount: resumeSubjects.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return resumeSubjects[index].length == 6
+                                    ? ResumeTile(
+                                        path:
+                                            """${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).keys.elementAt(resumeSubjects[index].elementAt(1))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).keys.elementAt(resumeSubjects[index].elementAt(2))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).values.elementAt(resumeSubjects[index].elementAt(2)).keys.elementAt(resumeSubjects[index].elementAt(3))} > ${learningBiteMap.values.elementAt(resumeSubjects[index].elementAt(0)).values.elementAt(resumeSubjects[index].elementAt(1)).values.elementAt(resumeSubjects[index].elementAt(2)).values.elementAt(resumeSubjects[index].elementAt(3)).keys.elementAt(resumeSubjects[index].elementAt(4))}""",
+                                        learningBite: learningBiteMap.values
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(0))
+                                            .values
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(1))
+                                            .values
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(2))
+                                            .values
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(3))
+                                            .values
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(4))
+                                            .elementAt(resumeSubjects[index]
+                                                .elementAt(5)),
+                                        subject: subjects[
+                                            resumeSubjects[index].elementAt(0)],
+                                        onTap: () => navigateToLearningBitePage(
+                                            learningBiteMap.values
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(0))
+                                                .values
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(1))
+                                                .values
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(2))
+                                                .values
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(3))
+                                                .values
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(4))
+                                                .elementAt(resumeSubjects[index]
+                                                    .elementAt(5)),
+                                            resumeSubjects[index]),
+                                      )
+                                    : const SizedBox.shrink();
+                              },
+                            ),
                           ),
                         ]),
                   ),

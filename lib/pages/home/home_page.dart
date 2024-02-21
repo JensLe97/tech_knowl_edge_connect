@@ -158,6 +158,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                           const SizedBox(height: 5),
                           ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
                             scrollDirection: Axis.vertical,
                             shrinkWrap: true,
                             itemCount: resumeSubjects.length,

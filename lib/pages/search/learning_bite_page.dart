@@ -114,57 +114,56 @@ class _LearningBitePageState extends State<LearningBitePage>
               ],
             )),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                controller: pageController,
-                itemCount: maxPageNum + 1,
-                itemBuilder: (context, currentPageIndex) {
-                  return currentPageIndex == maxPageNum
-                      ? SingleChildScrollView(
-                          child: Center(
-                              child: Column(
-                            children: [
-                              const SizedBox(height: 200),
-                              points / maxTaskNum >= 0.5
-                                  ? points / maxTaskNum >= 0.9
-                                      ? const Text("Super gemacht!",
-                                          style: TextStyle(fontSize: 22))
-                                      : const Text("Gut gemacht!",
-                                          style: TextStyle(fontSize: 22))
-                                  : const Text("Übe weiter!",
-                                      style: TextStyle(fontSize: 22)),
-                              const SizedBox(height: 50),
-                              Text(
-                                  "Du hast $points von $maxTaskNum Punkten erhalten."),
-                            ],
-                          )),
-                        )
-                      : SingleChildScrollView(
-                          child: Center(
+      body: Column(
+        children: [
+          Expanded(
+            child: PageView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: pageController,
+              itemCount: maxPageNum + 1,
+              itemBuilder: (context, currentPageIndex) {
+                return currentPageIndex == maxPageNum
+                    ? SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(
                             child: Column(
-                              children: currentPageIndex < maxDataNum
-                                  ? [
-                                      const SizedBox(height: 30),
-                                      data[currentPageIndex]
-                                    ]
-                                  : [
-                                      const SizedBox(height: 30),
-                                      taskContent(
-                                          tasks, currentPageIndex - maxDataNum)
-                                    ],
-                            ),
+                          children: [
+                            const SizedBox(height: 200),
+                            points / maxTaskNum >= 0.5
+                                ? points / maxTaskNum >= 0.9
+                                    ? const Text("Super gemacht!",
+                                        style: TextStyle(fontSize: 22))
+                                    : const Text("Gut gemacht!",
+                                        style: TextStyle(fontSize: 22))
+                                : const Text("Übe weiter!",
+                                    style: TextStyle(fontSize: 22)),
+                            const SizedBox(height: 50),
+                            Text(
+                                "Du hast $points von $maxTaskNum Punkten erhalten."),
+                          ],
+                        )),
+                      )
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Center(
+                          child: Column(
+                            children: currentPageIndex < maxDataNum
+                                ? [
+                                    const SizedBox(height: 30),
+                                    data[currentPageIndex]
+                                  ]
+                                : [
+                                    const SizedBox(height: 30),
+                                    taskContent(
+                                        tasks, currentPageIndex - maxDataNum)
+                                  ],
                           ),
-                        );
-                },
-              ),
+                        ),
+                      );
+              },
             ),
-          ],
-        ),
+          ),
+        ],
       ),
       bottomSheet: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),

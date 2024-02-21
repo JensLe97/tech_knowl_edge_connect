@@ -22,7 +22,7 @@ class SubjectTile extends StatelessWidget {
           borderRadius: BorderRadius.circular(12),
         ),
         margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(10),
+        padding: const EdgeInsets.all(8),
         child: Row(
           children: [
             Expanded(

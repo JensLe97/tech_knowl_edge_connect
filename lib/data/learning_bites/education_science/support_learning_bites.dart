@@ -27,7 +27,7 @@ Mit der Herstellung von situativem Interesse lässt sich die Erfolgserwartung un
 Nach der Selbstbestimmungstheorie der Motivation sollen bestimmte motivationale Grundbedürfnisse nach\n
     - Autonomie
     - Kompetenzerleben und
-    - sozialer Eingebundenheit
+    - sozialer Eingebundenheit\n
 gefördert werden.
         """),
         SizedBox(

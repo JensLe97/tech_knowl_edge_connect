@@ -174,8 +174,8 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3'",
-        correctAnswer: "Spezifisch",
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich alle Vokabeln kann.'",
+        correctAnswer: "Anspruchsvoll",
         answers: [
           "Spezifisch",
           "Messbar",
@@ -198,6 +198,18 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
+            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich maximal 3 Vokabeln nicht kann und zwar direkt nach den Hausaufgaben.'",
+        correctAnswer: "Terminiert",
+        answers: [
+          "Spezifisch",
+          "Messbar",
+          "Anspruchsvoll",
+          "Realistisch",
+          "Terminiert"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
             "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich eine bestimmte Anzahl an Vokabeln kann.'",
         correctAnswer: "Messbar",
         answers: [
@@ -210,32 +222,8 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich alle Vokabeln kann.'",
-        correctAnswer: "Anspruchsvoll",
-        answers: [
-          "Spezifisch",
-          "Messbar",
-          "Anspruchsvoll",
-          "Realistisch",
-          "Terminiert"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
             "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich maximal 3 Vokabeln kann.'",
         correctAnswer: "Realistisch",
-        answers: [
-          "Spezifisch",
-          "Messbar",
-          "Anspruchsvoll",
-          "Realistisch",
-          "Terminiert"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Welches Kriterium wird am meisten angesprochen?\n'Heute Abend wiederhole ich die Vokabeln aus Kapitel 3, bis ich maximal 3 Vokabeln nicht kann und zwar direkt nach den Hausaufgaben.'",
-        correctAnswer: "Terminiert",
         answers: [
           "Spezifisch",
           "Messbar",

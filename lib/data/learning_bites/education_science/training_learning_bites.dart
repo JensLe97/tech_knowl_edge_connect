@@ -38,7 +38,7 @@ Dieses Training addressiert verschiedene motivationale Komponenten.\n
         const Text("""
 Schüler und Schülerinnen...\n
     1. erhalten motivational günstiges Feedback
-    2. lernen Erfolge und Misserfolge attributional zu attribuieren
+    2. lernen Erfolge und Misserfolge funktional zu attribuieren
     3. entwickeln Lernstrategien
     4. entwickeln die Überzeugung, eigene Fähigkeiten verändern zu können
     5. und das Gelernte über verschiedene Fächer hinweg zu generalieren

@@ -6,7 +6,7 @@ import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
-  "Handlungsarten": [
+  "Elaborationsstrategien": [
     Column(
       children: [
         const Text("""
@@ -36,7 +36,7 @@ Es lassen sich drei Beweggründe unterscheiden:\n
       ],
     ),
   ],
-  "Werte einer Handlung": [
+  "Organisationsstrategien": [
     Column(
       children: [
         const Text("""
@@ -54,12 +54,12 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
       ],
     ),
   ],
-  "Ziele": [
+  "Selbstregulationsstrategien": [
     Column(
       children: [
         const Text("""
 Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung des Fortschrittes bereit.
+Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Organisationsstrategien des Fortschrittes bereit.
         """),
         SizedBox(
           height: 400,
@@ -69,10 +69,28 @@ Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung 
       ],
     ),
   ],
+  "Wissensnutzungsstrategien": [
+    Column(
+      children: [
+        const Text("""
+Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
+    1. Intrinsischer Wert
+    2. Nützlichkeit
+    3. Persönlische Wichtigkeit
+    4. Kosten
+        """),
+        SizedBox(
+          height: 500,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+  ],
 };
 
 Map<String, List<Task>> tasks = {
-  "Handlungsarten": [
+  "Elaborationsstrategien": [
     Task(
         type: TaskType.singleChoice,
         question:
@@ -122,7 +140,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "intrinsisch",
         answers: ["intrinsisch", "extrinsisch"]),
   ],
-  "Werte einer Handlung": [
+  "Organisationsstrategien": [
     Task(
         type: TaskType.singleChoiceCloze,
         question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
@@ -160,7 +178,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "situatives Interesse",
         answers: []),
   ],
-  "Ziele": [
+  "Selbstregulationsstrategien": [
     Task(
         type: TaskType.freeTextFieldCloze,
         question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
@@ -236,25 +254,69 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Klassenzielstruktur",
         answers: []),
   ],
+  "Wissensnutzungsstrategien": [
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
+        correctAnswer: "Fremdbestimmt-extrinsiche",
+        answers: [
+          "intrinsische",
+          "Selbstbestimmt-extrinsiche",
+          "Fremdbestimmt-extrinsiche"
+        ]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
+        correctAnswer: "Selbstbestimmt-extrinsiche",
+        answers: [
+          "intrinsische",
+          "Selbstbestimmt-extrinsiche",
+          "Fremdbestimmt-extrinsiche"
+        ]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
+        correctAnswer: "alternative",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
+        correctAnswer: "Anstrengung{}emotionale",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
+        correctAnswer: "situatives Interesse",
+        answers: []),
+  ],
 };
 
-List<LearningBite> valueLearningBites = [
+List<LearningBite> advancedStrategiesLearningBites = [
   LearningBite(
-      name: "Handlungsarten",
+      name: "Elaborationsstrategien",
       type: LearningBiteType.lesson,
-      data: data["Handlungsarten"]!,
+      data: data["Elaborationsstrategien"]!,
       iconData: FontAwesomeIcons.chessBoard,
-      tasks: tasks["Handlungsarten"]!),
+      tasks: tasks["Elaborationsstrategien"]!),
   LearningBite(
-      name: "Werte einer Handlung",
+      name: "Organisationsstrategien",
       type: LearningBiteType.lesson,
-      data: data["Werte einer Handlung"]!,
+      data: data["Organisationsstrategien"]!,
       iconData: FontAwesomeIcons.award,
-      tasks: tasks["Werte einer Handlung"]!),
+      tasks: tasks["Organisationsstrategien"]!),
   LearningBite(
-      name: "Ziele",
+      name: "Selbstregulationsstrategien",
       type: LearningBiteType.lesson,
-      data: data["Ziele"]!,
+      data: data["Selbstregulationsstrategien"]!,
       iconData: FontAwesomeIcons.rocket,
-      tasks: tasks["Ziele"]!),
+      tasks: tasks["Selbstregulationsstrategien"]!),
+  LearningBite(
+      name: "Wissensnutzungsstrategien",
+      type: LearningBiteType.lesson,
+      data: data["Wissensnutzungsstrategien"]!,
+      iconData: FontAwesomeIcons.rocket,
+      tasks: tasks["Wissensnutzungsstrategien"]!),
 ];

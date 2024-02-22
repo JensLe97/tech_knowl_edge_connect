@@ -3,11 +3,11 @@ import 'package:tech_knowl_edge_connect/models/unit.dart';
 
 List<Unit> learningStrategiesUnits = [
   Unit(
-      name: "TBD",
+      name: "Grundlagen",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.rightLong),
+      iconData: FontAwesomeIcons.flag),
   Unit(
-      name: "TBD",
+      name: "Vertiefung",
       concepts: List.empty(),
-      iconData: FontAwesomeIcons.chartLine),
+      iconData: FontAwesomeIcons.flagCheckered),
 ];

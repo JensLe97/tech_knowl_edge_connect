@@ -6,7 +6,7 @@ import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
-  "Handlungsarten": [
+  "Mnemonische Strategien": [
     Column(
       children: [
         const Text("""
@@ -36,7 +36,7 @@ Es lassen sich drei Beweggründe unterscheiden:\n
       ],
     ),
   ],
-  "Werte einer Handlung": [
+  "Strukturiende Strategien": [
     Column(
       children: [
         const Text("""
@@ -54,7 +54,7 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
       ],
     ),
   ],
-  "Ziele": [
+  "Generative Strategien": [
     Column(
       children: [
         const Text("""
@@ -72,7 +72,7 @@ Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung 
 };
 
 Map<String, List<Task>> tasks = {
-  "Handlungsarten": [
+  "Mnemonische Strategien": [
     Task(
         type: TaskType.singleChoice,
         question:
@@ -122,7 +122,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "intrinsisch",
         answers: ["intrinsisch", "extrinsisch"]),
   ],
-  "Werte einer Handlung": [
+  "Strukturiende Strategien": [
     Task(
         type: TaskType.singleChoiceCloze,
         question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
@@ -160,7 +160,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "situatives Interesse",
         answers: []),
   ],
-  "Ziele": [
+  "Generative Strategien": [
     Task(
         type: TaskType.freeTextFieldCloze,
         question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
@@ -238,23 +238,23 @@ Map<String, List<Task>> tasks = {
   ],
 };
 
-List<LearningBite> valueLearningBites = [
+List<LearningBite> cognitiveLearningBites = [
   LearningBite(
-      name: "Handlungsarten",
+      name: "Mnemonische Strategien",
       type: LearningBiteType.lesson,
-      data: data["Handlungsarten"]!,
+      data: data["Mnemonische Strategien"]!,
       iconData: FontAwesomeIcons.chessBoard,
-      tasks: tasks["Handlungsarten"]!),
+      tasks: tasks["Mnemonische Strategien"]!),
   LearningBite(
-      name: "Werte einer Handlung",
+      name: "Strukturiende Strategien",
       type: LearningBiteType.lesson,
-      data: data["Werte einer Handlung"]!,
+      data: data["Strukturiende Strategien"]!,
       iconData: FontAwesomeIcons.award,
-      tasks: tasks["Werte einer Handlung"]!),
+      tasks: tasks["Strukturiende Strategien"]!),
   LearningBite(
-      name: "Ziele",
+      name: "Generative Strategien",
       type: LearningBiteType.lesson,
-      data: data["Ziele"]!,
+      data: data["Generative Strategien"]!,
       iconData: FontAwesomeIcons.rocket,
-      tasks: tasks["Ziele"]!),
+      tasks: tasks["Generative Strategien"]!),
 ];

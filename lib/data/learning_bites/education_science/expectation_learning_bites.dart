@@ -69,12 +69,6 @@ Map<String, List<Task>> tasks = {
             "Die Ergebnis-Folgen-Erwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis zu den gewünschten {} führt.",
         correctAnswer: "Folgen",
         answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Ergebnis-Folgen-Erwartung bezeichnet die angenommene Wahrscheinlichkeit, mit der ein Ergebnis zu den gewünschten {} führt.",
-        correctAnswer: "Folgen",
-        answers: []),
   ],
   "Fähigkeitsselbstkonzept": [
     Task(

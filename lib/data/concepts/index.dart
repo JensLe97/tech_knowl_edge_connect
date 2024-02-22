@@ -1,5 +1,7 @@
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/component_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/html_concepts.dart';
+import 'package:tech_knowl_edge_connect/data/concepts/education_science/advanced_concepts.dart';
+import 'package:tech_knowl_edge_connect/data/concepts/education_science/foundation_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/education_science/practice_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/education_science/theory_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/math/number_categories_concepts.dart';
@@ -27,7 +29,10 @@ Map<String, List<Concept>> motivationConcepts = {
   "Theorie": theoryCategoriesConcepts,
   "Praxis": practiceCategoriesConcepts,
 };
-Map<String, List<Concept>> learningStrategiesConcepts = {};
+Map<String, List<Concept>> learningStrategiesConcepts = {
+  "Grundlagen": foundationEducationScienceCategoriesConcepts,
+  "Vertiefung": advancedEducationScienceCategoriesConcepts,
+};
 
 // ===== Topics =====
 // Computer Sciene

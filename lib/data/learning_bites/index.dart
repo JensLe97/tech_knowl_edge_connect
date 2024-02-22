@@ -2,7 +2,12 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/cpu
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_structure_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_tags_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/mainboard_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/advanced_strategies_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/cognitive_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learntypes_styles_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognition_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognitive_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/motivation_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/support_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/training_learning_bites.dart';
@@ -43,6 +48,18 @@ Map<String, List<LearningBite>> practiceEducationScienceLearningBites = {
   "Trainings": trainingLearningBites,
 };
 
+Map<String, List<LearningBite>> foundationEducationScienceLearningBites = {
+  "Kognitive Strategien": cognitiveLearningBites,
+  "Metakognitive Strategien": metacognitiveLearningBites,
+  "Metakognition": metacognitionLearningBites,
+  "Lerntypen und Lernstile": learnTypesStylesLearningBites,
+};
+
+Map<String, List<LearningBite>> advancedEducationScienceLearningBites = {
+  "Fortgeschrittene Strategien": advancedStrategiesLearningBites,
+  "Trainings": trainingLearningBites,
+};
+
 // Biology
 
 // ===== Units =====
@@ -67,6 +84,11 @@ Map<String, Map<String, List<LearningBite>>>
     motivationEducationScienceLearningBites = {
   "Theorie": theoryEducationScienceLearningBites,
   "Praxis": practiceEducationScienceLearningBites,
+};
+Map<String, Map<String, List<LearningBite>>>
+    learningStrategiesEducationScienceLearningBites = {
+  "Grundlagen": foundationEducationScienceLearningBites,
+  "Vertiefung": advancedEducationScienceLearningBites,
 };
 
 // ===== Topics =====
@@ -109,7 +131,7 @@ Map<String, Map<String, Map<String, List<LearningBite>>>>
 Map<String, Map<String, Map<String, List<LearningBite>>>>
     universityEducationScienceLearningBites = {
   "Motivation": motivationEducationScienceLearningBites,
-  "Lernstrategien": {},
+  "Lernstrategien": learningStrategiesEducationScienceLearningBites,
 };
 
 // ===== Categories =====

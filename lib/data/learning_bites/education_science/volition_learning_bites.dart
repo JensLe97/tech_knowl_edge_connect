@@ -60,7 +60,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Abschirmen einer Absicht gegebüber konkurrierenden Impulsen, z.B. Essen während den HAs: {}.",
+            "Abschirmen einer Absicht gegenüber konkurrierenden Impulsen, z.B. Essen während den HAs: {}.",
         correctAnswer: "Handlungsorientierung",
         answers: ["Handlungsorientierung", "Lageorientierung"]),
     Task(

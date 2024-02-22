@@ -44,7 +44,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
                 const SizedBox(height: 50),
                 const Text(
-                  'E-Mail zum Zurücksetzten des Passwortes',
+                  'E-Mail zum Zurücksetzen des Passwortes',
                   style: TextStyle(fontSize: 18),
                 ),
                 const SizedBox(height: 25),

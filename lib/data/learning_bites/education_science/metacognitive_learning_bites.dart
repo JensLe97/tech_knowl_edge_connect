@@ -10,23 +10,8 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-In der Selbstbestimmungstheorie der Motivation nach Deci & Ryan werden Beweggründe für das Handeln dargestellt.\n
-Hier spielen wertbezogene Aspekte eine Rolle, also die Bedeutsamkeit des Erreichens eines bestimmten Zustandes.
-        """),
-        SizedBox(
-          height: 500,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-    Column(
-      children: [
-        const Text("""
-Es lassen sich drei Beweggründe unterscheiden:\n
-    1. Intrinsische Motivation
-    2. Extrinsische Motivation
-    3. Amotivation
+Metakognitive Strategien sind auf die Steuerung und Kontrolle der kognitiven Strategien ausgerichtet.\n
+Bei der Planung soll festgestellt werden, welches Ziel angestrebt wird und wie es erreicht werden kann.
         """),
         SizedBox(
           height: 500,
@@ -40,11 +25,7 @@ Es lassen sich drei Beweggründe unterscheiden:\n
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Die Überwachung korriegiert eine Aufgabenbearbeitung und begleitet den eigenen Bearbeitungsfortschritt kritisch.\n
         """),
         SizedBox(
           height: 500,
@@ -58,8 +39,7 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     Column(
       children: [
         const Text("""
-Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung des Fortschrittes bereit.
+Die Prozesse der Regulation steuern das Verstehen und Behalten.\n
         """),
         SizedBox(
           height: 400,
@@ -94,203 +74,99 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Speist sich aus den antizipierten Konsequenzen einer Handlung.",
-        correctAnswer: "Extrinsische Motivation",
+            "Effizienzziele des Lernens (nur 3 Stunden investieren): {} .",
+        correctAnswer: "Sekundäre Ziele",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Primäre Ziele",
+          "Sekundäre Ziele",
         ]),
     Task(
         type: TaskType.singleChoice,
-        question:
-            "Stellt einen nicht zielgerichteten Antrieb für Handlungen dar.",
-        correctAnswer: "Amotivation",
+        question: "Die eigentlichen Planungziele (Text durcharbeiten): {} .",
+        correctAnswer: "Primäre Ziele",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Primäre Ziele",
+          "Sekundäre Ziele",
         ]),
     Task(
-        type: TaskType.singleChoice,
+        type: TaskType.freeTextFieldCloze,
         question:
-            "Beruht auf der Antizipation einer als befriedigend oder positiv erlebten Ausführung einer Handlung.",
-        correctAnswer: "Intrinsische Motivation",
-        answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
-        ]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Personen lernen, wenn die Konsequenzen einer Handlung für sie persönlich bedeutsam sind: {}-extrinsisch.",
-        correctAnswer: "Selbstbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Der Beweggrund liegt in externalen Belohnungen, Sanktionen, Regeln oder Normen: {}-extrinsisch.",
-        correctAnswer: "Fremdbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Studien zeigen, dass {} motivierte Lerner bessere Lernstrategien verwenden.",
-        correctAnswer: "intrinsisch",
-        answers: ["intrinsisch", "extrinsisch"]),
+            "Zudem soll bei der Planung ein {} erstellt und Ressourcen eingeschätzt werden.",
+        correctAnswer: "Handlungsplan",
+        answers: []),
   ],
   "Überwachung": [
     Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
-        answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
-        ]),
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Die Funktion der Überwachung liegt im Sammeln von Infos über den ererichten {} und das {}.",
+        correctAnswer: "Lernstand{}Verständnisniveau",
+        answers: []),
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
+            "Die Überwachung überwacht die Weiterentwicklung bei der {} und sagt vorher, welches Ergebnis wohl erzielt wird.",
+        correctAnswer: "Aufgabenlösung",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Aufgabenlösung",
+          "Aufgabenerstellung",
         ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
-        answers: []),
   ],
   "Regulation": [
     Task(
         type: TaskType.freeTextFieldCloze,
-        question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
+        question:
+            "Regulationsprozesse tragen dazu bei...\ndie Ressourcen für eine Aufgabenbearbeitung klarer zu definieren.",
+        correctAnswer: "Ressourcen",
         answers: []),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Schlechte Leistungen vermeiden und Kompetenzdefizite verbergen",
-        correctAnswer: "Vermeidungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
+            "Regulationsprozesse tragen dazu bei...\neine konkrete Abfolge von Schritten für die Bearbeitung festzulegen.",
+        correctAnswer: "Wahr",
+        answers: ["Wahr", "Falsch"]),
     Task(
-        type: TaskType.singleChoice,
-        question: "Geringen Lernzuwachs oder falsches Verständnis vermeiden",
-        correctAnswer: "Vermeidungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Eigene Kompetenzen erweitern und Verständnis erlangen",
-        correctAnswer: "Annäherungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
+        type: TaskType.singleChoiceCloze,
         question:
-            "Vorgegebene Anforderungen mit möglichst wenig Aufwand erfüllen",
-        correctAnswer: "Arbeitsvermeidungsziel",
+            "Regulationsprozesse tragen dazu bei...\nIntensität und {} des strategischen Vorgehens genauer zu bestimmen.",
+        correctAnswer: "die Gechwindigkeit",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "die Gechwindigkeit",
+          "die Bereitschaft",
         ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Gute Leistungen zeigen und eigene Kompetenzen demonstrieren",
-        correctAnswer: "Annäherungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Relevanz von Bezugspersonen für die Wertkomponente nennt man auch {}.",
-        correctAnswer: "Sozialisationseffekt",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
-        correctAnswer: "Klassenzielstruktur",
-        answers: []),
   ],
   "Bewertung": [
     Task(
         type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
+        question: "Die Bewertung erfolgt {} Beendigung einer Lernaufgabe",
+        correctAnswer: "nach",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "nach",
+          "vor",
         ]),
     Task(
         type: TaskType.singleChoiceCloze,
-        question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
+        question: "Die Bewertung hat keinen Einfluss auf zukünftige Aufgaben.",
+        correctAnswer: "Falsch",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Wahr",
+          "Falsch",
         ]),
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
+            "Das Bewerten trägt zu einer ständigen {} des Lernprozesse und strategischen Expertise bei.",
+        correctAnswer: "Verbesserung",
         answers: []),
     Task(
         type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
-        answers: []),
+        question: "Welche Frage wird bei der Bewertung beantwortet?",
+        correctAnswer: "War der Zeitplan einhaltbar?",
+        answers: [
+          "Wie habe ich die Strategien umgesetzt?",
+          "War der Zeitplan einhaltbar?",
+          "War die Aufgabe zu schwierig?"
+        ]),
   ],
 };
 
@@ -299,24 +175,24 @@ List<LearningBite> metacognitiveLearningBites = [
       name: "Planung",
       type: LearningBiteType.lesson,
       data: data["Planung"]!,
-      iconData: FontAwesomeIcons.chessBoard,
+      iconData: FontAwesomeIcons.map,
       tasks: tasks["Planung"]!),
   LearningBite(
       name: "Überwachung",
       type: LearningBiteType.lesson,
       data: data["Überwachung"]!,
-      iconData: FontAwesomeIcons.award,
+      iconData: FontAwesomeIcons.watchmanMonitoring,
       tasks: tasks["Überwachung"]!),
   LearningBite(
       name: "Regulation",
       type: LearningBiteType.lesson,
       data: data["Regulation"]!,
-      iconData: FontAwesomeIcons.rocket,
+      iconData: FontAwesomeIcons.gears,
       tasks: tasks["Regulation"]!),
   LearningBite(
       name: "Bewertung",
       type: LearningBiteType.lesson,
       data: data["Bewertung"]!,
-      iconData: FontAwesomeIcons.rocket,
+      iconData: FontAwesomeIcons.award,
       tasks: tasks["Bewertung"]!),
 ];

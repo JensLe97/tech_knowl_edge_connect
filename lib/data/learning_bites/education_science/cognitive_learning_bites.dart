@@ -6,12 +6,43 @@ import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
+  "Einführung in Lernstrategien": [
+    Column(
+      children: [
+        const Text("""
+Eine Strategie besteht aus einer kognitiven Operation, die zwangsläufig beim Bearbeiten einer Aufgabe stattfindenden Prozessen übergeordnet ist.\n
+Strategien dienen kognitiven Zielen und sind potentiell bewusste und kontrollierbare Aktivitäten.
+        """),
+        SizedBox(
+          height: 500,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+    Column(
+      children: [
+        const Text("""
+Es lassen sich 5 Merkmale von Strategien benennen:\n
+    1. Absichtlich
+    2. (Bewusst)
+    3. (Spontan)
+    4. vom Lernenden ausgewählt
+    5. vom Lernenden kontrolliert
+        """),
+        SizedBox(
+          height: 400,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+  ],
   "Mnemonische Strategien": [
     Column(
       children: [
         const Text("""
-In der Selbstbestimmungstheorie der Motivation nach Deci & Ryan werden Beweggründe für das Handeln dargestellt.\n
-Hier spielen wertbezogene Aspekte eine Rolle, also die Bedeutsamkeit des Erreichens eines bestimmten Zustandes.
+Mnemonische Strategien sind Techniken, die dabei helfen, neue Informationen im Arbeitsgedächtnis zu halten, um eine Verknüpfung mit vorhandendem Vorwissen zu unterstützen\n
         """),
         SizedBox(
           height: 500,
@@ -40,11 +71,8 @@ Es lassen sich drei Beweggründe unterscheiden:\n
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Struktierende Strategien zielen auf interne Verküpfungen und Strukturen des Lernmaterials ab.\n
+Relevante Informationen sollen herausgesucht werden und behaltensförderlich organasitiert und gruppiert werden
         """),
         SizedBox(
           height: 500,
@@ -58,8 +86,8 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     Column(
       children: [
         const Text("""
-Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung des Fortschrittes bereit.
+Generative Strategien haben zum Ziel, ein tieferes Verständnis zu erzeugen.\n
+Es sollen aktiv Beziehungen zwischen Ideen bzw. Informationen hergestellt ('generiert') werden.
         """),
         SizedBox(
           height: 400,
@@ -72,189 +100,128 @@ Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Überwachung 
 };
 
 Map<String, List<Task>> tasks = {
+  "Einführung in Lernstrategien": [
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Unter Lernstrategien versteht man Prozesse bzw. Aktivitäten, die auf ein Lern- oder Behaltensziel ausgerichtet sind.\nSie weisen wenigstens eine zusätzliche Eigenschaft auf: intentional, bewusst, spontan, selektiv und {}.",
+        correctAnswer: "kontolliert",
+        answers: [
+          "kontolliert",
+          "unkontrolliert",
+        ]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Man unterscheidet zwischen {} Strategien, Metakognitiven Strategien und Stützstrategien des externen Ressourcenmanagements.",
+        correctAnswer: "kognitiven",
+        answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Stützstrategien oder sekundäre Strategien zielen darauf ab, die Lernumwelt zu optimieren. Dazu gehört die Gestaltung des {} Strategien, Metakognitiven Strategien und Stützstrategien des externen Ressourcenmanagements.",
+        correctAnswer: "Arbeitsplatzes",
+        answers: ["Arbeitsplatzes", "Arbeitsgedächtnisses"]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Bei kognitiven Strategien wird unterschieden zwischen: {}- oder Wiederholungsstrategien sowie Organisations- und {}strategien.",
+        correctAnswer: "Memorier{}Elaborations",
+        answers: []),
+  ],
   "Mnemonische Strategien": [
     Task(
         type: TaskType.singleChoice,
         question:
-            "Speist sich aus den antizipierten Konsequenzen einer Handlung.",
-        correctAnswer: "Extrinsische Motivation",
-        answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Stellt einen nicht zielgerichteten Antrieb für Handlungen dar.",
-        correctAnswer: "Amotivation",
-        answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Beruht auf der Antizipation einer als befriedigend oder positiv erlebten Ausführung einer Handlung.",
-        correctAnswer: "Intrinsische Motivation",
-        answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
-        ]),
+            "Pures Wiederholen von Informationen (Auswendiglernen) ist eine Mnemotechnik.",
+        correctAnswer: "Wahr",
+        answers: ["Wahr", "Falsch"]),
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Personen lernen, wenn die Konsequenzen einer Handlung für sie persönlich bedeutsam sind: {}-extrinsisch.",
-        correctAnswer: "Selbstbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
+            "Dadurch erfolgt eine leichtere Informationsübertragung ins {}.",
+        correctAnswer: "Langzeitgedächtnis",
+        answers: ["Arbeitsgedächtnis", "Langzeitgedächtnis"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.freeTextFieldCloze,
         question:
-            "Der Beweggrund liegt in externalen Belohnungen, Sanktionen, Regeln oder Normen: {}-extrinsisch.",
-        correctAnswer: "Fremdbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Studien zeigen, dass {} motivierte Lerner bessere Lernstrategien verwenden.",
-        correctAnswer: "intrinsisch",
-        answers: ["intrinsisch", "extrinsisch"]),
+            "Akustische und bildliche Brücken bauen, z.B. Bean mit Biene verknüpfen, nennt man: {}.",
+        correctAnswer: "Schlüsselwortmethode",
+        answers: ["Wahr", "Falsch"]),
   ],
   "Strukturiende Strategien": [
     Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Bespiele für Strukturstrategien sind die Konstruktion mentaler Modelle bzw. netzartig geordnete Wissensstrukturen, genannt {}.",
+        correctAnswer: "Mapping",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question: "Anfertigen zusammenfassender Exzerpte, genannt: {}.",
+        correctAnswer: "Outlining",
+        answers: []),
+    Task(
         type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
-        answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
-        ]),
-    Task(
-        type: TaskType.singleChoiceCloze,
         question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
-        answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
-        ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
-        answers: []),
+            "Texte werden in {} in zeitlich und funktionale Beziehungen zusammengefasst.",
+        correctAnswer: "Flussdiagrammen",
+        answers: ["Wasserfall-Diagrammen", "Flussdiagrammen"]),
   ],
   "Generative Strategien": [
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
-        answers: []),
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Bei generativen Strategien geht es um eine {} relevanter Informationen und Maßnahmen der Verknüpfung mit verfügbarem Wissen.",
+        correctAnswer: "Elaboration",
+        answers: ["Elaboration", "Reduktion"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question: "Blutkreislauf mit Röhrensystem von Wasser verdeutlichen.",
+        correctAnswer: "Analogiebildung",
+        answers: ["Selbstbefragung", "Analogiebildung"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question: "Fragen an einen Text generieren und diese beantworten.",
+        correctAnswer: "Selbstbefragung",
+        answers: ["Selbstbefragung", "Analogiebildung"]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Schlechte Leistungen vermeiden und Kompetenzdefizite verbergen",
-        correctAnswer: "Vermeidungsperformanzziel",
+            "Welche dieser Strategien nach Brod (2021) erweisen sich für die Grundschule als NICHT effektiv?",
+        correctAnswer: "Generieren von Erklärungen (questioning)",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Kartieren von Konzeption (concept mapping)",
+          "Generieren von Vorhersagen (predicting)",
+          "Generieren von Erklärungen (questioning)",
+          "Generieren von Antworten (testing)",
         ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Geringen Lernzuwachs oder falsches Verständnis vermeiden",
-        correctAnswer: "Vermeidungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Eigene Kompetenzen erweitern und Verständnis erlangen",
-        correctAnswer: "Annäherungslernziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Vorgegebene Anforderungen mit möglichst wenig Aufwand erfüllen",
-        correctAnswer: "Arbeitsvermeidungsziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Gute Leistungen zeigen und eigene Kompetenzen demonstrieren",
-        correctAnswer: "Annäherungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Relevanz von Bezugspersonen für die Wertkomponente nennt man auch {}.",
-        correctAnswer: "Sozialisationseffekt",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
-        correctAnswer: "Klassenzielstruktur",
-        answers: []),
-  ],
+  ]
 };
 
 List<LearningBite> cognitiveLearningBites = [
   LearningBite(
+      name: "Einführung in Lernstrategien",
+      type: LearningBiteType.lesson,
+      data: data["Einführung in Lernstrategien"]!,
+      iconData: FontAwesomeIcons.info,
+      tasks: tasks["Einführung in Lernstrategien"]!),
+  LearningBite(
       name: "Mnemonische Strategien",
       type: LearningBiteType.lesson,
       data: data["Mnemonische Strategien"]!,
-      iconData: FontAwesomeIcons.chessBoard,
+      iconData: FontAwesomeIcons.brain,
       tasks: tasks["Mnemonische Strategien"]!),
   LearningBite(
       name: "Strukturiende Strategien",
       type: LearningBiteType.lesson,
       data: data["Strukturiende Strategien"]!,
-      iconData: FontAwesomeIcons.award,
+      iconData: FontAwesomeIcons.trowelBricks,
       tasks: tasks["Strukturiende Strategien"]!),
   LearningBite(
       name: "Generative Strategien",
       type: LearningBiteType.lesson,
       data: data["Generative Strategien"]!,
-      iconData: FontAwesomeIcons.rocket,
+      iconData: FontAwesomeIcons.wandMagicSparkles,
       tasks: tasks["Generative Strategien"]!),
 ];

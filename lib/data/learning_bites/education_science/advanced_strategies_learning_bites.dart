@@ -10,26 +10,17 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-In der Selbstbestimmungstheorie der Motivation nach Deci & Ryan werden Beweggründe für das Handeln dargestellt.\n
-Hier spielen wertbezogene Aspekte eine Rolle, also die Bedeutsamkeit des Erreichens eines bestimmten Zustandes.
+Elaborationsstrategien dienen dem Verstehen und darhaften Behalten neuer Informationen.\n
+Dazu zählen:
+    1. Vorwissen aktivieren
+    2. Fragenstellen
+    3. Notizenmachen
+    4. Vorstellungsbilder generieren
+    5. Mnemotechniken
+    6. Wiederholungsstrategien
         """),
         SizedBox(
-          height: 500,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-    Column(
-      children: [
-        const Text("""
-Es lassen sich drei Beweggründe unterscheiden:\n
-    1. Intrinsische Motivation
-    2. Extrinsische Motivation
-    3. Amotivation
-        """),
-        SizedBox(
-          height: 500,
+          height: 200,
           child: Image.asset(
               'images/learning_bites/education_science/motivation/motivation.png'),
         ),
@@ -40,11 +31,7 @@ Es lassen sich drei Beweggründe unterscheiden:\n
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Organisationsstrategien organisieren neues Wissen und strukturien es, indem die zwischen Wissenselementen bestehenden Verknüpfungen herausgearbeitet werden.\n
         """),
         SizedBox(
           height: 500,
@@ -58,8 +45,11 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     Column(
       children: [
         const Text("""
-Ziele sind Vorwegnahmen von Handlungsfolgen, die sich auf zukünftige, angestrebte Handlungsergebnisse beziehen.\n
-Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Organisationsstrategien des Fortschrittes bereit.
+Diese Strategien dienen der situations- und aufgabenangemessenen Steuerung des Lernprozesses vor allem der...\n
+    1. Planung 
+    2. Überwachung 
+    3. Bewertung
+    4. Regulation
         """),
         SizedBox(
           height: 400,
@@ -73,11 +63,8 @@ Sie geben dem Handeln eine Richtung und stellen einen Maßstab zur Organisations
     Column(
       children: [
         const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
+Diese Strategien soll 'träges Wissen' vorbeugen, also Wissen, welches in Anwendungs- und Transferaufgaben nicht aktiviert werden kann.\n
+Es sollten bereits in der Lernphase Aufgaben gestellt werden, die Anwendung und Transfer erfordern.
         """),
         SizedBox(
           height: 500,
@@ -92,204 +79,192 @@ Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
 Map<String, List<Task>> tasks = {
   "Elaborationsstrategien": [
     Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Elaborationsstrategien wollen neue Informationen in bestehende {} (Vorstellungsbilder, Vorwissen) integrieren.",
+        correctAnswer: "Wissensstrukturen",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Welche drei Gedächtnisspuren müssen gespeichert werden, damit man sich an den Sinn, Wortlaut und die Situation erinnert?\nMentale Repräsentationen...\nvon der {} (z.B. exakter Wortlaut)\nvon der {} ('Sinngemäß stand da...')\nvom {} (z.B. Tag an dem es behandelt wurde)",
+        correctAnswer: "Oberfläche{}Bedeutung{}Kontext",
+        answers: []),
+    Task(
         type: TaskType.singleChoice,
         question:
-            "Speist sich aus den antizipierten Konsequenzen einer Handlung.",
-        correctAnswer: "Extrinsische Motivation",
+            "Es wird an bestehende kognitive Strukturen 'angedockt', um Andockstellen für neues Wissen zu ermöglichen.",
+        correctAnswer: "Aktivieren von Vorwissen",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Stellt einen nicht zielgerichteten Antrieb für Handlungen dar.",
-        correctAnswer: "Amotivation",
+            "Dient der Aufmerksamkeitssteuerung und der elaborativen Verarbeitung.",
+        correctAnswer: "Fragenstellen",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Beruht auf der Antizipation einer als befriedigend oder positiv erlebten Ausführung einer Handlung.",
-        correctAnswer: "Intrinsische Motivation",
+            "Ist eine multifunktionale Strategie (elaborative und strak strukturiend-organisatorische Elemente).",
+        correctAnswer: "Notizenmachen",
         answers: [
-          "Extrinsische Motivation",
-          "Intrinsische Motivation",
-          "Amotivation"
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
         ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "Personen lernen, wenn die Konsequenzen einer Handlung für sie persönlich bedeutsam sind: {}-extrinsisch.",
-        correctAnswer: "Selbstbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
+            "Lösen im Arbeitsgedächtnis zusätzliche Verarbeitungsprozesse aus, sodass Verknüpfungen hergestellt werden können.",
+        correctAnswer: "Vorstellungsbilder",
+        answers: [
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Der Beweggrund liegt in externalen Belohnungen, Sanktionen, Regeln oder Normen: {}-extrinsisch.",
-        correctAnswer: "Fremdbestimmt",
-        answers: ["Selbstbestimmt", "Fremdbestimmt"]),
+        type: TaskType.singleChoice,
+        question: "Müssen erlernt werden.",
+        correctAnswer: "Mnemotechniken",
+        answers: [
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "Studien zeigen, dass {} motivierte Lerner bessere Lernstrategien verwenden.",
-        correctAnswer: "intrinsisch",
-        answers: ["intrinsisch", "extrinsisch"]),
+            "Sind sehr wichtig im Lernprozess, denn sie sind Enkodierstrategien.",
+        correctAnswer: "Wiederholungsstrategien",
+        answers: [
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
+        ]),
   ],
   "Organisationsstrategien": [
     Task(
+        type: TaskType.singleChoice,
+        question:
+            "Bei Organisationsstrategien wird die Fülle des Stoffes auf das Wesentliche reduziert.",
+        correctAnswer: "Wahr",
+        answers: ["Wahr", "Falsch"]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Sogenannte {} unterstützen das Verstehen, indem neue Informationen in vorhandene, gut ausgebildete Wissensstrukturen integriert werden.",
+        correctAnswer: "Wissensschemata",
+        answers: []),
+    Task(
         type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
+        question:
+            "Organisationsstrategien sind Abrufhilfen, welche das {} anregen.",
+        correctAnswer: "Langzeitgedächtnis",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Kurzzeitgedächtnis",
+          "Langzeitgedächtnis",
         ]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
-        answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
-        ]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
-        answers: []),
   ],
   "Selbstregulationsstrategien": [
     Task(
         type: TaskType.freeTextFieldCloze,
-        question: "Man unterscheidet zwischen{}-, {}- und {}zielen.",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
-        answers: []),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Schlechte Leistungen vermeiden und Kompetenzdefizite verbergen",
-        correctAnswer: "Vermeidungsperformanzziel",
+        question: "Ordne zu:\nDamit bin ich noch nicht zufrieden",
+        correctAnswer: "Bewertung",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Planung",
+          "Überwachung",
+          "Bewertung",
+          "Regulation",
         ]),
     Task(
-        type: TaskType.singleChoice,
-        question: "Geringen Lernzuwachs oder falsches Verständnis vermeiden",
-        correctAnswer: "Vermeidungslernziel",
+        type: TaskType.freeTextFieldCloze,
+        question: "Ordne zu:\nWie gehe ich bei dieser Aufgabe vor?",
+        correctAnswer: "Planung",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Planung",
+          "Überwachung",
+          "Bewertung",
+          "Regulation",
         ]),
     Task(
-        type: TaskType.singleChoice,
-        question: "Eigene Kompetenzen erweitern und Verständnis erlangen",
-        correctAnswer: "Annäherungslernziel",
+        type: TaskType.freeTextFieldCloze,
+        question: "Ordne zu:\nDas muss ich nochmal lesen",
+        correctAnswer: "Regulation",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Planung",
+          "Überwachung",
+          "Bewertung",
+          "Regulation",
         ]),
     Task(
-        type: TaskType.singleChoice,
-        question:
-            "Vorgegebene Anforderungen mit möglichst wenig Aufwand erfüllen",
-        correctAnswer: "Arbeitsvermeidungsziel",
+        type: TaskType.freeTextFieldCloze,
+        question: "Ordne zu:\nHabe ich das wirklich verstanden",
+        correctAnswer: "Überwachung",
         answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Gute Leistungen zeigen und eigene Kompetenzen demonstrieren",
-        correctAnswer: "Annäherungsperformanzziel",
-        answers: [
-          "Annäherungslernziel",
-          "Vermeidungslernziel",
-          "Annäherungsperformanzziel",
-          "Vermeidungsperformanzziel",
-          "Arbeitsvermeidungsziel"
+          "Planung",
+          "Überwachung",
+          "Bewertung",
+          "Regulation",
         ]),
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Relevanz von Bezugspersonen für die Wertkomponente nennt man auch {}.",
-        correctAnswer: "Sozialisationseffekt",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
-        correctAnswer: "Klassenzielstruktur",
+            "Es sind metagognitive Strategien, weil sie eine {} Komponente haben (Nachdenken über das Nachdenken)",
+        correctAnswer: "selbstreflexive",
         answers: []),
   ],
   "Wissensnutzungsstrategien": [
     Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Bei der Nützlichkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Fremdbestimmt-extrinsiche",
+        type: TaskType.singleChoice,
+        question: "Was ist keine transferangemessene Verarbeitungsstrategie:",
+        correctAnswer: "Schreiben von Karteikarten",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Lösen von Problemen",
+          "Schreiben von Texten",
+          "Schreiben von Karteikarten",
+          "Argumentieren/Diskutieren im sozialen Kontext"
         ]),
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Bei der persönlichen Wichtigkeit geht es vor allem um {} Motivation.",
-        correctAnswer: "Selbstbestimmt-extrinsiche",
+            "In diesen Situation muss wissen aus dem {} abgerufen werden.",
+        correctAnswer: "Langzeitgedächtnis",
         answers: [
-          "intrinsische",
-          "Selbstbestimmt-extrinsiche",
-          "Fremdbestimmt-extrinsiche"
+          "Kurzeitgedächtnis",
+          "Arbeitsgedächtnis",
+          "Langzeitgedächtnis"
         ]),
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Kosten umfassen die die Begrenzung der Möglichkeiten, eine {} Handlung auszuführen.",
-        correctAnswer: "alternative",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Zudem gehören dazu die notwendige {} und {} Kosten.",
-        correctAnswer: "Anstrengung{}emotionale",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
-        correctAnswer: "situatives Interesse",
+            "Es wird unterschiedn zwischen 'Schreiben als Wiedergabe von Wissen' und 'Schreiben als {}'.",
+        correctAnswer: "Wissenstransformation",
         answers: []),
   ],
 };
@@ -299,24 +274,24 @@ List<LearningBite> advancedStrategiesLearningBites = [
       name: "Elaborationsstrategien",
       type: LearningBiteType.lesson,
       data: data["Elaborationsstrategien"]!,
-      iconData: FontAwesomeIcons.chessBoard,
+      iconData: FontAwesomeIcons.plus,
       tasks: tasks["Elaborationsstrategien"]!),
   LearningBite(
       name: "Organisationsstrategien",
       type: LearningBiteType.lesson,
       data: data["Organisationsstrategien"]!,
-      iconData: FontAwesomeIcons.award,
+      iconData: FontAwesomeIcons.sort,
       tasks: tasks["Organisationsstrategien"]!),
   LearningBite(
       name: "Selbstregulationsstrategien",
       type: LearningBiteType.lesson,
       data: data["Selbstregulationsstrategien"]!,
-      iconData: FontAwesomeIcons.rocket,
+      iconData: FontAwesomeIcons.scaleBalanced,
       tasks: tasks["Selbstregulationsstrategien"]!),
   LearningBite(
       name: "Wissensnutzungsstrategien",
       type: LearningBiteType.lesson,
       data: data["Wissensnutzungsstrategien"]!,
-      iconData: FontAwesomeIcons.rocket,
+      iconData: FontAwesomeIcons.toolbox,
       tasks: tasks["Wissensnutzungsstrategien"]!),
 ];

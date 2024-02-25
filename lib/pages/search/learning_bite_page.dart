@@ -234,11 +234,14 @@ class _LearningBitePageState extends State<LearningBitePage>
               WidgetSpan(
                 alignment: PlaceholderAlignment.middle,
                 child: AnswerField(
-                  setAllCorrect: () => setAllCorrect(correctAnswers),
-                  controller: answersControllers[correctAnswersIndex],
-                  answer: answers.elementAt(correctAnswersIndex).last,
-                  enabled: true,
-                ),
+                    setAllCorrect: () => setAllCorrect(correctAnswers),
+                    controller: answersControllers[correctAnswersIndex],
+                    answer: answers.elementAt(correctAnswersIndex).last,
+                    enabled: true,
+                    textInputAction: correctAnswersIndex < answers.length
+                        ? TextInputAction.next
+                        : TextInputAction.done,
+                    autofocus: correctAnswersIndex == 0 ? true : false),
               )
             ],
             TextSpan(
@@ -417,8 +420,8 @@ class _LearningBitePageState extends State<LearningBitePage>
     for (var correctAnswerIndex = 0;
         correctAnswerIndex < correctAnswers.length;
         correctAnswerIndex++) {
-      if (correctAnswers[correctAnswerIndex] !=
-          answersControllers[correctAnswerIndex].text) {
+      if (correctAnswers[correctAnswerIndex].toLowerCase() !=
+          answersControllers[correctAnswerIndex].text.toLowerCase()) {
         setState(() {
           allCorrect = false;
         });

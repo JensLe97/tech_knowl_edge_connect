@@ -6,12 +6,14 @@ import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
-  "Lerntypen": [
+  "Lerntypen und Lernstile": [
     Column(
       children: [
         const Text("""
-Motivation kann als Bedingung des Lern- und Leistungsverhaltens im Unterricht angesehen werden.\n
-Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine Art Handlungsantrieb.
+Unter Lernstilen versteht man persönlichkeitsabhängige Vorlieben des Wahrnehmens, Erinnerns, Denkens und Problemlösens.\n
+Die bekanntesten Stile sind:\n
+    1. Impulsivität vs. Reflexivität
+    2. Feldabhängigkeit vs. Feldunabhängigkeit
         """),
         SizedBox(
           height: 300,
@@ -21,34 +23,17 @@ Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine A
       ],
     ),
   ],
-  "Lernstile": [
+  "Verabeitungspräferenzen": [
     Column(
       children: [
         const Text("""
-Das Rubikon-Modell der Handlungsphasen unterteilt 4 Phasen:\n
-    1. Abwägen
-    2. Planen
-    3. Handeln
-    4. Bewerten
+Schmeck (1988) unterscheidet zwischen Verabeitungspräferenzen:\n
+    1. tiefe Verabeitungspräferenz
+    2. elaborative Verabeitungspräferenz
+    3. oberflächlicheVerabeitungspräferenz
         """),
         SizedBox(
-          height: 400,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-    Column(
-      children: [
-        const Text("""
-Diese lassen sich auch wie folgt beschreiben:\n
-    1. Prädezisionale Phase
-    2. Präaktionale Phase
-    3. Aktionale Phase
-    4. Postaktionale Phase
-        """),
-        SizedBox(
-          height: 400,
+          height: 300,
           child: Image.asset(
               'images/learning_bites/education_science/motivation/motivation.png'),
         ),
@@ -58,58 +43,94 @@ Diese lassen sich auch wie folgt beschreiben:\n
 };
 
 Map<String, List<Task>> tasks = {
-  "Lerntypen": [
+  "Lerntypen und Lernstile": [
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Motivation ist ein psychologischer Prozess, der die {}, {} und {} zielgerichteten Handels beeinflusst.",
-        correctAnswer: "Initiierung{}Ausrichtung{}Aufrechterhaltung",
-        answers: []),
+            "Personen...\ntendieren dazu, visuelle Muster ganzheitlich wahrzunehmen.",
+        correctAnswer: "Feldabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
+        question: "Personen...\nkönnen Muster komponentenweise analysieren.",
+        correctAnswer: "Feldunabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
+    Task(
+        type: TaskType.singleChoice,
         question:
-            "Zusätzlich beeinflusst wird die {}, {} und {} zielgerichteten Handelns.",
-        correctAnswer: "Steuerung{}Qualität{}Bewertung",
-        answers: []),
+            "Personen...\nhaben Probleme, wichtige Details zu erkennen und zu fokussieren.",
+        correctAnswer: "Feldabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Motivation ist im {} Handlungsverlauf von Relevanz.",
-        correctAnswer: "gesamten",
-        answers: ["gesamten", "anfänglichen"]),
+        type: TaskType.singleChoice,
+        question:
+            "Personen...\nfällt es schwerer den einsatz von Lernstategien selbst zu überwachen.",
+        correctAnswer: "Feldabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Personen...\ninteressieren sich häufig für Mathematik und Naturwissenschaften.",
+        correctAnswer: "Feldunabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Personen...\narbeiten gut in Gruppen und interessieren sich häufig für Literatur und Geschichte.",
+        correctAnswer: "Feldabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Personen...\nüberwachen ihre eigenen Informationsverabeitungsprozesse",
+        correctAnswer: "Feldunabhängig",
+        answers: ["Feldabhängig", "Feldunabhängig"]),
   ],
-  "Lernstile": [
+  "Verabeitungspräferenzen": [
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "In der prädezisionalen Phase bewerten Personen, wie bedeutsam das Erreichen eines gewünschten Zustandes ist. Das wird auch {} genannt.",
-        correctAnswer: "Wertkomponente",
-        answers: ["Erwartungskomponente", "Wertkomponente"]),
+            "Lerner benutzen hauptsächlich einfache Memorierungsstrategien.",
+        correctAnswer: "oberflächliche Verabeitungspräferenz",
+        answers: [
+          "tiefe Verabeitungspräferenz",
+          "elaborative Verabeitungspräferenz",
+          "oberflächliche Verabeitungspräferenz"
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "Inwiefern sie das Gewünschte herbeiführen können, wird hingegen als {} bezeichnet.",
-        correctAnswer: "Erwartungskomponente",
-        answers: ["Erwartungskomponente", "Wertkomponente"]),
+            "Beim Wissenerwerb wird kritisch vorgegangen und konzeptuell-organisierende Strategien bevorzugt.",
+        correctAnswer: "tiefe Verabeitungspräferenz",
+        answers: [
+          "tiefe Verabeitungspräferenz",
+          "elaborative Verabeitungspräferenz",
+          "oberflächliche Verabeitungspräferenz"
+        ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Die Motivation im Handlungsverlauf ist immer beeinflusst von Merkmalen der {} und {}.",
-        correctAnswer: "Person{}Situation",
-        answers: []),
-  ],
+            "Es wird eine Verknüpfung der neuen Lerninhalte mit persönlichen Erfahrungen hergestellt.",
+        correctAnswer: "elaborative Verabeitungspräferenz",
+        answers: [
+          "tiefe Verabeitungspräferenz",
+          "elaborative Verabeitungspräferenz",
+          "oberflächliche Verabeitungspräferenz"
+        ]),
+  ]
 };
 
 List<LearningBite> learnTypesStylesLearningBites = [
   LearningBite(
-      name: "Lerntypen",
+      name: "Lerntypen und Lernstile",
       type: LearningBiteType.lesson,
-      data: data["Lerntypen"]!,
-      iconData: FontAwesomeIcons.thumbsUp,
-      tasks: tasks["Lerntypen"]!),
+      data: data["Lerntypen und Lernstile"]!,
+      iconData: FontAwesomeIcons.eye,
+      tasks: tasks["Lerntypen und Lernstile"]!),
   LearningBite(
-      name: "Lernstile",
+      name: "Verabeitungspräferenzen",
       type: LearningBiteType.lesson,
-      data: data["Lernstile"]!,
-      iconData: FontAwesomeIcons.diagramSuccessor,
-      tasks: tasks["Lernstile"]!),
+      data: data["Verabeitungspräferenzen"]!,
+      iconData: FontAwesomeIcons.star,
+      tasks: tasks["Verabeitungspräferenzen"]!),
 ];

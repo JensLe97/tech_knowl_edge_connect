@@ -2,9 +2,12 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/cpu
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_structure_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_tags_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/mainboard_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/activation_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/advanced_strategies_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/attention_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/cognitive_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learning_strategies_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learntypes_styles_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognition_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognitive_learning_bites.dart';
@@ -57,7 +60,9 @@ Map<String, List<LearningBite>> foundationEducationScienceLearningBites = {
 
 Map<String, List<LearningBite>> advancedEducationScienceLearningBites = {
   "Fortgeschrittene Strategien": advancedStrategiesLearningBites,
-  "Trainings": trainingLearningBites,
+  "Aufmerksamkeit und Lernen": attentionStrategiesLearningBites,
+  "Lernstrategie: Vorwissen aktivieren": activationStrategiesLearningBites,
+  "Weitere Lernstrategien": learningStrategiesLearningBites,
 };
 
 // Biology

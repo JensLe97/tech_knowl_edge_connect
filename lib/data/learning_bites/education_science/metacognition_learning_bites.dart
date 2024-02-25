@@ -10,8 +10,10 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-Motivation kann als Bedingung des Lern- und Leistungsverhaltens im Unterricht angesehen werden.\n
-Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine Art Handlungsantrieb.
+Metakognition umfasst Phänomene, Aktivitäten und Erfahrungen, die mit dem Wissen und der Kontrolle über eigene kognitive Funktionen zu tun haben.\n
+Zwei-Komponenten-Sichtweise:
+    1. Wissen über eigene kognitive Fähigkeiten (deklarativ)
+    2. Kontrolle der eigenen kognitiven Aktivitäten (prozedural)
         """),
         SizedBox(
           height: 300,
@@ -25,11 +27,7 @@ Der Begriff leitet sich vom lateinischen Verb "movere" (bewegen) ab, also eine A
     Column(
       children: [
         const Text("""
-Das Rubikon-Modell der Handlungsphasen unterteilt 4 Phasen:\n
-    1. Abwägen
-    2. Planen
-    3. Handeln
-    4. Bewerten
+Einzelene Behaltenstrategien bilden sich bereits in der Grundschul aus, erworben werden (metakognitive) Strategien aber erst im höheren Alter.\n
         """),
         SizedBox(
           height: 400,
@@ -60,41 +58,112 @@ Diese lassen sich auch wie folgt beschreiben:\n
 Map<String, List<Task>> tasks = {
   "Metakognitive Kompetenzen": [
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Motivation ist ein psychologischer Prozess, der die {}, {} und {} zielgerichteten Handels beeinflusst.",
-        correctAnswer: "Initiierung{}Ausrichtung{}Aufrechterhaltung",
-        answers: []),
+            "Ordne zu:\nWissen über aktuelle Gedächtniszustände bzw. Lernbereitschaften",
+        correctAnswer: "Epistemisches Wissen",
+        answers: [
+          "Systemisches Wissen",
+          "Epistemisches Wissen",
+          "Exekutive Prozesse",
+          "Sensitiät kognitiver Aktiviäten",
+          "Metakognitive Erfahrungen"
+        ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question:
-            "Zusätzlich beeinflusst wird die {}, {} und {} zielgerichteten Handelns.",
-        correctAnswer: "Steuerung{}Qualität{}Bewertung",
-        answers: []),
+            "Ordne zu:\nBewusste kognitive Empfindungen und affektive Zustände",
+        correctAnswer: "Metakognitive Erfahrungen",
+        answers: [
+          "Systemisches Wissen",
+          "Epistemisches Wissen",
+          "Exekutive Prozesse",
+          "Sensitiät kognitiver Aktiviäten",
+          "Metakognitive Erfahrungen"
+        ]),
     Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Motivation ist im {} Handlungsverlauf von Relevanz.",
-        correctAnswer: "gesamten",
-        answers: ["gesamten", "anfänglichen"]),
+        type: TaskType.singleChoice,
+        question:
+            "Ordne zu:\nPlanung, Überwachung und Steuerung eigener Lernprozesse",
+        correctAnswer: "Exekutive Prozesse",
+        answers: [
+          "Systemisches Wissen",
+          "Epistemisches Wissen",
+          "Exekutive Prozesse",
+          "Sensitiät kognitiver Aktiviäten",
+          "Metakognitive Erfahrungen"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\nWissen über Lernanforderungen und Strategien",
+        correctAnswer: "Systemisches Wissen",
+        answers: [
+          "Systemisches Wissen",
+          "Epistemisches Wissen",
+          "Exekutive Prozesse",
+          "Sensitiät kognitiver Aktiviäten",
+          "Metakognitive Erfahrungen"
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\nErfahrungswissen und Intuition",
+        correctAnswer: "Sensitiät kognitiver Aktiviäten",
+        answers: [
+          "Systemisches Wissen",
+          "Epistemisches Wissen",
+          "Exekutive Prozesse",
+          "Sensitiät kognitiver Aktiviäten",
+          "Metakognitive Erfahrungen"
+        ]),
   ],
   "Strategieerwerb": [
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
-            "In der prädezisionalen Phase bewerten Personen, wie bedeutsam das Erreichen eines gewünschten Zustandes ist. Das wird auch {} genannt.",
-        correctAnswer: "Wertkomponente",
-        answers: ["Erwartungskomponente", "Wertkomponente"]),
+            "Wann werden basale Behaltensstrategien, wie das Wiederholen und Kategorisieren von Informationen, erworben?",
+        correctAnswer: "Primarstufe",
+        answers: ["Primarstufe", "Sekundarstufe I", "Sekundarstufe II"]),
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Inwiefern sie das Gewünschte herbeiführen können, wird hingegen als {} bezeichnet.",
-        correctAnswer: "Erwartungskomponente",
-        answers: ["Erwartungskomponente", "Wertkomponente"]),
+            "Im ersten Stadium des Strategieerwerbs können Kinder keine Strategien spontan hervorrufen oder übernehmen: {}.",
+        correctAnswer: "Mediationsdefizit",
+        answers: [
+          "Mediationsdefizit",
+          "Produktionsdefizit",
+          "Nutzungsdefizit"
+        ]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Im zweiten Stadium des Strategieerwerbs können Kinder keine Strategien spontan hervorrufen, aber nach Hinweisen übernehmen: {}.",
+        correctAnswer: "Produktionsdefizit",
+        answers: [
+          "Mediationsdefizit",
+          "Produktionsdefizit",
+          "Nutzungsdefizit"
+        ]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Im dritten Stadium des Strategieerwerbs können Kinder Strategien spontan nutzen, was sich aber noch nicht günstig auf die Lernleistung auswirkt: {}.",
+        correctAnswer: "Nutzungsdefizit",
+        answers: [
+          "Mediationsdefizit",
+          "Produktionsdefizit",
+          "Nutzungsdefizit"
+        ]),
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Motivation im Handlungsverlauf ist immer beeinflusst von Merkmalen der {} und {}.",
-        correctAnswer: "Person{}Situation",
+            "Die Ineffizienz der Strategienutzung kommt durch unzureichende {} oder mangelde {} dafür, wann die Strategie wirkungsvoll einsetzbar ist.",
+        correctAnswer: "Automatisierung{}Sensitivität",
+        answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Wenn der erhoffte Nutzen sich nicht erkennen lässt, kann es zu einer '{} der Motivation' einem '{}' oder kommen.",
+        correctAnswer: "Durststrecke{}Motivationstal",
         answers: []),
   ],
 };
@@ -104,12 +173,12 @@ List<LearningBite> metacognitionLearningBites = [
       name: "Metakognitive Kompetenzen",
       type: LearningBiteType.lesson,
       data: data["Metakognitive Kompetenzen"]!,
-      iconData: FontAwesomeIcons.thumbsUp,
+      iconData: FontAwesomeIcons.gear,
       tasks: tasks["Metakognitive Kompetenzen"]!),
   LearningBite(
       name: "Strategieerwerb",
       type: LearningBiteType.lesson,
       data: data["Strategieerwerb"]!,
-      iconData: FontAwesomeIcons.diagramSuccessor,
+      iconData: FontAwesomeIcons.chartLine,
       tasks: tasks["Strategieerwerb"]!),
 ];

@@ -3,16 +3,19 @@ import 'package:flutter/material.dart';
 class AnswerField extends StatefulWidget {
   final String answer;
   final bool enabled;
-  final TextEditingController? controller;
+  final TextEditingController controller;
   final void Function()? setAllCorrect;
+  final TextInputAction textInputAction;
+  final bool autofocus;
 
-  const AnswerField({
-    super.key,
-    required this.answer,
-    required this.enabled,
-    required this.setAllCorrect,
-    this.controller,
-  });
+  const AnswerField(
+      {super.key,
+      required this.answer,
+      required this.enabled,
+      required this.setAllCorrect,
+      required this.controller,
+      this.textInputAction = TextInputAction.done,
+      this.autofocus = false});
 
   @override
   State<AnswerField> createState() => _AnswerFieldState();
@@ -21,9 +24,19 @@ class AnswerField extends StatefulWidget {
 class _AnswerFieldState extends State<AnswerField> {
   String currentValue = "";
   bool answered = false;
+  final _formKey = GlobalKey<FormState>();
+  late FocusNode focus;
+
+  @override
+  void initState() {
+    super.initState();
+
+    focus = FocusNode();
+  }
 
   @override
   void dispose() {
+    focus.dispose();
     super.dispose();
   }
 
@@ -46,42 +59,71 @@ class _AnswerFieldState extends State<AnswerField> {
               ..layout())
             .size
             .width,
-        child: TextFormField(
-          controller: widget.controller,
-          enabled: widget.enabled,
-          style: TextStyle(
-            color: answered
-                ? (currentValue == widget.answer ||
-                        (widget.controller != null
-                            ? widget.controller!.text == widget.answer
-                            : false))
-                    ? Colors.green
-                    : Colors.red
-                : Theme.of(context).textTheme.displayLarge!.color,
-            fontSize: 18,
-          ),
-          maxLength: answerLength,
-          onChanged: (value) => setState(() {
-            answered = false;
-          }),
-          onFieldSubmitted: (value) => setState(() {
-            answered = true;
-            currentValue = value;
-            widget.setAllCorrect!();
-          }),
-          cursorColor: Theme.of(context).textTheme.displayLarge!.color,
-          decoration: InputDecoration(
-            enabledBorder: UnderlineInputBorder(
-              borderSide:
-                  BorderSide(color: Theme.of(context).colorScheme.secondary),
+        child: Form(
+          key: _formKey,
+          child: TextFormField(
+            autofocus: widget.autofocus,
+            textInputAction: widget.textInputAction,
+            controller: widget.controller,
+            enabled: widget.enabled,
+            style: TextStyle(
+              color: answered
+                  ? (currentValue == widget.answer ||
+                          widget.controller.text == widget.answer)
+                      ? Colors.green
+                      : Colors.red
+                  : Theme.of(context).textTheme.displayLarge!.color,
+              fontSize: 18,
             ),
-            focusedBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                  color: Theme.of(context).textTheme.displayLarge!.color!),
+            maxLength: answerLength,
+            onChanged: (value) {
+              setState(() {
+                answered = false;
+              });
+              setState(() {
+                _formKey.currentState!.validate();
+              });
+            },
+            validator: (value) {
+              if (answered &&
+                  value != null &&
+                  value.toLowerCase() != widget.answer.toLowerCase()) {
+                return "";
+              }
+              return null;
+            },
+            focusNode: focus,
+            onFieldSubmitted: (value) {
+              setState(() {
+                answered = true;
+                if (value.toLowerCase() == widget.answer.toLowerCase()) {
+                  currentValue = widget.answer;
+                  widget.controller.text = widget.answer;
+                } else {
+                  currentValue = value;
+                  focus.requestFocus();
+                }
+                widget.setAllCorrect!();
+              });
+              setState(() {
+                _formKey.currentState!.validate();
+              });
+            },
+            cursorColor: Theme.of(context).textTheme.displayLarge!.color,
+            decoration: InputDecoration(
+              enabledBorder: UnderlineInputBorder(
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Theme.of(context).textTheme.displayLarge!.color!),
+              ),
+              isDense: true,
+              contentPadding: const EdgeInsets.symmetric(vertical: 0),
+              counterText: '',
+              errorStyle: const TextStyle(height: 0),
             ),
-            isDense: true,
-            contentPadding: const EdgeInsets.symmetric(vertical: 0),
-            counterText: '',
           ),
         ),
       ),

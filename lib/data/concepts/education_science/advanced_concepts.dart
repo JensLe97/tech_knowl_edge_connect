@@ -8,8 +8,19 @@ List<Concept> advancedEducationScienceCategoriesConcepts = [
         "Lernstrategien"]!["Vertiefung"]!["Fortgeschrittene Strategien"]!,
   ),
   Concept(
-    name: "Trainings",
+    name: "Aufmerksamkeit und Lernen",
     learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
-        "Lernstrategien"]!["Vertiefung"]!["Trainings"]!,
+        "Lernstrategien"]!["Vertiefung"]!["Aufmerksamkeit und Lernen"]!,
+  ),
+  Concept(
+    name: "Lernstrategie: Vorwissen aktivieren",
+    learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
+            "Lernstrategien"]!["Vertiefung"]![
+        "Lernstrategie: Vorwissen aktivieren"]!,
+  ),
+  Concept(
+    name: "Weitere Lernstrategien",
+    learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
+        "Lernstrategien"]!["Vertiefung"]!["Weitere Lernstrategien"]!,
   ),
 ];

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 
 class AnswerField extends StatefulWidget {
   final String answer;
@@ -25,18 +28,25 @@ class _AnswerFieldState extends State<AnswerField> {
   String currentValue = "";
   bool answered = false;
   final _formKey = GlobalKey<FormState>();
-  late FocusNode focus;
+  late FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
 
-    focus = FocusNode();
+    focusNode = FocusNode();
+    if (widget.autofocus) {
+      SchedulerBinding.instance.addPostFrameCallback((_) {
+        Timer(const Duration(milliseconds: 1000), () {
+          focusNode.requestFocus();
+        });
+      });
+    }
   }
 
   @override
   void dispose() {
-    focus.dispose();
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -62,7 +72,6 @@ class _AnswerFieldState extends State<AnswerField> {
         child: Form(
           key: _formKey,
           child: TextFormField(
-            autofocus: widget.autofocus,
             textInputAction: widget.textInputAction,
             controller: widget.controller,
             enabled: widget.enabled,
@@ -92,7 +101,7 @@ class _AnswerFieldState extends State<AnswerField> {
               }
               return null;
             },
-            focusNode: focus,
+            focusNode: focusNode,
             onFieldSubmitted: (value) {
               setState(() {
                 answered = true;
@@ -101,7 +110,7 @@ class _AnswerFieldState extends State<AnswerField> {
                   widget.controller.text = widget.answer;
                 } else {
                   currentValue = value;
-                  focus.requestFocus();
+                  focusNode.requestFocus();
                 }
                 widget.setAllCorrect!();
               });
@@ -122,7 +131,7 @@ class _AnswerFieldState extends State<AnswerField> {
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               counterText: '',
-              errorStyle: const TextStyle(height: 0),
+              errorStyle: const TextStyle(height: 0.01),
             ),
           ),
         ),

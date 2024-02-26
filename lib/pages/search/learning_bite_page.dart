@@ -238,7 +238,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                     controller: answersControllers[correctAnswersIndex],
                     answer: answers.elementAt(correctAnswersIndex).last,
                     enabled: true,
-                    textInputAction: correctAnswersIndex < answers.length
+                    textInputAction: correctAnswersIndex < answers.length - 1
                         ? TextInputAction.next
                         : TextInputAction.done,
                     autofocus: correctAnswersIndex == 0 ? true : false),

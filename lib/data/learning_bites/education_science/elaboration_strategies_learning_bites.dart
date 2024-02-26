@@ -52,6 +52,35 @@ Menschen können visuelle Vorstellungen erstellen und der Einsatz von Vorstellun
       ],
     ),
   ],
+  "Mnemotechniken": [
+    Column(
+      children: [
+        const Text("""
+Mnemotechnik steht als Bezeichnung für die Nutzung sachfremder Lern- und Gedächtnishilfen zur leichteren Einprägung unterschiedlicher Lerninhalte.\n
+        """),
+        SizedBox(
+          height: 400,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+  ],
+  "Wiederholungsstrategien": [
+    Column(
+      children: [
+        const Text("""
+Wiederholungsstrategien beinhalten repetitive Prozesse, die aus das Einprägen oberflächlicher Merkmale ausgerichtet sind.\n
+Es sind Oberflächenstrategien.
+        """),
+        SizedBox(
+          height: 400,
+          child: Image.asset(
+              'images/learning_bites/education_science/motivation/motivation.png'),
+        ),
+      ],
+    ),
+  ],
 };
 
 Map<String, List<Task>> tasks = {
@@ -162,9 +191,89 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "coaching{}fading out",
         answers: []),
   ],
+  "Mnemotechniken": [
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Es geht um die Schaffung eines {} Systems, indem Erinnerungen in Form von Gedächtnisbildern an {} Orten abgelegt werden.",
+        correctAnswer: "memorialen{}imaginären",
+        answers: []),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Durch diese Strategie soll die Begrenzung des {} umgangen werden.",
+        correctAnswer: "Kurzzeitgedächtnisses",
+        answers: ["Kurzzeitgedächtnisses", "Langzeitgedächtnisses"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Es soll ein stabiles Netz aus {} Kognitionen, die mit dem Lernmaterial verknüpft sind, erlernt werden.",
+        correctAnswer: "organisierten",
+        answers: ["organisierten", "unstrukturierten"]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Beispiele sind {}, Chunking, Bilderketten bilden, {} und {}.",
+        correctAnswer: "Clustering{}Mindmaps{}Eselsbrücken",
+        answers: ["organisierten", "unstrukturierten"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Morris (1978) unterscheidet:\nBasieren ausschließlich auf Besonderheiten der gedächtnismäßigen Informationsverarbeitung.",
+        correctAnswer: "interne Gedächtnishilfen",
+        answers: ["externe Gedächtnishilfen", "interne Gedächtnishilfen"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Morris (1978) unterscheidet:\nAußerhalb der Person liegende Mittel wie Kalender und Notizbücher.",
+        correctAnswer: "externe Gedächtnishilfen",
+        answers: ["externe Gedächtnishilfen", "interne Gedächtnishilfen"]),
+  ],
+  "Wiederholungsstrategien": [
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Mit Ausnahme von '{}' (Man fasst nicht zweimal aus die Herdplatte) oder das Erlernen einer {}, ist jegliches Lernen mit Wiederholung verbunden.",
+        correctAnswer: "one trial learning{}Einsicht",
+        answers: []),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question: "Information wird im Arbeitsgedächtnis aufrechterhalten: {}.",
+        correctAnswer: "maintaining rehearsal",
+        answers: []),
+    Task(
+        type: TaskType.singleChoice,
+        question:
+            "Jemand sagt sich gedanklich immer wieder eine Telefonnummer vor.",
+        correctAnswer: "Innerliches Wiederholen",
+        answers: ["Innerliches Wiederholen", "Äußerliches Wiederholen"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Wiederholungen werden laut oder halblaut aufgesagt.",
+        correctAnswer: "Äußerliches Wiederholen",
+        answers: ["Innerliches Wiederholen", "Äußerliches Wiederholen"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Schwierige Fachbegriffe müssen mehrfach enkodiert werden (Lesen: visuell, Hören: klanglich). Dies nennt man {}.",
+        correctAnswer: "Wiederholtes encoding",
+        answers: ["Wiederholtes encoding", "Wiederholtes retrieval"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Abrufwege müssen gezielt gebahnt werden, um Informationen jederzeit verfügbar (available) und zugänglich (accessible) zu halten. Dies nennt man {}.",
+        correctAnswer: "wiederholtes encoding",
+        answers: ["wiederholtes encoding", "wiederholtes retrieval"]),
+    Task(
+        type: TaskType.freeTextFieldCloze,
+        question:
+            "Anzahl, Tempo, {} und Dichte von Wiederholungen richten sich nach den aktuellen {} und psychischen Möglichkeiten, Art und {} und nach der Zielsetzung.",
+        correctAnswer: "Dauer{}physischen{}Umfang",
+        answers: []),
+  ],
 };
 
-List<LearningBite> learningStrategiesLearningBites = [
+List<LearningBite> elaborationStrategiesLearningBites = [
   LearningBite(
       name: "Fragenstellen",
       type: LearningBiteType.lesson,
@@ -183,4 +292,16 @@ List<LearningBite> learningStrategiesLearningBites = [
       data: data["Vorstellungsbilder"]!,
       iconData: FontAwesomeIcons.image,
       tasks: tasks["Vorstellungsbilder"]!),
+  LearningBite(
+      name: "Mnemotechniken",
+      type: LearningBiteType.lesson,
+      data: data["Mnemotechniken"]!,
+      iconData: FontAwesomeIcons.building,
+      tasks: tasks["Mnemotechniken"]!),
+  LearningBite(
+      name: "Wiederholungsstrategien",
+      type: LearningBiteType.lesson,
+      data: data["Wiederholungsstrategien"]!,
+      iconData: FontAwesomeIcons.repeat,
+      tasks: tasks["Wiederholungsstrategien"]!),
 ];

@@ -7,11 +7,12 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/ad
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/attention_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/cognitive_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
-import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learning_strategies_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/elaboration_strategies_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learntypes_styles_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognition_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognitive_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/motivation_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/organization_strategies_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/support_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/training_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/value_learning_bites.dart';
@@ -21,7 +22,7 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/math/numbers_naming_
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 
 // ===== Concepts =====
-// Computer Sciene
+// Computer Science
 Map<String, List<LearningBite>> componentLearningBites = {
   "Mainboard": mainboardLearningBites,
   "CPU": cpuLearningBites,
@@ -62,13 +63,14 @@ Map<String, List<LearningBite>> advancedEducationScienceLearningBites = {
   "Fortgeschrittene Strategien": advancedStrategiesLearningBites,
   "Aufmerksamkeit und Lernen": attentionStrategiesLearningBites,
   "Lernstrategie: Vorwissen aktivieren": activationStrategiesLearningBites,
-  "Weitere Lernstrategien": learningStrategiesLearningBites,
+  "Elaborationsstrategien": elaborationStrategiesLearningBites,
+  "Organisationsstrategien": organizationStrategiesLearningBites,
 };
 
 // Biology
 
 // ===== Units =====
-// Computer Sciene
+// Computer Science
 Map<String, Map<String, List<LearningBite>>> computerLearningBites = {
   "Komponenten": componentLearningBites,
 };
@@ -97,7 +99,7 @@ Map<String, Map<String, List<LearningBite>>>
 };
 
 // ===== Topics =====
-// Computer Sciene
+// Computer Science
 Map<String, Map<String, Map<String, List<LearningBite>>>>
     hardwareComputerScienceLearningBites = {
   "Computer": computerLearningBites,

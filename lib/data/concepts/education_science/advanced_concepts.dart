@@ -19,8 +19,13 @@ List<Concept> advancedEducationScienceCategoriesConcepts = [
         "Lernstrategie: Vorwissen aktivieren"]!,
   ),
   Concept(
-    name: "Weitere Lernstrategien",
+    name: "Elaborationsstrategien",
     learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
-        "Lernstrategien"]!["Vertiefung"]!["Weitere Lernstrategien"]!,
+        "Lernstrategien"]!["Vertiefung"]!["Elaborationsstrategien"]!,
+  ),
+  Concept(
+    name: "Organisationsstrategien",
+    learningBites: learningBiteMap["Erziehungswissenschaften"]!["Studium"]![
+        "Lernstrategien"]!["Vertiefung"]!["Organisationsstrategien"]!,
   ),
 ];

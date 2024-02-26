@@ -131,7 +131,7 @@ class _AnswerFieldState extends State<AnswerField> {
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               counterText: '',
-              errorStyle: const TextStyle(height: 0.01),
+              errorStyle: const TextStyle(fontSize: 0.01),
             ),
           ),
         ),

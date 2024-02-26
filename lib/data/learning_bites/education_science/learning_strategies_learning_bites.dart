@@ -42,7 +42,7 @@ Allein das Anfertigen von Notizen verbessert die Behaltensleistung.\nEs verstär
     Column(
       children: [
         const Text("""
-Menschen können visulle Vorstellungen erstellen und der Einsatz von Vorstellungsbildern wird als Imagery-Strategie bezeichnet.\n
+Menschen können visuelle Vorstellungen erstellen und der Einsatz von Vorstellungsbildern wird als Imagery-Strategie bezeichnet.\n
         """),
         SizedBox(
           height: 400,

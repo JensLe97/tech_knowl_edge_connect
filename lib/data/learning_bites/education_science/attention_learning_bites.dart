@@ -28,7 +28,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Lernen ein ressourcenbeanspruchender Prozess des Aufbaus menatler Konstruktionen. Dieser Ressourcenverbrauch ist in der {} theory beschrieben",
+            "Lernen ein ressourcenbeanspruchender Prozess des Aufbaus mentaler Konstruktionen. Dieser Ressourcenverbrauch ist in der {} theory beschrieben",
         correctAnswer: "cognitive load",
         answers: []),
     Task(
@@ -64,7 +64,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Wenn die Menge der benötigten Ressourcen, das Ausmaß der verfügbaren Kapatität (cognitive capacity) übersteigen, spricht man von {}.",
+            "Wenn die Menge der benötigten Ressourcen, das Ausmaß der verfügbaren Kapazität (cognitive capacity) übersteigen, spricht man von {}.",
         correctAnswer: "cognitive overload",
         answers: []),
     Task(

@@ -27,7 +27,7 @@ Zwei-Komponenten-Sichtweise:
     Column(
       children: [
         const Text("""
-Einzelene Behaltenstrategien bilden sich bereits in der Grundschul aus, erworben werden (metakognitive) Strategien aber erst im höheren Alter.\n
+Einzelne Behaltensstrategien bilden sich bereits in der Grundschul aus, erworben werden (metakognitive) Strategien aber erst im höheren Alter.\n
         """),
         SizedBox(
           height: 400,
@@ -66,7 +66,7 @@ Map<String, List<Task>> tasks = {
           "Systemisches Wissen",
           "Epistemisches Wissen",
           "Exekutive Prozesse",
-          "Sensitiät kognitiver Aktiviäten",
+          "Sensitivität kognitiver Aktivitäten",
           "Metakognitive Erfahrungen"
         ]),
     Task(
@@ -78,7 +78,7 @@ Map<String, List<Task>> tasks = {
           "Systemisches Wissen",
           "Epistemisches Wissen",
           "Exekutive Prozesse",
-          "Sensitiät kognitiver Aktiviäten",
+          "Sensitivität kognitiver Aktivitäten",
           "Metakognitive Erfahrungen"
         ]),
     Task(
@@ -90,7 +90,7 @@ Map<String, List<Task>> tasks = {
           "Systemisches Wissen",
           "Epistemisches Wissen",
           "Exekutive Prozesse",
-          "Sensitiät kognitiver Aktiviäten",
+          "Sensitivität kognitiver Aktivitäten",
           "Metakognitive Erfahrungen"
         ]),
     Task(
@@ -101,18 +101,18 @@ Map<String, List<Task>> tasks = {
           "Systemisches Wissen",
           "Epistemisches Wissen",
           "Exekutive Prozesse",
-          "Sensitiät kognitiver Aktiviäten",
+          "Sensitivität kognitiver Aktivitäten",
           "Metakognitive Erfahrungen"
         ]),
     Task(
         type: TaskType.singleChoice,
         question: "Ordne zu:\nErfahrungswissen und Intuition",
-        correctAnswer: "Sensitiät kognitiver Aktiviäten",
+        correctAnswer: "Sensitivität kognitiver Aktivitäten",
         answers: [
           "Systemisches Wissen",
           "Epistemisches Wissen",
           "Exekutive Prozesse",
-          "Sensitiät kognitiver Aktiviäten",
+          "Sensitivität kognitiver Aktivitäten",
           "Metakognitive Erfahrungen"
         ]),
   ],
@@ -156,7 +156,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Ineffizienz der Strategienutzung kommt durch unzureichende {} oder mangelde {} dafür, wann die Strategie wirkungsvoll einsetzbar ist.",
+            "Die Ineffizienz der Strategienutzung kommt durch unzureichende {} oder mangelnde {} dafür, wann die Strategie wirkungsvoll einsetzbar ist.",
         correctAnswer: "Automatisierung{}Sensitivität",
         answers: []),
     Task(

@@ -84,10 +84,10 @@ List<Subject> subjects = [
   // Motivation
   // Wie wird Motivation theoretisch gefasst?
   // Wie liegt die Bedeutung der Motivation für das schulische Lernen?
-  // Stellen Sie heraus, welche organisatorischen, pädagogischen, und didakitschen Bedingungen an einer Grundschule gegeben sein müssen, um motiviertes Lernen zu ermöglichen.
+  // Stellen Sie heraus, welche organisatorischen, pädagogischen, und didaktischen Bedingungen an einer Grundschule gegeben sein müssen, um motiviertes Lernen zu ermöglichen.
 
   // Lernstrategien
-  // Erläutern Sie die mögliche Bedeutung von Lernstrategien in der Grundschulpödagogik.
+  // Erläutern Sie die mögliche Bedeutung von Lernstrategien in der Grundschulpädagogik.
   // Gehen Sie dabei auf unterschiedlichen Formen von Strategien ein und diskutieren Sie den möglichen Einsatz im Grundschulunterricht.
 ];
 

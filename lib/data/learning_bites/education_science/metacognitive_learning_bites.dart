@@ -25,7 +25,7 @@ Bei der Planung soll festgestellt werden, welches Ziel angestrebt wird und wie e
     Column(
       children: [
         const Text("""
-Die Überwachung korriegiert eine Aufgabenbearbeitung und begleitet den eigenen Bearbeitungsfortschritt kritisch.\n
+Die Überwachung korrigiert eine Aufgabenbearbeitung und begleitet den eigenen Bearbeitungsfortschritt kritisch.\n
         """),
         SizedBox(
           height: 500,
@@ -49,24 +49,7 @@ Die Prozesse der Regulation steuern das Verstehen und Behalten.\n
       ],
     ),
   ],
-  "Bewertung": [
-    Column(
-      children: [
-        const Text("""
-Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
-    1. Intrinsischer Wert
-    2. Nützlichkeit
-    3. Persönlische Wichtigkeit
-    4. Kosten
-        """),
-        SizedBox(
-          height: 500,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
-  ],
+  "Bewertung": [],
 };
 
 Map<String, List<Task>> tasks = {
@@ -82,7 +65,7 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
-        question: "Die eigentlichen Planungziele (Text durcharbeiten): {} .",
+        question: "Die eigentlichen Planungsziele (Text durcharbeiten): {} .",
         correctAnswer: "Primäre Ziele",
         answers: [
           "Primäre Ziele",
@@ -99,7 +82,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Funktion der Überwachung liegt im Sammeln von Infos über den ererichten {} und das {}.",
+            "Die Funktion der Überwachung liegt im Sammeln von Infos über den erreichten {} und das {}.",
         correctAnswer: "Lernstand{}Verständnisniveau",
         answers: []),
     Task(
@@ -129,9 +112,9 @@ Map<String, List<Task>> tasks = {
         type: TaskType.singleChoiceCloze,
         question:
             "Regulationsprozesse tragen dazu bei...\nIntensität und {} des strategischen Vorgehens genauer zu bestimmen.",
-        correctAnswer: "die Gechwindigkeit",
+        correctAnswer: "die Geschwindigkeit",
         answers: [
-          "die Gechwindigkeit",
+          "die Geschwindigkeit",
           "die Bereitschaft",
         ]),
   ],

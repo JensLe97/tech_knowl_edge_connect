@@ -48,7 +48,7 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text(
-            "Eine Gruppe ist eine mathematische Struktur, also eine Klasse von Objekten, die alle die gleichen Eigenschaften haben. Diese Objekte sind im Falle der Gruppe eine nichtleere Menge M. Außerdem hat eine Gruppe (M, &) immer eine Verküpfung & definiert."),
+            "Eine Gruppe ist eine mathematische Struktur, also eine Klasse von Objekten, die alle die gleichen Eigenschaften haben. Diese Objekte sind im Falle der Gruppe eine nichtleere Menge M. Außerdem hat eine Gruppe (M, &) immer eine Verknüpfung & definiert."),
         const SizedBox(height: 30),
         SizedBox(
           height: 200,
@@ -169,13 +169,13 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Abgeschlossen bedeteutet: Für beliebige a, b aus der Menge M gilt stets, dass auch (a & b) aus M ist.",
+            "Abgeschlossen bedeutet: Für beliebige a, b aus der Menge M gilt stets, dass auch (a & b) aus M ist.",
         correctAnswer: "Wahr",
         answers: ["Wahr", "Falsch"]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Für eine Gruppe gilt: Die Menge M ist bezüglich der Verküpfung & abgeschlossen.",
+            "Für eine Gruppe gilt: Die Menge M ist bezüglich der Verknüpfung & abgeschlossen.",
         correctAnswer: "Wahr",
         answers: ["Wahr", "Falsch"]),
     Task(
@@ -331,7 +331,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Für die Mengen A und B gilt das Kommutativ-, Assoziativ- und das Distributivgesetzt mit jeweils den Operatoren ∩ und ∪.",
+            "Für die Mengen A und B gilt das Kommutativ-, Assoziativ- und das Distributivgesetz mit jeweils den Operatoren ∩ und ∪.",
         correctAnswer: "Wahr",
         answers: ["Wahr", "Falsch"]),
   ]

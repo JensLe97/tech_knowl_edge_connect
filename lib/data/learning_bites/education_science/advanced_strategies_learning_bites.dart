@@ -10,7 +10,7 @@ Map<String, List<Widget>> data = {
     Column(
       children: [
         const Text("""
-Elaborationsstrategien dienen dem Verstehen und darhaften Behalten neuer Informationen.\n
+Elaborationsstrategien dienen dem Verstehen und dauerhaften Behalten neuer Informationen.\n
 Dazu zählen:
     1. Vorwissen aktivieren
     2. Fragenstellen
@@ -31,7 +31,7 @@ Dazu zählen:
     Column(
       children: [
         const Text("""
-Organisationsstrategien organisieren neues Wissen und strukturien es, indem die zwischen Wissenselementen bestehenden Verknüpfungen herausgearbeitet werden.\n
+Organisationsstrategien organisieren neues Wissen und strukturieren es, indem die zwischen Wissenselementen bestehenden Verknüpfungen herausgearbeitet werden.\n
         """),
         SizedBox(
           height: 500,
@@ -119,7 +119,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Ist eine multifunktionale Strategie (elaborative und strak strukturiend-organisatorische Elemente).",
+            "Ist eine multifunktionale Strategie (elaborative und stark strukturierend-organisatorische Elemente).",
         correctAnswer: "Notizenmachen",
         answers: [
           "Aktivieren von Vorwissen",
@@ -235,7 +235,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Es sind metagognitive Strategien, weil sie eine {} Komponente haben (Nachdenken über das Nachdenken)",
+            "Es sind metakognitive Strategien, weil sie eine {} Komponente haben (Nachdenken über das Nachdenken)",
         correctAnswer: "selbstreflexive",
         answers: []),
   ],
@@ -263,7 +263,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Es wird unterschiedn zwischen 'Schreiben als Wiedergabe von Wissen' und 'Schreiben als {}'.",
+            "Es wird unterschieden zwischen 'Schreiben als Wiedergabe von Wissen' und 'Schreiben als {}'.",
         correctAnswer: "Wissenstransformation",
         answers: []),
   ],

@@ -43,7 +43,7 @@ Es lassen sich drei Beweggründe unterscheiden:\n
 Eccles (2000) unterscheidet zwischen verschiedenen Werten einer Handlung:\n
     1. Intrinsischer Wert
     2. Nützlichkeit
-    3. Persönlische Wichtigkeit
+    3. Persönliche Wichtigkeit
     4. Kosten
         """),
         SizedBox(
@@ -156,7 +156,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die vorübergehend emotitionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interesanntheit nennt man {}.",
+            "Die vorübergehend emotionale Erregung und Aufmerksamkeit beim Lernen aufgrund von Interessantheit nennt man {}.",
         correctAnswer: "situatives Interesse",
         answers: []),
   ],
@@ -232,7 +232,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Mermalen wie der {}.",
+            "Die Wertkomponente ist beeinflusst durch Motive, Bedürfnisse, Zielorientierungen und personales Interesse und steht in Zusammenhang mit kontextuellen Merkmalen wie der {}.",
         correctAnswer: "Klassenzielstruktur",
         answers: []),
   ],

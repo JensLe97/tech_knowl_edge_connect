@@ -23,14 +23,14 @@ Die bekanntesten Stile sind:\n
       ],
     ),
   ],
-  "Verabeitungspräferenzen": [
+  "Verarbeitungspräferenzen": [
     Column(
       children: [
         const Text("""
-Schmeck (1988) unterscheidet zwischen Verabeitungspräferenzen:\n
-    1. tiefe Verabeitungspräferenz
-    2. elaborative Verabeitungspräferenz
-    3. oberflächlicheVerabeitungspräferenz
+Schmeck (1988) unterscheidet zwischen Verarbeitungspräferenzen:\n
+    1. tiefe Verarbeitungspräferenz
+    2. elaborative Verarbeitungspräferenz
+    3. oberflächlicheVerarbeitungspräferenz
         """),
         SizedBox(
           height: 300,
@@ -64,7 +64,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Personen...\nfällt es schwerer den einsatz von Lernstategien selbst zu überwachen.",
+            "Personen...\nfällt es schwerer den einsatz von Lernstrategien selbst zu überwachen.",
         correctAnswer: "Feldabhängig",
         answers: ["Feldabhängig", "Feldunabhängig"]),
     Task(
@@ -82,40 +82,40 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Personen...\nüberwachen ihre eigenen Informationsverabeitungsprozesse",
+            "Personen...\nüberwachen ihre eigenen Informationsverarbeitungsprozesse",
         correctAnswer: "Feldunabhängig",
         answers: ["Feldabhängig", "Feldunabhängig"]),
   ],
-  "Verabeitungspräferenzen": [
+  "Verarbeitungspräferenzen": [
     Task(
         type: TaskType.singleChoice,
         question:
             "Lerner benutzen hauptsächlich einfache Memorierungsstrategien.",
-        correctAnswer: "oberflächliche Verabeitungspräferenz",
+        correctAnswer: "oberflächliche Verarbeitungspräferenz",
         answers: [
-          "tiefe Verabeitungspräferenz",
-          "elaborative Verabeitungspräferenz",
-          "oberflächliche Verabeitungspräferenz"
+          "tiefe Verarbeitungspräferenz",
+          "elaborative Verarbeitungspräferenz",
+          "oberflächliche Verarbeitungspräferenz"
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Beim Wissenerwerb wird kritisch vorgegangen und konzeptuell-organisierende Strategien bevorzugt.",
-        correctAnswer: "tiefe Verabeitungspräferenz",
+            "Beim Wissenserwerb wird kritisch vorgegangen und konzeptuell-organisierende Strategien bevorzugt.",
+        correctAnswer: "tiefe Verarbeitungspräferenz",
         answers: [
-          "tiefe Verabeitungspräferenz",
-          "elaborative Verabeitungspräferenz",
-          "oberflächliche Verabeitungspräferenz"
+          "tiefe Verarbeitungspräferenz",
+          "elaborative Verarbeitungspräferenz",
+          "oberflächliche Verarbeitungspräferenz"
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
             "Es wird eine Verknüpfung der neuen Lerninhalte mit persönlichen Erfahrungen hergestellt.",
-        correctAnswer: "elaborative Verabeitungspräferenz",
+        correctAnswer: "elaborative Verarbeitungspräferenz",
         answers: [
-          "tiefe Verabeitungspräferenz",
-          "elaborative Verabeitungspräferenz",
-          "oberflächliche Verabeitungspräferenz"
+          "tiefe Verarbeitungspräferenz",
+          "elaborative Verarbeitungspräferenz",
+          "oberflächliche Verarbeitungspräferenz"
         ]),
   ]
 };
@@ -128,9 +128,9 @@ List<LearningBite> learnTypesStylesLearningBites = [
       iconData: FontAwesomeIcons.eye,
       tasks: tasks["Lerntypen und Lernstile"]!),
   LearningBite(
-      name: "Verabeitungspräferenzen",
+      name: "Verarbeitungspräferenzen",
       type: LearningBiteType.lesson,
-      data: data["Verabeitungspräferenzen"]!,
+      data: data["Verarbeitungspräferenzen"]!,
       iconData: FontAwesomeIcons.star,
-      tasks: tasks["Verabeitungspräferenzen"]!),
+      tasks: tasks["Verarbeitungspräferenzen"]!),
 ];

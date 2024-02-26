@@ -42,7 +42,7 @@ Es lassen sich 5 Merkmale von Strategien benennen:\n
     Column(
       children: [
         const Text("""
-Mnemonische Strategien sind Techniken, die dabei helfen, neue Informationen im Arbeitsgedächtnis zu halten, um eine Verknüpfung mit vorhandendem Vorwissen zu unterstützen\n
+Mnemonische Strategien sind Techniken, die dabei helfen, neue Informationen im Arbeitsgedächtnis zu halten, um eine Verknüpfung mit vorhandenem Vorwissen zu unterstützen\n
         """),
         SizedBox(
           height: 500,
@@ -67,12 +67,12 @@ Es lassen sich drei Beweggründe unterscheiden:\n
       ],
     ),
   ],
-  "Strukturiende Strategien": [
+  "Strukturierende Strategien": [
     Column(
       children: [
         const Text("""
-Struktierende Strategien zielen auf interne Verküpfungen und Strukturen des Lernmaterials ab.\n
-Relevante Informationen sollen herausgesucht werden und behaltensförderlich organasitiert und gruppiert werden
+Strukturierende Strategien zielen auf interne Verknüpfungen und Strukturen des Lernmaterials ab.\n
+Relevante Informationen sollen herausgesucht werden und behaltensförderlich organisiert und gruppiert werden
         """),
         SizedBox(
           height: 500,
@@ -105,9 +105,9 @@ Map<String, List<Task>> tasks = {
         type: TaskType.singleChoiceCloze,
         question:
             "Unter Lernstrategien versteht man Prozesse bzw. Aktivitäten, die auf ein Lern- oder Behaltensziel ausgerichtet sind.\nSie weisen wenigstens eine zusätzliche Eigenschaft auf: intentional, bewusst, spontan, selektiv und {}.",
-        correctAnswer: "kontolliert",
+        correctAnswer: "kontrolliert",
         answers: [
-          "kontolliert",
+          "kontrolliert",
           "unkontrolliert",
         ]),
     Task(
@@ -149,7 +149,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Schlüsselwortmethode",
         answers: ["Wahr", "Falsch"]),
   ],
-  "Strukturiende Strategien": [
+  "Strukturierende Strategien": [
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
@@ -213,11 +213,11 @@ List<LearningBite> cognitiveLearningBites = [
       iconData: FontAwesomeIcons.brain,
       tasks: tasks["Mnemonische Strategien"]!),
   LearningBite(
-      name: "Strukturiende Strategien",
+      name: "Strukturierende Strategien",
       type: LearningBiteType.lesson,
-      data: data["Strukturiende Strategien"]!,
+      data: data["Strukturierende Strategien"]!,
       iconData: FontAwesomeIcons.trowelBricks,
-      tasks: tasks["Strukturiende Strategien"]!),
+      tasks: tasks["Strukturierende Strategien"]!),
   LearningBite(
       name: "Generative Strategien",
       type: LearningBiteType.lesson,

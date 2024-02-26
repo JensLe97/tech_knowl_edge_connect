@@ -44,7 +44,7 @@ Die Dimensionen von Vorwissen sind:\n
       ],
     ),
   ],
-  "Vorwissenaktivierung": [
+  "Vorwissensaktivierung": [
     Column(
       children: [
         const Text("""
@@ -148,7 +148,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Langzeitgedächtnis{}Arbeitsgedächtnis",
         answers: []),
   ],
-  "Vorwissenaktivierung": [
+  "Vorwissensaktivierung": [
     Task(
         type: TaskType.singleChoice,
         question: "Brainstorming: Assoziationstechnik zur Ideenfindung.",
@@ -159,7 +159,7 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
-        question: "Mappingverfahren: Wissensstrukturen grafisch darstellen.",
+        question: "Mapping-Verfahren: Wissensstrukturen grafisch darstellen.",
         correctAnswer: "Offene Vorwissensaktivierung",
         answers: [
           "Offene Vorwissensaktivierung",
@@ -185,7 +185,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Kognitive Vorstrukturierung: Vor dem Lernen Struktierende Infos (Advanced Organizer) präsentieren.",
+            "Kognitive Vorstrukturierung: Vor dem Lernen strukturierende Infos (Advanced Organizer) präsentieren.",
         correctAnswer: "Fokussiertere Vorwissensaktivierung",
         answers: [
           "Offene Vorwissensaktivierung",
@@ -229,9 +229,9 @@ List<LearningBite> activationStrategiesLearningBites = [
       iconData: FontAwesomeIcons.cubes,
       tasks: tasks["Dimensionen von Vorwissen"]!),
   LearningBite(
-      name: "Vorwissenaktivierung",
+      name: "Vorwissensaktivierung",
       type: LearningBiteType.lesson,
-      data: data["Vorwissenaktivierung"]!,
+      data: data["Vorwissensaktivierung"]!,
       iconData: FontAwesomeIcons.lightbulb,
-      tasks: tasks["Vorwissenaktivierung"]!),
+      tasks: tasks["Vorwissensaktivierung"]!),
 ];

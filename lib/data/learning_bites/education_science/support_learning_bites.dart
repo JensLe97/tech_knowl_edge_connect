@@ -252,7 +252,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Nutzung von abwechsungsreichen, vielfältigen, persönlich bedeutsamen, sinnhaften, emotionsreichen Aufgabenstellungen",
+            "Nutzung von abwechslungsreichen, vielfältigen, persönlich bedeutsamen, sinnhaften, emotionsreichen Aufgabenstellungen",
         correctAnswer: "Task",
         answers: ["Task", "Authority", "Recognition", "Evaluation", "Timing"]),
     Task(

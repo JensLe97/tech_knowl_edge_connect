@@ -24,7 +24,7 @@ Motivationstrainings werden häufig mit der Vermittlung von Fachwissen und Lerns
     Column(
       children: [
         const Text("""
-Dieses Training addressiert verschiedene motivationale Komponenten.\n
+Dieses Training adressiert verschiedene motivationale Komponenten.\n
         """),
         SizedBox(
           height: 500,
@@ -41,7 +41,7 @@ Schüler und Schülerinnen...\n
     2. lernen Erfolge und Misserfolge funktional zu attribuieren
     3. entwickeln Lernstrategien
     4. entwickeln die Überzeugung, eigene Fähigkeiten verändern zu können
-    5. und das Gelernte über verschiedene Fächer hinweg zu generalieren
+    5. und das Gelernte über verschiedene Fächer hinweg zu generalisieren
         """),
         SizedBox(
           height: 300,
@@ -158,7 +158,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Die SuS erhalten bei der Leistungsbewertung {} nach individueller Berzugsnorm.",
+            "Die SuS erhalten bei der Leistungsbewertung {} nach individueller Bezugsnorm.",
         correctAnswer: "Feedback",
         answers: []),
     Task(

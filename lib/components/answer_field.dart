@@ -36,11 +36,7 @@ class _AnswerFieldState extends State<AnswerField> {
 
     focusNode = FocusNode();
     if (widget.autofocus) {
-      SchedulerBinding.instance.addPostFrameCallback((_) {
-        Timer(const Duration(milliseconds: 1000), () {
-          focusNode.requestFocus();
-        });
-      });
+      focusNode.requestFocus();
     }
   }
 
@@ -131,7 +127,7 @@ class _AnswerFieldState extends State<AnswerField> {
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               counterText: '',
-              errorStyle: const TextStyle(fontSize: 0.01),
+              errorStyle: const TextStyle(height: 0.01, fontSize: 1),
             ),
           ),
         ),

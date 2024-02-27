@@ -1,7 +1,4 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 
 class AnswerField extends StatefulWidget {
   final String answer;

@@ -99,7 +99,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Regulationsprozesse tragen dazu bei...\ndie Ressourcen für eine Aufgabenbearbeitung klarer zu definieren.",
+            "Regulationsprozesse tragen dazu bei...\ndie {} für eine Aufgabenbearbeitung klarer zu definieren.",
         correctAnswer: "Ressourcen",
         answers: []),
     Task(
@@ -123,10 +123,7 @@ Map<String, List<Task>> tasks = {
         type: TaskType.singleChoiceCloze,
         question: "Die Bewertung erfolgt {} Beendigung einer Lernaufgabe",
         correctAnswer: "nach",
-        answers: [
-          "nach",
-          "vor",
-        ]),
+        answers: ["nach", "vor"]),
     Task(
         type: TaskType.singleChoiceCloze,
         question: "Die Bewertung hat keinen Einfluss auf zukünftige Aufgaben.",
@@ -142,7 +139,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Verbesserung",
         answers: []),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question: "Welche Frage wird bei der Bewertung beantwortet?",
         correctAnswer: "War der Zeitplan einhaltbar?",
         answers: [

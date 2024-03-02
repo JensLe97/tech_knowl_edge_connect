@@ -36,22 +36,6 @@ Einzelne Behaltensstrategien bilden sich bereits in der Grundschul aus, erworben
         ),
       ],
     ),
-    Column(
-      children: [
-        const Text("""
-Diese lassen sich auch wie folgt beschreiben:\n
-    1. Prädezisionale Phase
-    2. Präaktionale Phase
-    3. Aktionale Phase
-    4. Postaktionale Phase
-        """),
-        SizedBox(
-          height: 400,
-          child: Image.asset(
-              'images/learning_bites/education_science/motivation/motivation.png'),
-        ),
-      ],
-    ),
   ],
 };
 
@@ -160,7 +144,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Automatisierung{}Sensitivität",
         answers: []),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.freeTextFieldCloze,
         question:
             "Wenn der erhoffte Nutzen sich nicht erkennen lässt, kann es zu einer '{} der Motivation' einem '{}' oder kommen.",
         correctAnswer: "Durststrecke{}Motivationstal",

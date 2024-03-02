@@ -147,7 +147,7 @@ Map<String, List<Task>> tasks = {
         question:
             "Akustische und bildliche Brücken bauen, z.B. Bean mit Biene verknüpfen, nennt man: {}.",
         correctAnswer: "Schlüsselwortmethode",
-        answers: ["Wahr", "Falsch"]),
+        answers: []),
   ],
   "Strukturierende Strategien": [
     Task(

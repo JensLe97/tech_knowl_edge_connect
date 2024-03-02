@@ -134,11 +134,6 @@ Map<String, List<Task>> tasks = {
   ],
   "Vorstellungsbilder": [
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: ".",
-        correctAnswer: "Lern{}Performanz{}Arbeitsvermeidungs",
-        answers: []),
-    Task(
         type: TaskType.singleChoiceCloze,
         question:
             "Die Anreicherung durch weitere Informationen aus dem Gedächtnis wird als {} bezeichnet.",

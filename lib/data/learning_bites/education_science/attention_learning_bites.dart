@@ -162,7 +162,7 @@ Map<String, List<Task>> tasks = {
           "6. Stadium (18-24 Monate)"
         ]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.freeTextFieldCloze,
         question:
             "In der präoperatorischen Stufe zeigt sich eine {} im Denken des Kindes, denn es ist Philosoph und hat eigenständige Gedanken und Vorstellungen über die Welt.",
         correctAnswer: "Ambivalenz",

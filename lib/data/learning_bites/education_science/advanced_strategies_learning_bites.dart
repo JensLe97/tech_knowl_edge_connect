@@ -93,19 +93,6 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Es wird an bestehende kognitive Strukturen 'angedockt', um Andockstellen für neues Wissen zu ermöglichen.",
-        correctAnswer: "Aktivieren von Vorwissen",
-        answers: [
-          "Aktivieren von Vorwissen",
-          "Fragenstellen",
-          "Notizenmachen",
-          "Vorstellungsbilder",
-          "Mnemotechniken",
-          "Wiederholungsstrategien",
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
             "Dient der Aufmerksamkeitssteuerung und der elaborativen Verarbeitung.",
         correctAnswer: "Fragenstellen",
         answers: [
@@ -119,8 +106,8 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Ist eine multifunktionale Strategie (elaborative und stark strukturierend-organisatorische Elemente).",
-        correctAnswer: "Notizenmachen",
+            "Sind sehr wichtig im Lernprozess, denn sie sind Enkodierstrategien.",
+        correctAnswer: "Wiederholungsstrategien",
         answers: [
           "Aktivieren von Vorwissen",
           "Fragenstellen",
@@ -144,8 +131,9 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
-        question: "Müssen erlernt werden.",
-        correctAnswer: "Mnemotechniken",
+        question:
+            "Es wird an bestehende kognitive Strukturen 'angedockt', um Andockstellen für neues Wissen zu ermöglichen.",
+        correctAnswer: "Aktivieren von Vorwissen",
         answers: [
           "Aktivieren von Vorwissen",
           "Fragenstellen",
@@ -157,8 +145,20 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Sind sehr wichtig im Lernprozess, denn sie sind Enkodierstrategien.",
-        correctAnswer: "Wiederholungsstrategien",
+            "Ist eine multifunktionale Strategie (elaborative und stark strukturierend-organisatorische Elemente).",
+        correctAnswer: "Notizenmachen",
+        answers: [
+          "Aktivieren von Vorwissen",
+          "Fragenstellen",
+          "Notizenmachen",
+          "Vorstellungsbilder",
+          "Mnemotechniken",
+          "Wiederholungsstrategien",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Müssen erlernt werden.",
+        correctAnswer: "Mnemotechniken",
         answers: [
           "Aktivieren von Vorwissen",
           "Fragenstellen",
@@ -193,7 +193,7 @@ Map<String, List<Task>> tasks = {
   ],
   "Selbstregulationsstrategien": [
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question: "Ordne zu:\nDamit bin ich noch nicht zufrieden",
         correctAnswer: "Bewertung",
         answers: [
@@ -203,7 +203,7 @@ Map<String, List<Task>> tasks = {
           "Regulation",
         ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question: "Ordne zu:\nWie gehe ich bei dieser Aufgabe vor?",
         correctAnswer: "Planung",
         answers: [
@@ -213,7 +213,7 @@ Map<String, List<Task>> tasks = {
           "Regulation",
         ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question: "Ordne zu:\nDas muss ich nochmal lesen",
         correctAnswer: "Regulation",
         answers: [
@@ -223,7 +223,7 @@ Map<String, List<Task>> tasks = {
           "Regulation",
         ]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoice,
         question: "Ordne zu:\nHabe ich das wirklich verstanden",
         correctAnswer: "Überwachung",
         answers: [

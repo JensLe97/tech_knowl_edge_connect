@@ -92,7 +92,7 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Selbstfragen",
         answers: []),
     Task(
-        type: TaskType.singleChoice,
+        type: TaskType.freeTextFieldCloze,
         question:
             "Fragen, die an mögliche Beantworte gestellt werden, werden {} genannt.",
         correctAnswer: "kommunikative Fragen",
@@ -215,15 +215,15 @@ Map<String, List<Task>> tasks = {
         question:
             "Beispiele sind {}, Chunking, Bilderketten bilden, {} und {}.",
         correctAnswer: "Clustering{}Mindmaps{}Eselsbrücken",
-        answers: ["organisierten", "unstrukturierten"]),
+        answers: []),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
             "Morris (1978) unterscheidet:\nBasieren ausschließlich auf Besonderheiten der gedächtnismäßigen Informationsverarbeitung.",
         correctAnswer: "interne Gedächtnishilfen",
         answers: ["externe Gedächtnishilfen", "interne Gedächtnishilfen"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
             "Morris (1978) unterscheidet:\nAußerhalb der Person liegende Mittel wie Kalender und Notizbücher.",
         correctAnswer: "externe Gedächtnishilfen",

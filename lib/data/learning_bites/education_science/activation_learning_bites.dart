@@ -114,6 +114,16 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
+            "Repräsentation: Form, in der das Vorwissen vorliegt:\nWissensstrukturen, in denen Zusammenhänge eines Realitätsbereichs repräsentiert sind",
+        correctAnswer: "Schemata",
+        answers: [
+          "Analoge Repräsentation",
+          "Mentale Modelle",
+          "Schemata",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question:
             "Repräsentation: Form, in der das Vorwissen vorliegt:\nAbbildungen, die die Merkmale eines Objektes beibehalten, also den äußeren Gegebenheiten ähneln",
         correctAnswer: "Analoge Repräsentation",
         answers: [
@@ -126,16 +136,6 @@ Map<String, List<Task>> tasks = {
         question:
             "Repräsentation: Form, in der das Vorwissen vorliegt:\nÄhnlichkeiten sind eher strukturell",
         correctAnswer: "Mentale Modelle",
-        answers: [
-          "Analoge Repräsentation",
-          "Mentale Modelle",
-          "Schemata",
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Repräsentation: Form, in der das Vorwissen vorliegt:\nWissensstrukturen, in denen Zusammenhänge eines Realitätsbereichs repräsentiert sind",
-        correctAnswer: "Schemata",
         answers: [
           "Analoge Repräsentation",
           "Mentale Modelle",
@@ -159,6 +159,15 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
+        question:
+            "Analogien: Rationale Strukturen, die von einem Gebiet auf ein anderes übertragen werden.",
+        correctAnswer: "Fokussiertere Vorwissensaktivierung",
+        answers: [
+          "Offene Vorwissensaktivierung",
+          "Fokussiertere Vorwissensaktivierung",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
         question: "Mapping-Verfahren: Wissensstrukturen grafisch darstellen.",
         correctAnswer: "Offene Vorwissensaktivierung",
         answers: [
@@ -176,14 +185,6 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
-        question: "Hypothesen, Erklärungen: Beispiele generieren lassen.",
-        correctAnswer: "Offene Vorwissensaktivierung",
-        answers: [
-          "Offene Vorwissensaktivierung",
-          "Fokussiertere Vorwissensaktivierung",
-        ]),
-    Task(
-        type: TaskType.singleChoice,
         question:
             "Kognitive Vorstrukturierung: Vor dem Lernen strukturierende Infos (Advanced Organizer) präsentieren.",
         correctAnswer: "Fokussiertere Vorwissensaktivierung",
@@ -193,9 +194,8 @@ Map<String, List<Task>> tasks = {
         ]),
     Task(
         type: TaskType.singleChoice,
-        question:
-            "Fragenstellen: Bezug zu vorhergehenden Lektionen direkt herstellen.",
-        correctAnswer: "Fokussiertere Vorwissensaktivierung",
+        question: "Hypothesen, Erklärungen: Beispiele generieren lassen.",
+        correctAnswer: "Offene Vorwissensaktivierung",
         answers: [
           "Offene Vorwissensaktivierung",
           "Fokussiertere Vorwissensaktivierung",
@@ -212,7 +212,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.singleChoice,
         question:
-            "Analogien: Rationale Strukturen, die von einem Gebiet auf ein anderes übertragen werden.",
+            "Fragenstellen: Bezug zu vorhergehenden Lektionen direkt herstellen.",
         correctAnswer: "Fokussiertere Vorwissensaktivierung",
         answers: [
           "Offene Vorwissensaktivierung",

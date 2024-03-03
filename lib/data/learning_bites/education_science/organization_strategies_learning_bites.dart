@@ -65,7 +65,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Bedingung des Zusammenfassens ist das Erkennen der Wichtigkeiten und Unwichtigkeiten von Textaussagen.",
+            "Bedingung des Zusammenfassens ist das Erkennen der {} und {} von Textaussagen.",
         correctAnswer: "Wichtigkeiten{}Unwichtigkeiten",
         answers: []),
   ],

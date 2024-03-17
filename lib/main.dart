@@ -49,6 +49,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
         colorScheme: ColorScheme.light(
           background: Colors.grey.shade100,
           primary: Colors.grey.shade200,
+          onPrimary: Colors.grey.shade300,
           secondary: Colors.grey.shade400,
           inversePrimary: Colors.grey.shade700,
         ),
@@ -69,6 +70,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
           brightness: Brightness.dark,
           colorScheme: ColorScheme.dark(
             background: Colors.grey.shade900,
+            onPrimary: Colors.grey[850]!,
             primary: Colors.grey.shade800,
             secondary: Colors.grey.shade700,
             inversePrimary: Colors.grey.shade800,

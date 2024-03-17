@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/pages/search/ai_search_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/subject_overview_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -12,6 +14,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   final subjectController = TextEditingController();
+  final searchController = TextEditingController();
 
   void navigateToSubjectPage(int index) {
     Navigator.push(
@@ -26,7 +29,15 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        title: const Center(child: Text("Suche")),
+        title: Center(
+            child: SearchTextField(
+          controller: searchController,
+          hintText: "Was möchtest du wissen?",
+          onTap: () => {
+            showSearch(context: context, delegate: AiSearchDelegate())
+                .then((value) => FocusManager.instance.primaryFocus?.unfocus())
+          },
+        )),
       ),
       body: SafeArea(
         child: SingleChildScrollView(

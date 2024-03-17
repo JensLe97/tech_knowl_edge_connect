@@ -30,6 +30,10 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
+      - run: echo $ENV_G_DART | base64 -di > lib/env/env.g.dart
+        env:
+          ENV_G_DART: ${{ secrets.ENV_G_DART }}
+
       - name: Get dependencies
         run: flutter pub get
 

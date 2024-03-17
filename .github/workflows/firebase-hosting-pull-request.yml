@@ -19,6 +19,9 @@ jobs:
           distribution: "zulu"
           java-version: "17"
           cache: "gradle"
+      - run: echo $ENV_G_DART | base64 -d > lib/env/env.g.dart
+        env:
+          ENV_G_DART: ${{ secrets.ENV_G_DART }}
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GITHUB_TOKEN }}"

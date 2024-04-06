@@ -45,14 +45,11 @@ class AiSearchDelegate extends SearchDelegate {
   @override
   List<Widget>? buildActions(BuildContext context) {
     return [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: IconButton(
-          onPressed: () {
-            query = "";
-          },
-          icon: const Icon(Icons.clear),
-        ),
+      IconButton(
+        onPressed: () {
+          query = "";
+        },
+        icon: const Icon(Icons.clear),
       )
     ];
   }

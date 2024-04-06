@@ -4,6 +4,12 @@ import 'package:flutter/services.dart';
 import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
 import 'firebase_options.dart';
 
+/*
+  Generation of env.g.dart:
+  dart run build_runner build 
+  certutil -encode lib\env\env.g.dart tmp.b64 && findstr /v /c:- tmp.b64 > data.b64
+*/
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -11,25 +17,6 @@ void main() async {
   );
   runApp(const TechKnowlEdgeConnect());
 }
-
-/*
-Ideas:
-- ChatGPT style search (definitions, source code,)
-- Generate (VAE, GAN) Multimodal (Text, Images, Video, Audio, Sensor):
-  - Images
-  - Text
-  - Synthetic data
-  Using Transformers
-- Upload image/video -> Data Analysis:
-  - object detection
-  - image classification
-  - Semantic segmentation
-  - Panoptic segmentation
-  - Motion object Tracking
-  - Detect text and read it
-  - Tagging (labeling)
-  - Sim to real / Real to sim
-*/
 
 class TechKnowlEdgeConnect extends StatelessWidget {
   const TechKnowlEdgeConnect({super.key});

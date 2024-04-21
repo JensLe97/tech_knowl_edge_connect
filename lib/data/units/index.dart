@@ -14,7 +14,7 @@ import 'package:tech_knowl_edge_connect/data/units/math/numbers_units.dart';
 import 'package:tech_knowl_edge_connect/models/unit.dart';
 
 // ===== Topics =====
-// Computer Sciene
+// Computer Science
 Map<String, List<Unit>> hardwareComputerScienceUnits = {
   "Computer": computerUnits,
 };
@@ -45,7 +45,7 @@ Map<String, List<Unit>> foundationalBiologyUnits = {
 
 // Education Science
 Map<String, List<Unit>> universityEducationScienceUnits = {
-  "Motivation": movationUnits,
+  "Motivation": motivationUnits,
   "Lernstrategien": learningStrategiesUnits,
 };
 
@@ -62,7 +62,7 @@ Map<String, Map<String, List<Unit>>> mathUnits = {
 };
 
 Map<String, Map<String, List<Unit>>> biologyUnits = {
-  "Mittelstufe": foundationalBiologyUnits,
+  "Studium": foundationalBiologyUnits,
 };
 
 Map<String, Map<String, List<Unit>>> educationScienceUnits = {

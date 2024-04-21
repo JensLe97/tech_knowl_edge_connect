@@ -1,3 +1,4 @@
+import 'package:tech_knowl_edge_connect/data/concepts/biology/vertebrates_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/component_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/computer_science/html_concepts.dart';
 import 'package:tech_knowl_edge_connect/data/concepts/education_science/advanced_concepts.dart';
@@ -23,6 +24,10 @@ Map<String, List<Concept>> numbersConcepts = {
 };
 
 // Biology
+Map<String, List<Concept>> animalsConcepts = {
+  "Wirbeltiere": vertebratesCategoriesConcepts,
+  "Wirbellose": [],
+};
 
 // Education Science
 Map<String, List<Concept>> motivationConcepts = {
@@ -60,7 +65,7 @@ Map<String, Map<String, List<Concept>>> advancedMathConcepts = {
 
 // Biology
 Map<String, Map<String, List<Concept>>> foundationalBiologyConcepts = {
-  "Tiere": {},
+  "Tiere": animalsConcepts,
   "Pflanzen": {},
 };
 
@@ -83,7 +88,7 @@ Map<String, Map<String, Map<String, List<Concept>>>> mathConcepts = {
 };
 
 Map<String, Map<String, Map<String, List<Concept>>>> biologyConcepts = {
-  "Mittelstufe": foundationalBiologyConcepts,
+  "Studium": foundationalBiologyConcepts,
 };
 
 Map<String, Map<String, Map<String, List<Concept>>>> educationScienceConcepts =

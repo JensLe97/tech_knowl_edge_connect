@@ -20,7 +20,7 @@ List<Category> mathCategories = [
 ];
 
 List<Category> biologyCategories = [
-  Category(name: "Mittelstufe", topics: topicMap["Biologie"]!["Mittelstufe"]!),
+  Category(name: "Studium", topics: topicMap["Biologie"]!["Studium"]!),
 ];
 
 // List<Category> germanCategories = [

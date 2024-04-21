@@ -16,7 +16,7 @@ Map<String, List<Topic>> mathTopics = {
 };
 
 Map<String, List<Topic>> biologyTopics = {
-  "Mittelstufe": foundationalBiologyTopics,
+  "Studium": foundationalBiologyTopics,
 };
 
 Map<String, List<Topic>> educationScienceTopics = {

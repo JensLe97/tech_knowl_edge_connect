@@ -103,6 +103,30 @@ flutter:
     - images/technology.png
     - images/knowledge.png
     - images/learning_bites/education_science/motivation/motivation.png
+    - images/learning_bites/biology/amphibians_cycle.png
+    - images/learning_bites/biology/biver.png
+    - images/learning_bites/biology/bubble.png
+    - images/learning_bites/biology/carnivore_teeth.png
+    - images/learning_bites/biology/carnivore_wolf.png
+    - images/learning_bites/biology/carnivore.png
+    - images/learning_bites/biology/crocodile_cycle.png
+    - images/learning_bites/biology/early_insectivore.png
+    - images/learning_bites/biology/fish_circle.png
+    - images/learning_bites/biology/fish_long.png
+    - images/learning_bites/biology/fish_side.png
+    - images/learning_bites/biology/frugivore.png
+    - images/learning_bites/biology/herbivore_biber.png
+    - images/learning_bites/biology/herbivore_gras.png
+    - images/learning_bites/biology/herbivore_teeth.png
+    - images/learning_bites/biology/human_cylce.png
+    - images/learning_bites/biology/human_heart.png
+    - images/learning_bites/biology/insectivore.png
+    - images/learning_bites/biology/mammal_circle.png
+    - images/learning_bites/biology/omnivore_teeth.png
+    - images/learning_bites/biology/omnivore.png
+    - images/learning_bites/biology/piscivore.png
+    - images/learning_bites/biology/rabbit.png
+    - images/learning_bites/biology/reptiles_cycle.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

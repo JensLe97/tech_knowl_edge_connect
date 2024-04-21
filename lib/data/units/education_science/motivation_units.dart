@@ -1,7 +1,7 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/models/unit.dart';
 
-List<Unit> movationUnits = [
+List<Unit> motivationUnits = [
   Unit(
       name: "Theorie",
       concepts: List.empty(),

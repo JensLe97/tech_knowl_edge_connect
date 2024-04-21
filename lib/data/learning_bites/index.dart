@@ -1,3 +1,9 @@
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/amphibians_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/birds_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/fish_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/mammals_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/reptiles_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/biology/vertebrates_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/cpu_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_structure_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/computer_science/html_tags_learning_bites.dart';
@@ -68,6 +74,14 @@ Map<String, List<LearningBite>> advancedEducationScienceLearningBites = {
 };
 
 // Biology
+Map<String, List<LearningBite>> vertebratesLearningBites = {
+  "Einführung": vertebratesIntroLearningBites,
+  "Fische": fishLearningBites,
+  "Amphibien": amphibiansLearningBites,
+  "Reptilien": reptilesLearningBites,
+  "Säugetiere": mammalsLearningBites,
+  "Vögel": birdsLearningBites,
+};
 
 // ===== Units =====
 // Computer Science
@@ -85,6 +99,10 @@ Map<String, Map<String, List<LearningBite>>> numbersLearningBites = {
 };
 
 // Biology
+Map<String, Map<String, List<LearningBite>>> animalsLearningBites = {
+  "Wirbeltiere": vertebratesLearningBites,
+  "Wirbellose Tiere": {},
+};
 
 // Education Science
 Map<String, Map<String, List<LearningBite>>>
@@ -130,7 +148,7 @@ Map<String, Map<String, Map<String, List<LearningBite>>>>
 // Biology
 Map<String, Map<String, Map<String, List<LearningBite>>>>
     foundationalBiologyLearningBites = {
-  "Tiere": {},
+  "Tiere": animalsLearningBites,
   "Pflanzen": {},
 };
 
@@ -157,7 +175,7 @@ Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>
 
 Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>
     biologyLearningBites = {
-  "Mittelstufe": foundationalBiologyLearningBites,
+  "Studium": foundationalBiologyLearningBites,
 };
 
 Map<String, Map<String, Map<String, Map<String, List<LearningBite>>>>>

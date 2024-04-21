@@ -201,6 +201,6 @@ List<LearningBite> fishLearningBites = [
       name: "Fachbegriffe",
       type: LearningBiteType.lesson,
       data: [],
-      iconData: FontAwesomeIcons.checkDouble,
+      iconData: FontAwesomeIcons.bookOpen,
       tasks: tasks["Fachbegriffe"]!),
 ];

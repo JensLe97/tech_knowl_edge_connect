@@ -107,6 +107,6 @@ List<LearningBite> amphibiansLearningBites = [
       name: "Fachbegriffe",
       type: LearningBiteType.lesson,
       data: [],
-      iconData: FontAwesomeIcons.checkDouble,
+      iconData: FontAwesomeIcons.bookOpen,
       tasks: tasks["Fachbegriffe"]!),
 ];

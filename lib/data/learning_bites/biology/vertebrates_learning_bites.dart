@@ -200,6 +200,6 @@ List<LearningBite> vertebratesIntroLearningBites = [
       name: "Fachbegriffe",
       type: LearningBiteType.lesson,
       data: [],
-      iconData: FontAwesomeIcons.checkDouble,
+      iconData: FontAwesomeIcons.bookOpen,
       tasks: tasks["Fachbegriffe"]!),
 ];

@@ -116,7 +116,7 @@ Das Zwerchfell ist der wichtigste Atemmuskel zwischen Bauch und Brustraum.
       ],
     ),
   ],
-  "Knöchernder Gaumen": [
+  "Knöcherner Gaumen": [
     Column(
       children: [
         const Text("""
@@ -423,33 +423,8 @@ Map<String, List<Task>> tasks = {
         answers: ["Synapsiden", "Sauropsiden"]),
     Task(
         type: TaskType.singleChoice,
-        question: "Ordne zu:\nLegen Eier (ovipar)",
-        correctAnswer: "Kloakentiere",
-        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
-    Task(
-        type: TaskType.singleChoice,
         question: "Ordne zu:\nKeine Plazenta",
         correctAnswer: "Kloakentiere",
-        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Ordne zu:\nMilch aus Hautdrüsen",
-        correctAnswer: "Kloakentiere",
-        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Ordne zu:\n2 Arten (Ameisenigel und Schnabeltier)",
-        correctAnswer: "Kloakentiere",
-        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Ordne zu:\nGeburt im embryoartigen Stadium (vivipar)",
-        correctAnswer: "Kloakentiere",
-        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
-    Task(
-        type: TaskType.singleChoice,
-        question: "Ordne zu:\nZitzen im Beutel",
-        correctAnswer: "Beuteltiere",
         answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
     Task(
         type: TaskType.singleChoice,
@@ -458,17 +433,42 @@ Map<String, List<Task>> tasks = {
         answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
     Task(
         type: TaskType.singleChoice,
+        question: "Ordne zu:\nMilch aus Hautdrüsen",
+        correctAnswer: "Kloakentiere",
+        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\nLegen Eier (ovipar)",
+        correctAnswer: "Kloakentiere",
+        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
+    Task(
+        type: TaskType.singleChoice,
         question: "Ordne zu:\nVersorgung über Plazenta",
         correctAnswer: "Höhere Säugetiere",
         answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
     Task(
         type: TaskType.singleChoice,
-        question: "Ordne zu:\nTragezeit: 16-22 Monate",
-        correctAnswer: "Höhere Säugetiere",
+        question: "Ordne zu:\nGeburt im embryoartigen Stadium (vivipar)",
+        correctAnswer: "Beuteltiere",
         answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
     Task(
         type: TaskType.singleChoice,
         question: "Ordne zu:\n4500 Arten (94% aller Säugetiere)",
+        correctAnswer: "Höhere Säugetiere",
+        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\nZitzen im Beutel",
+        correctAnswer: "Beuteltiere",
+        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\n2 Arten (Ameisenigel und Schnabeltier)",
+        correctAnswer: "Kloakentiere",
+        answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne zu:\nTragezeit: 16-22 Monate",
         correctAnswer: "Höhere Säugetiere",
         answers: ["Kloakentiere", "Beuteltiere", "Höhere Säugetiere"]),
   ],
@@ -491,12 +491,12 @@ Map<String, List<Task>> tasks = {
   ],
   "Knöcherner Gaumen": [
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Harter Gaumen",
         correctAnswer: "Vorderer Teil",
         answers: ["Vorderer Teil", "Hinterer Teil"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Weicher Gaumen",
         correctAnswer: "Hinterer Teil",
         answers: ["Vorderer Teil", "Hinterer Teil"]),
@@ -533,13 +533,13 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "ungerade",
         answers: ["gerade", "ungerade"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.freeTextFieldCloze,
         question:
             "Zu den Unpaarhufern gehören die Familien der Pferde, Nashörner und {}.",
         correctAnswer: "Tapire",
         answers: []),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.freeTextFieldCloze,
         question:
             "Zu den Paarhufern gehören die Familien der Flusspferde, Wiederkäuer, Schweineartige und {}.",
         correctAnswer: "Kamele",
@@ -556,7 +556,7 @@ List<LearningBite> mammalsLearningBites = [
       tasks: tasks["Allgemeine Merkmale"]!),
   LearningBite(
     name: "Haare",
-    type: LearningBiteType.lesson,
+    type: LearningBiteType.text,
     data: data["Haare"]!,
     iconData: FontAwesomeIcons.cat,
   ),
@@ -568,31 +568,31 @@ List<LearningBite> mammalsLearningBites = [
       tasks: tasks["Milchdrüsen"]!),
   LearningBite(
     name: "Zwerchfell",
-    type: LearningBiteType.lesson,
+    type: LearningBiteType.text,
     data: data["Zwerchfell"]!,
     iconData: FontAwesomeIcons.lungs,
   ),
   LearningBite(
       name: "Knöcherner Gaumen",
       type: LearningBiteType.lesson,
-      data: [],
+      data: data["Knöcherner Gaumen"]!,
       iconData: FontAwesomeIcons.dog,
       tasks: tasks["Knöcherner Gaumen"]!),
   LearningBite(
     name: "Homoiothermie & Endothermie",
-    type: LearningBiteType.lesson,
+    type: LearningBiteType.text,
     data: data["Homoiothermie & Endothermie"]!,
     iconData: FontAwesomeIcons.horse,
   ),
   LearningBite(
     name: "Getrennte Herzkammern",
-    type: LearningBiteType.lesson,
+    type: LearningBiteType.text,
     data: data["Getrennte Herzkammern"]!,
     iconData: FontAwesomeIcons.heart,
   ),
   LearningBite(
     name: "Innere Befruchtung",
-    type: LearningBiteType.lesson,
+    type: LearningBiteType.text,
     data: data["Innere Befruchtung"]!,
     iconData: FontAwesomeIcons.otter,
   ),

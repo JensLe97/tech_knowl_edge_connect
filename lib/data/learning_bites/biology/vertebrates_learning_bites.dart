@@ -55,63 +55,77 @@ Map<String, List<Task>> tasks = {
         answers: []),
     Task(
         type: TaskType.singleChoice,
-        question:
-            "Bringe die Klassen in die richtige chronologische Reihenfolge ihrer Entstehung:\n\t1. Silur",
-        correctAnswer: "Fische (48%)",
+        question: "Ordne das Zeitalter der Entstehung zu:\n\t1. Wirbeltiere",
+        correctAnswer: "Kambrium (545 - 495 Mio.)",
         answers: [
-          "Säugetiere (9%)",
-          "Fische (48%)",
-          "Vögel (18%)",
-          "Reptilien (15%)",
-          "Amphibien (10%)"
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne das Zeitalter der Entstehung zu:\n\t1. Fische (55%)",
+        correctAnswer: "Silur (443 - 410 Mio.)",
+        answers: [
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
+        ]),
+    Task(
+        type: TaskType.singleChoice,
+        question: "Ordne das Zeitalter der Entstehung zu:\n\t2. Amphibien (5%)",
+        correctAnswer: "Devon (410 - 355 Mio.)",
+        answers: [
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Bringe die Klassen in die richtige chronologische Reihenfolge ihrer Entstehung:\n\t2. Devon",
-        correctAnswer: "Amphibien (10%)",
+            "Ordne das Zeitalter der Entstehung zu:\n\t3. Reptilien (12%)",
+        correctAnswer: "Perm (298 - 250 Mio.)",
         answers: [
-          "Säugetiere (9%)",
-          "Fische (48%)",
-          "Vögel (18%)",
-          "Reptilien (15%)",
-          "Amphibien (10%)"
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
         ]),
     Task(
         type: TaskType.singleChoice,
         question:
-            "Bringe die Klassen in die richtige chronologische Reihenfolge ihrer Entstehung:\n\t3. Perm",
-        correctAnswer: "Reptilien (15%)",
+            "Ordne das Zeitalter der Entstehung zu:\n\t4. Säugetiere (8%)",
+        correctAnswer: "Trias (250 - 208 Mio.)",
         answers: [
-          "Säugetiere (8%)",
-          "Fische (55%)",
-          "Vögel (16%)",
-          "Reptilien (12%)",
-          "Amphibien (5%)"
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
         ]),
     Task(
         type: TaskType.singleChoice,
-        question:
-            "Bringe die Klassen in die richtige chronologische Reihenfolge ihrer Entstehung:\n\t4. Trias",
-        correctAnswer: "Säugetiere (9%)",
+        question: "Ordne das Zeitalter der Entstehung zu:\n\t5. Vögel (16%)",
+        correctAnswer: "Jura (208 - 144 Mio.)",
         answers: [
-          "Säugetiere (9%)",
-          "Fische (48%)",
-          "Vögel (18%)",
-          "Reptilien (15%)",
-          "Amphibien (10%)"
-        ]),
-    Task(
-        type: TaskType.singleChoice,
-        question:
-            "Bringe die Klassen in die richtige chronologische Reihenfolge ihrer Entstehung:\n\t5. Jura",
-        correctAnswer: "Vögel (18%)",
-        answers: [
-          "Säugetiere (9%)",
-          "Fische (48%)",
-          "Vögel (18%)",
-          "Reptilien (15%)",
-          "Amphibien (10%)"
+          "Trias (250 - 208 Mio.)",
+          "Devon (410 - 355 Mio.)",
+          "Kambrium (545 - 495 Mio.)",
+          "Jura (208 - 144 Mio.)",
+          "Silur (443 - 410 Mio.)",
+          "Perm (298 - 250 Mio.)",
         ]),
     Task(
         type: TaskType.singleChoice,

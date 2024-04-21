@@ -46,32 +46,14 @@ Weiter Merkmale:\n
 };
 
 Map<String, List<Task>> tasks = {
-  "Allgemeine Merkmale": [
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Motivation ist ein psychologischer Prozess, der die {}, {} und {} zielgerichteten Handels beeinflusst.",
-        correctAnswer: "Initiierung{}Ausrichtung{}Aufrechterhaltung",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Zusätzlich beeinflusst wird die {}, {} und {} zielgerichteten Handelns.",
-        correctAnswer: "Steuerung{}Qualität{}Bewertung",
-        answers: []),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question: "Motivation ist im {} Handlungsverlauf von Relevanz.",
-        correctAnswer: "gesamten",
-        answers: ["gesamten", "anfänglichen"]),
-  ],
+  "Allgemeine Merkmale": [],
 };
 
 List<LearningBite> birdsLearningBites = [
   LearningBite(
-      name: "Allgemeine Merkmale",
-      type: LearningBiteType.lesson,
-      data: data["Allgemeine Merkmale"]!,
-      iconData: FontAwesomeIcons.dove,
-      tasks: tasks["Allgemeine Merkmale"]!),
+    name: "Allgemeine Merkmale",
+    type: LearningBiteType.text,
+    data: data["Allgemeine Merkmale"]!,
+    iconData: FontAwesomeIcons.dove,
+  ),
 ];

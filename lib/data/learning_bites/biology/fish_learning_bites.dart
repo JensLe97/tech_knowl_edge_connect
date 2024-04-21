@@ -57,8 +57,7 @@ Mithilfe der Schwimmblase können Fische im Wasser schweben indem Luft in die Bl
         """),
         SizedBox(
           height: 400,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/bubble.png'),
+          child: Image.asset('images/learning_bites/biology/bubble.png'),
         ),
       ],
     ),
@@ -69,13 +68,12 @@ Das Kreislaufsystem geschlossen und einfach im Gegensatz zu den zwei Lungen- und
         """),
         SizedBox(
           height: 200,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/fish_circle.png'),
+          child: Image.asset('images/learning_bites/biology/fish_circle.png'),
         ),
+        const SizedBox(height: 25),
         SizedBox(
           height: 200,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/mammal_circle.png'),
+          child: Image.asset('images/learning_bites/biology/mammals_cycle.png'),
         ),
       ],
     ),
@@ -85,48 +83,37 @@ Das Kreislaufsystem geschlossen und einfach im Gegensatz zu den zwei Lungen- und
 Map<String, List<Task>> tasks = {
   "Allgemeine Merkmale": [
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Wenn die Eier des Weibchens außerhalb des Körpers befruchtet werden, nennt man das {}.",
-        correctAnswer: "ovulipar",
-        answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoiceCloze,
         question:
             "Wenn die Eier des Weibchens im Körper befruchtet werden und in der Mutter heranwachsen, nennt man das {}.",
         correctAnswer: "ovulipar",
         answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
     Task(
-        type: TaskType.freeTextFieldCloze,
+        type: TaskType.singleChoiceCloze,
         question:
-            "Wenn die Eier des Weibchens außerhalb des Körpers befruchtet werden, nennt man das {}.",
-        correctAnswer: "ovulipar",
-        answers: ["ovipar", "ovulipar", "vivipar"]),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Zusätzlich beeinflusst wird die {}, {} und {} zielgerichteten Handelns.",
-        correctAnswer: "Steuerung{}Qualität{}Bewertung",
-        answers: []),
+            "Wenn die Eier des Weibchens im Körper befruchtet werden und außerhalb der Mutter heranwachsen, nennt man das {}.",
+        correctAnswer: "ovovipar",
+        answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
     Task(
         type: TaskType.singleChoiceCloze,
-        question: "Motivation ist im {} Handlungsverlauf von Relevanz.",
-        correctAnswer: "gesamten",
-        answers: ["gesamten", "anfänglichen"]),
+        question:
+            "Wenn die Eier des Weibchens außerhalb des Körpers befruchtet werden, nennt man das {}.",
+        correctAnswer: "ovipar",
+        answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
   ],
   "Anatomie": [
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Welche Fische haben eine Schwimmblase?",
         correctAnswer: "Knochenfische",
         answers: ["Knochenfische", "Knorpelfische"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question: "Welche Fische haben eine innere Befruchtung?",
         correctAnswer: "Knorpelfische",
         answers: ["Knochenfische", "Knorpelfische"]),
     Task(
-        type: TaskType.singleChoiceCloze,
+        type: TaskType.singleChoice,
         question:
             "Welche Fische haben Placoidschuppen (Hautzähnchen) im Gegensatz zu Knochenschuppen mit Schleimschicht?",
         correctAnswer: "Knorpelfische",
@@ -135,12 +122,6 @@ Map<String, List<Task>> tasks = {
         type: TaskType.freeTextFieldCloze,
         question: "Die Eier von Fischen nennt man {}.",
         correctAnswer: "Laich",
-        answers: []),
-    Task(
-        type: TaskType.freeTextFieldCloze,
-        question:
-            "Die Motivation im Handlungsverlauf ist immer beeinflusst von Merkmalen der {} und {}.",
-        correctAnswer: "Person{}Situation",
         answers: []),
   ],
 };

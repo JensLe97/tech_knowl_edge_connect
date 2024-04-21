@@ -31,8 +31,8 @@ Im Gegensatz zu Fischen haben Amphibien einen doppelten Blutkreislauf\n
         """),
         SizedBox(
           height: 400,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/amphibians_cycle.png'),
+          child:
+              Image.asset('images/learning_bites/biology/amphibians_cycle.png'),
         ),
       ],
     ),
@@ -54,7 +54,6 @@ Als Larve atmen sie über Kiemen und ausgewachsen über Lunge\n
 };
 
 Map<String, List<Task>> tasks = {
-  "Allgemeine Merkmale": [],
   "Fortpflanzung": [
     Task(
         type: TaskType.singleChoiceCloze,
@@ -71,11 +70,11 @@ Map<String, List<Task>> tasks = {
 
 List<LearningBite> amphibiansLearningBites = [
   LearningBite(
-      name: "Allgemeine Merkmale",
-      type: LearningBiteType.lesson,
-      data: data["Allgemeine Merkmale"]!,
-      iconData: FontAwesomeIcons.frog,
-      tasks: tasks["Allgemeine Merkmale"]!),
+    name: "Allgemeine Merkmale",
+    type: LearningBiteType.text,
+    data: data["Allgemeine Merkmale"]!,
+    iconData: FontAwesomeIcons.frog,
+  ),
   LearningBite(
       name: "Fortpflanzung",
       type: LearningBiteType.lesson,

@@ -32,16 +32,16 @@ Reptilien haben einen doppelten Blutkreislauf:\n
         """),
         SizedBox(
           height: 300,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/reptiles_cycle.png'),
+          child:
+              Image.asset('images/learning_bites/biology/reptiles_cycle.png'),
         ),
         const Text("""
 Krokodile: vierkammerig, vollständig getrennte Kammern\n
         """),
         SizedBox(
           height: 300,
-          child: Image.asset(
-              'images/learning_bites/education_science/biology/reptiles_cycle.png'),
+          child:
+              Image.asset('images/learning_bites/biology/reptiles_cycle.png'),
         ),
       ],
     ),
@@ -52,18 +52,18 @@ Krokodile: vierkammerig, vollständig getrennte Kammern\n
 Map<String, List<Task>> tasks = {
   "Allgemeine Merkmale": [
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Schildkröten ernähren sich: {}",
+        type: TaskType.singleChoiceCloze,
+        question: "Schildkröten ernähren sich {}.",
         correctAnswer: "omnivor",
         answers: ["carnivor", "herbivor", "omnivor", "insektivor"]),
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Schlangen und Krokodile ernähren sich: {}",
+        type: TaskType.singleChoiceCloze,
+        question: "Schlangen und Krokodile ernähren sich {}.",
         correctAnswer: "carnivor",
         answers: ["carnivor", "herbivor", "omnivor", "insektivor"]),
     Task(
-        type: TaskType.freeTextFieldCloze,
-        question: "Echsen ernähren sich: {}",
+        type: TaskType.singleChoiceCloze,
+        question: "Echsen ernähren sich {}.",
         correctAnswer: "insektivor",
         answers: ["carnivor", "herbivor", "omnivor", "insektivor"]),
   ],

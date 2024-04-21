@@ -26,7 +26,7 @@ Vögel haben diese Ähnlichkeiten mit Reptilien:\n
     Column(
       children: [
         const Text("""
-Weiter Merkmale:\n
+Weitere Merkmale:\n
   1. Gleichwarm
   2. Flügel als Vordergliedmaßen 
   3. Atmung über Lungen
@@ -45,20 +45,7 @@ Weiter Merkmale:\n
   ],
 };
 
-Map<String, List<Task>> tasks = {
-  "Fachbegriffe": [
-    Task(
-      type: TaskType.indexCard,
-      question: "Synapsiden",
-      correctAnswer: "Säugetiere",
-    ),
-    Task(
-      type: TaskType.indexCard,
-      question: "Kloakentiere",
-      correctAnswer: "Monotremata",
-    ),
-  ],
-};
+Map<String, List<Task>> tasks = {};
 
 List<LearningBite> birdsLearningBites = [
   LearningBite(
@@ -67,10 +54,4 @@ List<LearningBite> birdsLearningBites = [
     data: data["Allgemeine Merkmale"]!,
     iconData: FontAwesomeIcons.dove,
   ),
-  LearningBite(
-      name: "Fachbegriffe",
-      type: LearningBiteType.lesson,
-      data: [],
-      iconData: FontAwesomeIcons.checkDouble,
-      tasks: tasks["Fachbegriffe"]!),
 ];

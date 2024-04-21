@@ -14,7 +14,7 @@ Allgemeine Merkmale von Amphibien sind:\n
   1. Wechselwarm
   2. Feuchte Haut mit Schleim- und Giftdrüsen
   3. Atmung (adult) über Lungen, Haut und Mundhöhle
-  4. 4 Zehen an Vorder- und 5 an Hinterbeine
+  4. 4 Zehen an Vorder- und 5 an Hinterbeinen
   5. Durchlaufen Metamorphose (Larve bis Tier)
         """),
         SizedBox(
@@ -41,7 +41,7 @@ Im Gegensatz zu Fischen haben Amphibien einen doppelten Blutkreislauf\n
     Column(
       children: [
         const Text("""
-Als Larve atmen sie über Kiemen und ausgewachsen über Lunge\n
+Als Larve atmen sie über Kiemen und ausgewachsen über die Lunge\n
         """),
         SizedBox(
           height: 400,

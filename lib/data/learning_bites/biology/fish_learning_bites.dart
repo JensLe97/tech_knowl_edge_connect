@@ -41,7 +41,7 @@ Körperbau der Knochenfische
       children: [
         const Text("""
 Körperbau der Knochenfische
-  - Gonande (Geschlechtsdrüse)
+  - Gonade (Geschlechtsdrüse)
   - Coelom (Raum für Herz und Verdauungssystem)
         """),
         SizedBox(
@@ -53,7 +53,7 @@ Körperbau der Knochenfische
     Column(
       children: [
         const Text("""
-Mithilfe der Schwimmblase können Fische im Wasser schweben indem Luft in die Blase gefüllt wird.\n
+Mithilfe der Schwimmblase können Fische im Wasser schweben, indem Luft in die Blase gefüllt wird.\n
         """),
         SizedBox(
           height: 400,
@@ -86,19 +86,19 @@ Map<String, List<Task>> tasks = {
         type: TaskType.singleChoiceCloze,
         question:
             "Wenn die Eier des Weibchens im Körper befruchtet werden und in der Mutter heranwachsen, nennt man das {}.",
-        correctAnswer: "ovulipar",
-        answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
-    Task(
-        type: TaskType.singleChoiceCloze,
-        question:
-            "Wenn die Eier des Weibchens im Körper befruchtet werden und außerhalb der Mutter heranwachsen, nennt man das {}.",
         correctAnswer: "ovovipar",
         answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
     Task(
         type: TaskType.singleChoiceCloze,
         question:
-            "Wenn die Eier des Weibchens außerhalb des Körpers befruchtet werden, nennt man das {}.",
+            "Wenn die Eier des Weibchens im Körper befruchtet werden und außerhalb der Mutter heranwachsen, nennt man das {}.",
         correctAnswer: "ovipar",
+        answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
+    Task(
+        type: TaskType.singleChoiceCloze,
+        question:
+            "Wenn die Eier des Weibchens außerhalb des Körpers befruchtet werden, nennt man das {}.",
+        correctAnswer: "ovulipar",
         answers: ["ovipar", "ovulipar", "ovovipar", "vivipar"]),
   ],
   "Anatomie": [
@@ -134,6 +134,11 @@ Map<String, List<Task>> tasks = {
       type: TaskType.indexCard,
       question: "im Bauch lokalisiert, an der Bauchwand",
       correctAnswer: "ventral",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "zum Rücken, zur Rückseite gehörend",
+      correctAnswer: "dorsal",
     ),
     Task(
       type: TaskType.indexCard,

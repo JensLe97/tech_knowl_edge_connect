@@ -50,7 +50,7 @@ Map<String, List<Task>> tasks = {
     Task(
         type: TaskType.freeTextFieldCloze,
         question:
-            "Der lange biegsamer Stab im Rückenbereich, der die Wirbeltiere ausmacht, nennt man: {}.",
+            "Den langen biegsamen Stab im Rückenbereich, der die Wirbeltiere ausmacht, nennt man {}.",
         correctAnswer: "Chorda dorsalis",
         answers: []),
     Task(

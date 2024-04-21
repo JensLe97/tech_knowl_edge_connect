@@ -214,8 +214,8 @@ Aus der allgemeinen Bezahnung der frühen Insektivoren entwickelten sich verschi
       children: [
         const Text("""
 Je nach Ordnung der Tiere unterscheidet sich der Fressapparat.
-  1. Raubtiere: Carnivore (Fleischfresser)
-  2. Nagetiere/(Un)paarhufer: Herbivoren (Kräuterfresser)
+  1. Raubtiere: Carnivoren (Fleischfresser)
+  2. Nagetiere/(Un)paarhufer: Herbivoren (Pflanzenfresser)
   3. Fledermäuse: Frugivoren (Früchtefresser)
   4. Insektenfresser: Insektivoren
   5. Omnivoren (Allesfresser)
@@ -385,7 +385,7 @@ Unterkiefer eines Omnivore (Vielzwecksatz an Zähnen)
     Column(
       children: [
         const Text("""
-Unterkiefer eines Carnivore (Fangzähne und Brechschere (Prämolaren mit Molaren zu Reißzähnen verschmolzen). an Zähnen)
+Unterkiefer eines Carnivore: Fangzähne und Brechschere (Prämolaren mit Molaren zu Reißzähnen verschmolzen)
         """),
         SizedBox(
           height: 400,

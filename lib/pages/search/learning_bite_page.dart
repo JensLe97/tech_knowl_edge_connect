@@ -64,6 +64,13 @@ class _LearningBitePageState extends State<LearningBitePage>
   IterableZip<String> answers = IterableZip([]);
   bool initFreeTextCloze = true;
   bool allCorrect = false;
+  bool showAnswer = false;
+
+  Task indexCard = Task(
+      type: TaskType.indexCard,
+      question: "Gewusst?",
+      correctAnswer: "Ja",
+      answers: ["Nein", "Ja"]);
 
   @override
   Widget build(BuildContext context) {
@@ -199,6 +206,16 @@ class _LearningBitePageState extends State<LearningBitePage>
     switch (tasks[currentTask].type) {
       case TaskType.singleChoice:
         return Text(tasks[currentTask].question);
+      case TaskType.indexCard:
+        return showAnswer
+            ? Column(
+                children: [
+                  Text(tasks[currentTask].correctAnswer),
+                  const SizedBox(height: 200),
+                  Text(indexCard.question)
+                ],
+              )
+            : Text(tasks[currentTask].question);
       case TaskType.singleChoiceCloze:
         return Text.rich(
           TextSpan(children: <InlineSpan>[
@@ -257,6 +274,54 @@ class _LearningBitePageState extends State<LearningBitePage>
   Widget taskBottom(List<Task> tasks, int currentTask, int maxPageNum,
       int maxTaskNum, BuildContext context) {
     switch (tasks[currentTask].type) {
+      case TaskType.indexCard:
+        return showAnswer
+            ? Wrap(
+                direction: Axis.horizontal,
+                alignment: WrapAlignment.center,
+                children: [
+                    for (var answerIndex = 0;
+                        answerIndex < indexCard.answers.length;
+                        answerIndex++)
+                      LessonButton(
+                          onTap: () async {
+                            bool correct = false;
+                            setState(() {
+                              correct = indexCard.answers[answerIndex] ==
+                                  indexCard.correctAnswer;
+                            });
+                            if (currentPage < maxPageNum) {
+                              setState(() {
+                                showAnswer = false;
+                                currentPage++;
+                                if (correct) {
+                                  points++;
+                                }
+                              });
+                              pageController.nextPage(
+                                duration: const Duration(milliseconds: 400),
+                                curve: Curves.easeInOut,
+                              );
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
+                          text: indexCard.answers[answerIndex],
+                          color: indexCard.answers[answerIndex] ==
+                                  indexCard.correctAnswer
+                              ? Colors.green
+                              : Colors.red),
+                  ])
+            : Wrap(direction: Axis.horizontal, children: [
+                LessonButton(
+                  onTap: () async {
+                    setState(() {
+                      showAnswer = true;
+                    });
+                  },
+                  text: "Prüfen",
+                )
+              ]);
       case TaskType.singleChoiceCloze:
         return Wrap(
             direction: Axis.horizontal,

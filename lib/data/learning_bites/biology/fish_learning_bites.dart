@@ -124,6 +124,59 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Laich",
         answers: []),
   ],
+  "Fachbegriffe": [
+    Task(
+      type: TaskType.indexCard,
+      question: "Bauch/Brusthöhle",
+      correctAnswer: "Coelom",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "im Bauch lokalisiert, an der Bauchwand",
+      correctAnswer: "ventral",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Hauptschlagader",
+      correctAnswer: "Aorta",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Mondfisch",
+      correctAnswer: "Mola mola",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Herzkammer",
+      correctAnswer: "Ventrikel / Atrium",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Walhai",
+      correctAnswer: "Rhincodon typus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "eigeboren: Tiere die Eierlegen (Innerliche Befruchtung)",
+      correctAnswer: "ovipar",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "lebendgebärend: Frühentwicklung in der Mutter, ohne Eihülle",
+      correctAnswer: "vivipar",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Ei-Lebend-Geburt: Eier wachsen in der Mutter heran",
+      correctAnswer: "ovovipar",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question:
+          "Äußerliche Befruchtung: Unbefruchtete Eier werden außerhalb der Mutter befruchtet",
+      correctAnswer: "ovulipar",
+    ),
+  ],
 };
 
 List<LearningBite> fishLearningBites = [
@@ -139,4 +192,10 @@ List<LearningBite> fishLearningBites = [
       data: data["Anatomie"]!,
       iconData: FontAwesomeIcons.fishFins,
       tasks: tasks["Anatomie"]!),
+  LearningBite(
+      name: "Fachbegriffe",
+      type: LearningBiteType.lesson,
+      data: [],
+      iconData: FontAwesomeIcons.checkDouble,
+      tasks: tasks["Fachbegriffe"]!),
 ];

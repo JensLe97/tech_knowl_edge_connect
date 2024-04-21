@@ -140,6 +140,53 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Epidermis",
         answers: ["Epidermis", "Membrana cellularis"]),
   ],
+  "Fachbegriffe": [
+    Task(
+      type: TaskType.indexCard,
+      question: "Gelenkige Wirbelsäule (langer biegsamer Stab im Rücken)",
+      correctAnswer: "Chorda dorsalis",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Oberhaut",
+      correctAnswer: "Epidermis",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Zeitalter Fische",
+      correctAnswer: "Silur (443 - 410 Mio.)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Zeitalter Amphibien",
+      correctAnswer: "Devon (410 - 355 Mio.)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Zeitalter Reptilien",
+      correctAnswer: "Perm (298 - 250 Mio.)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Zeitalter Säugetiere",
+      correctAnswer: "Trias (250 - 208 Mio.)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Zeitalter Vögel",
+      correctAnswer: "Jura (208 - 144 Mio.)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Fachbegriff Säugetiere",
+      correctAnswer: "Synapsiden",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Fachbegriff Reptilien und Vögel",
+      correctAnswer: "Sauropsiden",
+    ),
+  ],
 };
 
 List<LearningBite> vertebratesIntroLearningBites = [
@@ -149,4 +196,10 @@ List<LearningBite> vertebratesIntroLearningBites = [
       data: data["Allgemeine Merkmale"]!,
       iconData: FontAwesomeIcons.paw,
       tasks: tasks["Allgemeine Merkmale"]!),
+  LearningBite(
+      name: "Fachbegriffe",
+      type: LearningBiteType.lesson,
+      data: [],
+      iconData: FontAwesomeIcons.checkDouble,
+      tasks: tasks["Fachbegriffe"]!),
 ];

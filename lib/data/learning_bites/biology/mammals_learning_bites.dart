@@ -545,6 +545,213 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Kamele",
         answers: []),
   ],
+  "Fachbegriffe": [
+    Task(
+      type: TaskType.indexCard,
+      question: "Kloakentiere",
+      correctAnswer: "Monotremata",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Beuteltiere",
+      correctAnswer: "Marsupialia",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Höhere Säugetiere",
+      correctAnswer: "Placentalia",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Gleichwarm",
+      correctAnswer: "Homoiotherm / Endotherm",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wechselwarm",
+      correctAnswer: "Poikilotherm / Ektotherm",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Fleischfresser",
+      correctAnswer: "Carnivoren",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Allesfresser",
+      correctAnswer: "Omnivoren",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Pflanzenfresser",
+      correctAnswer: "Herbivoren",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Schneidezähne",
+      correctAnswer: "Incisivi",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Eck- oder Reißzahn",
+      correctAnswer: "Caninus (pl. Canini)",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Vorderbackenzähne",
+      correctAnswer: "Prämolare",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Backenzähne",
+      correctAnswer: "Molare",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Nagetiere",
+      correctAnswer: "Rodentia",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Lücke zwischen Zahngruppen",
+      correctAnswer: "Diastem",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Eichhörnchen",
+      correctAnswer: "Sciurus vulgaris",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Hausmaus",
+      correctAnswer: "Mus musculus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Siebenschläfer",
+      correctAnswer: "Glis glis",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Feldhamster",
+      correctAnswer: "Cricetus cricetus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Hasenartige",
+      correctAnswer: "Lagomorpha",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Feldhase",
+      correctAnswer: "Lepus europaeus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wildkaninchen",
+      correctAnswer: "Oryctolagus cuniculus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Raubtiere",
+      correctAnswer: "Canivora",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wolf",
+      correctAnswer: "Canis lupus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Fuchs",
+      correctAnswer: "Vulpes vulpes",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wildkatze",
+      correctAnswer: "Felis silvestris",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Steinmarder",
+      correctAnswer: "Martes foina",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Dachs",
+      correctAnswer: "Meles meles",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Unpaarhufer",
+      correctAnswer: "Perissodactyla",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Pferd",
+      correctAnswer: "Equus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Steppenzebra",
+      correctAnswer: "Equus quagga",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Breitmaulnashorn",
+      correctAnswer: "Ceratotherium simum",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Paarhufer",
+      correctAnswer: "Artiodactyla",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wildschwein",
+      correctAnswer: "Sus scrofa",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Insektenfresser",
+      correctAnswer: "Insektivora",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Maulwurf",
+      correctAnswer: "Talpa europaea",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Waldspitzmaus",
+      correctAnswer: "Sorex araneus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Braunbrustigel",
+      correctAnswer: "Erinaceus europaeus",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Fledermäuse",
+      correctAnswer: "Chiroptera",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Großer Abendsegler",
+      correctAnswer: "Nyctalus noctula",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Große Hufeisennase",
+      correctAnswer: "Rhinolophus ferrumequinum",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Wale",
+      correctAnswer: "Cetacea",
+    ),
+  ],
 };
 
 List<LearningBite> mammalsLearningBites = [
@@ -602,4 +809,10 @@ List<LearningBite> mammalsLearningBites = [
       data: data["Heterodontes Gebiss"]!,
       iconData: FontAwesomeIcons.teeth,
       tasks: tasks["Heterodontes Gebiss"]!),
+  LearningBite(
+      name: "Fachbegriffe",
+      type: LearningBiteType.lesson,
+      data: [],
+      iconData: FontAwesomeIcons.checkDouble,
+      tasks: tasks["Fachbegriffe"]!),
 ];

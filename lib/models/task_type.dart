@@ -3,4 +3,5 @@ enum TaskType {
   singleChoiceCloze,
   freeTextFieldCloze,
   multipleChoice,
+  indexCard,
 }

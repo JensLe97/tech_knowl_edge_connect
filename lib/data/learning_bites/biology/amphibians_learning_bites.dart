@@ -66,6 +66,28 @@ Map<String, List<Task>> tasks = {
         correctAnswer: "Metamorphose",
         answers: []),
   ],
+  "Fachbegriffe": [
+    Task(
+      type: TaskType.indexCard,
+      question: "Blindwühlen",
+      correctAnswer: "Gymnophiona",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Froschlurche",
+      correctAnswer: "Anura",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Schwanzlurche",
+      correctAnswer: "Urodela",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Lebenszyklus bei Amphibien",
+      correctAnswer: "Metamorphose",
+    ),
+  ],
 };
 
 List<LearningBite> amphibiansLearningBites = [
@@ -81,4 +103,10 @@ List<LearningBite> amphibiansLearningBites = [
       data: data["Fortpflanzung"]!,
       iconData: FontAwesomeIcons.venusMars,
       tasks: tasks["Fortpflanzung"]!),
+  LearningBite(
+      name: "Fachbegriffe",
+      type: LearningBiteType.lesson,
+      data: [],
+      iconData: FontAwesomeIcons.checkDouble,
+      tasks: tasks["Fachbegriffe"]!),
 ];

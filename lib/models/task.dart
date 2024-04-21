@@ -12,5 +12,5 @@ class Task {
       {required this.type,
       required this.question,
       required this.correctAnswer,
-      required this.answers});
+      this.answers = const []});
 }

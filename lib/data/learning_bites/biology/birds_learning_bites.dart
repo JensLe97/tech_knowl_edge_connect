@@ -46,7 +46,18 @@ Weiter Merkmale:\n
 };
 
 Map<String, List<Task>> tasks = {
-  "Allgemeine Merkmale": [],
+  "Fachbegriffe": [
+    Task(
+      type: TaskType.indexCard,
+      question: "Synapsiden",
+      correctAnswer: "Säugetiere",
+    ),
+    Task(
+      type: TaskType.indexCard,
+      question: "Kloakentiere",
+      correctAnswer: "Monotremata",
+    ),
+  ],
 };
 
 List<LearningBite> birdsLearningBites = [
@@ -56,4 +67,10 @@ List<LearningBite> birdsLearningBites = [
     data: data["Allgemeine Merkmale"]!,
     iconData: FontAwesomeIcons.dove,
   ),
+  LearningBite(
+      name: "Fachbegriffe",
+      type: LearningBiteType.lesson,
+      data: [],
+      iconData: FontAwesomeIcons.checkDouble,
+      tasks: tasks["Fachbegriffe"]!),
 ];

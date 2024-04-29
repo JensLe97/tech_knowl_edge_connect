@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
-import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 Map<String, List<Widget>> data = {
   "Allgemeine Merkmale": [

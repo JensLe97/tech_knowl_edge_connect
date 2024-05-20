@@ -37,6 +37,8 @@ class MessageTextField extends StatelessWidget {
         fillColor: Theme.of(context).colorScheme.background,
         filled: true,
         hintText: hintText,
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       ),
     );
   }

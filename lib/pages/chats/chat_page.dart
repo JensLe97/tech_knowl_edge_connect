@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
 import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
+import 'package:tech_knowl_edge_connect/env/env.dart';
 import 'package:tech_knowl_edge_connect/services/chat_service.dart';
 
 class ChatPage extends StatefulWidget {
@@ -19,12 +21,28 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  var allMessages = [
+    OpenAIChatCompletionChoiceMessageModel(
+      content: [
+        OpenAIChatCompletionChoiceMessageContentItemModel.text(
+          "You are a helpful assistant.",
+        ),
+      ],
+      role: OpenAIChatMessageRole.system,
+    )
+  ];
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
+      String prompt = _messageController.text;
       await _chatService.sendMessage(
           widget.receiverUid, _messageController.text);
       _messageController.clear();
+      if (widget.receiverUid == "aitech") {
+        String response = await askOpenAi(allMessages, prompt);
+        await _chatService.sendMessage(_firebaseAuth.currentUser!.uid, response,
+            fromAI: true);
+      }
     }
   }
 
@@ -47,9 +65,9 @@ class _ChatPageState extends State<ChatPage> {
                     alignment: Alignment.bottomCenter,
                     child: _buildMessageList()),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 2),
               _buildMessageInput(),
-              const SizedBox(height: 10),
+              const SizedBox(height: 8),
             ],
           ),
         ));
@@ -111,7 +129,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageInput() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         children: [
           Expanded(
@@ -132,5 +150,36 @@ class _ChatPageState extends State<ChatPage> {
         ],
       ),
     );
+  }
+
+  Future<String> askOpenAi(
+    List<OpenAIChatCompletionChoiceMessageModel> thisMessages,
+    String prompt,
+  ) async {
+    OpenAI.apiKey = Env.openApiKey;
+    List<OpenAIChatCompletionChoiceMessageModel> newMessages = [];
+    for (var messageElement in thisMessages) {
+      newMessages.add(messageElement);
+    }
+
+    newMessages.add(OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)
+    ], role: OpenAIChatMessageRole.user));
+
+    OpenAIChatCompletionModel chatCompletion =
+        await OpenAI.instance.chat.create(
+      model: "gpt-3.5-turbo",
+      messages: newMessages,
+      n: 1,
+      maxTokens: 2000,
+      temperature: 0.7,
+    );
+    String response = chatCompletion.choices.first.message.content!.first.text!;
+    newMessages.add(OpenAIChatCompletionChoiceMessageModel(content: [
+      OpenAIChatCompletionChoiceMessageContentItemModel.text(response)
+    ], role: OpenAIChatMessageRole.assistant));
+    allMessages = newMessages;
+
+    return response;
   }
 }

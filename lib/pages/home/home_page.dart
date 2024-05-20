@@ -4,11 +4,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/resume_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/index.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
+import 'package:tech_knowl_edge_connect/pages/chats/chat_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -220,6 +222,21 @@ class _HomePageState extends State<HomePage> {
               return const Text("Keine Daten für diesen Benutzer vorhanden.");
             }
           }),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const ChatPage(
+                receiverUsername: "AI Tech",
+                receiverUid: "aitech",
+              ),
+            ),
+          );
+        },
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        child: const Icon(FontAwesomeIcons.robot),
+      ),
     );
   }
 

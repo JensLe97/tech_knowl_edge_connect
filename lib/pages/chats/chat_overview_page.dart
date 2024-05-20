@@ -127,7 +127,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   }
 
   Widget _buildChatListItem(DocumentSnapshot document) {
-    if (document.id.contains(currentUser!.uid)) {
+    if (document.id.contains(currentUser!.uid) &&
+        !document.id.contains("aitech")) {
       Map<String, dynamic>? docData = document.data() as Map<String, dynamic>?;
       String otherUserId = document.id
           .split("_")
@@ -241,7 +242,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
-    if (currentUser!.uid != document.id) {
+    if (currentUser!.uid != document.id && document.id != "aitech") {
       String otherUserId = document.id;
       return ListTile(
         leading: Container(

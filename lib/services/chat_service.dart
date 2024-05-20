@@ -40,8 +40,11 @@ class ChatService extends ChangeNotifier {
         .snapshots();
   }
 
-  Future<void> sendMessage(String receiverId, String message) async {
-    final String currentUserId = _firebaseAuth.currentUser!.uid;
+  Future<void> sendMessage(String receiverId, String message,
+      {bool fromAI = false}) async {
+    final String currentUserId =
+        fromAI ? "aitech" : _firebaseAuth.currentUser!.uid;
+    receiverId = fromAI ? _firebaseAuth.currentUser!.uid : receiverId;
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserName =
         _firebaseAuth.currentUser!.displayName.toString();
@@ -65,6 +68,10 @@ class ChatService extends ChangeNotifier {
         .doc(chatRoomId)
         .collection('messages')
         .add(newMessage.toMap());
+
+    if (receiverId == "aitech") {
+      return;
+    }
 
     DocumentSnapshot<Map<String, dynamic>> chatRoomData =
         await _firebaseFirestore.collection('chat_rooms').doc(chatRoomId).get();

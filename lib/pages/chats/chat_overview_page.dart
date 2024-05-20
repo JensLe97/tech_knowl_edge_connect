@@ -189,8 +189,13 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                         : const SizedBox(),
                   ],
                 ),
+                minVerticalPadding: 15,
                 title: Text(otherUser!['username']),
-                subtitle: Text(document['lastMessage']),
+                subtitle: Text(
+                  document['lastMessage'],
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
                 onTap: () {
                   if (document.id.split("_").first == currentUser!.uid) {
                     FirebaseFirestore.instance

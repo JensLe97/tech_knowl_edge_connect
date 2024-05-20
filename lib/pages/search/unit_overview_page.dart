@@ -193,7 +193,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
     User? currentUser = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance
         .collection("Users")
-        .doc(currentUser!.email)
+        .doc(currentUser!.uid)
         .update({
       'resumeSubjects': jsonEncode(resSubs),
     });
@@ -203,7 +203,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
     User? currentUser = FirebaseAuth.instance.currentUser;
     await FirebaseFirestore.instance
         .collection("Users")
-        .doc(currentUser!.email)
+        .doc(currentUser!.uid)
         .update({
       'completedLearningBites': jsonEncode(complLearnBites),
     });

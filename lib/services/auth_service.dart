@@ -11,27 +11,29 @@ class AuthService {
     final credential = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+
     FirebaseFirestore.instance
         .collection("Users")
-        .doc(gUser.email)
+        .doc(userCredential.user!.uid)
         .get()
         .then((data) {
       if (!data.exists) {
-        createUserDocument(gUser);
+        createUserDocument(gUser, userCredential.user!.uid);
       }
     });
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return userCredential;
   }
 
-  Future<void> createUserDocument(GoogleSignInAccount? gUser) async {
+  Future<void> createUserDocument(
+      GoogleSignInAccount? gUser, String uid) async {
     if (gUser != null) {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(gUser.email)
-          .set({
+      await FirebaseFirestore.instance.collection("Users").doc(uid).set({
         'email': gUser.email,
         'username': gUser.displayName,
+        'uid': uid,
       });
     }
   }

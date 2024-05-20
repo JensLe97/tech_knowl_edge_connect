@@ -18,7 +18,7 @@ class _AccountPageState extends State<AccountPage> {
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
     return await FirebaseFirestore.instance
         .collection("Users")
-        .doc(currentUser!.email)
+        .doc(currentUser!.uid)
         .get();
   }
 
@@ -153,7 +153,7 @@ class _AccountPageState extends State<AccountPage> {
     try {
       await FirebaseFirestore.instance
           .collection("Users")
-          .doc(currentUser!.email)
+          .doc(currentUser!.uid)
           .delete();
       await currentUser!.delete();
 

@@ -2,12 +2,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/idea_reaction_button.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/pages/ideas/upload_post_page.dart';
 import 'package:tech_knowl_edge_connect/services/idea_posts_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
 class IdeaPostViewItem extends StatefulWidget {
+  final String postId;
   final String username;
   final String caption;
   final int numberOfLikes;
@@ -18,6 +20,7 @@ class IdeaPostViewItem extends StatefulWidget {
 
   const IdeaPostViewItem(
       {super.key,
+      required this.postId,
       required this.username,
       required this.caption,
       required this.numberOfLikes,
@@ -31,6 +34,8 @@ class IdeaPostViewItem extends StatefulWidget {
 }
 
 class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
+  final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+  final IdeaPostsService _ideaPostsService = IdeaPostsService();
   VideoPlayerController? _videoPlayerController;
 
   @override
@@ -54,6 +59,8 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
     super.dispose();
   }
 
+  bool isLiked = false;
+
   Future<XFile?> selectPostContent(ImageSource imageSource, String type) async {
     ImagePicker imagePicker = ImagePicker();
 
@@ -66,9 +73,6 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
 
   void uploadPostContent(
       XFile? postContent, String caption, String type) async {
-    final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
-    final IdeaPostsService _ideaPostsService = IdeaPostsService();
-
     if (postContent != null) {
       String extension = postContent.name.split(".").last;
       String fileName = const Uuid().v4();
@@ -178,16 +182,36 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                 child:
                     Column(mainAxisAlignment: MainAxisAlignment.end, children: [
                   IdeaReactionButton(
-                      icon: Icons.favorite, number: widget.numberOfLikes),
-                  IdeaReactionButton(
-                      icon: Icons.chat_bubble_outlined,
-                      number: widget.numberOfComments),
-                  IdeaReactionButton(
-                      icon: Icons.send, number: widget.numberOfShares),
+                      onTap: toggleLike,
+                      icon: Icons.favorite,
+                      number: widget.numberOfLikes,
+                      isLiked: likedPosts.contains(widget.postId)),
+                  // IdeaReactionButton(
+                  //     onTap: toggleLike,
+                  //     icon: Icons.chat_bubble_outlined,
+                  //     number: widget.numberOfComments),
+                  // IdeaReactionButton(
+                  //     onTap: toggleLike,
+                  //     icon: Icons.send,
+                  //     number: widget.numberOfShares),
                 ]),
               ),
             )
           ],
         ));
+  }
+
+  toggleLike() async {
+    if (likedPosts.contains(widget.postId)) {
+      _ideaPostsService.unlikePost(widget.postId);
+      setState(() {
+        likedPosts.remove(widget.postId);
+      });
+    } else {
+      _ideaPostsService.likePost(widget.postId);
+      setState(() {
+        likedPosts.add(widget.postId);
+      });
+    }
   }
 }

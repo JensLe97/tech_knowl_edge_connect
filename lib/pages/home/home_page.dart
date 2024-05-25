@@ -85,6 +85,10 @@ class _HomePageState extends State<HomePage> {
               }
               completedLearningBites = tmpCompletedLearningBites;
 
+              likedPosts = user['likedPosts'] != null
+                  ? List<String>.from(user['likedPosts'])
+                  : [];
+
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(

@@ -93,3 +93,4 @@ List<Subject> subjects = [
 
 List<List<int>> resumeSubjects = [];
 List<List<int>> completedLearningBites = [];
+List<String> likedPosts = [];

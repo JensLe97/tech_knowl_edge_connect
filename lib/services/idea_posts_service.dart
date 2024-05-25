@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/models/idea_post.dart';
 
 class IdeaPostsService extends ChangeNotifier {
@@ -43,5 +44,29 @@ class IdeaPostsService extends ChangeNotifier {
     );
 
     await _firebaseFirestore.collection('idea_posts').add(newIdeaPost.toMap());
+  }
+
+  Future<void> likePost(String postId) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .update({
+      'likedPosts': FieldValue.arrayUnion([postId]),
+    });
+    await _firebaseFirestore.collection('idea_posts').doc(postId).update({
+      'numberOfLikes': FieldValue.increment(1),
+    });
+  }
+
+  Future<void> unlikePost(String postId) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .update({
+      'likedPosts': FieldValue.arrayRemove([postId]),
+    });
+    await _firebaseFirestore.collection('idea_posts').doc(postId).update({
+      'numberOfLikes': FieldValue.increment(-1),
+    });
   }
 }

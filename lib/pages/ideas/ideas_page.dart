@@ -48,6 +48,7 @@ class _IdeasPageState extends State<IdeasPage> {
     Map<String, dynamic>? docData = document.data() as Map<String, dynamic>?;
     if (docData!['username'] != currentUser!.uid) {
       return IdeaPostViewItem(
+        postId: document.id,
         username: docData['username'],
         caption: docData['caption'],
         numberOfLikes: docData['numberOfLikes'],

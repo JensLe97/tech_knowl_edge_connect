@@ -1,11 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
 import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
+import 'package:tech_knowl_edge_connect/pages/chats/upload_image_page.dart';
 import 'package:tech_knowl_edge_connect/env/env.dart';
 import 'package:tech_knowl_edge_connect/services/chat_service.dart';
+import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverUsername;
@@ -42,6 +46,39 @@ class _ChatPageState extends State<ChatPage> {
         String response = await askOpenAi(allMessages, prompt);
         await _chatService.sendMessage(_firebaseAuth.currentUser!.uid, response,
             fromAI: true);
+      }
+    }
+  }
+
+  void sendImage(ImageSource imageSource) async {
+    final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+
+    ImagePicker imagePicker = ImagePicker();
+    // await Permission.photos.request();
+
+    // var permissionStatus = await Permission.photos.status;
+
+    if (true) {
+      XFile? image = await imagePicker.pickImage(source: imageSource);
+
+      if (image != null) {
+        String extension = image.name.split(".").last;
+        String fileName = const Uuid().v4();
+
+        Reference upload = _firebaseStorage
+            .ref()
+            .child('images')
+            .child("$fileName.$extension");
+        extension = extension == "jpg" ? "jpeg" : extension;
+        TaskSnapshot taskSnapshot = await upload.putData(
+          await image.readAsBytes(),
+          SettableMetadata(contentType: 'image/$extension'),
+        );
+
+        String imageUrl = await taskSnapshot.ref.getDownloadURL();
+
+        await _chatService.sendMessage(widget.receiverUid, imageUrl,
+            type: "image");
       }
     }
   }
@@ -119,6 +156,7 @@ class _ChatPageState extends State<ChatPage> {
           children: [
             ChatBubble(
                 message: data['message'],
+                type: data['type'],
                 isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
                 time: data['timestamp'])
           ],
@@ -132,6 +170,31 @@ class _ChatPageState extends State<ChatPage> {
       padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: Row(
         children: [
+          widget.receiverUid == "aitech"
+              ? const SizedBox()
+              : IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        context: context,
+                        isScrollControlled: true,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (BuildContext context) => UploadImagePage(
+                              sendImage: sendImage,
+                            ));
+                  },
+                  icon: const Icon(
+                    Icons.add_circle_outline_rounded,
+                    size: 40,
+                  ),
+                  color: Theme.of(context).colorScheme.inversePrimary),
           Expanded(
             child: MessageTextField(
               controller: _messageController,

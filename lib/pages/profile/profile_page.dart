@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/menu_bottom_sheet.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -88,6 +88,42 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 20,
                             fontWeight: FontWeight.bold),
                       ),
+                      const SizedBox(height: 25),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(15),
+                            decoration: BoxDecoration(
+                                border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .inversePrimary),
+                                borderRadius: BorderRadius.circular(8)),
+                            child: const Text(
+                              'Profil bearbeiten',
+                              style: TextStyle(
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Container(
+                              padding: const EdgeInsets.all(15),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary),
+                                  borderRadius: BorderRadius.circular(22)),
+                              child: const Icon(
+                                Icons.add,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )
                     ],
                   ),
                 ),

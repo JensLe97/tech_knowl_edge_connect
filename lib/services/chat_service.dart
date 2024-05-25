@@ -41,7 +41,7 @@ class ChatService extends ChangeNotifier {
   }
 
   Future<void> sendMessage(String receiverId, String message,
-      {bool fromAI = false}) async {
+      {bool fromAI = false, String type = "text"}) async {
     final String currentUserId =
         fromAI ? "aitech" : _firebaseAuth.currentUser!.uid;
     receiverId = fromAI ? _firebaseAuth.currentUser!.uid : receiverId;
@@ -56,6 +56,7 @@ class ChatService extends ChangeNotifier {
       senderName: currentUserName,
       receiverId: receiverId,
       message: message,
+      type: type,
       timestamp: timestamp,
     );
 
@@ -92,6 +93,7 @@ class ChatService extends ChangeNotifier {
 
     await _firebaseFirestore.collection('chat_rooms').doc(chatRoomId).set({
       'lastMessage': message,
+      'type': type,
       'lastTimestamp': timestamp,
       'unreadFrom': unreadFrom,
       'unreadTo': unreadTo,

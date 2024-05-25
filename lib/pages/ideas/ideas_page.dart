@@ -36,6 +36,7 @@ class _IdeasPageState extends State<IdeasPage> {
             return PageView(
                 scrollDirection: Axis.vertical,
                 children: snapshot.data!.docs
+                    .where((document) => document['uid'] != currentUser!.uid)
                     .map<Widget>((docs) => _buildIdeaPostViewItem(docs))
                     .toList());
           } else {

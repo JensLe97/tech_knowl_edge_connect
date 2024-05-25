@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/models/idea_post.dart';
 
 class IdeaPostsService extends ChangeNotifier {
@@ -11,8 +10,6 @@ class IdeaPostsService extends ChangeNotifier {
   Stream<QuerySnapshot> getPosts() {
     return _firebaseFirestore
         .collection('idea_posts')
-        .where('uid', isNotEqualTo: _firebaseAuth.currentUser!.uid)
-        .orderBy('uid')
         .orderBy('timestamp', descending: true)
         .snapshots();
   }

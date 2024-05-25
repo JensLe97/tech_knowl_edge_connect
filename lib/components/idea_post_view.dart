@@ -54,12 +54,6 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
     }
   }
 
-  @override
-  void dispose() {
-    _videoPlayerController?.dispose();
-    super.dispose();
-  }
-
   bool isLiked = false;
 
   Future<XFile?> selectPostContent(ImageSource imageSource, String type) async {
@@ -96,7 +90,6 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
 
   @override
   Widget build(BuildContext context) {
-    setState(() {});
     return Scaffold(
         backgroundColor: Colors.black,
         body: Stack(

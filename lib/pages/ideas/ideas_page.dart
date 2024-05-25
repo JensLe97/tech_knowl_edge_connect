@@ -33,12 +33,12 @@ class _IdeasPageState extends State<IdeasPage> {
           } else if (snapshot.hasError) {
             return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
           } else if (snapshot.hasData) {
-            return PageView.builder(
+            return PageView(
                 scrollDirection: Axis.vertical,
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: (context, index) {
-                  return _buildIdeaPostViewItem(snapshot.data!.docs[index]);
-                });
+                children: snapshot.data!.docs
+                    .where((document) => document['uid'] != currentUser!.uid)
+                    .map<Widget>((docs) => _buildIdeaPostViewItem(docs))
+                    .toList());
           } else {
             return const Text("Keine Posts vorhanden.");
           }

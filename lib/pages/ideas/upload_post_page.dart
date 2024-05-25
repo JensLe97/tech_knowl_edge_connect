@@ -94,8 +94,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .then((value) {
                       setState(() {
                         if (value != null) {
-                          postContent = value;
                           loadVideoPlayer(File(postContent!.path));
+                          postContent = value;
                         }
                       });
                     });
@@ -114,8 +114,8 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .then((value) {
                       setState(() {
                         if (value != null) {
-                          postContent = value;
                           loadVideoPlayer(File(postContent!.path));
+                          postContent = value;
                         }
                       });
                     });

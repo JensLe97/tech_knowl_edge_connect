@@ -179,18 +179,20 @@ class _UploadPostPageState extends State<UploadPostPage> {
       Uri uri = Uri.parse(postContent!.path);
       _videoPlayerController = VideoPlayerController.networkUrl(uri)
         ..initialize().then((_) {
-          _videoPlayerController!.setVolume(0);
-          _videoPlayerController!.play();
-          _videoPlayerController!.setLooping(true);
-          setState(() {});
+          setState(() {
+            _videoPlayerController!.setVolume(0);
+            _videoPlayerController!.play();
+            _videoPlayerController!.setLooping(true);
+          });
         });
     } else {
       _videoPlayerController = VideoPlayerController.file(file)
         ..initialize().then((_) {
-          _videoPlayerController!.setVolume(0);
-          _videoPlayerController!.play();
-          _videoPlayerController!.setLooping(true);
-          setState(() {});
+          setState(() {
+            _videoPlayerController!.setVolume(0);
+            _videoPlayerController!.play();
+            _videoPlayerController!.setLooping(true);
+          });
         });
     }
   }

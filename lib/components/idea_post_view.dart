@@ -45,10 +45,11 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
       Uri uri = Uri.parse(widget.content);
       _videoPlayerController = VideoPlayerController.networkUrl(uri)
         ..initialize().then((_) {
-          _videoPlayerController!.setVolume(0);
-          _videoPlayerController!.play();
-          _videoPlayerController!.setLooping(true);
-          setState(() {});
+          setState(() {
+            _videoPlayerController!.setVolume(0);
+            _videoPlayerController!.play();
+            _videoPlayerController!.setLooping(true);
+          });
         });
     }
   }
@@ -95,6 +96,7 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
 
   @override
   Widget build(BuildContext context) {
+    setState(() {});
     return Scaffold(
         backgroundColor: Colors.black,
         body: Stack(

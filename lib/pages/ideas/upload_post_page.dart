@@ -28,7 +28,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
   @override
   void dispose() {
     _captionController.dispose();
-    _videoPlayerController?.dispose();
     super.dispose();
   }
 
@@ -171,10 +170,6 @@ class _UploadPostPageState extends State<UploadPostPage> {
   }
 
   loadVideoPlayer(File file) {
-    if (_videoPlayerController != null) {
-      _videoPlayerController!.dispose();
-    }
-
     if (kIsWeb) {
       Uri uri = Uri.parse(postContent!.path);
       _videoPlayerController = VideoPlayerController.networkUrl(uri)

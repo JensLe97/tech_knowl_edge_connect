@@ -55,7 +55,6 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
 
   @override
   void dispose() {
-    _videoPlayerController?.dispose();
     super.dispose();
   }
 

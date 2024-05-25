@@ -107,10 +107,7 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                     fit: BoxFit.cover,
                   )
                 : Center(
-                    child: AspectRatio(
-                      aspectRatio: _videoPlayerController!.value.aspectRatio,
-                      child: VideoPlayer(_videoPlayerController!),
-                    ),
+                    child: VideoPlayer(_videoPlayerController!),
                   ),
             Padding(
               padding: const EdgeInsets.all(8),

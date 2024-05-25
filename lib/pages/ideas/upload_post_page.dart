@@ -147,11 +147,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
                                 const EdgeInsets.symmetric(horizontal: 25.0),
                             child: SizedBox(
                               height: 500,
-                              child: AspectRatio(
-                                aspectRatio:
-                                    _videoPlayerController!.value.aspectRatio,
-                                child: VideoPlayer(_videoPlayerController!),
-                              ),
+                              child: VideoPlayer(_videoPlayerController!),
                             ),
                           )
                         : const SizedBox(

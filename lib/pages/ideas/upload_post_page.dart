@@ -28,6 +28,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
   @override
   void dispose() {
     _captionController.dispose();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
 

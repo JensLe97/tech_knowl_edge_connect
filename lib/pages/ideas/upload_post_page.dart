@@ -59,7 +59,9 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .selectPostContent(ImageSource.camera, type)
                         .then((value) {
                       setState(() {
-                        postContent = value;
+                        if (value != null) {
+                          postContent = value;
+                        }
                       });
                     });
                   },
@@ -76,7 +78,9 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .selectPostContent(ImageSource.gallery, type)
                         .then((value) {
                       setState(() {
-                        postContent = value;
+                        if (value != null) {
+                          postContent = value;
+                        }
                       });
                     });
                   },
@@ -94,7 +98,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .then((value) {
                       setState(() {
                         if (value != null) {
-                          loadVideoPlayer(File(postContent!.path));
+                          loadVideoPlayer(File(value.path));
                           postContent = value;
                         }
                       });
@@ -114,7 +118,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
                         .then((value) {
                       setState(() {
                         if (value != null) {
-                          loadVideoPlayer(File(postContent!.path));
+                          loadVideoPlayer(File(value.path));
                           postContent = value;
                         }
                       });

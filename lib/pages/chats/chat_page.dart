@@ -97,10 +97,12 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: _buildMessageList()),
+              TextFieldTapRegion(
+                child: Expanded(
+                  child: Align(
+                      alignment: Alignment.bottomCenter,
+                      child: _buildMessageList()),
+                ),
               ),
               const SizedBox(height: 2),
               _buildMessageInput(),

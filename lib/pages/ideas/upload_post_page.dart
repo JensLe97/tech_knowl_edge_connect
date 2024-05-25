@@ -37,134 +37,136 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Padding(
-        padding:
-            EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            const SizedBox(height: 10),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                IconButton(
-                  tooltip: "Foto aufnehmen",
-                  onPressed: () async {
-                    setState(() {
-                      type = "image";
-                      postContent = null;
-                    });
-                    await widget
-                        .selectPostContent(ImageSource.camera, type)
-                        .then((value) {
+    return TextFieldTapRegion(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  IconButton(
+                    tooltip: "Foto aufnehmen",
+                    onPressed: () async {
                       setState(() {
-                        postContent = value;
+                        type = "image";
+                        postContent = null;
                       });
-                    });
-                  },
-                  icon: const Icon(Icons.camera_alt),
-                ),
-                IconButton(
-                  tooltip: "Foto aus Galerie auswählen",
-                  onPressed: () async {
-                    setState(() {
-                      type = "image";
-                      postContent = null;
-                    });
-                    await widget
-                        .selectPostContent(ImageSource.gallery, type)
-                        .then((value) {
-                      setState(() {
-                        postContent = value;
-                      });
-                    });
-                  },
-                  icon: const Icon(Icons.image),
-                ),
-                IconButton(
-                  tooltip: "Video aufnehmen",
-                  onPressed: () async {
-                    setState(() {
-                      type = "video";
-                      postContent = null;
-                    });
-                    await widget
-                        .selectPostContent(ImageSource.camera, type)
-                        .then((value) {
-                      setState(() {
-                        if (value != null) {
+                      await widget
+                          .selectPostContent(ImageSource.camera, type)
+                          .then((value) {
+                        setState(() {
                           postContent = value;
-                          loadVideoPlayer(File(postContent!.path));
-                        }
+                        });
                       });
-                    });
-                  },
-                  icon: const Icon(Icons.video_call),
-                ),
-                IconButton(
-                  tooltip: "Video aus Galerie auswählen",
-                  onPressed: () async {
-                    setState(() {
-                      type = "video";
-                      postContent = null;
-                    });
-                    await widget
-                        .selectPostContent(ImageSource.gallery, type)
-                        .then((value) {
-                      setState(() {
-                        if (value != null) {
-                          postContent = value;
-                          loadVideoPlayer(File(postContent!.path));
-                        }
-                      });
-                    });
-                  },
-                  icon: const Icon(Icons.video_file),
-                ),
-              ],
-            ),
-            const SizedBox(height: 10),
-            postContent != null
-                ? type == "image"
-                    ? Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                        child: kIsWeb
-                            ? Image.network(
-                                postContent!.path,
-                                height: 500,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                File(postContent!.path),
-                                height: 500,
-                                fit: BoxFit.cover,
-                              ),
-                      )
-                    : _videoPlayerController != null
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 25.0),
-                            child: SizedBox(
-                              height: 500,
-                              child: VideoPlayer(_videoPlayerController!),
-                            ),
-                          )
-                        : const SizedBox(
-                            height: 500,
-                          )
-                : const SizedBox(
-                    height: 500,
+                    },
+                    icon: const Icon(Icons.camera_alt),
                   ),
-            const SizedBox(height: 20),
-            CaptionTextField(
-              controller: _captionController,
-              hintText: 'Beschreibung',
-            ),
-            const SizedBox(height: 20),
-            LoginButton(onTap: uploadIdeaPost, text: "Posten"),
-            const SizedBox(height: 25),
-          ],
+                  IconButton(
+                    tooltip: "Foto aus Galerie auswählen",
+                    onPressed: () async {
+                      setState(() {
+                        type = "image";
+                        postContent = null;
+                      });
+                      await widget
+                          .selectPostContent(ImageSource.gallery, type)
+                          .then((value) {
+                        setState(() {
+                          postContent = value;
+                        });
+                      });
+                    },
+                    icon: const Icon(Icons.image),
+                  ),
+                  IconButton(
+                    tooltip: "Video aufnehmen",
+                    onPressed: () async {
+                      setState(() {
+                        type = "video";
+                        postContent = null;
+                      });
+                      await widget
+                          .selectPostContent(ImageSource.camera, type)
+                          .then((value) {
+                        setState(() {
+                          if (value != null) {
+                            postContent = value;
+                            loadVideoPlayer(File(postContent!.path));
+                          }
+                        });
+                      });
+                    },
+                    icon: const Icon(Icons.video_call),
+                  ),
+                  IconButton(
+                    tooltip: "Video aus Galerie auswählen",
+                    onPressed: () async {
+                      setState(() {
+                        type = "video";
+                        postContent = null;
+                      });
+                      await widget
+                          .selectPostContent(ImageSource.gallery, type)
+                          .then((value) {
+                        setState(() {
+                          if (value != null) {
+                            postContent = value;
+                            loadVideoPlayer(File(postContent!.path));
+                          }
+                        });
+                      });
+                    },
+                    icon: const Icon(Icons.video_file),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              postContent != null
+                  ? type == "image"
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                          child: kIsWeb
+                              ? Image.network(
+                                  postContent!.path,
+                                  height: 500,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  File(postContent!.path),
+                                  height: 500,
+                                  fit: BoxFit.cover,
+                                ),
+                        )
+                      : _videoPlayerController != null
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: SizedBox(
+                                height: 500,
+                                child: VideoPlayer(_videoPlayerController!),
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 500,
+                            )
+                  : const SizedBox(
+                      height: 500,
+                    ),
+              const SizedBox(height: 20),
+              CaptionTextField(
+                controller: _captionController,
+                hintText: 'Beschreibung',
+              ),
+              const SizedBox(height: 20),
+              LoginButton(onTap: uploadIdeaPost, text: "Posten"),
+              const SizedBox(height: 25),
+            ],
+          ),
         ),
       ),
     );

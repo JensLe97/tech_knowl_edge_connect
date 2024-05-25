@@ -97,12 +97,10 @@ class _ChatPageState extends State<ChatPage> {
             mainAxisAlignment: MainAxisAlignment.end,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TextFieldTapRegion(
-                child: Expanded(
-                  child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: _buildMessageList()),
-                ),
+              Expanded(
+                child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: _buildMessageList()),
               ),
               const SizedBox(height: 2),
               _buildMessageInput(),
@@ -130,7 +128,7 @@ class _ChatPageState extends State<ChatPage> {
               children: snapshot.data!.docs.reversed
                   .map((document) => _buildMessageItem(document))
                   .toList());
-          return messageList;
+          return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");
         }

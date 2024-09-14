@@ -35,3 +35,5 @@ env.g.dart
 .venv
 __pycache__/
 .streamlit/config.toml
+
+.DS_Store

@@ -11,4 +11,4 @@ PRODUCT_NAME = tech_knowl_edge_connect
 PRODUCT_BUNDLE_IDENTIFIER = com.jenslemke.techKnowlEdgeConnect
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.jenslemke. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2024 com.jenslemke. All rights reserved.

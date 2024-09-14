@@ -33,7 +33,7 @@ class AiSearchDelegate extends SearchDelegate {
             constraints: const BoxConstraints(minHeight: 36, maxHeight: 36),
             filled: true,
             hoverColor: Theme.of(context).colorScheme.onPrimary,
-            fillColor: Theme.of(context).colorScheme.background,
+            fillColor: Theme.of(context).colorScheme.surface,
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(6),
                 borderSide: BorderSide.none)));
@@ -103,7 +103,7 @@ class AiSearchDelegate extends SearchDelegate {
                                   borderRadius: BorderRadius.circular(10),
                                 ),
                                 fillColor:
-                                    Theme.of(context).colorScheme.background,
+                                    Theme.of(context).colorScheme.surface,
                                 filled: true,
                               ),
                             ),
@@ -150,7 +150,7 @@ class AiSearchDelegate extends SearchDelegate {
                                     borderRadius: BorderRadius.circular(10),
                                   ),
                                   fillColor:
-                                      Theme.of(context).colorScheme.background,
+                                      Theme.of(context).colorScheme.surface,
                                   filled: true,
                                 ),
                               ),
@@ -203,7 +203,7 @@ class AiSearchDelegate extends SearchDelegate {
                         color: Theme.of(context).colorScheme.inversePrimary),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  fillColor: Theme.of(context).colorScheme.background,
+                  fillColor: Theme.of(context).colorScheme.surface,
                   filled: true,
                 ),
               ),
@@ -219,7 +219,7 @@ class AiSearchDelegate extends SearchDelegate {
       List<OpenAIChatCompletionChoiceMessageModel> thisMessages,
       String prompt,
       answerController) async {
-    OpenAI.apiKey = Env.openApiKey;
+    OpenAI.apiKey = Env.openaiApiKey;
     List<OpenAIChatCompletionChoiceMessageModel> newMessages = [];
     for (var messageElement in thisMessages) {
       newMessages.add(messageElement);

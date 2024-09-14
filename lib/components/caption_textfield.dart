@@ -27,7 +27,7 @@ class CaptionTextField extends StatelessWidget {
                 BorderSide(color: Theme.of(context).colorScheme.inversePrimary),
             borderRadius: BorderRadius.circular(10),
           ),
-          fillColor: Theme.of(context).colorScheme.background,
+          fillColor: Theme.of(context).colorScheme.surface,
           filled: true,
           hintText: hintText,
           isDense: true,

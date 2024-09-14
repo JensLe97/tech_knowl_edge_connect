@@ -17,7 +17,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
             title: const Center(
               child: Text('Chats'),
@@ -28,7 +28,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                     showModalBottomSheet(
                       backgroundColor: Theme.of(context)
                           .colorScheme
-                          .background, // bottomsheet color
+                          .surface, // bottomsheet color
                       context: context,
                       isScrollControlled: true,
                       useRootNavigator: true,

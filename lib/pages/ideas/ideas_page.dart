@@ -18,7 +18,7 @@ class _IdeasPageState extends State<IdeasPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         body: _buildIdeaPostViewList());
   }
 

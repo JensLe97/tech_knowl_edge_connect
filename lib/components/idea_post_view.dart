@@ -139,31 +139,33 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      IconButton(
-                          onPressed: () {
-                            showModalBottomSheet(
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.background,
-                                context: context,
-                                isScrollControlled: true,
-                                useRootNavigator: true,
-                                enableDrag: true,
-                                shape: const RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
+                      SafeArea(
+                        child: IconButton(
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.surface,
+                                  context: context,
+                                  isScrollControlled: true,
+                                  useRootNavigator: true,
+                                  enableDrag: true,
+                                  shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
                                   ),
-                                ),
-                                builder: (BuildContext context) =>
-                                    UploadPostPage(
-                                      selectPostContent: selectPostContent,
-                                      uploadPostContent: uploadPostContent,
-                                    ));
-                          },
-                          icon: const Icon(
-                            Icons.camera_alt,
-                            size: 40,
-                          ),
-                          color: Colors.white),
+                                  builder: (BuildContext context) =>
+                                      UploadPostPage(
+                                        selectPostContent: selectPostContent,
+                                        uploadPostContent: uploadPostContent,
+                                      ));
+                            },
+                            icon: const Icon(
+                              Icons.camera_alt,
+                              size: 40,
+                            ),
+                            color: Colors.white),
+                      ),
                     ]),
               ),
             ),

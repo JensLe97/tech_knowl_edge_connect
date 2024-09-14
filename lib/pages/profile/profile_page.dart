@@ -23,7 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
           title: const Center(
             child: Text('Profil'),
@@ -34,7 +34,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   showModalBottomSheet(
                       backgroundColor: Theme.of(context)
                           .colorScheme
-                          .background, // bottomsheet color
+                          .surface, // bottomsheet color
                       context: context,
                       isScrollControlled: true,
                       useRootNavigator: true,

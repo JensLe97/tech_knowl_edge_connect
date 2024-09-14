@@ -41,7 +41,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Center(
           child: Text('Passwort ändern'),
@@ -175,8 +175,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       context: context,
       builder: (BuildContext context) {
         Future.delayed(const Duration(seconds: 3), () {
-          if (mounted) Navigator.of(context).pop();
-          if (mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
         });
         return AlertDialog(
           title: Center(

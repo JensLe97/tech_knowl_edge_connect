@@ -6,8 +6,11 @@ import 'firebase_options.dart';
 
 /*
   Generation of env.g.dart:
-  dart run build_runner build 
-  certutil -encode lib\env\env.g.dart tmp.b64 && findstr /v /c:- tmp.b64 > data.b64
+  flutter pub run build_runner clean
+  flutter pub run build_runner build --delete-conflicting-outputs
+  For GitHub Actions: 
+  Windows: certutil -encode lib\env\env.g.dart tmp.b64 && findstr /v /c:- tmp.b64 > data.b64
+  macOS: openssl base64 -in lib/env/env.g.dart -out data.b64
 */
 
 void main() async {
@@ -34,7 +37,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
         useMaterial3: true,
         brightness: Brightness.light,
         colorScheme: ColorScheme.light(
-          background: Colors.grey.shade100,
+          surface: Colors.grey.shade100,
           primary: Colors.grey.shade200,
           onPrimary: Colors.grey.shade300,
           secondary: Colors.grey.shade400,
@@ -56,7 +59,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
       darkTheme: ThemeData(
           brightness: Brightness.dark,
           colorScheme: ColorScheme.dark(
-            background: Colors.grey.shade900,
+            surface: Colors.grey.shade900,
             onPrimary: Colors.grey[850]!,
             primary: Colors.grey.shade800,
             secondary: Colors.grey.shade700,

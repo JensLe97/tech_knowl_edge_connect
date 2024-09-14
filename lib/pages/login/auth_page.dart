@@ -25,7 +25,7 @@ class AuthPage extends StatelessWidget {
               return snapshot.data!.getBool("welcome") != null
                   ? Scaffold(
                       resizeToAvoidBottomInset: false,
-                      backgroundColor: Theme.of(context).colorScheme.background,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
                       body: StreamBuilder<User?>(
                         stream: FirebaseAuth.instance.authStateChanges(),
                         builder: (context, authSnapshot) {

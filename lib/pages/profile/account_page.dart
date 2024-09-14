@@ -30,7 +30,7 @@ class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: const Center(
           child: Text('Konto'),
@@ -224,10 +224,10 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       builder: (BuildContext context) {
         Future.delayed(const Duration(seconds: 3), () {
-          if (mounted) Navigator.of(context).pop();
-          if (mounted) Navigator.of(context).pop();
-          if (mounted) Navigator.of(context).pop();
-          if (mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(context).pop();
         });
         return AlertDialog(
           title: Center(

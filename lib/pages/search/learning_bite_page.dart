@@ -90,7 +90,7 @@ class _LearningBitePageState extends State<LearningBitePage>
           : answersControllers;
     }
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.background,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
         toolbarHeight: 100,
@@ -112,7 +112,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                   ),
                   builder: (context, value, _) => LinearProgressIndicator(
                     value: value,
-                    backgroundColor: Theme.of(context).colorScheme.background,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     borderRadius: BorderRadius.circular(8),
                     color: Theme.of(context).colorScheme.secondary,
                     minHeight: 12,

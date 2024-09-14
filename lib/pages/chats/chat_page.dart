@@ -51,7 +51,7 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void sendImage(ImageSource imageSource) async {
-    final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
+    final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
     ImagePicker imagePicker = ImagePicker();
     // await Permission.photos.request();
@@ -65,7 +65,7 @@ class _ChatPageState extends State<ChatPage> {
         String extension = image.name.split(".").last;
         String fileName = const Uuid().v4();
 
-        Reference upload = _firebaseStorage
+        Reference upload = firebaseStorage
             .ref()
             .child('images')
             .child("$fileName.$extension");
@@ -86,7 +86,7 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.background,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
           title: Center(
             child: Text(widget.receiverUsername),
@@ -176,7 +176,7 @@ class _ChatPageState extends State<ChatPage> {
                   onPressed: () {
                     showModalBottomSheet(
                         backgroundColor:
-                            Theme.of(context).colorScheme.background,
+                            Theme.of(context).colorScheme.surface,
                         context: context,
                         isScrollControlled: true,
                         useRootNavigator: true,
@@ -219,7 +219,7 @@ class _ChatPageState extends State<ChatPage> {
     List<OpenAIChatCompletionChoiceMessageModel> thisMessages,
     String prompt,
   ) async {
-    OpenAI.apiKey = Env.openApiKey;
+    OpenAI.apiKey = Env.openaiApiKey;
     List<OpenAIChatCompletionChoiceMessageModel> newMessages = [];
     for (var messageElement in thisMessages) {
       newMessages.add(messageElement);

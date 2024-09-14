@@ -25,7 +25,7 @@ class SearchTextField extends StatelessWidget {
             hintText: hintText,
             constraints: const BoxConstraints(minHeight: 36, maxHeight: 36),
             onTap: onTap,
-            shape: MaterialStateProperty.all(const ContinuousRectangleBorder(
+            shape: WidgetStateProperty.all(const ContinuousRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),
             )),
           ),

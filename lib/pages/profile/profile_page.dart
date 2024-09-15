@@ -44,7 +44,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (BuildContext context) => const MenuItems());
+                      builder: (BuildContext context) => const SafeArea(child: MenuItems()));
                 },
                 icon: const Icon(Icons.menu)),
           ]),

@@ -155,9 +155,11 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                                     ),
                                   ),
                                   builder: (BuildContext context) =>
-                                      UploadPostPage(
-                                        selectPostContent: selectPostContent,
-                                        uploadPostContent: uploadPostContent,
+                                      SafeArea(
+                                        child: UploadPostPage(
+                                          selectPostContent: selectPostContent,
+                                          uploadPostContent: uploadPostContent,
+                                        ),
                                       ));
                             },
                             icon: const Icon(

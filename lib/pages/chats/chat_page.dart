@@ -186,9 +186,11 @@ class _ChatPageState extends State<ChatPage> {
                             top: Radius.circular(20),
                           ),
                         ),
-                        builder: (BuildContext context) => UploadImagePage(
-                              sendImage: sendImage,
-                            ));
+                        builder: (BuildContext context) => SafeArea(
+                          child: UploadImagePage(
+                                sendImage: sendImage,
+                              ),
+                        ));
                   },
                   icon: const Icon(
                     Icons.add_circle_outline_rounded,

@@ -23,35 +23,39 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
               child: Text('Chats'),
             ),
             actions: [
-              IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .surface, // bottomsheet color
-                      context: context,
-                      isScrollControlled: true,
-                      useRootNavigator: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+              SafeArea(
+                child: IconButton(
+                    onPressed: () {
+                      showModalBottomSheet(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .surface, // bottomsheet color
+                        context: context,
+                        isScrollControlled: true,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
                         ),
-                      ),
-                      builder: (BuildContext context) => Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          const Text("Neuer Chat",
-                              style: TextStyle(fontSize: 20)),
-                          const SizedBox(height: 20),
-                          _buildUserList(),
-                          const SizedBox(height: 20),
-                        ],
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.add_circle)),
+                        builder: (BuildContext context) => SingleChildScrollView(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              const Text("Neuer Chat",
+                                  style: TextStyle(fontSize: 20)),
+                              const SizedBox(height: 20),
+                              _buildUserList(),
+                              const SizedBox(height: 20),
+                            ],
+                          ),
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.add_circle)),
+              ),
             ]),
         body: SafeArea(
           child: Column(

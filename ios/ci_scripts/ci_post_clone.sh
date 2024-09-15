@@ -23,4 +23,7 @@ brew install cocoapods
 # Install CocoaPods dependencies.
 cd ios && pod install # run `pod install` in the `ios` directory.
 
+cd $CI_PRIMARY_REPOSITORY_PATH
+echo $ENV_G_DART | base64 -di > lib/env/env.g.dart
+
 exit 0

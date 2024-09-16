@@ -49,11 +49,11 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         ),
       ),
       bottomSheet: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 60),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+                children: [
             onLastPage
                 ? const SizedBox(
                     height: 20,
@@ -72,8 +72,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   activeDotColor: Theme.of(context).colorScheme.inversePrimary,
                   dotColor: Theme.of(context).colorScheme.secondary,
                   spacing: 10,
-                  dotHeight: 22,
-                  dotWidth: 22),
+                  dotHeight: 20,
+                  dotWidth: 20),
             ),
             onLastPage
                 ? IntroButton(

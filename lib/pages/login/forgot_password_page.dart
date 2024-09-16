@@ -40,7 +40,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 Icon(
                   Icons.lock,
                   size: 100,
-                  color: Theme.of(context).colorScheme.inversePrimary,
+                  color: Theme.of(context).colorScheme.secondary,
                 ),
                 const SizedBox(height: 50),
                 const Text(

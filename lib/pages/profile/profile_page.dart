@@ -93,30 +93,30 @@ class _ProfilePageState extends State<ProfilePage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Container(
-                            padding: const EdgeInsets.all(15),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                                 border: Border.all(
                                     color: Theme.of(context)
                                         .colorScheme
                                         .inversePrimary),
-                                borderRadius: BorderRadius.circular(8)),
+                                borderRadius: BorderRadius.circular(10)),
                             child: const Text(
                               'Profil bearbeiten',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 20,
                               ),
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            padding: const EdgeInsets.all(10),
                             child: Container(
-                              padding: const EdgeInsets.all(15),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                   border: Border.all(
                                       color: Theme.of(context)
                                           .colorScheme
                                           .inversePrimary),
-                                  borderRadius: BorderRadius.circular(22)),
+                                  borderRadius: BorderRadius.circular(12)),
                               child: const Icon(
                                 Icons.add,
                               ),

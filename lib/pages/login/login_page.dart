@@ -35,13 +35,13 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 55),
+                const SizedBox(height: 25),
                 Icon(
                   Icons.lock,
                   size: 100,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 const Text(
                   'Willkommen bei TechKnowlEdgeConnect',
                   style: TextStyle(fontSize: 18),
@@ -76,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: signUserIn,
                   text: "Anmelden",
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 40),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

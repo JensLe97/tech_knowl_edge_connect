@@ -1,9 +1,9 @@
 {
-    "name": "tech_knowl_edge_connect",
-    "short_name": "tech_knowl_edge_connect",
+    "name": "TechKnowlEdgeConnect",
+    "short_name": "TechKnowlEdgeConnect",
     "start_url": ".",
     "display": "standalone",
-    "description": "A new Flutter project.",
+    "description": "An education app for learning and exchanging with others.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

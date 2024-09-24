@@ -1,0 +1,78 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Flutter Deployment
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    name: Build APK and Create Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          echo "${{secrets.RELEASE_KEYSTORE}}" > upload-keystore.jks.asc
+          echo "${{secrets.RELEASE_PROP}}" > key.properties.asc
+          gpg -d --passphrase "${{secrets.RELEASE_KEYSTORE_PASSWORD}}" --batch upload-keystore.jks.asc > android/app/upload-keystore.jks
+          gpg -d --passphrase "${{secrets.RELEASE_PROP_PASSWORD}}" --batch key.properties.asc > android/key.properties
+      - name: Update Version in YAML
+        run: sed -i 's/version:.*/version:\ ${{ github.ref_name }}+${{github.run_number}}/g' pubspec.yaml
+      - name: Update Keystore Password in Gradle Properties
+        run: sed -i 's/#{STORE_PASSWORD}#/${{secrets.STORE_PASSWORD}}/g' android/key.properties
+      - name: Update Keystore Key Password in Gradle Properties
+        run: sed -i 's/#{KEY_PASSWORD}#/${{secrets.KEY_PASSWORD}}/g' android/key.properties
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.3"
+          channel: "stable"
+          cache: true
+
+      - uses: actions/setup-java@v3
+        with:
+          distribution: "zulu"
+          java-version: "17"
+          cache: "gradle"
+
+      - run: echo ${{ secrets.ENV_G_DART }} | base64 -di > lib/env/env.g.dart
+
+      - run: flutter clean
+      - run: flutter pub get
+      - run: flutter build appbundle --release --obfuscate --split-debug-info=symbols
+      - name: Create a Release in GitHub
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/bundle/release/app-release.aab"
+          token: ${{secrets.TOKEN_GITHUB}}
+          tag: ${{ github.ref_name }}
+          commit: ${{github.sha}}
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: appbundle
+          path: build/app/outputs/bundle/release/app-release.aab
+  release:
+    name: Release App to Production Track
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get Appbundle from Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: appbundle
+      - name: Release App to Production Track
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+          packageName: com.jenslemke.tech_knowl_edge_connect
+          releaseFiles: app-release.aab
+          track: production

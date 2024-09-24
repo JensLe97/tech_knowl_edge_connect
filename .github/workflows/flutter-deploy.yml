@@ -42,7 +42,9 @@ jobs:
           java-version: "17"
           cache: "gradle"
 
-      - run: echo ${{ secrets.ENV_G_DART }} | base64 -di > lib/env/env.g.dart
+      - run: echo $ENV_G_DART | base64 -di > lib/env/env.g.dart
+        env:
+          ENV_G_DART: ${{ secrets.ENV_G_DART }}
 
       - run: flutter clean
       - run: flutter pub get
@@ -52,7 +54,6 @@ jobs:
         with:
           artifacts: "build/app/outputs/bundle/release/app-release.aab"
           token: ${{secrets.TOKEN_GITHUB}}
-          tag: ${{ github.ref_name }}
           commit: ${{github.sha}}
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4

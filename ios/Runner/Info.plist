@@ -38,11 +38,11 @@
 		<key>LSRequiresIPhoneOS</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>$(PRODUCT_NAME) camera use</string>
+		<string>Erlaube Zugriff auf die Kamera, um Fotos und Videos zu machen und hochzuladen.</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>$(PRODUCT_NAME) microphone use</string>
+		<string>Erlaube Zugriff auf das Mikrofon, um Videos mit Ton aufzunehmen und hochzuladen.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>$(PRODUCT_NAME) photo use</string>
+		<string>Erlaube Zugriff auf Fotos, um Fotos aus deiner Mediatek hochzuladen.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>
 		<true/>
 		<key>UILaunchStoryboardName</key>

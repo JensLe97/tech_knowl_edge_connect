@@ -7,9 +7,8 @@ name: Flutter Deployment
 
 on:
   push:
-    branches: ["main"]
-  pull_request:
-    branches: ["main"]
+    tags:
+      - '*'
 
 jobs:
   build:
@@ -19,16 +18,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: |
-          echo "${{secrets.RELEASE_KEYSTORE}}" > upload-keystore.jks.asc
-          echo "${{secrets.RELEASE_PROP}}" > key.properties.asc
-          gpg -d --passphrase "${{secrets.RELEASE_KEYSTORE_PASSWORD}}" --batch upload-keystore.jks.asc > android/app/upload-keystore.jks
-          gpg -d --passphrase "${{secrets.RELEASE_PROP_PASSWORD}}" --batch key.properties.asc > android/key.properties
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > upload-keystore.jks.asc
+          echo "${{ secrets.RELEASE_PROP }}" > key.properties.asc
+          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSWORD }}" --batch upload-keystore.jks.asc > android/app/upload-keystore.jks
+          gpg -d --passphrase "${{ secrets.RELEASE_PROP_PASSWORD }}" --batch key.properties.asc > android/key.properties
       - name: Update Version in YAML
-        run: sed -i 's/version:.*/version:\ ${{ github.ref_name }}+${{github.run_number}}/g' pubspec.yaml
+        run: sed -i 's/version:.*/version:\ ${{ github.ref_name }}+${{ github.run_number }}/g' pubspec.yaml
       - name: Update Keystore Password in Gradle Properties
-        run: sed -i 's/#{STORE_PASSWORD}#/${{secrets.STORE_PASSWORD}}/g' android/key.properties
+        run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update Keystore Key Password in Gradle Properties
-        run: sed -i 's/#{KEY_PASSWORD}#/${{secrets.KEY_PASSWORD}}/g' android/key.properties
+        run: sed -i 's/#{KEY_PASSWORD}#/${{ secrets.KEY_PASSWORD }}/g' android/key.properties
 
       - uses: subosito/flutter-action@v2
         with:
@@ -53,8 +52,8 @@ jobs:
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/bundle/release/app-release.aab"
-          token: ${{secrets.TOKEN_GITHUB}}
-          commit: ${{github.sha}}
+          token: ${{ secrets.TOKEN_GITHUB }}
+          commit: ${{ github.sha }}
       - name: Upload App Bundle
         uses: actions/upload-artifact@v4
         with:
@@ -73,7 +72,7 @@ jobs:
       - name: Release App to Production Track
         uses: r0adkll/upload-google-play@v1
         with:
-          serviceAccountJsonPlainText: ${{secrets.PLAYSTORE_ACCOUNT_KEY}}
+          serviceAccountJsonPlainText: ${{ secrets.PLAYSTORE_ACCOUNT_KEY }}
           packageName: com.jenslemke.tech_knowl_edge_connect
           releaseFiles: app-release.aab
           track: production

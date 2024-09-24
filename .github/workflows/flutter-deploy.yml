@@ -24,6 +24,8 @@ jobs:
           gpg -d --passphrase "${{ secrets.RELEASE_PROP_PASSWORD }}" --batch key.properties.asc > android/key.properties
       - name: Update Version in YAML
         run: sed -i 's/version:.*/version:\ ${GITHUB_REF_NAME#v}+${{ github.run_number }}/g' pubspec.yaml
+        env:
+          GITHUB_REF_NAME: ${{ github.ref_name }}
       - name: Update Keystore Password in Gradle Properties
         run: sed -i 's/#{STORE_PASSWORD}#/${{ secrets.STORE_PASSWORD }}/g' android/key.properties
       - name: Update Keystore Key Password in Gradle Properties

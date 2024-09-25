@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>31090418784-qk6gjnajojebrt50d71vbtehgg01dnul.apps.googleusercontent.com</string>
+	<string>31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.31090418784-qk6gjnajojebrt50d71vbtehgg01dnul</string>
+	<string>com.googleusercontent.apps.31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg</string>
 	<key>GCM_SENDER_ID</key>
@@ -19,16 +21,16 @@
 	<key>STORAGE_BUCKET</key>
 	<string>tech-knowl-edge-connect.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:31090418784:ios:5c461798510f84a277cf05</string>
+	<string>1:31090418784:ios:c565ee0244fea1cc77cf05</string>
 </dict>
 </plist>

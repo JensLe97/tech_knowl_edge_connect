@@ -62,8 +62,4 @@ class _OverviewPageState extends State<OverviewPage> {
       ),
     );
   }
-
-  void signUserOut() {
-    FirebaseAuth.instance.signOut();
-  }
 }

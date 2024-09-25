@@ -67,9 +67,14 @@ class _HomePageState extends State<HomePage> {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
             } else if (snapshot.hasData) {
               Map<String, dynamic>? user = snapshot.data!.data();
+              if (user == null) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
               List<List<int>> tmpResumeSubjects = [];
               final sharedResumeSubjects =
-                  user!['resumeSubjects'] ?? "[[], [], [], [], [], [], []]";
+                  user['resumeSubjects'] ?? "[[], [], [], [], [], [], []]";
               for (var resumeSubject in jsonDecode(sharedResumeSubjects)) {
                 tmpResumeSubjects.add(List<int>.from(resumeSubject));
               }

@@ -7,56 +7,28 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:31090418784:android:21094b8ea780f3d977cf05",
-        "android_client_info": {
-          "package_name": "com.example.tech_knowl_edge_connect"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.tech_knowl_edge_connect",
-            "certificate_hash": "8b567426fd1415b2b776239cf3fc8af1ac3c8880"
-          }
-        },
-        {
-          "client_id": "31090418784-hkmlbtf7l8shf4859fkqn4evo8bcpk9a.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyC4po_-2wO2OqwZOnW22zGEwvde6QMfF0s"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "31090418784-01lfsikbdtenaj98prvkmju2s3monjrv.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "31090418784-1ov1v8rcs64dcjkucjbi53qhi4u7i2dn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.techKnowlEdgeConnect.RunnerTests"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:31090418784:android:c6e2431b3b9cc4d277cf05",
         "android_client_info": {
           "package_name": "com.jenslemke.tech_knowl_edge_connect"
         }
       },
       "oauth_client": [
+        {
+          "client_id": "31090418784-mlpa9in81cp77nv56k0uvss3dpklrc5n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenslemke.tech_knowl_edge_connect",
+            "certificate_hash": "3033294651eee24a9324ce84acf11940d619fd5b"
+          }
+        },
+        {
+          "client_id": "31090418784-qkhh3pfm4l06baber2cv1uea4h2tkbmc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenslemke.tech_knowl_edge_connect",
+            "certificate_hash": "7d672b7c70bd93df4a0e7fcc20fe6774502f9699"
+          }
+        },
         {
           "client_id": "31090418784-hkmlbtf7l8shf4859fkqn4evo8bcpk9a.apps.googleusercontent.com",
           "client_type": 3

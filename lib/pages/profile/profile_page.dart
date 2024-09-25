@@ -44,7 +44,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (BuildContext context) => const SafeArea(child: MenuItems()));
+                      builder: (BuildContext context) =>
+                          const SafeArea(child: MenuItems()));
                 },
                 icon: const Icon(Icons.menu)),
           ]),
@@ -81,13 +82,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 10),
-                      Text(
-                        user['email'],
-                        style: TextStyle(
-                            color: Theme.of(context).colorScheme.inversePrimary,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold),
-                      ),
+                      Text(user['email'],
+                          style: TextStyle(
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold),
+                          textAlign: TextAlign.center),
                       const SizedBox(height: 25),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,

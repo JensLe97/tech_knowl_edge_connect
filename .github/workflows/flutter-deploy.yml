@@ -77,6 +77,7 @@ jobs:
           packageName: com.jenslemke.tech_knowl_edge_connect
           releaseFiles: app-release.aab
           track: internal
+          changesNotSentForReview: true
       - name: Release App to Production Track
         uses: r0adkll/upload-google-play@v1
         with:

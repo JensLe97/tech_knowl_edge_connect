@@ -16,28 +16,25 @@ class ChatService extends ChangeNotifier {
         .collection('chat_rooms')
         .doc(chatRoomId)
         .collection('messages')
+        .where(Filter.or(Filter('blocked', isEqualTo: false),
+            Filter('senderId', isEqualTo: userId)))
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
 
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getLastInfos(
-      String userId, String otherUserId) {
-    List<String> ids = [userId, otherUserId];
-    ids.sort();
-    String chatRoomId = ids.join("_");
+  Future<bool> isBlocked(String userId, String otherUserId) async {
+    var documentSnapshot =
+        await _firebaseFirestore.collection('Users').doc(otherUserId).get();
 
-    return _firebaseFirestore
-        .collection('chat_rooms')
-        .doc(chatRoomId)
-        .snapshots();
-  }
+    if (documentSnapshot.data() != null) {
+      List<dynamic> blockedUsers =
+          documentSnapshot.data()!['blockedUsers'] ?? [];
+      if (blockedUsers.contains(userId)) {
+        return true;
+      }
+    }
 
-  Stream<QuerySnapshot> getLastMessages() {
-    return _firebaseFirestore
-        .collection('chat_rooms')
-        .where('users', arrayContains: _firebaseAuth.currentUser!.uid)
-        .orderBy('timestamp', descending: true)
-        .snapshots();
+    return false;
   }
 
   Future<void> sendMessage(String receiverId, String message,
@@ -50,6 +47,9 @@ class ChatService extends ChangeNotifier {
         _firebaseAuth.currentUser!.displayName.toString();
     final Timestamp timestamp = Timestamp.now();
 
+    // check if the other user has blocked the current user
+    final bool isUserBlocked = await isBlocked(currentUserId, receiverId);
+
     Message newMessage = Message(
       senderId: currentUserId,
       senderEmail: currentUserEmail,
@@ -58,6 +58,7 @@ class ChatService extends ChangeNotifier {
       message: message,
       type: type,
       timestamp: timestamp,
+      blocked: isUserBlocked,
     );
 
     List<String> ids = [currentUserId, receiverId];
@@ -70,7 +71,7 @@ class ChatService extends ChangeNotifier {
         .collection('messages')
         .add(newMessage.toMap());
 
-    if (receiverId == "aitech") {
+    if (receiverId == "aitech" || fromAI) {
       return;
     }
 
@@ -79,20 +80,30 @@ class ChatService extends ChangeNotifier {
 
     int unreadTo = 0;
     int unreadFrom = 0;
+    String lastUnblockedMessage = message;
     if (chatRoomData.data() != null) {
       unreadTo = chatRoomData.data()!['unreadTo'] ?? 0;
       unreadFrom = chatRoomData.data()!['unreadFrom'] ?? 0;
+      if (isUserBlocked) {
+        lastUnblockedMessage =
+            chatRoomData.data()!['lastUnblockedMessage'] ?? message;
+      }
     }
-    if (ids.first == currentUserId) {
-      // current user is the first user in the chat room (the sender)
-      unreadTo++;
-    } else {
-      // current user is the second user in the chat room (the receiver)
-      unreadFrom++;
+    if (!isUserBlocked) {
+      if (ids.first == currentUserId) {
+        // current user is the first user in the chat room (the sender)
+        unreadTo++;
+      } else {
+        // current user is the second user in the chat room (the receiver)
+        unreadFrom++;
+      }
     }
 
     await _firebaseFirestore.collection('chat_rooms').doc(chatRoomId).set({
       'lastMessage': message,
+      'lastUnblockedMessage': lastUnblockedMessage,
+      'lastSenderId': currentUserId,
+      'isBlocked': isUserBlocked,
       'type': type,
       'lastTimestamp': timestamp,
       'unreadFrom': unreadFrom,

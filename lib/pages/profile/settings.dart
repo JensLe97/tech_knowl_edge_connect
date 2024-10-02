@@ -39,41 +39,41 @@ class _SettingsPageState extends State<SettingsPage> {
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.help),
-            title: const Text('Hilfe & Support'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.paperclip),
-            title: const Text('Impressum'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.userShield),
-            title: const Text('Datenschutz'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(FontAwesomeIcons.fileShield),
-            title: const Text('Nutzungsbedingungen'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.info),
-            title: const Text('Über die App'),
-            onTap: () {
-              Navigator.pop(context);
-            },
-          ),
+          // ListTile(
+          //   leading: const Icon(Icons.help),
+          //   title: const Text('Hilfe & Support'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(FontAwesomeIcons.paperclip),
+          //   title: const Text('Impressum'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(FontAwesomeIcons.userShield),
+          //   title: const Text('Datenschutz'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(FontAwesomeIcons.fileShield),
+          //   title: const Text('Nutzungsbedingungen'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
+          // ListTile(
+          //   leading: const Icon(Icons.info),
+          //   title: const Text('Über die App'),
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // ),
           ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Abmelden'),

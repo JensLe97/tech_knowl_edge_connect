@@ -6,8 +6,8 @@ List<Unit> animalsUnits = [
       name: "Wirbeltiere",
       concepts: List.empty(),
       iconData: FontAwesomeIcons.dog),
-  Unit(
-      name: "Wirbellose Tiere",
-      concepts: List.empty(),
-      iconData: FontAwesomeIcons.bug),
+  // Unit(
+  //     name: "Wirbellose Tiere",
+  //     concepts: List.empty(),
+  //     iconData: FontAwesomeIcons.bug),
 ];

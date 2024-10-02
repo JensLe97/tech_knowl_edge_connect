@@ -30,7 +30,7 @@ Map<String, List<Unit>> theoryComputerScienceUnits = {
 // Math
 Map<String, List<Unit>> foundationalMathUnits = {
   "Zahlen": numbersUnits,
-  "Geometrie": geometryUnits
+  // "Geometrie": geometryUnits
 };
 Map<String, List<Unit>> advancedMathUnits = {
   "Analysis": analysisUnits,
@@ -40,7 +40,7 @@ Map<String, List<Unit>> advancedMathUnits = {
 // Biology
 Map<String, List<Unit>> foundationalBiologyUnits = {
   "Tiere": animalsUnits,
-  "Pflanzen": plantsUnits,
+  // "Pflanzen": plantsUnits,
 };
 
 // Education Science
@@ -52,13 +52,13 @@ Map<String, List<Unit>> universityEducationScienceUnits = {
 // ===== Categories =====
 Map<String, Map<String, List<Unit>>> computerScienceUnits = {
   "Hardware": hardwareComputerScienceUnits,
-  "Software": softwareComputerScienceUnits,
-  "Theoretische Informatik": theoryComputerScienceUnits,
+  // "Software": softwareComputerScienceUnits,
+  // "Theoretische Informatik": theoryComputerScienceUnits,
 };
 
 Map<String, Map<String, List<Unit>>> mathUnits = {
   "Unter- und Mittelstufe": foundationalMathUnits,
-  "Oberstufe": advancedMathUnits,
+  // "Oberstufe": advancedMathUnits,
 };
 
 Map<String, Map<String, List<Unit>>> biologyUnits = {

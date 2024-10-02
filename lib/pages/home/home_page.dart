@@ -94,6 +94,10 @@ class _HomePageState extends State<HomePage> {
                   ? List<String>.from(user['likedPosts'])
                   : [];
 
+              blockedUsers = user['blockedUsers'] != null
+                  ? List<String>.from(user['blockedUsers'])
+                  : [];
+
               return SafeArea(
                 child: SingleChildScrollView(
                   child: Padding(

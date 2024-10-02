@@ -6,17 +6,17 @@ import 'package:tech_knowl_edge_connect/models/subject.dart';
 
 List<Category> computerScienceCategories = [
   Category(name: "Hardware", topics: topicMap["Informatik"]!["Hardware"]!),
-  Category(name: "Software", topics: topicMap["Informatik"]!["Software"]!),
-  Category(
-      name: "Theoretische Informatik",
-      topics: topicMap["Informatik"]!["Theoretische Informatik"]!),
+  // Category(name: "Software", topics: topicMap["Informatik"]!["Software"]!),
+  // Category(
+  //     name: "Theoretische Informatik",
+  //     topics: topicMap["Informatik"]!["Theoretische Informatik"]!),
 ];
 
 List<Category> mathCategories = [
   Category(
       name: "Unter- und Mittelstufe",
       topics: topicMap["Mathematik"]!["Unter- und Mittelstufe"]!),
-  Category(name: "Oberstufe", topics: topicMap["Mathematik"]!["Oberstufe"]!),
+  // Category(name: "Oberstufe", topics: topicMap["Mathematik"]!["Oberstufe"]!),
 ];
 
 List<Category> biologyCategories = [
@@ -94,3 +94,4 @@ List<Subject> subjects = [
 List<List<int>> resumeSubjects = [];
 List<List<int>> completedLearningBites = [];
 List<String> likedPosts = [];
+List<String> blockedUsers = [];

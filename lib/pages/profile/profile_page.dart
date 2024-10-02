@@ -90,41 +90,41 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center),
                       const SizedBox(height: 25),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            padding: const EdgeInsets.all(10),
-                            decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .inversePrimary),
-                                borderRadius: BorderRadius.circular(10)),
-                            child: const Text(
-                              'Profil bearbeiten',
-                              style: TextStyle(
-                                fontSize: 20,
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Container(
-                              padding: const EdgeInsets.all(12),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary),
-                                  borderRadius: BorderRadius.circular(12)),
-                              child: const Icon(
-                                Icons.add,
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     Container(
+                      //       padding: const EdgeInsets.all(10),
+                      //       decoration: BoxDecoration(
+                      //           border: Border.all(
+                      //               color: Theme.of(context)
+                      //                   .colorScheme
+                      //                   .inversePrimary),
+                      //           borderRadius: BorderRadius.circular(10)),
+                      //       child: const Text(
+                      //         'Profil bearbeiten',
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //     Padding(
+                      //       padding: const EdgeInsets.all(10),
+                      //       child: Container(
+                      //         padding: const EdgeInsets.all(12),
+                      //         decoration: BoxDecoration(
+                      //             border: Border.all(
+                      //                 color: Theme.of(context)
+                      //                     .colorScheme
+                      //                     .inversePrimary),
+                      //             borderRadius: BorderRadius.circular(12)),
+                      //         child: const Icon(
+                      //           Icons.add,
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ],
+                      // )
                     ],
                   ),
                 ),

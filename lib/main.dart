@@ -55,31 +55,46 @@ class TechKnowlEdgeConnect extends StatelessWidget {
         ),
         bottomSheetTheme:
             const BottomSheetThemeData(backgroundColor: Colors.transparent),
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle: Theme.of(context).textTheme.bodyMedium?.apply(
+                color: Colors.grey[850],
+                fontSizeDelta: 3,
+              ),
+          backgroundColor: Colors.grey.shade100,
+        ),
       ),
       darkTheme: ThemeData(
-          brightness: Brightness.dark,
-          colorScheme: ColorScheme.dark(
-            surface: Colors.grey.shade900,
-            onPrimary: Colors.grey[850]!,
-            primary: Colors.grey.shade800,
-            secondary: Colors.grey.shade700,
-            inversePrimary: Colors.grey.shade800,
-          ),
-          textTheme: Theme.of(context).textTheme.apply(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.dark(
+          surface: Colors.grey.shade900,
+          onPrimary: Colors.grey[850]!,
+          primary: Colors.grey.shade800,
+          secondary: Colors.grey.shade700,
+          inversePrimary: Colors.grey.shade800,
+        ),
+        textTheme: Theme.of(context).textTheme.apply(
+              fontSizeDelta: 3,
+              bodyColor: Colors.grey[300],
+              displayColor: Colors.white,
+            ),
+        primarySwatch: Colors.indigo,
+        appBarTheme: AppBarTheme(
+          backgroundColor: Colors.grey.shade800,
+          elevation: 0,
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          shadowColor: Colors.transparent,
+          surfaceTintColor: Colors.transparent,
+          backgroundColor: Colors.transparent,
+        ),
+        snackBarTheme: SnackBarThemeData(
+          contentTextStyle: Theme.of(context).textTheme.bodyMedium?.apply(
+                color: Colors.grey[300],
                 fontSizeDelta: 3,
-                bodyColor: Colors.grey[300],
-                displayColor: Colors.white,
               ),
-          primarySwatch: Colors.indigo,
-          appBarTheme: AppBarTheme(
-            backgroundColor: Colors.grey.shade800,
-            elevation: 0,
-          ),
-          bottomSheetTheme: const BottomSheetThemeData(
-            shadowColor: Colors.transparent,
-            surfaceTintColor: Colors.transparent,
-            backgroundColor: Colors.transparent,
-          )),
+          backgroundColor: Colors.grey.shade900,
+        ),
+      ),
       home: const AuthPage(),
     );
   }

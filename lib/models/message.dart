@@ -8,6 +8,7 @@ class Message {
   final String message;
   final String type;
   final Timestamp timestamp;
+  final bool blocked;
 
   Message(
       {required this.senderId,
@@ -16,7 +17,8 @@ class Message {
       required this.receiverId,
       required this.message,
       required this.type,
-      required this.timestamp});
+      required this.timestamp,
+      this.blocked = false});
 
   Map<String, dynamic> toMap() {
     return {
@@ -27,6 +29,7 @@ class Message {
       'message': message,
       'type': type,
       'timestamp': timestamp,
+      'blocked': blocked,
     };
   }
 }

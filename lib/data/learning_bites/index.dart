@@ -101,7 +101,7 @@ Map<String, Map<String, List<LearningBite>>> numbersLearningBites = {
 // Biology
 Map<String, Map<String, List<LearningBite>>> animalsLearningBites = {
   "Wirbeltiere": vertebratesLearningBites,
-  "Wirbellose Tiere": {},
+  // "Wirbellose Tiere": {},
 };
 
 // Education Science

@@ -10,6 +10,7 @@ class IdeaPostsService extends ChangeNotifier {
   Stream<QuerySnapshot> getPosts() {
     return _firebaseFirestore
         .collection('idea_posts')
+        .where('uid', isNotEqualTo: _firebaseAuth.currentUser!.uid)
         .orderBy('timestamp', descending: true)
         .snapshots();
   }

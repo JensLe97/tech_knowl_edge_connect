@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/idea_post_view.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/services/idea_posts_service.dart';
 
 class IdeasPage extends StatefulWidget {
@@ -36,7 +37,7 @@ class _IdeasPageState extends State<IdeasPage> {
             return PageView(
                 scrollDirection: Axis.vertical,
                 children: snapshot.data!.docs
-                    .where((document) => document['uid'] != currentUser!.uid)
+                    .where((doc) => !blockedUsers.contains(doc['uid']))
                     .map<Widget>((docs) => _buildIdeaPostViewItem(docs))
                     .toList());
           } else {
@@ -46,20 +47,17 @@ class _IdeasPageState extends State<IdeasPage> {
   }
 
   Widget _buildIdeaPostViewItem(DocumentSnapshot document) {
-    Map<String, dynamic>? docData = document.data() as Map<String, dynamic>?;
-    if (docData!['username'] != currentUser!.uid) {
-      return IdeaPostViewItem(
-        postId: document.id,
-        username: docData['username'],
-        caption: docData['caption'],
-        numberOfLikes: docData['numberOfLikes'],
-        numberOfComments: docData['numberOfComments'],
-        numberOfShares: docData['numberOfShares'],
-        content: docData['content'],
-        type: docData['type'],
-      );
-    } else {
-      return const SizedBox();
-    }
+    Map<String, dynamic> docData = document.data()! as Map<String, dynamic>;
+    return IdeaPostViewItem(
+      postId: document.id,
+      username: docData['username'],
+      uid: docData['uid'],
+      caption: docData['caption'],
+      numberOfLikes: docData['numberOfLikes'],
+      numberOfComments: docData['numberOfComments'],
+      numberOfShares: docData['numberOfShares'],
+      content: docData['content'],
+      type: docData['type'],
+    );
   }
 }

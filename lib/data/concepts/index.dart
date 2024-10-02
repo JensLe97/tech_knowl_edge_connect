@@ -26,7 +26,7 @@ Map<String, List<Concept>> numbersConcepts = {
 // Biology
 Map<String, List<Concept>> animalsConcepts = {
   "Wirbeltiere": vertebratesCategoriesConcepts,
-  "Wirbellose": [],
+  // "Wirbellose": [],
 };
 
 // Education Science
@@ -66,7 +66,7 @@ Map<String, Map<String, List<Concept>>> advancedMathConcepts = {
 // Biology
 Map<String, Map<String, List<Concept>>> foundationalBiologyConcepts = {
   "Tiere": animalsConcepts,
-  "Pflanzen": {},
+  // "Pflanzen": {},
 };
 
 // Education Science

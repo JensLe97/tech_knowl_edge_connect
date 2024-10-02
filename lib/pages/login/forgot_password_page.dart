@@ -39,10 +39,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
               children: [
                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 80,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(height: 50),
+                const SizedBox(height: 30),
                 const Text(
                   'E-Mail zum Zurücksetzen des Passwortes',
                   style: TextStyle(fontSize: 18),

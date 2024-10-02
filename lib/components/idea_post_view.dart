@@ -2,15 +2,19 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/idea_reaction_button.dart';
+import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/pages/ideas/post_profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/ideas/upload_post_page.dart';
 import 'package:tech_knowl_edge_connect/services/idea_posts_service.dart';
+import 'package:tech_knowl_edge_connect/services/user_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:video_player/video_player.dart';
 
 class IdeaPostViewItem extends StatefulWidget {
   final String postId;
   final String username;
+  final String uid;
   final String caption;
   final int numberOfLikes;
   final int numberOfComments;
@@ -22,6 +26,7 @@ class IdeaPostViewItem extends StatefulWidget {
       {super.key,
       required this.postId,
       required this.username,
+      required this.uid,
       required this.caption,
       required this.numberOfLikes,
       required this.numberOfComments,
@@ -36,6 +41,7 @@ class IdeaPostViewItem extends StatefulWidget {
 class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
   final IdeaPostsService _ideaPostsService = IdeaPostsService();
+  final UserService _userService = UserService();
   VideoPlayerController? _videoPlayerController;
 
   @override
@@ -88,6 +94,24 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
     }
   }
 
+  void toggleBlockUser() {
+    if (blockedUsers.contains(widget.uid)) {
+      _userService.unblockUser(widget.uid);
+      setState(() {
+        blockedUsers.remove(widget.uid);
+      });
+    } else {
+      _userService.blockUser(widget.uid);
+      setState(() {
+        blockedUsers.add(widget.uid);
+      });
+    }
+  }
+
+  void reportContent() {
+    _userService.reportContent(widget.postId, widget.uid, widget.type, true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -112,12 +136,22 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      '@${widget.username}',
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.white),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => PostProfilePage(
+                            username: widget.username,
+                            uid: widget.uid,
+                          ),
+                        ));
+                      },
+                      child: Text(
+                        '@${widget.username}',
+                        style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.white),
+                      ),
                     ),
                     const SizedBox(height: 10),
                     RichText(
@@ -154,8 +188,7 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                                       top: Radius.circular(20),
                                     ),
                                   ),
-                                  builder: (BuildContext context) =>
-                                      SafeArea(
+                                  builder: (BuildContext context) => SafeArea(
                                         child: UploadPostPage(
                                           selectPostContent: selectPostContent,
                                           uploadPostContent: uploadPostContent,
@@ -190,6 +223,32 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                   //     onTap: toggleLike,
                   //     icon: Icons.send,
                   //     number: widget.numberOfShares),
+                  IdeaReactionButton(
+                    onTap: () {
+                      showModalBottomSheet(
+                        backgroundColor: Theme.of(context).colorScheme.surface,
+                        context: context,
+                        isScrollControlled: true,
+                        useRootNavigator: true,
+                        enableDrag: true,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        builder: (BuildContext context) => SafeArea(
+                          child: UserBottomSheet(
+                            toggleBlockUser: toggleBlockUser,
+                            report: reportContent,
+                            isBlocked: blockedUsers.contains(widget.uid),
+                            isContent: true,
+                          ),
+                        ),
+                      );
+                    },
+                    icon: Icons.more_horiz,
+                    hasCounter: false,
+                  ),
                 ]),
               ),
             )

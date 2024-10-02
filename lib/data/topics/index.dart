@@ -6,13 +6,13 @@ import 'package:tech_knowl_edge_connect/models/topic.dart';
 
 Map<String, List<Topic>> computerScienceTopics = {
   "Hardware": hardwareTopics,
-  "Software": softwareTopics,
-  "Theoretische Informatik": theoryTopics
+  // "Software": softwareTopics,
+  // "Theoretische Informatik": theoryTopics
 };
 
 Map<String, List<Topic>> mathTopics = {
   "Unter- und Mittelstufe": foundationalMathTopics,
-  "Oberstufe": advancedMathTopics,
+  // "Oberstufe": advancedMathTopics,
 };
 
 Map<String, List<Topic>> biologyTopics = {

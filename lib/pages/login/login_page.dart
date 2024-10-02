@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/terms_section.dart';
 import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/square_tile.dart';
@@ -38,10 +39,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 25),
                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 80,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 const Text(
                   'Willkommen bei TechKnowlEdgeConnect',
                   style: TextStyle(fontSize: 18),
@@ -58,7 +59,7 @@ class _LoginPageState extends State<LoginPage> {
                   hintText: 'Passwort',
                   obscureText: true,
                 ),
-                const SizedBox(height: 10),
+                const SizedBox(height: 15),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context,
@@ -76,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                   onTap: signUserIn,
                   text: "Anmelden",
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Row(
@@ -102,7 +103,7 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -119,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                     )
                   ],
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -139,6 +140,8 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 30),
+                const TermsAndConditions(),
                 const SizedBox(height: 25),
               ],
             ),

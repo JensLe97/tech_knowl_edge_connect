@@ -39,7 +39,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                             top: Radius.circular(20),
                           ),
                         ),
-                        builder: (BuildContext context) => SingleChildScrollView(
+                        builder: (BuildContext context) =>
+                            SingleChildScrollView(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
@@ -197,11 +198,18 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 minVerticalPadding: 15,
                 title: Text(otherUser!['username']),
                 subtitle: document['type'] == "text"
-                    ? Text(
-                        document['lastMessage'],
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      )
+                    ? document['isBlocked'] &&
+                            document['lastSenderId'] == otherUserId
+                        ? Text(
+                            document['lastUnblockedMessage'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
+                        : Text(
+                            document['lastMessage'],
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          )
                     : const Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -240,6 +248,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                           .doc(document.id)
                           .update({'unreadTo': 0});
                     }
+                    setState(() {});
                   });
                 },
               );
@@ -270,14 +279,18 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
         subtitle: Text(document['email']),
         onTap: () {
           Navigator.pop(context);
-          Navigator.of(context).push(
+          Navigator.of(context)
+              .push(
             MaterialPageRoute(
               builder: (context) => ChatPage(
                 receiverUsername: document['username'],
                 receiverUid: otherUserId,
               ),
             ),
-          );
+          )
+              .then((value) {
+            setState(() {});
+          });
         },
       );
     } else {

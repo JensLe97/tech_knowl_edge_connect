@@ -4,11 +4,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
 import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
 import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/pages/chats/upload_image_page.dart';
 import 'package:tech_knowl_edge_connect/env/env.dart';
 import 'package:tech_knowl_edge_connect/services/chat_service.dart';
+import 'package:tech_knowl_edge_connect/services/user_service.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
@@ -25,6 +29,8 @@ class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+  final UserService _userService = UserService();
+
   var allMessages = [
     OpenAIChatCompletionChoiceMessageModel(
       content: [
@@ -65,10 +71,8 @@ class _ChatPageState extends State<ChatPage> {
         String extension = image.name.split(".").last;
         String fileName = const Uuid().v4();
 
-        Reference upload = firebaseStorage
-            .ref()
-            .child('images')
-            .child("$fileName.$extension");
+        Reference upload =
+            firebaseStorage.ref().child('images').child("$fileName.$extension");
         extension = extension == "jpg" ? "jpeg" : extension;
         TaskSnapshot taskSnapshot = await upload.putData(
           await image.readAsBytes(),
@@ -83,15 +87,57 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
+  void toggleBlockUser() {
+    if (blockedUsers.contains(widget.receiverUid)) {
+      _userService.unblockUser(widget.receiverUid);
+      setState(() {
+        blockedUsers.remove(widget.receiverUid);
+      });
+    } else {
+      _userService.blockUser(widget.receiverUid);
+      setState(() {
+        blockedUsers.add(widget.receiverUid);
+      });
+    }
+  }
+
+  void reportUser() {
+    _userService.reportUser(widget.receiverUid);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-          title: Center(
-            child: Text(widget.receiverUsername),
-          ),
-        ),
+            title: Center(
+              child: Text(widget.receiverUsername),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      context: context,
+                      isScrollControlled: true,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (BuildContext context) => SafeArea(
+                        child: UserBottomSheet(
+                            toggleBlockUser: toggleBlockUser,
+                            report: reportUser,
+                            isBlocked:
+                                blockedUsers.contains(widget.receiverUid)),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.more_horiz)),
+            ]),
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
@@ -103,7 +149,12 @@ class _ChatPageState extends State<ChatPage> {
                     child: _buildMessageList()),
               ),
               const SizedBox(height: 2),
-              _buildMessageInput(),
+              blockedUsers.contains(widget.receiverUid)
+                  ? BlockedField(
+                      toggleBlockUser: toggleBlockUser,
+                      isBlocked: true,
+                    )
+                  : _buildMessageInput(),
               const SizedBox(height: 8),
             ],
           ),
@@ -113,7 +164,7 @@ class _ChatPageState extends State<ChatPage> {
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatService.getMessages(
-          widget.receiverUid, _firebaseAuth.currentUser!.uid),
+          _firebaseAuth.currentUser!.uid, widget.receiverUid),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
@@ -155,10 +206,13 @@ class _ChatPageState extends State<ChatPage> {
               : MainAxisAlignment.start,
           children: [
             ChatBubble(
-                message: data['message'],
-                type: data['type'],
-                isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
-                time: data['timestamp'])
+              uid: data['senderId'],
+              message: data['message'],
+              type: data['type'],
+              isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
+              time: data['timestamp'],
+              userService: _userService,
+            )
           ],
         ),
       ),
@@ -175,8 +229,7 @@ class _ChatPageState extends State<ChatPage> {
               : IconButton(
                   onPressed: () {
                     showModalBottomSheet(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.surface,
+                        backgroundColor: Theme.of(context).colorScheme.surface,
                         context: context,
                         isScrollControlled: true,
                         useRootNavigator: true,
@@ -187,10 +240,10 @@ class _ChatPageState extends State<ChatPage> {
                           ),
                         ),
                         builder: (BuildContext context) => SafeArea(
-                          child: UploadImagePage(
+                              child: UploadImagePage(
                                 sendImage: sendImage,
                               ),
-                        ));
+                            ));
                   },
                   icon: const Icon(
                     Icons.add_circle_outline_rounded,

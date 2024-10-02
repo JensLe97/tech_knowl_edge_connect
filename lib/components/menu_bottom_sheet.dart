@@ -21,41 +21,41 @@ class MenuItems extends StatelessWidget {
             );
           },
         ),
-        ListTile(
-          leading: const Icon(Icons.subject),
-          title: const Text('Fächer'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.language),
-          title: const Text('Sprache'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.people),
-          title: const Text('Nutzerart'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.school),
-          title: const Text('Schulform'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
-        ListTile(
-          leading: const Icon(Icons.grade),
-          title: const Text('Klassenstufe'),
-          onTap: () {
-            Navigator.pop(context);
-          },
-        ),
+        // ListTile(
+        //   leading: const Icon(Icons.subject),
+        //   title: const Text('Fächer'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        // ListTile(
+        //   leading: const Icon(Icons.language),
+        //   title: const Text('Sprache'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        // ListTile(
+        //   leading: const Icon(Icons.people),
+        //   title: const Text('Nutzerart'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        // ListTile(
+        //   leading: const Icon(Icons.school),
+        //   title: const Text('Schulform'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
+        // ListTile(
+        //   leading: const Icon(Icons.grade),
+        //   title: const Text('Klassenstufe'),
+        //   onTap: () {
+        //     Navigator.pop(context);
+        //   },
+        // ),
       ],
     );
   }

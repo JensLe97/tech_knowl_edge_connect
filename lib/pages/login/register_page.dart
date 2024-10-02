@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/terms_section.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -41,10 +42,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 const SizedBox(height: 25),
                 Icon(
                   Icons.lock,
-                  size: 100,
+                  size: 80,
                   color: Theme.of(context).colorScheme.secondary,
                 ),
-                const SizedBox(height: 40),
+                const SizedBox(height: 30),
                 const Text(
                   'Neuen Account erstellen',
                   style: TextStyle(fontSize: 18),
@@ -78,7 +79,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: signUserUp,
                   text: "Registrieren",
                 ),
-                const SizedBox(height: 123),
+                const SizedBox(height: 98),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -98,6 +99,8 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 30),
+                const TermsAndConditions(),
                 const SizedBox(height: 25),
               ],
             ),

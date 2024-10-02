@@ -1,5 +1,5 @@
 import 'package:tech_knowl_edge_connect/data/units/biology/animals_units.dart';
-import 'package:tech_knowl_edge_connect/data/units/biology/plants_units.dart';
+// import 'package:tech_knowl_edge_connect/data/units/biology/plants_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/computer_science/computer_organization_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/computer_science/computer_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/computer_science/data_base_units.dart';
@@ -8,7 +8,7 @@ import 'package:tech_knowl_edge_connect/data/units/computer_science/web_lang_uni
 import 'package:tech_knowl_edge_connect/data/units/education_science/learning_strategies_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/education_science/motivation_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/analysis_units.dart';
-import 'package:tech_knowl_edge_connect/data/units/math/geometry_units.dart';
+// import 'package:tech_knowl_edge_connect/data/units/math/geometry_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/linear_algebra_units.dart';
 import 'package:tech_knowl_edge_connect/data/units/math/numbers_units.dart';
 import 'package:tech_knowl_edge_connect/models/unit.dart';

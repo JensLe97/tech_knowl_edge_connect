@@ -53,7 +53,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
+          children: [
             onLastPage
                 ? const SizedBox(
                     height: 20,

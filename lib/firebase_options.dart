@@ -66,8 +66,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
-    androidClientId: '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
-    iosClientId: '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
+    androidClientId:
+        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+    iosClientId:
+        '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
   );
 
@@ -77,8 +79,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
-    androidClientId: '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
-    iosClientId: '31090418784-f24rvngfd427jjajtof4nkuigs920vp1.apps.googleusercontent.com',
+    androidClientId:
+        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+    iosClientId:
+        '31090418784-f24rvngfd427jjajtof4nkuigs920vp1.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect.RunnerTests',
   );
 }

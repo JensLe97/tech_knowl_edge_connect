@@ -34,7 +34,7 @@ decorator==5.1.1
 defusedxml==0.7.1
 -e git+https://github.com/huggingface/diffusers@ae05050db9d37d5af48a6cd0d6510a5ffb1c1cd4#egg=diffusers
 distro==1.9.0
-exceptiongroup==1.2.0
+exceptiongroup==1.2.2
 executing==2.0.1
 fastapi==0.110.1
 fastjsonschema==2.19.1

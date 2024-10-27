@@ -1,10 +1,10 @@
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/lesson_button.dart';
 import 'package:tech_knowl_edge_connect/components/answer_field.dart';
+import 'package:tech_knowl_edge_connect/components/lesson_button.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
-import 'package:collection/collection.dart';
 
 class LearningBitePage extends StatefulWidget {
   final LearningBite learningBite;

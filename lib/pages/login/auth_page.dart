@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tech_knowl_edge_connect/pages/overview_page.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/onboarding_page.dart';
 import 'package:tech_knowl_edge_connect/pages/login/login_or_register_page.dart';
+import 'package:tech_knowl_edge_connect/pages/overview_page.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});

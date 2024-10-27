@@ -12,8 +12,8 @@ import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/ac
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/advanced_strategies_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/attention_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/cognitive_learning_bites.dart';
-import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/elaboration_strategies_learning_bites.dart';
+import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/expectation_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/learntypes_styles_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognition_learning_bites.dart';
 import 'package:tech_knowl_edge_connect/data/learning_bites/education_science/metacognitive_learning_bites.dart';

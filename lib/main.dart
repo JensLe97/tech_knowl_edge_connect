@@ -1,14 +1,15 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
+
 import 'firebase_options.dart';
 
 /*
   Generation of env.g.dart:
   flutter pub run build_runner clean
   flutter pub run build_runner build --delete-conflicting-outputs
-  For GitHub Actions: 
+  For GitHub Actions:
   Windows: certutil -encode lib\env\env.g.dart tmp.b64 && findstr /v /c:- tmp.b64 > data.b64
   macOS: openssl base64 -in lib/env/env.g.dart -out data.b64
 */

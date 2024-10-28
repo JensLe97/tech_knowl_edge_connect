@@ -83,7 +83,7 @@ lightning==2.2.1
 lightning-cloud==0.5.70
 lightning-utilities==0.10.1
 lightning_sdk==0.1.26
-litdata==0.2.2
+litdata==0.2.29
 Markdown==3.6
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5

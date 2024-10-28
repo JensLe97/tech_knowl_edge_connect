@@ -64,7 +64,7 @@ jedi==0.19.1
 Jinja2==3.1.4
 jmespath==1.0.1
 joblib==1.4.2
-json5==0.9.24
+json5==0.9.25
 jsonpointer==2.4
 jsonschema==4.21.1
 jsonschema-specifications==2023.12.1

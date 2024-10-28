@@ -80,7 +80,7 @@ jupyterlab_server==2.26.0
 jupyterlab_widgets==3.0.13
 kiwisolver==1.4.5
 lightning==2.2.1
-lightning-cloud==0.5.64
+lightning-cloud==0.5.70
 lightning-utilities==0.10.1
 lightning_sdk==0.1.2
 litdata==0.2.2

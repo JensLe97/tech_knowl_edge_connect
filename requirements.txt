@@ -77,7 +77,7 @@ jupyter_server_terminals==0.5.3
 jupyterlab==4.0.6
 jupyterlab_pygments==0.3.0
 jupyterlab_server==2.26.0
-jupyterlab_widgets==3.0.10
+jupyterlab_widgets==3.0.13
 kiwisolver==1.4.5
 lightning==2.2.1
 lightning-cloud==0.5.64

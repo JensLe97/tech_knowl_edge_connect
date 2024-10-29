@@ -146,7 +146,7 @@ python-json-logger==2.0.7
 python-multipart==0.0.9
 pytorch-lightning==2.2.1
 pytz==2024.1
-PyYAML==6.0.1
+PyYAML==6.0.2
 pyzmq==25.1.2
 referencing==0.34.0
 regex==2023.12.25

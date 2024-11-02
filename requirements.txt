@@ -12,7 +12,7 @@ asttokens==2.4.1
 async-lru==2.0.4
 async-timeout==4.0.3
 attrs==23.2.0
-awscrt==0.19.19
+awscrt==0.23.0
 Babel==2.14.0
 backoff==2.2.1
 beautifulsoup4==4.12.3

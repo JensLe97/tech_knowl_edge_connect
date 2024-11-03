@@ -23,7 +23,7 @@ boto3==1.34.82
 botocore==1.34.82
 cachetools==5.3.3
 certifi==2024.2.2
-cffi==1.16.0
+cffi==1.17.1
 charset-normalizer==3.3.2
 click==8.1.7
 comm==0.2.2

@@ -86,7 +86,7 @@ lightning_sdk==0.1.31
 litdata==0.2.29
 Markdown==3.6
 markdown-it-py==3.0.0
-MarkupSafe==2.1.5
+MarkupSafe==3.0.2
 matplotlib==3.8.2
 matplotlib-inline==0.1.7
 mdurl==0.1.2

@@ -84,7 +84,7 @@ lightning-cloud==0.5.70
 lightning-utilities==0.10.1
 lightning_sdk==0.1.31
 litdata==0.2.29
-Markdown==3.6
+Markdown==3.7
 markdown-it-py==3.0.0
 MarkupSafe==2.1.5
 matplotlib==3.8.2

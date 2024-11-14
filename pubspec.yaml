@@ -44,7 +44,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   smooth_page_indicator: ^1.1.0
   lottie: ^3.0.0
-  confetti: ^0.7.0
+  confetti: ^0.8.0
   collection: ^1.18.0
   dart_openai: ^5.1.0
   envied: ^0.5.3

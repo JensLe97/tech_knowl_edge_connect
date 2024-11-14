@@ -117,7 +117,7 @@ objprint==0.2.3
 openai==1.23.1
 overrides==7.7.0
 packaging==23.2
-pandas==2.1.4
+pandas==2.2.3
 pandocfilters==1.5.1
 parso==0.8.4
 peft==0.7.0

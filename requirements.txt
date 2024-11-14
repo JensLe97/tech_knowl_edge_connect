@@ -174,7 +174,7 @@ sympy==1.12
 tenacity==8.2.3
 tensorboard==2.15.1
 tensorboard-data-server==0.7.2
-termcolor==2.4.0
+termcolor==2.5.0
 terminado==0.18.1
 threadpoolctl==3.4.0
 tinycss2==1.2.1

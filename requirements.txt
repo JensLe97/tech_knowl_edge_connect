@@ -81,7 +81,7 @@ jupyterlab_widgets==3.0.13
 kiwisolver==1.4.7
 lightning==2.2.1
 lightning-cloud==0.5.70
-lightning-utilities==0.10.1
+lightning-utilities==0.11.9
 lightning_sdk==0.1.31
 litdata==0.2.29
 Markdown==3.6

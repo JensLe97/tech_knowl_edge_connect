@@ -120,7 +120,7 @@ packaging==23.2
 pandas==2.1.4
 pandocfilters==1.5.1
 parso==0.8.4
-peft==0.7.0
+peft==0.14.0
 pexpect==4.9.0
 pillow==10.3.0
 platformdirs==4.2.0

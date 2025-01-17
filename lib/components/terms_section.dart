@@ -4,7 +4,8 @@ import 'package:url_launcher/url_launcher.dart';
 class TermsAndConditions extends StatelessWidget {
   final String termsAndConditions =
       "https://jenslemke.com/tech-knowl-edge-connect";
-  final String privacyPolicy = "https://jenslemke.com/disclosure";
+  final String privacyPolicy =
+      "https://jenslemke.com/tech-knowl-edge-connect#privacy";
 
   const TermsAndConditions({super.key});
 

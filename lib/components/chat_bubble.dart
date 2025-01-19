@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/services/user_service.dart';
 
 class ChatBubble extends StatelessWidget {
@@ -157,7 +158,7 @@ class ChatBubble extends StatelessWidget {
     );
   }
 
-  void reportContent() {
-    userService.reportContent(message, uid, type, false);
+  void reportContent(ReportReason reason) {
+    userService.reportContent(message, uid, type, false, reason);
   }
 }

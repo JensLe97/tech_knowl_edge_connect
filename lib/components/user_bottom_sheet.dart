@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/reason_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 
 class UserBottomSheet extends StatelessWidget {
   final void Function() toggleBlockUser;
-  final void Function() report;
+  final void Function(ReportReason) report;
   final bool isBlocked;
   final bool isContent;
 
@@ -44,13 +46,24 @@ class UserBottomSheet extends StatelessWidget {
               : const Text('Benutzer melden'),
           onTap: () {
             Navigator.pop(context);
-            report();
-            final snackBar = SnackBar(
-              content: isContent
-                  ? const Text('Inhalt wurde gemeldet')
-                  : const Text('Benutzer wurde gemeldet'),
+            showModalBottomSheet(
+              backgroundColor: Theme.of(context).colorScheme.surface,
+              context: context,
+              isScrollControlled: true,
+              useRootNavigator: true,
+              enableDrag: true,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
+              ),
+              builder: (BuildContext context) => SafeArea(
+                child: ReportReasonBottomSheet(
+                  report: report,
+                  isContent: isContent,
+                ),
+              ),
             );
-            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
         ),
       ],

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/services/user_service.dart';
 
 class PostProfilePage extends StatefulWidget {
@@ -39,8 +40,8 @@ class _ProfilePageState extends State<PostProfilePage> {
     }
   }
 
-  void reportUser() {
-    _userService.reportUser(widget.uid);
+  void reportUser(ReportReason reason) {
+    _userService.reportUser(widget.uid, reason);
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 
 class UserService extends ChangeNotifier {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -23,19 +24,38 @@ class UserService extends ChangeNotifier {
     });
   }
 
-  void reportContent(
-      String contentId, String uid, String type, isPostId) async {
+  void reportContent(String contentId, String uid, String type, isPostId,
+      ReportReason reason) async {
     await FirebaseFirestore.instance.collection('reported_content').add({
       'contentId': contentId,
       'uid': uid,
       'type': type,
       'isPostId': isPostId,
+      'reason': reason.name,
+      'timestamp': Timestamp.now(),
     });
+    informAdmin();
   }
 
-  void reportUser(String uid) async {
+  void reportUser(String uid, ReportReason reason) async {
     await FirebaseFirestore.instance.collection('reported_users').add({
       'uid': uid,
+      'reason': reason.name,
+      'timestamp': Timestamp.now(),
     });
+    informAdmin();
+  }
+
+  void informAdmin() async {
+    try {
+      await FirebaseAuth.instance.setLanguageCode("de");
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: "techknowledgeconnect@jenslemke.com",
+      );
+    } on FirebaseAuthException catch (e) {
+      if (kDebugMode) {
+        print(e);
+      }
+    }
   }
 }

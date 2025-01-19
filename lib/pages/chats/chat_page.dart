@@ -10,6 +10,7 @@ import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
 import 'package:tech_knowl_edge_connect/env/env.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/pages/chats/upload_image_page.dart';
 import 'package:tech_knowl_edge_connect/services/chat_service.dart';
 import 'package:tech_knowl_edge_connect/services/user_service.dart';
@@ -101,8 +102,8 @@ class _ChatPageState extends State<ChatPage> {
     }
   }
 
-  void reportUser() {
-    _userService.reportUser(widget.receiverUid);
+  void reportUser(ReportReason reason) {
+    _userService.reportUser(widget.receiverUid, reason);
   }
 
   @override

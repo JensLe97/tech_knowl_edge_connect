@@ -4,6 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/idea_reaction_button.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/pages/ideas/post_profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/ideas/upload_post_page.dart';
 import 'package:tech_knowl_edge_connect/services/idea_posts_service.dart';
@@ -108,8 +109,9 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
     }
   }
 
-  void reportContent() {
-    _userService.reportContent(widget.postId, widget.uid, widget.type, true);
+  void reportContent(ReportReason reason) {
+    _userService.reportContent(
+        widget.postId, widget.uid, widget.type, true, reason);
   }
 
   @override

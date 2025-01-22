@@ -6,15 +6,9 @@ import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 Map<String, List<Widget>> data = const {
   "CPU - Einfach erklärt": [
     Text("Die CPU oder auf der Prozessor ist das Herz des Computers."),
-    Divider(
-      thickness: 1,
-    ),
   ],
   "CPU Aufbau": [
     Text("Eine CPU besteht aus Milliarden von Transistoren."),
-    Divider(
-      thickness: 1,
-    ),
   ]
 };
 

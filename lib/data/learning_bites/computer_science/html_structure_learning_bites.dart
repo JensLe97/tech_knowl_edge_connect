@@ -6,15 +6,9 @@ import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 Map<String, List<Widget>> data = const {
   "HTML Struktur - Allgemein": [
     Text("HTML besteht aus einem header und einem body Bereich."),
-    Divider(
-      thickness: 1,
-    ),
   ],
   "HTML Struktur Elemente": [
     Text("Weitere Elemente sind paragraph und heading."),
-    Divider(
-      thickness: 1,
-    ),
   ]
 };
 

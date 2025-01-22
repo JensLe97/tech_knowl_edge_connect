@@ -7,16 +7,10 @@ Map<String, List<Widget>> data = const {
   "Mainboard - Einfach erklärt": [
     Text(
         "Auf dem Mainboard befinden sich verschiedene Komponenten eines Computers, die über kurze Distanzen verbunden sind und miteinander kommunizieren."),
-    Divider(
-      thickness: 1,
-    ),
   ],
   "Mainboardaufbau": [
     Text(
         "Die wichtigsten Komponenten sind die CPU, der RAM und die Anschlüsse for externe Geräte."),
-    Divider(
-      thickness: 1,
-    ),
   ]
 };
 

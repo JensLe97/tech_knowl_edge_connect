@@ -48,97 +48,118 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
             SliverToBoxAdapter(
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
-                child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: categoryMap[widget.subject.name]!.length,
-                  itemBuilder: (BuildContext context, int categoryIndex) {
-                    return Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 20),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
+                child: categoryMap[widget.subject.name]!.isEmpty
+                    ? const Padding(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: 15,
+                          vertical: 300,
+                        ),
+                        child: Center(
                           child: Text(
-                            categoryMap[widget.subject.name]![categoryIndex]
-                                .name,
-                            style: const TextStyle(fontSize: 24),
-                          ),
+                              "Zu diesem Fach gibt es noch keine Lerninhalte",
+                              style: TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center),
                         ),
-                        const SizedBox(height: 6),
-                        ListView.builder(
-                          physics: const ClampingScrollPhysics(),
-                          scrollDirection: Axis.vertical,
-                          shrinkWrap: true,
-                          itemCount:
-                              categoryMap[widget.subject.name]![categoryIndex]
-                                  .topics
-                                  .length,
-                          itemBuilder: (BuildContext context, int topicIndex) {
-                            return Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const SizedBox(height: 10),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 20),
-                                  child: Text(
-                                    categoryMap[widget.subject.name]![
-                                            categoryIndex]
-                                        .topics[topicIndex]
-                                        .name,
-                                    style: const TextStyle(fontSize: 20),
-                                  ),
+                      )
+                    : ListView.builder(
+                        physics: const ClampingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemCount: categoryMap[widget.subject.name]!.length,
+                        itemBuilder: (BuildContext context, int categoryIndex) {
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 20),
+                              Padding(
+                                padding: const EdgeInsets.only(left: 20),
+                                child: Text(
+                                  categoryMap[widget.subject.name]![
+                                          categoryIndex]
+                                      .name,
+                                  style: const TextStyle(fontSize: 24),
                                 ),
-                                const SizedBox(height: 4),
-                                SizedBox(
-                                  height: 145,
-                                  child: ListView.builder(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 10),
-                                    scrollDirection: Axis.horizontal,
-                                    shrinkWrap: true,
-                                    itemCount: categoryMap[
-                                            widget.subject.name]![categoryIndex]
-                                        .topics[topicIndex]
-                                        .units
-                                        .length,
-                                    itemBuilder:
-                                        (BuildContext context, int unitIndex) {
-                                      return Row(
-                                        children: [
-                                          UnitTile(
-                                            unit: categoryMap[widget.subject
-                                                    .name]![categoryIndex]
-                                                .topics[topicIndex]
-                                                .units[unitIndex],
-                                            onTap: () => navigateToUnitPage(
-                                                widget.subject.name,
-                                                categoryMap[widget.subject
-                                                        .name]![categoryIndex]
-                                                    .name,
-                                                categoryMap[widget.subject
-                                                        .name]![categoryIndex]
-                                                    .topics[topicIndex]
-                                                    .name,
-                                                categoryMap[widget.subject
-                                                        .name]![categoryIndex]
-                                                    .topics[topicIndex]
-                                                    .units[unitIndex]),
-                                          ),
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                              ),
+                              const SizedBox(height: 6),
+                              ListView.builder(
+                                physics: const ClampingScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: categoryMap[widget.subject.name]![
+                                        categoryIndex]
+                                    .topics
+                                    .length,
+                                itemBuilder:
+                                    (BuildContext context, int topicIndex) {
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 20),
+                                        child: Text(
+                                          categoryMap[widget.subject.name]![
+                                                  categoryIndex]
+                                              .topics[topicIndex]
+                                              .name,
+                                          style: const TextStyle(fontSize: 20),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 4),
+                                      SizedBox(
+                                        height: 145,
+                                        child: ListView.builder(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 10),
+                                          scrollDirection: Axis.horizontal,
+                                          shrinkWrap: true,
+                                          itemCount: categoryMap[widget
+                                                  .subject.name]![categoryIndex]
+                                              .topics[topicIndex]
+                                              .units
+                                              .length,
+                                          itemBuilder: (BuildContext context,
+                                              int unitIndex) {
+                                            return Row(
+                                              children: [
+                                                UnitTile(
+                                                  unit: categoryMap[widget
+                                                          .subject
+                                                          .name]![categoryIndex]
+                                                      .topics[topicIndex]
+                                                      .units[unitIndex],
+                                                  onTap: () => navigateToUnitPage(
+                                                      widget.subject.name,
+                                                      categoryMap[widget.subject
+                                                                  .name]![
+                                                              categoryIndex]
+                                                          .name,
+                                                      categoryMap[widget.subject
+                                                                  .name]![
+                                                              categoryIndex]
+                                                          .topics[topicIndex]
+                                                          .name,
+                                                      categoryMap[widget.subject
+                                                                  .name]![
+                                                              categoryIndex]
+                                                          .topics[topicIndex]
+                                                          .units[unitIndex]),
+                                                ),
+                                              ],
+                                            );
+                                          },
+                                        ),
+                                      ),
+                                    ],
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      ),
               ),
             )
           ],

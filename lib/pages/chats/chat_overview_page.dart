@@ -82,15 +82,46 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           } else if (snapshot.hasError) {
             return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
           } else if (snapshot.hasData) {
-            return ListView(
-              shrinkWrap: true,
-              children: ListTile.divideTiles(
-                      context: context,
-                      tiles: snapshot.data!.docs
-                          .map<Widget>((docs) => _buildChatListItem(docs))
-                          .toList())
-                  .toList(),
-            );
+            List<Widget> chats = snapshot.data!.docs
+                .map<Widget>((docs) => _buildChatListItem(docs))
+                .toList();
+            if (chats.every((element) => element is SizedBox)) {
+              return const Center(
+                child: Column(
+                  children: [
+                    SizedBox(height: 300),
+                    Text("Du hast noch keine Chats.",
+                        style: TextStyle(fontSize: 20),
+                        textAlign: TextAlign.center),
+                    SizedBox(height: 2),
+                    Text(
+                      "Starte eine neue Unterhaltung ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "über das ",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Icon(Icons.add_circle),
+                        Text(
+                          "-Symbol oben rechts.",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            } else {
+              return ListView(
+                shrinkWrap: true,
+                children: ListTile.divideTiles(context: context, tiles: chats)
+                    .toList(),
+              );
+            }
           } else {
             return const Text("Keine Chats vorhanden.");
           }

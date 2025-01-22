@@ -6,15 +6,9 @@ import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 Map<String, List<Widget>> data = const {
   "Der div Tag": [
     Text("Ein einfacher Wrapper für ein anderes Element."),
-    Divider(
-      thickness: 1,
-    ),
   ],
   "Der p Tag": [
     Text("Dieser Tag kennzeichnet einen Paragraphen."),
-    Divider(
-      thickness: 1,
-    ),
   ]
 };
 

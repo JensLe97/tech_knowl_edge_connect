@@ -26,4 +26,4 @@ git push origin vX.Y.Z
 
 ## iOS
 
-Each commit will tigger an XCode build in Xcode Cloud with the version number from `pubspec.yaml`.
+Each commit will trigger an XCode build in Xcode Cloud with the version number from `pubspec.yaml`.

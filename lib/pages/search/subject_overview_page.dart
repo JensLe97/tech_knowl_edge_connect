@@ -52,7 +52,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                     ? const Padding(
                         padding: EdgeInsets.symmetric(
                           horizontal: 15,
-                          vertical: 300,
+                          vertical: 150,
                         ),
                         child: Center(
                           child: Text(

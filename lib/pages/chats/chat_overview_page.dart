@@ -23,40 +23,35 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
               child: Text('Chats'),
             ),
             actions: [
-              SafeArea(
-                child: IconButton(
-                    onPressed: () {
-                      showModalBottomSheet(
-                        backgroundColor: Theme.of(context)
-                            .colorScheme
-                            .surface, // bottomsheet color
-                        context: context,
-                        isScrollControlled: true,
-                        useRootNavigator: true,
-                        enableDrag: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .surface, // bottomsheet color
+                      context: context,
+                      isScrollControlled: true,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                      useSafeArea: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
                         ),
-                        builder: (BuildContext context) =>
-                            SingleChildScrollView(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const SizedBox(height: 20),
-                              const Text("Neuer Chat",
-                                  style: TextStyle(fontSize: 20)),
-                              const SizedBox(height: 20),
-                              _buildUserList(),
-                              const SizedBox(height: 20),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.add_circle)),
-              ),
+                      ),
+                      builder: (BuildContext context) => Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 20),
+                          const Text("Neuer Chat",
+                              style: TextStyle(fontSize: 20)),
+                          const SizedBox(height: 20),
+                          _buildUserList(),
+                        ],
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.add_circle)),
             ]),
         body: SafeArea(
           child: Column(
@@ -88,8 +83,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
             if (chats.every((element) => element is SizedBox)) {
               return const Center(
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SizedBox(height: 300),
                     Text("Du hast noch keine Chats.",
                         style: TextStyle(fontSize: 20),
                         textAlign: TextAlign.center),
@@ -116,10 +111,16 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 ),
               );
             } else {
-              return ListView(
-                shrinkWrap: true,
-                children: ListTile.divideTiles(context: context, tiles: chats)
-                    .toList(),
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  ListView(
+                    shrinkWrap: true,
+                    children:
+                        ListTile.divideTiles(context: context, tiles: chats)
+                            .toList(),
+                  ),
+                ],
               );
             }
           } else {
@@ -139,14 +140,16 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           } else if (snapshot.hasError) {
             return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
           } else if (snapshot.hasData) {
-            return ListView(
-              shrinkWrap: true,
-              children: ListTile.divideTiles(
-                      context: context,
-                      tiles: snapshot.data!.docs
-                          .map<Widget>((docs) => _buildUserListItem(docs))
-                          .toList())
-                  .toList(),
+            return Flexible(
+              child: ListView(
+                shrinkWrap: true,
+                children: ListTile.divideTiles(
+                        context: context,
+                        tiles: snapshot.data!.docs
+                            .map<Widget>((docs) => _buildUserListItem(docs))
+                            .toList())
+                    .toList(),
+              ),
             );
           } else {
             return const Text("Keine Chats vorhanden.");

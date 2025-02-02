@@ -184,6 +184,7 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                                   context: context,
                                   isScrollControlled: true,
                                   useRootNavigator: true,
+                                  useSafeArea: true,
                                   enableDrag: true,
                                   shape: const RoundedRectangleBorder(
                                     borderRadius: BorderRadius.vertical(
@@ -232,6 +233,7 @@ class _IdeaPostViewItemState extends State<IdeaPostViewItem> {
                         context: context,
                         isScrollControlled: true,
                         useRootNavigator: true,
+                        useSafeArea: true,
                         enableDrag: true,
                         shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.vertical(

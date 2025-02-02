@@ -33,6 +33,7 @@ class UserService extends ChangeNotifier {
       'isPostId': isPostId,
       'reason': reason.name,
       'timestamp': Timestamp.now(),
+      'reporter': _firebaseAuth.currentUser!.uid,
     });
     informAdmin();
   }
@@ -42,6 +43,7 @@ class UserService extends ChangeNotifier {
       'uid': uid,
       'reason': reason.name,
       'timestamp': Timestamp.now(),
+      'reporter': _firebaseAuth.currentUser!.uid,
     });
     informAdmin();
   }

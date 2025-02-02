@@ -44,7 +44,7 @@ class ChatService extends ChangeNotifier {
     receiverId = fromAI ? _firebaseAuth.currentUser!.uid : receiverId;
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserName =
-        _firebaseAuth.currentUser!.displayName.toString();
+        _firebaseAuth.currentUser!.displayName ?? "Anonymer User";
     final Timestamp timestamp = Timestamp.now();
 
     // check if the other user has blocked the current user

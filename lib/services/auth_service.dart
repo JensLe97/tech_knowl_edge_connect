@@ -60,8 +60,10 @@ class AuthService {
         .get()
         .then((data) {
       if (!data.exists) {
-        createAppleUserDocument(userCredential.user!.email!,
-            userCredential.user!.displayName!, userCredential.user!.uid);
+        createAppleUserDocument(
+            userCredential.user!.email!,
+            userCredential.user!.displayName ?? "Anonymer User",
+            userCredential.user!.uid);
       }
     });
 
@@ -73,7 +75,7 @@ class AuthService {
     if (gUser != null) {
       await FirebaseFirestore.instance.collection("Users").doc(uid).set({
         'email': gUser.email,
-        'username': gUser.displayName,
+        'username': gUser.displayName ?? "Anonymer User",
         'uid': uid,
       });
     }

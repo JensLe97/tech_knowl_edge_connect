@@ -93,33 +93,43 @@ class _LearningBitePageState extends State<LearningBitePage>
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        toolbarHeight: 100,
-        flexibleSpace: FlexibleSpaceBar(
-            titlePadding: const EdgeInsetsDirectional.only(
-                top: 40, bottom: 10, start: 25, end: 25),
-            centerTitle: true,
-            title: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(widget.learningBite.name),
-                const SizedBox(height: 5),
-                TweenAnimationBuilder<double>(
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeInOut,
-                  tween: Tween<double>(
-                    begin: 0,
-                    end: currentPage.toDouble() / maxPageNum,
+        toolbarHeight: 90,
+        titleSpacing: 0,
+        title: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 0, bottom: 10, right: 48),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    widget.learningBite.name,
+                    style: Theme.of(context).textTheme.titleLarge,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
                   ),
-                  builder: (context, value, _) => LinearProgressIndicator(
-                    value: value,
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    borderRadius: BorderRadius.circular(8),
-                    color: Theme.of(context).colorScheme.secondary,
-                    minHeight: 12,
+                  const SizedBox(height: 8),
+                  TweenAnimationBuilder<double>(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    tween: Tween<double>(
+                      begin: 0,
+                      end: currentPage.toDouble() / maxPageNum,
+                    ),
+                    builder: (context, value, _) => LinearProgressIndicator(
+                      value: value,
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      borderRadius: BorderRadius.circular(8),
+                      color: Theme.of(context).colorScheme.secondary,
+                      minHeight: 12,
+                    ),
                   ),
-                ),
-              ],
-            )),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -465,8 +475,6 @@ class _LearningBitePageState extends State<LearningBitePage>
                 )
               ])
             : const SizedBox.shrink();
-      default:
-        return const SizedBox.shrink();
     }
   }
 

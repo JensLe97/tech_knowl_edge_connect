@@ -23,7 +23,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
+  Stream<DocumentSnapshot<Map<String, dynamic>>>? getUserDetails() {
     // Reset fields
     // await FirebaseFirestore.instance
     //     .collection("Users")
@@ -33,10 +33,10 @@ class _HomePageState extends State<HomePage> {
     //   'resumeSubjects': jsonEncode([[], [], [], [], [], [], []]),
     // });
 
-    return await FirebaseFirestore.instance
+    return FirebaseFirestore.instance
         .collection("Users")
-        .doc(currentUser!.uid)
-        .get();
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .snapshots();
   }
 
   final confettiController = ConfettiController();
@@ -56,8 +56,8 @@ class _HomePageState extends State<HomePage> {
           child: Text('Home'),
         ),
       ),
-      body: FutureBuilder(
-          future: getUserDetails(),
+      body: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: getUserDetails(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(

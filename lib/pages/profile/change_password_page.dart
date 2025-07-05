@@ -43,9 +43,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Center(
-          child: Text('Passwort ändern'),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Passwort ändern'),
+          ],
         ),
+        centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: getUserDetails(),

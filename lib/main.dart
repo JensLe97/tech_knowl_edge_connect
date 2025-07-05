@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
 
 import 'firebase_options.dart';
@@ -96,6 +97,15 @@ class TechKnowlEdgeConnect extends StatelessWidget {
           backgroundColor: Colors.grey.shade900,
         ),
       ),
+      supportedLocales: const [
+        Locale('de'), // German
+        Locale('en'), // English
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: const AuthPage(),
     );
   }

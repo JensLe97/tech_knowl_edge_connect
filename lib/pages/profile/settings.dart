@@ -40,9 +40,14 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Center(
-          child: Text('Einstellungen'),
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Einstellungen'),
+          ],
         ),
+        centerTitle: true,
       ),
       body: Column(
         mainAxisSize: MainAxisSize.min,

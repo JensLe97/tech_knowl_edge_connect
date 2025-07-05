@@ -49,16 +49,17 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
               child: Padding(
                 padding: const EdgeInsets.only(bottom: 20),
                 child: categoryMap[widget.subject.name]!.isEmpty
-                    ? const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 150,
-                        ),
-                        child: Center(
-                          child: Text(
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height * 0.5,
+                        child: const Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 15),
+                          child: Center(
+                            child: Text(
                               "Zu diesem Fach gibt es noch keine Lerninhalte",
                               style: TextStyle(fontSize: 20),
-                              textAlign: TextAlign.center),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
                       )
                     : ListView.builder(

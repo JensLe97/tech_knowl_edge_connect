@@ -34,9 +34,10 @@ class _OverviewPageState extends State<OverviewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: IndexedStack(children: [
-        _tabs.elementAt(_currentIndex),
-      ]),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _tabs,
+      ),
       bottomNavigationBar: Container(
         color: Theme.of(context).colorScheme.inversePrimary,
         child: BottomNavigationBar(

@@ -25,9 +25,14 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-          title: const Center(
-            child: Text('Profil'),
+          title: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('Profil'),
+            ],
           ),
+          centerTitle: true,
           actions: [
             IconButton(
                 onPressed: () {
@@ -60,6 +65,11 @@ class _ProfilePageState extends State<ProfilePage> {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
             } else if (snapshot.hasData) {
               Map<String, dynamic>? user = snapshot.data!.data();
+              if (user == null) {
+                return const Center(
+                  child: Text("Profil wird eingerichtet..."),
+                );
+              }
               return SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -77,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       ),
                       const SizedBox(height: 25),
                       Text(
-                        user!['username'],
+                        user['username'],
                         style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),

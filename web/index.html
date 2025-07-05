@@ -20,7 +20,7 @@
     <meta name="google-signin-client_id" content="31090418784-hkmlbtf7l8shf4859fkqn4evo8bcpk9a.apps.googleusercontent.com">
 
     <!-- iOS meta tags & icons -->
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="tech_knowl_edge_connect">
     <meta name="theme-color" media="(prefers-color-scheme: light)" content="#616161">
@@ -40,7 +40,6 @@
     <!-- This script adds the flutter initialization JS code -->
     <script src="flutter.js" defer=""></script>
 
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
 
 
 
@@ -134,7 +133,7 @@
         // Download main.dart.js
         _flutter.loader.load({
           serviceWorker: {
-            serviceWorkerVersion: serviceWorkerVersion,
+            serviceWorkerVersion: "{{flutter_service_worker_version}}",
           },
           onEntrypointLoaded: function (engineInitializer) {
             engineInitializer.initializeEngine().then(function (appRunner) {

@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > upload-keystore.jks.asc
           echo "${{ secrets.RELEASE_PROP }}" > key.properties.asc
@@ -65,7 +65,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Get Appbundle from Artifacts
         uses: actions/download-artifact@v4
         with:

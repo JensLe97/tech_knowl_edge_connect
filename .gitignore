@@ -33,6 +33,7 @@ env.g.dart
 
 /keys/
 .venv
+.python-version
 __pycache__/
 .streamlit/config.toml
 

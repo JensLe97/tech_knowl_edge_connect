@@ -22,6 +22,22 @@
           }
         },
         {
+          "client_id": "31090418784-on6thv12mdhr0vehme1l0a1t85iodfb8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenslemke.tech_knowl_edge_connect",
+            "certificate_hash": "17a085f65d8b8600b0da0c8af1d01f45863da875"
+          }
+        },
+        {
+          "client_id": "31090418784-qbkndn513kl2i93nhqb0d42cvufmpulf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jenslemke.tech_knowl_edge_connect",
+            "certificate_hash": "8b567426fd1415b2b776239cf3fc8af1ac3c8880"
+          }
+        },
+        {
           "client_id": "31090418784-qkhh3pfm4l06baber2cv1uea4h2tkbmc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

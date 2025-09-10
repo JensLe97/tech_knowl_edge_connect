@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 import 'package:tech_knowl_edge_connect/models/subject.dart';
-import 'package:tech_knowl_edge_connect/pages/search/search_page.dart';
+import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
 
 void main() {
   Widget makeTestableWidget(Widget child) {
@@ -11,23 +12,40 @@ void main() {
     );
   }
 
-  testWidgets('Search Page smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(makeTestableWidget(const SearchPage()));
-
-    expect(find.text('Informatik'), findsOneWidget);
-    expect(find.text('Hardware'), findsNothing);
-
-    // Tap the 'Weiter' button and trigger a frame.
-    await tester.tap(find.text('Informatik'));
-    await tester.pumpAndSettle();
-
-    // Tap the 'Weiter' button and trigger a frame.
-    await tester.tap(find.text('Komponenten'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Mainboard'), findsOneWidget);
-    expect(find.text('Hardware'), findsNothing);
+  testWidgets(
+      'SubjectTile displays subject name, icon, color, and responds to tap',
+      (WidgetTester tester) async {
+    bool tapped = false;
+    final subject = Subject(
+        name: 'Testfach', color: Colors.blue, iconData: FontAwesomeIcons.book);
+    await tester.pumpWidget(
+      makeTestableWidget(
+        Scaffold(
+          body: SubjectTile(
+            subject: subject,
+            onTap: () {
+              tapped = true;
+            },
+          ),
+        ),
+      ),
+    );
+    // Check name
+    expect(find.text('Testfach'), findsOneWidget);
+    // Check icon
+    expect(find.byType(FaIcon), findsOneWidget);
+    // Check color (Container background)
+    final container = tester.widget<Container>(find
+        .descendant(
+          of: find.byType(SubjectTile),
+          matching: find.byType(Container),
+        )
+        .first);
+    final BoxDecoration? decoration = container.decoration as BoxDecoration?;
+    expect(decoration?.color, Colors.blue);
+    // Check tap
+    await tester.tap(find.byType(SubjectTile));
+    expect(tapped, isTrue);
   });
 
   group('Test Subject', () {

@@ -64,6 +64,10 @@ class TechKnowlEdgeConnect extends StatelessWidget {
               ),
           backgroundColor: Colors.grey.shade100,
         ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.all(Colors.grey.shade600),
+          trackColor: WidgetStateProperty.all(Colors.grey.shade400),
+        ),
       ),
       darkTheme: ThemeData(
         brightness: Brightness.dark,
@@ -95,6 +99,10 @@ class TechKnowlEdgeConnect extends StatelessWidget {
                 fontSizeDelta: 3,
               ),
           backgroundColor: Colors.grey.shade900,
+        ),
+        switchTheme: SwitchThemeData(
+          thumbColor: WidgetStateProperty.all(Colors.grey.shade700),
+          trackColor: WidgetStateProperty.all(Colors.grey.shade500),
         ),
       ),
       supportedLocales: const [

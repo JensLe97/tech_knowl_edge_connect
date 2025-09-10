@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/personal_library.dart';
 import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/data/index.dart';
@@ -50,12 +51,13 @@ class _SearchPageState extends State<SearchPage> {
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 25.0),
                   child: Text(
-                    "Fächer",
+                    "Meine Fächer",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
                   child: ListView.builder(
                     physics: const NeverScrollableScrollPhysics(),
                     scrollDirection: Axis.vertical,
@@ -69,6 +71,15 @@ class _SearchPageState extends State<SearchPage> {
                     },
                   ),
                 ),
+                const SizedBox(height: 12),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Text(
+                    "Meine Lerninhalte",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                const PersonalLibrary(),
               ],
             ),
           ),

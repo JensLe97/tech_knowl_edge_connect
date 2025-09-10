@@ -21,16 +21,16 @@ class SubjectTile extends StatelessWidget {
           color: subject.color,
           borderRadius: BorderRadius.circular(12),
         ),
-        margin: const EdgeInsets.all(10),
-        padding: const EdgeInsets.all(8),
+        margin: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(5),
         child: Row(
           children: [
             Expanded(
               flex: 2,
               child: Center(
                 child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: FaIcon(subject.iconData, size: 30),
+                  padding: const EdgeInsets.all(8.0),
+                  child: FaIcon(subject.iconData, size: 25),
                 ),
               ),
             ),
@@ -39,7 +39,7 @@ class SubjectTile extends StatelessWidget {
               child: Text(
                 subject.name,
                 style:
-                    const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
           ],

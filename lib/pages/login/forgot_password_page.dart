@@ -1,7 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});
@@ -54,7 +55,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   obscureText: false,
                 ),
                 const SizedBox(height: 25),
-                LoginButton(
+                SubmitButton(
                   onTap: resetPassword,
                   text: "Passwort zurücksetzen",
                 ),
@@ -88,30 +89,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'channel-error') {
-        showErrorMessage('Bitte E-Mail angeben!');
+        if (mounted) showErrorMessage(context, 'Bitte E-Mail angeben!');
       } else if (e.code == 'invalid-email') {
-        showErrorMessage('E-Mail Adresse ungültig!');
+        if (mounted) showErrorMessage(context, 'E-Mail Adresse ungültig!');
       } else if (e.code == 'user-not-found') {
-        showErrorMessage('E-Mail Adresse nicht gefunden!');
+        if (mounted) {
+          showErrorMessage(context, 'E-Mail Adresse nicht gefunden!');
+        }
       }
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void showSendMessage(String message) {

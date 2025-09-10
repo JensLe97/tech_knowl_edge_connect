@@ -49,10 +49,7 @@ class _OverviewPageState extends State<OverviewPage> {
           unselectedItemColor: Theme.of(context).textTheme.bodyLarge!.color,
           onTap: _onTap,
           items: const [
-            BottomNavigationBarItem(
-              label: 'Home',
-              icon: Icon(Icons.home),
-            ),
+            BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
             BottomNavigationBarItem(label: 'Suche', icon: Icon(Icons.search)),
             BottomNavigationBarItem(
                 label: 'Ideen', icon: Icon(Icons.movie_filter)),

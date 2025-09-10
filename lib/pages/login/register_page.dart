@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
 import 'package:tech_knowl_edge_connect/components/terms_section.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -75,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 25),
-                LoginButton(
+                SubmitButton(
                   onTap: signUserUp,
                   text: "Registrieren",
                 ),
@@ -123,10 +124,10 @@ class _RegisterPageState extends State<RegisterPage> {
     try {
       if (!RegExp(r'^[A-Za-z0-9_.]+$').hasMatch(usernameController.text)) {
         if (mounted) Navigator.of(context).pop();
-        showErrorMessage('Benutzername ungültig!');
+        if (mounted) showErrorMessage(context, 'Benutzername ungültig!');
       } else if (passwordController.text != confirmPasswordController.text) {
         if (mounted) Navigator.of(context).pop();
-        showErrorMessage('Passwörter nicht identisch!');
+        if (mounted) showErrorMessage(context, 'Passwörter nicht identisch!');
       } else {
         UserCredential? userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -140,32 +141,22 @@ class _RegisterPageState extends State<RegisterPage> {
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'weak-password') {
-        showErrorMessage('Passwort muss mindestens 6 Zeichen enthalten!');
+        if (mounted) {
+          showErrorMessage(
+              context, 'Passwort muss mindestens 6 Zeichen enthalten!');
+        }
       } else if (e.code == 'channel-error') {
-        showErrorMessage('Bitte alle Felder korrekt ausfüllen!');
+        if (mounted) {
+          showErrorMessage(context, 'Bitte alle Felder korrekt ausfüllen!');
+        }
       } else if (e.code == 'invalid-email') {
-        showErrorMessage('E-Mail Adresse ungültig!');
+        if (mounted) showErrorMessage(context, 'E-Mail Adresse ungültig!');
       } else if (e.code == 'email-already-in-use') {
-        showErrorMessage('E-Mail Adresse ist bereits registriert!');
+        if (mounted) {
+          showErrorMessage(context, 'E-Mail Adresse ist bereits registriert!');
+        }
       }
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   Future<void> createUserDocument(UserCredential? userCredential) async {

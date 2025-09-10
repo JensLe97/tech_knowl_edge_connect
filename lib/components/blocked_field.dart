@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
 
 class BlockedField extends StatelessWidget {
   final void Function() toggleBlockUser;
@@ -25,7 +25,7 @@ class BlockedField extends StatelessWidget {
           style: TextStyle(fontSize: 14),
         ),
         const SizedBox(height: 5),
-        LoginButton(
+        SubmitButton(
             onTap: () {
               toggleBlockUser();
               final snackBar = SnackBar(

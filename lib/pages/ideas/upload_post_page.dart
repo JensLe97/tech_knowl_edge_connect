@@ -4,8 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/caption_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
 import 'package:video_player/video_player.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 
 class UploadPostPage extends StatefulWidget {
   final Future<XFile?> Function(ImageSource, String) selectPostContent;
@@ -163,7 +164,7 @@ class _UploadPostPageState extends State<UploadPostPage> {
                 hintText: 'Beschreibung',
               ),
               const SizedBox(height: 20),
-              LoginButton(onTap: uploadIdeaPost, text: "Posten"),
+              SubmitButton(onTap: uploadIdeaPost, text: "Posten"),
               const SizedBox(height: 25),
             ],
           ),
@@ -201,29 +202,12 @@ class _UploadPostPageState extends State<UploadPostPage> {
 
   uploadIdeaPost() {
     if (postContent == null) {
-      showErrorMessage("Bitte ein Bild oder Video auswählen.");
+      showErrorMessage(context, "Bitte ein Bild oder Video auswählen.");
     } else if (_captionController.text.isEmpty) {
-      showErrorMessage("Bitte eine Beschreibung hinzufügen.");
+      showErrorMessage(context, "Bitte eine Beschreibung hinzufügen.");
     } else {
       widget.uploadPostContent(postContent, _captionController.text, type);
       Navigator.pop(context);
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

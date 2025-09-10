@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 
-class LoginButton extends StatelessWidget {
+class SubmitButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
 
-  const LoginButton({super.key, required this.onTap, required this.text});
+  const SubmitButton({Key? key, required this.onTap, required this.text})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

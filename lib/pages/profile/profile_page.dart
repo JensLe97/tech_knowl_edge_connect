@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/menu_bottom_sheet.dart';
+// import 'package:tech_knowl_edge_connect/components/text_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -100,41 +101,21 @@ class _ProfilePageState extends State<ProfilePage> {
                               fontWeight: FontWeight.bold),
                           textAlign: TextAlign.center),
                       const SizedBox(height: 25),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.center,
-                      //   children: [
-                      //     Container(
-                      //       padding: const EdgeInsets.all(10),
-                      //       decoration: BoxDecoration(
-                      //           border: Border.all(
-                      //               color: Theme.of(context)
-                      //                   .colorScheme
-                      //                   .inversePrimary),
-                      //           borderRadius: BorderRadius.circular(10)),
-                      //       child: const Text(
-                      //         'Profil bearbeiten',
-                      //         style: TextStyle(
-                      //           fontSize: 20,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //     Padding(
-                      //       padding: const EdgeInsets.all(10),
-                      //       child: Container(
-                      //         padding: const EdgeInsets.all(12),
-                      //         decoration: BoxDecoration(
-                      //             border: Border.all(
-                      //                 color: Theme.of(context)
-                      //                     .colorScheme
-                      //                     .inversePrimary),
-                      //             borderRadius: BorderRadius.circular(12)),
-                      //         child: const Icon(
-                      //           Icons.add,
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ],
-                      // )
+                      // TextIconButton(
+                      //   text: 'Profil bearbeiten',
+                      //   icon: Icons.edit,
+                      //   onTap: () {
+                      //     // TODO: Add edit profile logic
+                      //   },
+                      // ),
+                      // const SizedBox(height: 10),
+                      // TextIconButton(
+                      //   text: 'Lerninhalt hinzufügen',
+                      //   icon: Icons.add,
+                      //   onTap: () {
+                      //     // TODO: Add add-learning-content logic
+                      //   },
+                      // ),
                     ],
                   ),
                 ),

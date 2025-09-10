@@ -1,9 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/square_tile.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
 import 'package:tech_knowl_edge_connect/components/terms_section.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 import 'package:tech_knowl_edge_connect/pages/login/forgot_password_page.dart';
 import 'package:tech_knowl_edge_connect/services/auth_service.dart';
 
@@ -73,7 +74,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 const SizedBox(height: 25),
-                LoginButton(
+                SubmitButton(
                   onTap: signUserIn,
                   text: "Anmelden",
                 ),
@@ -172,25 +173,8 @@ class _LoginPageState extends State<LoginPage> {
       if (e.code == 'invalid-email' ||
           e.code == 'INVALID_LOGIN_CREDENTIALS' ||
           e.code == 'channel-error') {
-        showErrorMessage('Anmeldedaten falsch!');
+        if (mounted) showErrorMessage(context, 'Anmeldedaten falsch!');
       }
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 }

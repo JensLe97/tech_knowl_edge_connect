@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/change_password_page.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -169,31 +170,18 @@ class _AccountPageState extends State<AccountPage> {
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'requires-recent-login') {
-        showErrorMessage(
-            'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+        if (mounted) {
+          showErrorMessage(context,
+              'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+        }
       } else if (e.code == 'invalid-email') {
-        showErrorMessage('E-Mail Adresse ungültig!');
+        if (mounted) showErrorMessage(context, 'E-Mail Adresse ungültig!');
       } else if (e.code == 'user-not-found') {
-        showErrorMessage('E-Mail Adresse nicht gefunden!');
+        if (mounted) {
+          showErrorMessage(context, 'E-Mail Adresse nicht gefunden!');
+        }
       }
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void showConfirmMessage(

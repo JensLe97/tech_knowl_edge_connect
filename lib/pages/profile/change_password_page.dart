@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_button.dart';
 import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/submit_button.dart';
+import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -88,7 +89,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                           obscureText: true,
                         ),
                         const SizedBox(height: 25),
-                        LoginButton(
+                        SubmitButton(
                           onTap: () => changeUserPassword(user!['email']),
                           text: "Passwort ändern",
                         ),
@@ -117,10 +118,14 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     try {
       if (newPasswordController.text != confirmNewPasswordController.text) {
         if (mounted) Navigator.of(context).pop();
-        showErrorMessage('Neue Passwörter nicht identisch!');
+        if (mounted) {
+          showErrorMessage(context, 'Neue Passwörter nicht identisch!');
+        }
       } else if (oldPasswordController.text == newPasswordController.text) {
         if (mounted) Navigator.of(context).pop();
-        showErrorMessage('Altes und neues Passwort identisch!');
+        if (mounted) {
+          showErrorMessage(context, 'Altes und neues Passwort identisch!');
+        }
       } else {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
@@ -136,42 +141,35 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'requires-recent-login') {
-        showErrorMessage(
-            'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+        if (mounted) {
+          showErrorMessage(context,
+              'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+        }
       } else if (e.code == 'weak-password') {
-        showErrorMessage(
-            'Das neue Passwort muss mindestens 6 Zeichen enthalten!');
+        if (mounted) {
+          showErrorMessage(context,
+              'Das neue Passwort muss mindestens 6 Zeichen enthalten!');
+        }
       } else if (e.code == 'channel-error') {
-        showErrorMessage('Bitte alle Felder korrekt ausfüllen!');
+        if (mounted) {
+          showErrorMessage(context, 'Bitte alle Felder korrekt ausfüllen!');
+        }
       } else if (e.code == 'invalid-email') {
-        showErrorMessage('Benutzer E-Mail Adresse ungültig!');
+        if (mounted) {
+          showErrorMessage(context, 'Benutzer E-Mail Adresse ungültig!');
+        }
       } else if (e.code == 'user-disabled') {
-        showErrorMessage('Benutzer ist gesperrt!');
+        if (mounted) showErrorMessage(context, 'Benutzer ist gesperrt!');
       } else if (e.code == 'user-not-found') {
-        showErrorMessage('Benutzer wurde nicht gefunden!');
+        if (mounted) {
+          showErrorMessage(context, 'Benutzer wurde nicht gefunden!');
+        }
       } else if (e.code == 'wrong-password') {
-        showErrorMessage('Das alte Passwort ist falsch!');
+        if (mounted) showErrorMessage(context, 'Das alte Passwort ist falsch!');
       } else if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-        showErrorMessage('Das alte Passwort ist falsch!');
+        if (mounted) showErrorMessage(context, 'Das alte Passwort ist falsch!');
       }
     }
-  }
-
-  void showErrorMessage(String message) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: Colors.red,
-          title: Center(
-            child: Text(
-              message,
-              style: const TextStyle(color: Colors.white),
-            ),
-          ),
-        );
-      },
-    );
   }
 
   void showSuccessMessage(String message) {

@@ -90,12 +90,12 @@ class _HomePageState extends State<HomePage> {
               }
               completedLearningBites = tmpCompletedLearningBites;
 
-              likedPosts = user['likedPosts'] != null
-                  ? List<String>.from(user['likedPosts'])
-                  : [];
-
               blockedUsers = user['blockedUsers'] != null
                   ? List<String>.from(user['blockedUsers'])
+                  : [];
+
+              likedLearningMaterials = user['likedLearningMaterials'] != null
+                  ? List<String>.from(user['likedLearningMaterials'])
                   : [];
 
               return SafeArea(

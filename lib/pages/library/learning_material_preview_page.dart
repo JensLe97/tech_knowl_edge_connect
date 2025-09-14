@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:pdfrx/pdfrx.dart';
+import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
 import 'package:video_player/video_player.dart';
 
 class LearningMaterialPreviewPage extends StatelessWidget {
@@ -17,13 +18,15 @@ class LearningMaterialPreviewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (type.toLowerCase() == 'pdf') {
+    if (LearningMaterialType.pdfTypes.contains(type.toLowerCase())) {
       return Scaffold(
-        appBar: AppBar(title: Text(name)),
+        appBar: AppBar(
+          title: Text(name),
+          centerTitle: true,
+        ),
         body: PdfViewer.uri(Uri.parse(url)),
       );
-    } else if (['jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp']
-        .contains(type.toLowerCase())) {
+    } else if (LearningMaterialType.imageTypes.contains(type.toLowerCase())) {
       // Use EasyImageViewer in a dialog for images
       WidgetsBinding.instance.addPostFrameCallback((_) {
         showImageViewer(
@@ -31,20 +34,27 @@ class LearningMaterialPreviewPage extends StatelessWidget {
           NetworkImage(url),
           swipeDismissible: true,
           doubleTapZoomable: true,
-          onViewerDismissed: () {},
+          onViewerDismissed: () {
+            Navigator.of(context).pop();
+          },
         );
-        Navigator.of(context).pop();
       });
       return Scaffold(
-        appBar: AppBar(title: Text(name)),
+        appBar: AppBar(
+          title: Text(name),
+          centerTitle: true,
+        ),
         body: const Center(child: CircularProgressIndicator()),
       );
-    } else if (['mp4', 'mov', 'webm', 'mkv'].contains(type.toLowerCase())) {
+    } else if (LearningMaterialType.videoTypes.contains(type.toLowerCase())) {
       return _VideoPreview(url: url, name: name);
     } else {
       // Fallback: just show the URL
       return Scaffold(
-        appBar: AppBar(title: Text(name)),
+        appBar: AppBar(
+          title: Text(name),
+          centerTitle: true,
+        ),
         body: Center(
           child: Text('Dateityp wird nicht unterstützt.\n$url'),
         ),
@@ -66,6 +76,8 @@ class _VideoPreview extends StatefulWidget {
 class _VideoPreviewState extends State<_VideoPreview> {
   late VideoPlayerController _controller;
   bool _initialized = false;
+  bool _showPlayPause = false;
+  late VoidCallback _hideOverlayCallback;
 
   @override
   void initState() {
@@ -75,8 +87,29 @@ class _VideoPreviewState extends State<_VideoPreview> {
         setState(() {
           _initialized = true;
         });
+        _controller.setVolume(0);
+        _controller.setLooping(true);
         _controller.play();
       });
+    _hideOverlayCallback = () {
+      if (mounted) {
+        setState(() {
+          _showPlayPause = false;
+        });
+      }
+    };
+  }
+
+  void _togglePlayPause() {
+    setState(() {
+      if (_controller.value.isPlaying) {
+        _controller.pause();
+      } else {
+        _controller.play();
+      }
+      _showPlayPause = true;
+    });
+    Future.delayed(const Duration(seconds: 2), _hideOverlayCallback);
   }
 
   @override
@@ -88,29 +121,45 @@ class _VideoPreviewState extends State<_VideoPreview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(widget.name)),
+      appBar: AppBar(
+        title: Text(widget.name),
+        centerTitle: true,
+      ),
       body: Center(
         child: _initialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
+            ? GestureDetector(
+                onTap: _togglePlayPause,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: VideoPlayer(_controller),
+                    ),
+                    if (_showPlayPause)
+                      AnimatedOpacity(
+                        opacity: _showPlayPause ? 1.0 : 0.0,
+                        duration: const Duration(milliseconds: 200),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                            color: Colors.black54,
+                            shape: BoxShape.circle,
+                          ),
+                          padding: const EdgeInsets.all(24),
+                          child: Icon(
+                            _controller.value.isPlaying
+                                ? Icons.pause
+                                : Icons.play_arrow,
+                            color: Colors.white,
+                            size: 56,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               )
             : const CircularProgressIndicator(),
       ),
-      floatingActionButton: _initialized
-          ? FloatingActionButton(
-              onPressed: () {
-                setState(() {
-                  _controller.value.isPlaying
-                      ? _controller.pause()
-                      : _controller.play();
-                });
-              },
-              child: Icon(
-                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-              ),
-            )
-          : null,
     );
   }
 }

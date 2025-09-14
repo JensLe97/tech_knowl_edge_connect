@@ -111,33 +111,41 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-            title: Center(
-              child: Text(widget.receiverUsername),
+            title: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(widget.receiverUsername),
+              ],
             ),
+            centerTitle: true,
             actions: [
-              IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      backgroundColor: Theme.of(context).colorScheme.surface,
-                      context: context,
-                      isScrollControlled: true,
-                      useRootNavigator: true,
-                      enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
-                      builder: (BuildContext context) => SafeArea(
-                        child: UserBottomSheet(
-                            toggleBlockUser: toggleBlockUser,
-                            report: reportUser,
-                            isBlocked:
-                                blockedUsers.contains(widget.receiverUid)),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.more_horiz)),
+              widget.receiverUid == "aitech"
+                  ? const SizedBox()
+                  : IconButton(
+                      onPressed: () {
+                        showModalBottomSheet(
+                          backgroundColor:
+                              Theme.of(context).colorScheme.surface,
+                          context: context,
+                          isScrollControlled: true,
+                          useRootNavigator: true,
+                          enableDrag: true,
+                          shape: const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          builder: (BuildContext context) => SafeArea(
+                            child: UserBottomSheet(
+                                toggleBlockUser: toggleBlockUser,
+                                report: reportUser,
+                                isBlocked:
+                                    blockedUsers.contains(widget.receiverUid)),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.more_horiz)),
             ]),
         body: SafeArea(
           child: Column(

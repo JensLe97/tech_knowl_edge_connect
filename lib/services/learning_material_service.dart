@@ -21,45 +21,30 @@ class LearningMaterialService {
     required LearningMaterial material,
   }) async {
     await _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('ideaFolders')
-        .doc(folderId)
-        .collection('materials')
+        .collection('learningMaterials')
         .doc(material.id)
         .set(material.toMap());
   }
 
   Future<void> deleteLearningMaterial({
-    required String userId,
-    required String folderId,
     required String materialId,
     required String fileUrl,
   }) async {
     // Delete from storage
     await _storage.refFromURL(fileUrl).delete();
     // Delete from Firestore
-    await _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('ideaFolders')
-        .doc(folderId)
-        .collection('materials')
-        .doc(materialId)
-        .delete();
+    await _firestore.collection('learningMaterials').doc(materialId).delete();
   }
 
   Future<void> deleteFolderAndAllMaterials({
     required String userId,
     required String folderId,
   }) async {
-    // Get all materials in the folder
+    // Get all materials in the learningMaterials collection for this folder
     final materialsSnapshot = await _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('ideaFolders')
-        .doc(folderId)
-        .collection('materials')
+        .collection('learningMaterials')
+        .where('userId', isEqualTo: userId)
+        .where('folderId', isEqualTo: folderId)
         .get();
     // Delete all files from storage
     for (final doc in materialsSnapshot.docs) {
@@ -70,9 +55,9 @@ class LearningMaterialService {
         } catch (_) {}
       }
     }
-    // Delete all materials from Firestore
+    // Delete all materials from learningMaterials
     for (final doc in materialsSnapshot.docs) {
-      await doc.reference.delete();
+      await _firestore.collection('learningMaterials').doc(doc.id).delete();
     }
     // Delete the folder document itself
     await _firestore
@@ -88,15 +73,41 @@ class LearningMaterialService {
     required String folderId,
   }) async {
     final snapshot = await _firestore
-        .collection('Users')
-        .doc(userId)
-        .collection('ideaFolders')
-        .doc(folderId)
-        .collection('materials')
+        .collection('learningMaterials')
+        .where('userId', isEqualTo: userId)
+        .where('folderId', isEqualTo: folderId)
         .orderBy('createdAt', descending: true)
         .get();
     return snapshot.docs
         .map((doc) => LearningMaterial.fromMap(doc.data()))
         .toList();
+  }
+
+  Stream<QuerySnapshot> getAllPublicLearningMaterials(
+      {String excludeUserId = ''}) {
+    return _firestore
+        .collection('learningMaterials')
+        .where('isPublic', isEqualTo: true)
+        .where('userId', isNotEqualTo: excludeUserId)
+        .orderBy('createdAt', descending: true)
+        .snapshots();
+  }
+
+  Future<void> likeLearningMaterial(String userId, String materialId) async {
+    await FirebaseFirestore.instance.collection("Users").doc(userId).update({
+      'likedLearningMaterials': FieldValue.arrayUnion([materialId]),
+    });
+    await _firestore.collection('learningMaterials').doc(materialId).update({
+      'numberOfLikes': FieldValue.increment(1),
+    });
+  }
+
+  Future<void> unlikeLearningMaterial(String userId, String materialId) async {
+    await FirebaseFirestore.instance.collection("Users").doc(userId).update({
+      'likedLearningMaterials': FieldValue.arrayRemove([materialId]),
+    });
+    await _firestore.collection('learningMaterials').doc(materialId).update({
+      'numberOfLikes': FieldValue.increment(-1),
+    });
   }
 }

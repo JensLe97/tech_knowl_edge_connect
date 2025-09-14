@@ -54,7 +54,7 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
             title: 'Neuen Ordner erstellen',
             isPublic: true,
             icon: Icons.create_new_folder,
-            color: Theme.of(context).colorScheme.inversePrimary,
+            color: Theme.of(context).colorScheme.onPrimary,
             onTap: _navigateToCreateFolderPage,
             isPublicVisible: false,
           ),

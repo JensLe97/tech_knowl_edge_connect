@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
@@ -18,10 +19,15 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
   final _descController = TextEditingController();
   bool _isPublic = true;
 
+  final String? userId = FirebaseAuth.instance.currentUser?.uid;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Neuen Ordner erstellen')),
+      appBar: AppBar(
+        title: const Text('Neuen Ordner erstellen'),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(25),
         child: Form(
@@ -64,6 +70,7 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
                       description: _descController.text,
                       ideaPostIds: [],
                       timestamp: Timestamp.fromDate(now),
+                      userId: userId!,
                       isPublic: _isPublic,
                     );
                     widget.onCreate(folder);

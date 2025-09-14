@@ -44,6 +44,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
           onPrimary: Colors.grey.shade300,
           secondary: Colors.grey.shade400,
           inversePrimary: Colors.grey.shade700,
+          onSecondary: Colors.grey.shade800,
         ),
         textTheme: Theme.of(context).textTheme.apply(
               fontSizeDelta: 3,
@@ -77,6 +78,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
           primary: Colors.grey.shade800,
           secondary: Colors.grey.shade700,
           inversePrimary: Colors.grey.shade800,
+          onSecondary: Colors.grey.shade900,
         ),
         textTheme: Theme.of(context).textTheme.apply(
               fontSizeDelta: 3,

@@ -6,6 +6,7 @@ class IdeaFolder {
   final String description;
   final List<String> ideaPostIds;
   final Timestamp timestamp;
+  final String userId;
   final bool isPublic;
 
   IdeaFolder(
@@ -14,6 +15,7 @@ class IdeaFolder {
       required this.description,
       required this.ideaPostIds,
       required this.timestamp,
+      required this.userId,
       this.isPublic = true});
 
   Map<String, dynamic> toMap() {
@@ -23,6 +25,7 @@ class IdeaFolder {
       'description': description,
       'ideaPostIds': ideaPostIds,
       'timestamp': timestamp,
+      'userId': userId,
       'isPublic': isPublic,
     };
   }

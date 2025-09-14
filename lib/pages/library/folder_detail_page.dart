@@ -2,7 +2,10 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
+import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
 import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
@@ -47,53 +50,157 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     }
   }
 
-  Future<void> _pickAndUploadFile() async {
+  Future<void> _showFileSelector() async {
     if (userId == null) return;
+    showModalBottomSheet(
+        backgroundColor: Theme.of(context).colorScheme.surface,
+        isScrollControlled: true,
+        useRootNavigator: true,
+        useSafeArea: true,
+        enableDrag: true,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(
+            top: Radius.circular(20),
+          ),
+        ),
+        context: context,
+        builder: (context) {
+          return Container(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    IconButton(
+                      tooltip: "Foto aufnehmen",
+                      onPressed: () async {
+                        _pickAndUploadImageOrVideo(ImageSource.camera, "image");
+                      },
+                      icon: const Icon(Icons.camera_alt),
+                    ),
+                    IconButton(
+                      tooltip: "Foto aus Galerie auswählen",
+                      onPressed: () async {
+                        _pickAndUploadImageOrVideo(
+                            ImageSource.gallery, "image");
+                      },
+                      icon: const Icon(Icons.image),
+                    ),
+                    IconButton(
+                      tooltip: "Video aufnehmen",
+                      onPressed: () async {
+                        _pickAndUploadImageOrVideo(ImageSource.camera, "video");
+                      },
+                      icon: const Icon(Icons.video_call),
+                    ),
+                    IconButton(
+                      tooltip: "Video aus Galerie auswählen",
+                      onPressed: () async {
+                        _pickAndUploadImageOrVideo(
+                            ImageSource.gallery, "video");
+                      },
+                      icon: const Icon(Icons.video_file),
+                    ),
+                    IconButton(
+                      tooltip: "Datei auswählen",
+                      onPressed: () async {
+                        await _pickAndUploadFile();
+                      },
+                      icon: const Icon(Icons.attach_file),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        });
+  }
+
+  Future<void> _pickAndUploadImageOrVideo(
+      ImageSource imageSource, String type) async {
+    ImagePicker imagePicker = ImagePicker();
+    XFile? postContent;
+    if (type == "video") {
+      postContent = await imagePicker.pickVideo(source: imageSource);
+    } else {
+      postContent = await imagePicker.pickImage(source: imageSource);
+    }
+
+    if (postContent != null) {
+      final ext = postContent.name.contains('.')
+          ? postContent.name.split('.').last
+          : '';
+      final fileName = postContent.path.split("image_picker").last;
+      final now = DateTime.now();
+      final nowFormatted = DateFormat('dd.MM.yy_HH:mm:ss').format(now);
+      final fullName = fileName.replaceAll(fileName, '$nowFormatted.$ext');
+      final file = File(postContent.path);
+      _uploadFile(file, fullName);
+    }
+  }
+
+  Future<void> _pickAndUploadFile() async {
     final result = await FilePicker.platform.pickFiles(
       type: FileType.custom,
-      allowedExtensions: ['pdf', 'png', 'jpg', 'jpeg', 'mp4', 'mov'],
+      allowedExtensions: [
+        ...LearningMaterialType.pdfTypes,
+        ...LearningMaterialType.imageTypes,
+        ...LearningMaterialType.videoTypes,
+      ],
     );
     if (result != null && result.files.single.path != null) {
       final file = File(result.files.single.path!);
       final fullName = result.files.single.name;
-      final ext = fullName.contains('.') ? fullName.split('.').last : '';
-      final fileNameWithoutExt = fullName.contains('.')
-          ? fullName.substring(0, fullName.lastIndexOf('.'))
-          : fullName;
-      final now = DateTime.now();
-      final id = now.millisecondsSinceEpoch.toString();
-      try {
-        final url = await _materialService.uploadFile(
-            file, userId!, widget.folder.id, '$id.$ext');
-        final material = LearningMaterial(
-          id: id,
-          name: fileNameWithoutExt,
-          type: ext,
-          url: url,
-          createdAt: Timestamp.fromDate(now),
-          folderId: widget.folder.id,
-        );
-        await _materialService.addLearningMaterial(
+      _uploadFile(file, fullName);
+    }
+  }
+
+  Future<void> _uploadFile(File file, String fullName) async {
+    if (mounted) Navigator.of(context).pop(); // Close the modal bottom sheet
+    final ext = fullName.contains('.') ? fullName.split('.').last : '';
+    final fileNameWithoutExt = fullName.contains('.')
+        ? fullName.substring(0, fullName.lastIndexOf('.'))
+        : fullName;
+    final now = DateTime.now();
+    final id = now.millisecondsSinceEpoch.toString();
+    try {
+      final url = await _materialService.uploadFile(
+          file, userId!, widget.folder.id, '$id.$ext');
+      final material = LearningMaterial(
+        id: id,
+        name: fileNameWithoutExt,
+        type: ext,
+        url: url,
+        createdAt: Timestamp.fromDate(now),
+        userId: userId!,
+        userName: userName!,
+        folderId: widget.folder.id,
+        isPublic: widget.folder.isPublic,
+      );
+      await _materialService.addLearningMaterial(
+        userId: userId!,
+        folderId: widget.folder.id,
+        material: material,
+      );
+      setState(() {
+        _materialsFuture = _materialService.getLearningMaterials(
           userId: userId!,
           folderId: widget.folder.id,
-          material: material,
         );
-        setState(() {
-          _materialsFuture = _materialService.getLearningMaterials(
-            userId: userId!,
-            folderId: widget.folder.id,
-          );
-        });
-      } catch (e) {
-        if (mounted) {
-          showErrorMessage(context, 'Fehler beim Hochladen: $e');
-        }
+      });
+    } catch (e) {
+      if (mounted) {
+        showErrorMessage(context, 'Fehler beim Hochladen: $e');
       }
     }
   }
 
   final LearningMaterialService _materialService = LearningMaterialService();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
+  final String? userName =
+      FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymer User';
   late Future<List<LearningMaterial>> _materialsFuture;
 
   @override
@@ -123,7 +230,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
               IconButton(
                 icon: const Icon(Icons.add_circle),
                 tooltip: 'Lerninhalt hochladen',
-                onPressed: _pickAndUploadFile,
+                onPressed: _showFileSelector,
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(
@@ -253,8 +360,6 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                   onPressed: () async {
                                     await _materialService
                                         .deleteLearningMaterial(
-                                      userId: userId!,
-                                      folderId: widget.folder.id,
                                       materialId: material.id,
                                       fileUrl: material.url,
                                     );

@@ -24,13 +24,13 @@ class UserService extends ChangeNotifier {
     });
   }
 
-  void reportContent(String contentId, String uid, String type, isPostId,
-      ReportReason reason) async {
+  void reportContent(String contentId, String uid, String type,
+      isLearningMaterialId, ReportReason reason) async {
     await FirebaseFirestore.instance.collection('reported_content').add({
       'contentId': contentId,
       'uid': uid,
       'type': type,
-      'isPostId': isPostId,
+      'isLearningMaterialId': isLearningMaterialId,
       'reason': reason.name,
       'timestamp': Timestamp.now(),
       'reporter': _firebaseAuth.currentUser!.uid,

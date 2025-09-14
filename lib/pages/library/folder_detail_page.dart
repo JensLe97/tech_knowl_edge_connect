@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
@@ -136,8 +137,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
       final now = DateTime.now();
       final nowFormatted = DateFormat('dd.MM.yy_HH:mm:ss').format(now);
       final fullName = fileName.replaceAll(fileName, '$nowFormatted.$ext');
-      final file = File(postContent.path);
-      _uploadFile(file, fullName);
+      _uploadFile(postContent, fullName);
     }
   }
 
@@ -151,13 +151,13 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
       ],
     );
     if (result != null && result.files.single.path != null) {
-      final file = File(result.files.single.path!);
+      final file = XFile(result.files.single.path!);
       final fullName = result.files.single.name;
       _uploadFile(file, fullName);
     }
   }
 
-  Future<void> _uploadFile(File file, String fullName) async {
+  Future<void> _uploadFile(XFile file, String fullName) async {
     if (mounted) Navigator.of(context).pop(); // Close the modal bottom sheet
     final ext = fullName.contains('.') ? fullName.split('.').last : '';
     final fileNameWithoutExt = fullName.contains('.')
@@ -166,8 +166,11 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     final now = DateTime.now();
     final id = now.millisecondsSinceEpoch.toString();
     try {
-      final url = await _materialService.uploadFile(
-          file, userId!, widget.folder.id, '$id.$ext');
+      final url = kIsWeb
+          ? await _materialService.uploadData(
+              file, userId!, widget.folder.id, '$id.$ext')
+          : await _materialService.uploadFile(
+              File(file.path), userId!, widget.folder.id, '$id.$ext');
       final material = LearningMaterial(
         id: id,
         name: fileNameWithoutExt,

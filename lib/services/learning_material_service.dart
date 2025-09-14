@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/models/learning_material.dart';
 
 class LearningMaterialService {
@@ -12,6 +14,27 @@ class LearningMaterialService {
     final ref =
         _storage.ref().child('users/$userId/folders/$folderId/$fileName');
     final uploadTask = await ref.putFile(file);
+    return await uploadTask.ref.getDownloadURL();
+  }
+
+  Future<String> uploadData(
+      XFile file, String userId, String folderId, String fullName) async {
+    String extension = fullName.contains('.') ? fullName.split('.').last : '';
+    extension = extension == "jpg" ? "jpeg" : extension;
+
+    final type = LearningMaterialType.pdfTypes.contains(extension)
+        ? 'application'
+        : LearningMaterialType.imageTypes.contains(extension)
+            ? 'image'
+            : LearningMaterialType.videoTypes.contains(extension)
+                ? 'video'
+                : 'application';
+    final ref =
+        _storage.ref().child('users/$userId/folders/$folderId/$fullName');
+    final uploadTask = await ref.putData(
+      await file.readAsBytes(),
+      SettableMetadata(contentType: '$type/$extension'),
+    );
     return await uploadTask.ref.getDownloadURL();
   }
 

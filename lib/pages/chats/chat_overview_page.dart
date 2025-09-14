@@ -58,14 +58,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   },
                   icon: const Icon(Icons.add_circle)),
             ]),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _buildChatList(),
-            ],
-          ),
-        ));
+        body: _buildChatList());
   }
 
   Widget _buildChatList() {
@@ -118,16 +111,9 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 ),
               );
             } else {
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  ListView(
-                    shrinkWrap: true,
-                    children:
-                        ListTile.divideTiles(context: context, tiles: chats)
-                            .toList(),
-                  ),
-                ],
+              return ListView(
+                children: ListTile.divideTiles(context: context, tiles: chats)
+                    .toList(),
               );
             }
           } else {

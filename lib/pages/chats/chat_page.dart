@@ -111,13 +111,7 @@ class _ChatPageState extends State<ChatPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(widget.receiverUsername),
-              ],
-            ),
+            title: Text(widget.receiverUsername),
             centerTitle: true,
             actions: [
               widget.receiverUid == "aitech"
@@ -150,13 +144,8 @@ class _ChatPageState extends State<ChatPage> {
         body: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: _buildMessageList()),
-              ),
+              Expanded(child: _buildMessageList()),
               const SizedBox(height: 2),
               blockedUsers.contains(widget.receiverUid)
                   ? BlockedField(
@@ -180,11 +169,10 @@ class _ChatPageState extends State<ChatPage> {
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
+          return Text("Ein Fehler ist aufgetreten: \\${snapshot.error}");
         } else if (snapshot.hasData) {
           ListView messageList = ListView(
               reverse: true,
-              shrinkWrap: true,
               children: snapshot.data!.docs.reversed
                   .map((document) => _buildMessageItem(document))
                   .toList());
@@ -206,23 +194,13 @@ class _ChatPageState extends State<ChatPage> {
       alignment: alignment,
       child: Padding(
         padding: const EdgeInsets.all(5),
-        child: Column(
-          crossAxisAlignment: data['senderId'] == _firebaseAuth.currentUser!.uid
-              ? CrossAxisAlignment.end
-              : CrossAxisAlignment.start,
-          mainAxisAlignment: data['senderId'] == _firebaseAuth.currentUser!.uid
-              ? MainAxisAlignment.end
-              : MainAxisAlignment.start,
-          children: [
-            ChatBubble(
-              uid: data['senderId'],
-              message: data['message'],
-              type: data['type'],
-              isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
-              time: data['timestamp'],
-              userService: _userService,
-            )
-          ],
+        child: ChatBubble(
+          uid: data['senderId'],
+          message: data['message'],
+          type: data['type'],
+          isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
+          time: data['timestamp'],
+          userService: _userService,
         ),
       ),
     );
@@ -259,7 +237,7 @@ class _ChatPageState extends State<ChatPage> {
                     size: 40,
                   ),
                   color: Theme.of(context).colorScheme.inversePrimary),
-          Expanded(
+          Flexible(
             child: MessageTextField(
               controller: _messageController,
               hintText: 'Nachricht schreiben...',

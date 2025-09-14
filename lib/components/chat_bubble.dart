@@ -42,118 +42,107 @@ class ChatBubble extends StatelessWidget {
         top: 0,
         bottom: 0,
       ),
-      child: Column(
-        crossAxisAlignment:
-            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: <Widget>[
-          InkWell(
+      child: InkWell(
+        borderRadius: BorderRadius.only(
+            topLeft: const Radius.circular(15),
+            topRight: const Radius.circular(15),
+            bottomLeft: Radius.circular(isMe ? 15 : 0),
+            bottomRight: Radius.circular(isMe ? 0 : 15)),
+        onLongPress: () {
+          if (isMe) {
+            return;
+          }
+          showModalBottomSheet(
+            backgroundColor: Theme.of(context).colorScheme.surface,
+            context: context,
+            isScrollControlled: true,
+            useRootNavigator: true,
+            enableDrag: true,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(20),
+              ),
+            ),
+            builder: (BuildContext context) => SafeArea(
+              child: UserBottomSheet(
+                  toggleBlockUser: () {},
+                  report: reportContent,
+                  isContent: true),
+            ),
+          );
+        },
+        child: Container(
+          padding: EdgeInsets.all(type == "text" ? 10 : 5),
+          decoration: BoxDecoration(
+            color: isMe ? Colors.blue : Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.only(
                 topLeft: const Radius.circular(15),
                 topRight: const Radius.circular(15),
                 bottomLeft: Radius.circular(isMe ? 15 : 0),
                 bottomRight: Radius.circular(isMe ? 0 : 15)),
-            onLongPress: () {
-              if (isMe) {
-                return;
-              }
-              showModalBottomSheet(
-                backgroundColor: Theme.of(context).colorScheme.surface,
-                context: context,
-                isScrollControlled: true,
-                useRootNavigator: true,
-                enableDrag: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
-                builder: (BuildContext context) => SafeArea(
-                  child: UserBottomSheet(
-                      toggleBlockUser: () {},
-                      report: reportContent,
-                      isContent: true),
-                ),
-              );
-            },
-            child: Container(
-              padding: EdgeInsets.all(type == "text" ? 10 : 5),
-              decoration: BoxDecoration(
-                color: isMe
-                    ? Colors.blue
-                    : Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.only(
-                    topLeft: const Radius.circular(15),
-                    topRight: const Radius.circular(15),
-                    bottomLeft: Radius.circular(isMe ? 15 : 0),
-                    bottomRight: Radius.circular(isMe ? 0 : 15)),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: <Widget>[
-                  type == "text"
-                      ? Text(
-                          message,
-                          style: TextStyle(
-                            color: isMe
-                                ? Colors.white
-                                : Theme.of(context)
-                                    .textTheme
-                                    .displayLarge!
-                                    .color,
-                          ),
-                        )
-                      : GestureDetector(
-                          onTap: () async {
-                            final imageProvider = Image.network(message).image;
-                            showImageViewer(
-                              context,
-                              imageProvider,
-                              onViewerDismissed: () {},
-                              swipeDismissible: true,
-                              doubleTapZoomable: true,
-                            );
-                          },
-                          child: FutureBuilder<ui.Image>(
-                            future: completer.future,
-                            builder: (BuildContext context,
-                                AsyncSnapshot<ui.Image> snapshot) {
-                              if (snapshot.hasData) {
-                                return ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    message,
-                                    width: snapshot.data!.width.toDouble() >
-                                            snapshot.data!.height.toDouble()
-                                        ? 300
-                                        : 200,
-                                    height: snapshot.data!.width.toDouble() >
-                                            snapshot.data!.height.toDouble()
-                                        ? 200
-                                        : 300,
-                                    fit: BoxFit.cover,
-                                  ),
-                                );
-                              } else {
-                                return const CircularProgressIndicator();
-                              }
-                            },
-                          ),
-                        ),
-                  const SizedBox(height: 5),
-                  Text(
-                    time.toDate().toString().substring(11, 16),
-                    style: TextStyle(
-                      color: isMe
-                          ? Colors.white
-                          : Theme.of(context).textTheme.displayLarge!.color,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-            ),
           ),
-        ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: <Widget>[
+              type == "text"
+                  ? Text(
+                      message,
+                      style: TextStyle(
+                        color: isMe
+                            ? Colors.white
+                            : Theme.of(context).textTheme.displayLarge!.color,
+                      ),
+                    )
+                  : GestureDetector(
+                      onTap: () async {
+                        final imageProvider = Image.network(message).image;
+                        showImageViewer(
+                          context,
+                          imageProvider,
+                          onViewerDismissed: () {},
+                          swipeDismissible: true,
+                          doubleTapZoomable: true,
+                        );
+                      },
+                      child: FutureBuilder<ui.Image>(
+                        future: completer.future,
+                        builder: (BuildContext context,
+                            AsyncSnapshot<ui.Image> snapshot) {
+                          if (snapshot.hasData) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(8.0),
+                              child: Image.network(
+                                message,
+                                width: snapshot.data!.width.toDouble() >
+                                        snapshot.data!.height.toDouble()
+                                    ? 300
+                                    : 200,
+                                height: snapshot.data!.width.toDouble() >
+                                        snapshot.data!.height.toDouble()
+                                    ? 200
+                                    : 300,
+                                fit: BoxFit.cover,
+                              ),
+                            );
+                          } else {
+                            return const CircularProgressIndicator();
+                          }
+                        },
+                      ),
+                    ),
+              const SizedBox(height: 5),
+              Text(
+                time.toDate().toString().substring(11, 16),
+                style: TextStyle(
+                  color: isMe
+                      ? Colors.white
+                      : Theme.of(context).textTheme.displayLarge!.color,
+                  fontSize: 12,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

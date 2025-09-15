@@ -27,4 +27,18 @@ class LearningMaterialType {
       return FontAwesomeIcons.file;
     }
   }
+
+  static String getMimeType(String type) {
+    String t = type.toLowerCase();
+    t = t == "jpg" ? "jpeg" : t;
+    if (pdfTypes.contains(t)) {
+      return 'application/$t';
+    } else if (imageTypes.contains(t)) {
+      return 'image/$t';
+    } else if (videoTypes.contains(t)) {
+      return 'video/$t';
+    } else {
+      return 'application/octet-stream';
+    }
+  }
 }

@@ -267,9 +267,10 @@ class _ChatPageState extends State<ChatPage> {
       newMessages.add(messageElement);
     }
 
-    newMessages.add(OpenAIChatCompletionChoiceMessageModel(content: [
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)
-    ], role: OpenAIChatMessageRole.user));
+    newMessages.add(OpenAIChatCompletionChoiceMessageModel(
+      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
+      role: OpenAIChatMessageRole.user,
+    ));
 
     OpenAIChatCompletionModel chatCompletion =
         await OpenAI.instance.chat.create(
@@ -280,9 +281,14 @@ class _ChatPageState extends State<ChatPage> {
       temperature: 0.7,
     );
     String response = chatCompletion.choices.first.message.content!.first.text!;
-    newMessages.add(OpenAIChatCompletionChoiceMessageModel(content: [
-      OpenAIChatCompletionChoiceMessageContentItemModel.text(response)
-    ], role: OpenAIChatMessageRole.assistant));
+    newMessages.add(
+      OpenAIChatCompletionChoiceMessageModel(
+        content: [
+          OpenAIChatCompletionChoiceMessageContentItemModel.text(response)
+        ],
+        role: OpenAIChatMessageRole.assistant,
+      ),
+    );
     allMessages = newMessages;
 
     return response;

@@ -9,12 +9,14 @@ import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
+import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
 import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tech_knowl_edge_connect/models/learning_material.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
+import 'package:tech_knowl_edge_connect/services/summary_service.dart';
 
 class FolderDetailPage extends StatefulWidget {
   final IdeaFolder folder;
@@ -200,7 +202,32 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     }
   }
 
+  Future<void> _summarizeMaterials() async {
+    final materials = await _materialsFuture;
+    if (materials.isEmpty && mounted) {
+      showErrorMessage(context, 'Keine Lerninhalte zum Zusammenfassen.');
+      return;
+    }
+    final urls = materials.map((m) => m.url).toList();
+    final mimeTypes =
+        materials.map((m) => LearningMaterialType.getMimeType(m.type)).toList();
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SummaryPage(
+            name: widget.folder.name,
+            urls: urls,
+            mimeTypes: mimeTypes,
+            summaryService: _summaryService,
+          ),
+        ),
+      );
+    }
+  }
+
   final LearningMaterialService _materialService = LearningMaterialService();
+  final SummaryService _summaryService = SummaryService();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   final String? userName =
       FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymer User';
@@ -225,6 +252,11 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             elevation: 0,
             shadowColor: Colors.transparent,
             actions: [
+              IconButton(
+                icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+                tooltip: 'Dokumente zusammenfassen',
+                onPressed: _summarizeMaterials,
+              ),
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.folderMinus),
                 tooltip: 'Ordner löschen',

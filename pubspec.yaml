@@ -63,6 +63,8 @@ dependencies:
   video_player_web: ^2.4.0
   sign_in_with_apple: ^6.1.4
   url_launcher: ^6.3.2
+  firebase_ai: ^2.3.0
+  flutter_markdown: ^0.7.7+1
 
 flutter_launcher_icons:
   android: true

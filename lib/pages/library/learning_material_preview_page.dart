@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
+import 'package:tech_knowl_edge_connect/services/summary_service.dart';
 import 'package:video_player/video_player.dart';
 
-class LearningMaterialPreviewPage extends StatelessWidget {
+class LearningMaterialPreviewPage extends StatefulWidget {
   final String url;
   final String type;
   final String name;
@@ -17,37 +20,84 @@ class LearningMaterialPreviewPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<LearningMaterialPreviewPage> createState() =>
+      _LearningMaterialPreviewPageState();
+}
+
+class _LearningMaterialPreviewPageState
+    extends State<LearningMaterialPreviewPage> {
+  final SummaryService _summaryService = SummaryService();
+
+  void _summarizeMaterial() {
+    final url = widget.url;
+    final type = widget.type;
+    final mimeType = LearningMaterialType.getMimeType(type);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SummaryPage(
+          name: widget.name,
+          urls: [url],
+          mimeTypes: [mimeType],
+          summaryService: _summaryService,
+        ),
+      ),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final url = widget.url;
+    final type = widget.type;
+    final name = widget.name;
     if (LearningMaterialType.pdfTypes.contains(type.toLowerCase())) {
       return Scaffold(
         appBar: AppBar(
           title: Text(name),
           centerTitle: true,
+          actions: [
+            IconButton(
+              // Create AI summary action
+              icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+              // Open new page to show AI summary
+              onPressed: _summarizeMaterial,
+            ),
+          ],
         ),
         body: PdfViewer.uri(Uri.parse(url)),
       );
     } else if (LearningMaterialType.imageTypes.contains(type.toLowerCase())) {
-      // Use EasyImageViewer in a dialog for images
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        showImageViewer(
-          context,
-          NetworkImage(url),
-          swipeDismissible: true,
-          doubleTapZoomable: true,
-          onViewerDismissed: () {
-            Navigator.of(context).pop();
-          },
-        );
-      });
       return Scaffold(
         appBar: AppBar(
           title: Text(name),
           centerTitle: true,
+          actions: [
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+              onPressed: _summarizeMaterial,
+            ),
+          ],
         ),
-        body: const Center(child: CircularProgressIndicator()),
+        body: Center(
+          child: GestureDetector(
+            child: Image.network(url),
+            onTap: () {
+              showImageViewer(
+                context,
+                NetworkImage(url),
+                swipeDismissible: true,
+                doubleTapZoomable: true,
+                useSafeArea: true,
+                backgroundColor: Colors.black,
+                immersive: false,
+              );
+            },
+          ),
+        ),
       );
     } else if (LearningMaterialType.videoTypes.contains(type.toLowerCase())) {
-      return _VideoPreview(url: url, name: name);
+      return _VideoPreview(
+          url: url, name: name, summarizeMaterial: _summarizeMaterial);
     } else {
       // Fallback: just show the URL
       return Scaffold(
@@ -66,7 +116,12 @@ class LearningMaterialPreviewPage extends StatelessWidget {
 class _VideoPreview extends StatefulWidget {
   final String url;
   final String name;
-  const _VideoPreview({Key? key, required this.url, required this.name})
+  final Function() summarizeMaterial;
+  const _VideoPreview(
+      {Key? key,
+      required this.url,
+      required this.name,
+      required this.summarizeMaterial})
       : super(key: key);
 
   @override
@@ -124,6 +179,14 @@ class _VideoPreviewState extends State<_VideoPreview> {
       appBar: AppBar(
         title: Text(widget.name),
         centerTitle: true,
+        actions: [
+          IconButton(
+            // Create AI summary action
+            icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+            // Open new page to show AI summary
+            onPressed: widget.summarizeMaterial,
+          ),
+        ],
       ),
       body: Center(
         child: _initialized

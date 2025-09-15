@@ -22,18 +22,13 @@ class LearningMaterialService {
     String extension = fullName.contains('.') ? fullName.split('.').last : '';
     extension = extension == "jpg" ? "jpeg" : extension;
 
-    final type = LearningMaterialType.pdfTypes.contains(extension)
-        ? 'application'
-        : LearningMaterialType.imageTypes.contains(extension)
-            ? 'image'
-            : LearningMaterialType.videoTypes.contains(extension)
-                ? 'video'
-                : 'application';
+    final mimeType = LearningMaterialType.getMimeType(extension);
+
     final ref =
         _storage.ref().child('users/$userId/folders/$folderId/$fullName');
     final uploadTask = await ref.putData(
       await file.readAsBytes(),
-      SettableMetadata(contentType: '$type/$extension'),
+      SettableMetadata(contentType: mimeType),
     );
     return await uploadTask.ref.getDownloadURL();
   }

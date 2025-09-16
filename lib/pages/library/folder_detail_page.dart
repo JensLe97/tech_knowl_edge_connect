@@ -9,6 +9,7 @@ import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
 import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
+import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
 import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,7 +17,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tech_knowl_edge_connect/models/learning_material.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
-import 'package:tech_knowl_edge_connect/services/summary_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 
 class FolderDetailPage extends StatefulWidget {
   final IdeaFolder folder;
@@ -219,7 +220,32 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             name: widget.folder.name,
             urls: urls,
             mimeTypes: mimeTypes,
-            summaryService: _summaryService,
+            aiTechService: _aiTechService,
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _generateLearningBite() async {
+    final materials = await _materialsFuture;
+    if (materials.isEmpty && mounted) {
+      showErrorMessage(context,
+          'Keine Lerninhalte zum Erstellen eines Learning Bites vorhanden.');
+      return;
+    }
+    final urls = materials.map((m) => m.url).toList();
+    final mimeTypes =
+        materials.map((m) => LearningMaterialType.getMimeType(m.type)).toList();
+    if (mounted) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => GenLearningBitePage(
+            name: widget.folder.name,
+            urls: urls,
+            mimeTypes: mimeTypes,
+            aiTechService: _aiTechService,
           ),
         ),
       );
@@ -227,7 +253,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   final LearningMaterialService _materialService = LearningMaterialService();
-  final SummaryService _summaryService = SummaryService();
+  final AiTechService _aiTechService = AiTechService();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   final String? userName =
       FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymer User';
@@ -256,6 +282,11 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                 icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
                 tooltip: 'Dokumente zusammenfassen',
                 onPressed: _summarizeMaterials,
+              ),
+              IconButton(
+                icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+                tooltip: 'Learning Bite erstellen',
+                onPressed: _generateLearningBite,
               ),
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.folderMinus),
@@ -362,7 +393,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                         maxCrossAxisExtent: 200,
                         mainAxisSpacing: 8,
                         crossAxisSpacing: 8,
-                        childAspectRatio: 200 / 145,
+                        childAspectRatio: 200 / 155,
                       ),
                       itemCount: materials.length,
                       itemBuilder: (context, index) {

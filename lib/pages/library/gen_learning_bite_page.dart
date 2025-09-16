@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
+import 'package:tech_knowl_edge_connect/models/task.dart';
+import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
-class SummaryPage extends StatelessWidget {
+class GenLearningBitePage extends StatelessWidget {
   final String name;
   final List<String> urls;
   final List<String> mimeTypes;
   final AiTechService _aiTechService;
 
-  const SummaryPage({
+  const GenLearningBitePage({
     super.key,
     required this.name,
     required this.urls,
@@ -19,21 +23,52 @@ class SummaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('AI Tech Zusammenfassung'),
+    return FutureBuilder<List<Task>>(
+      future: _aiTechService.generateLearningBite(
+        urls: urls,
+        mimeTypes: mimeTypes,
       ),
-      body: StreamBuilder<GenerateContentResponse>(
-        stream: _aiTechService.summarizeMultipleData(
-          urls: urls,
-          mimeTypes: mimeTypes,
-        ),
-        builder: (context, snapshot) {
-          // Accumulate all streamed text parts
-          // Use a ValueNotifier to store the full summary
-          return _SummaryStreamAccumulator(snapshot: snapshot);
-        },
-      ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(name),
+            ),
+            body: const Center(child: CircularProgressIndicator()),
+          );
+        } else if (snapshot.hasError) {
+          return Scaffold(
+            appBar: AppBar(
+              title: Text(name),
+            ),
+            body: Center(
+              child: Text(
+                'Fehler bei der Generierung des Learning Bites: ${snapshot.error}',
+              ),
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(child: Text('Kein Learning Bite verfügbar.'));
+        } else {
+          final tasks = snapshot.data!;
+          final learningBite = LearningBite(
+            name: name,
+            type: LearningBiteType.lesson,
+            iconData: Icons.checklist,
+            data: [
+              Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: MarkdownBody(
+                  data:
+                      'Das Learning Bite "$name" wurde automatisch generiert. Es enthält ${tasks.length} Aufgaben, die dir helfen sollen, das Thema besser zu verstehen.',
+                ),
+              ),
+            ],
+            tasks: tasks,
+          );
+          return LearningBitePage(learningBite: learningBite, tasks: tasks);
+        }
+      },
     );
   }
 }

@@ -13,4 +13,19 @@ class Task {
       required this.question,
       required this.correctAnswer,
       this.answers = const []});
+
+  Task.fromJson(Map<String, dynamic> json)
+      : type = TaskType.values.firstWhere((e) => e.name == json['type']),
+        question = json['question'],
+        correctAnswer = json['correctAnswer'],
+        answers = List<String>.from(json['answers'] ?? []);
+
+  Map<String, dynamic> toJson() {
+    return {
+      'type': type.name,
+      'question': question,
+      'correctAnswer': correctAnswer,
+      'answers': answers,
+    };
+  }
 }

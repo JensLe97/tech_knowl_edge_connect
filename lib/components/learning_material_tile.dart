@@ -57,10 +57,14 @@ class LearningMaterialTile extends StatelessWidget {
                           overflow: TextOverflow.ellipsis,
                           maxLines: 1,
                         ),
-                        const SizedBox(height: 4),
-                        Text(
-                          _formatDate(material.createdAt.toDate()),
-                          style: const TextStyle(fontSize: 13),
+                        const SizedBox(height: 2),
+                        Flexible(
+                          child: Text(
+                            _formatDate(material.createdAt.toDate()),
+                            style: const TextStyle(fontSize: 13),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 1,
+                          ),
                         ),
                       ],
                     ),

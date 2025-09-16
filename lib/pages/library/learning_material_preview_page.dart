@@ -3,8 +3,9 @@ import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
-import 'package:tech_knowl_edge_connect/services/summary_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 import 'package:video_player/video_player.dart';
 
 class LearningMaterialPreviewPage extends StatefulWidget {
@@ -26,7 +27,7 @@ class LearningMaterialPreviewPage extends StatefulWidget {
 
 class _LearningMaterialPreviewPageState
     extends State<LearningMaterialPreviewPage> {
-  final SummaryService _summaryService = SummaryService();
+  final AiTechService _aiTechService = AiTechService();
 
   void _summarizeMaterial() {
     final url = widget.url;
@@ -39,7 +40,24 @@ class _LearningMaterialPreviewPageState
           name: widget.name,
           urls: [url],
           mimeTypes: [mimeType],
-          summaryService: _summaryService,
+          aiTechService: _aiTechService,
+        ),
+      ),
+    );
+  }
+
+  void _generateLearningBite() {
+    final url = widget.url;
+    final type = widget.type;
+    final mimeType = LearningMaterialType.getMimeType(type);
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => GenLearningBitePage(
+          name: widget.name,
+          urls: [url],
+          mimeTypes: [mimeType],
+          aiTechService: _aiTechService,
         ),
       ),
     );
@@ -62,6 +80,10 @@ class _LearningMaterialPreviewPageState
               // Open new page to show AI summary
               onPressed: _summarizeMaterial,
             ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+              onPressed: _generateLearningBite,
+            ),
           ],
         ),
         body: PdfViewer.uri(Uri.parse(url)),
@@ -75,6 +97,10 @@ class _LearningMaterialPreviewPageState
             IconButton(
               icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
               onPressed: _summarizeMaterial,
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+              onPressed: _generateLearningBite,
             ),
           ],
         ),
@@ -97,7 +123,11 @@ class _LearningMaterialPreviewPageState
       );
     } else if (LearningMaterialType.videoTypes.contains(type.toLowerCase())) {
       return _VideoPreview(
-          url: url, name: name, summarizeMaterial: _summarizeMaterial);
+        url: url,
+        name: name,
+        summarizeMaterial: _summarizeMaterial,
+        generateLearningBite: _generateLearningBite,
+      );
     } else {
       // Fallback: just show the URL
       return Scaffold(
@@ -117,11 +147,13 @@ class _VideoPreview extends StatefulWidget {
   final String url;
   final String name;
   final Function() summarizeMaterial;
+  final Function() generateLearningBite;
   const _VideoPreview(
       {Key? key,
       required this.url,
       required this.name,
-      required this.summarizeMaterial})
+      required this.summarizeMaterial,
+      required this.generateLearningBite})
       : super(key: key);
 
   @override
@@ -185,6 +217,10 @@ class _VideoPreviewState extends State<_VideoPreview> {
             icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
             // Open new page to show AI summary
             onPressed: widget.summarizeMaterial,
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+            onPressed: widget.generateLearningBite,
           ),
         ],
       ),

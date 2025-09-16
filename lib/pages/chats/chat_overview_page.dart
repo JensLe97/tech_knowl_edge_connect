@@ -79,35 +79,33 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 .map<Widget>((docs) => _buildChatListItem(docs))
                 .toList();
             if (chats.every((element) => element is SizedBox)) {
-              return const Expanded(
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Du hast noch keine Chats.",
-                          style: TextStyle(fontSize: 20),
-                          textAlign: TextAlign.center),
-                      SizedBox(height: 2),
-                      Text(
-                        "Starte eine neue Unterhaltung ",
+              return const Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Du hast noch keine Chats.",
                         style: TextStyle(fontSize: 20),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "über das ",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                          Icon(Icons.add_circle),
-                          Text(
-                            "-Symbol oben rechts.",
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
+                        textAlign: TextAlign.center),
+                    SizedBox(height: 2),
+                    Text(
+                      "Starte eine neue Unterhaltung ",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          "über das ",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Icon(Icons.add_circle),
+                        Text(
+                          "-Symbol oben rechts.",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               );
             } else {

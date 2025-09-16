@@ -227,13 +227,14 @@ class _VideoPreviewState extends State<_VideoPreview> {
       body: Center(
         child: _initialized
             ? GestureDetector(
+                behavior: HitTestBehavior.opaque,
                 onTap: _togglePlayPause,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     AspectRatio(
                       aspectRatio: _controller.value.aspectRatio,
-                      child: VideoPlayer(_controller),
+                      child: IgnorePointer(child: VideoPlayer(_controller)),
                     ),
                     if (_showPlayPause)
                       AnimatedOpacity(

@@ -12,7 +12,7 @@ class DialogButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-        margin: const EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(10)),

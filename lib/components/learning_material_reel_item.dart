@@ -72,6 +72,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
     return Stack(
       children: [
         GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onTap: () {
             Navigator.of(context).push(
               MaterialPageRoute(
@@ -245,7 +246,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
-        ? VideoPlayer(_controller)
+        ? IgnorePointer(child: VideoPlayer(_controller))
         : const Center(child: CircularProgressIndicator());
   }
 }

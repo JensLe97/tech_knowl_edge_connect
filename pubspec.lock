@@ -261,10 +261,10 @@ packages:
     dependency: transitive
     description:
       name: dart_pubspec_licenses
-      sha256: "391ca09a09430e485839118b89b55a5fb142845d6c305d33fdc92d75ec65c2e5"
+      sha256: ed8ce6e093ce94ba0cadba0c9c33d84960b5cf6b76d371d6b5cba2228dc3722e
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.9"
+    version: "3.0.10"
   dart_style:
     dependency: transitive
     description:
@@ -697,10 +697,10 @@ packages:
     dependency: transitive
     description:
       name: image_picker_android
-      sha256: a45bef33deb24839a51fb85a4d9e504ead2b1ad1c4779d02d09bf6a8857cdd52
+      sha256: "8dfe08ea7fcf7467dbaf6889e72eebd5e0d6711caae201fdac780eb45232cd02"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.13+2"
+    version: "0.8.13+3"
   image_picker_for_web:
     dependency: transitive
     description:
@@ -937,18 +937,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdfrx
-      sha256: d3423503fb08ca1241fd78d1ba35151e8ffa7753bdb4526eca644f34f544e058
+      sha256: "54e8474eb1b4ce7a2cebcce6f0f54223e12bd252516d4a67ecc28dd6cb09313d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.14"
+    version: "2.1.15"
   pdfrx_engine:
     dependency: transitive
     description:
       name: pdfrx_engine
-      sha256: "3843477877302b89d0a2cbecaf518f39f2aca35ea9f359c187547345790fe5f2"
+      sha256: "1e144c7a86871f0c004049bf608b3f648057b2e54ba85b151aeca24f35cce397"
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.15"
+    version: "0.1.16"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1025,10 +1025,10 @@ packages:
     dependency: transitive
     description:
       name: pool
-      sha256: "20fe868b6314b322ea036ba325e6fc0711a22948856475e2c2b6306e8ab39c2a"
+      sha256: "978783255c543aa3586a1b3c21f6e9d720eb315376a915872c61ef8b5c20177d"
       url: "https://pub.dev"
     source: hosted
-    version: "1.5.1"
+    version: "1.5.2"
   posix:
     dependency: transitive
     description:

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:firebase_ai/firebase_ai.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart' as tk;
 
@@ -16,8 +17,9 @@ class AiTechService {
       throw ArgumentError(
           'Die Anzahl der URLs muss der Anzahl der MIME-Typen entsprechen.');
     }
-    final model =
-        FirebaseAI.googleAI().generativeModel(model: 'gemini-2.5-flash');
+    final model = FirebaseAI.googleAI(
+      appCheck: FirebaseAppCheck.instance,
+    ).generativeModel(model: 'gemini-2.5-flash');
     final prompt = TextPart(
         "Fasse die wichtigsten Punkte dieser Dateien zusammen. "
         "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache. "
@@ -68,7 +70,9 @@ class AiTechService {
       },
     );
 
-    final model = FirebaseAI.googleAI().generativeModel(
+    final model = FirebaseAI.googleAI(
+      appCheck: FirebaseAppCheck.instance,
+    ).generativeModel(
         model: 'gemini-2.5-flash',
         generationConfig: GenerationConfig(
             responseMimeType: 'application/json',

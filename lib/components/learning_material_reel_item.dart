@@ -69,6 +69,9 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
   @override
   Widget build(BuildContext context) {
     final material = widget.material;
+    final overlayColor = Theme.of(context).colorScheme.onSecondary;
+    final isPdf =
+        LearningMaterialType.pdfTypes.contains(material.type.toLowerCase());
     return Stack(
       children: [
         GestureDetector(
@@ -96,8 +99,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                 : LearningMaterialType.videoTypes
                         .contains(material.type.toLowerCase())
                     ? VideoPlayerWidget(url: material.url)
-                    : LearningMaterialType.pdfTypes
-                            .contains(material.type.toLowerCase())
+                    : isPdf
                         ? Center(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -106,8 +108,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                                   LearningMaterialType.getIconForType(
                                       material.type),
                                   size: 100,
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: overlayColor,
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
@@ -115,8 +116,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                                   style: TextStyle(
                                     fontSize: 24,
                                     fontWeight: FontWeight.bold,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
+                                    color: overlayColor,
                                   ),
                                   textAlign: TextAlign.center,
                                 ),
@@ -151,20 +151,24 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                   },
                   child: Text(
                     '@${material.userName}',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
-                        color: Colors.white),
+                        color: isPdf ? overlayColor : Colors.white),
                   ),
                 ),
                 const SizedBox(height: 10),
                 RichText(
-                    text: TextSpan(children: [
-                  TextSpan(
+                    text: TextSpan(
+                  children: [
+                    TextSpan(
                       text: material.name,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.white)),
-                ])),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isPdf ? overlayColor : Colors.white),
+                    ),
+                  ],
+                )),
               ],
             ),
           ),
@@ -175,10 +179,12 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
             alignment: const Alignment(1, 1),
             child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
               IdeaReactionButton(
-                  onTap: toggleLike,
-                  icon: Icons.favorite,
-                  number: material.numberOfLikes,
-                  isLiked: likedLearningMaterials.contains(material.id)),
+                onTap: toggleLike,
+                icon: Icons.favorite,
+                number: material.numberOfLikes,
+                isLiked: likedLearningMaterials.contains(material.id),
+                color: isPdf ? overlayColor : Colors.white,
+              ),
               IdeaReactionButton(
                 onTap: () {
                   showModalBottomSheet(
@@ -205,6 +211,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                 },
                 icon: Icons.more_horiz,
                 hasCounter: false,
+                color: isPdf ? overlayColor : Colors.white,
               ),
             ]),
           ),

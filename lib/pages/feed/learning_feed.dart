@@ -91,7 +91,7 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
           ),
         ],
       ),
-      backgroundColor: Theme.of(context).colorScheme.onSecondary,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       body: _buildLearningFeed(),
     );
   }
@@ -189,7 +189,7 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
           );
         },
         separatorBuilder: (context, index) =>
-            Divider(color: Theme.of(context).colorScheme.primary),
+            Divider(color: Theme.of(context).colorScheme.secondary),
       ),
     );
   }

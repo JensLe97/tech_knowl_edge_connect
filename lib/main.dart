@@ -95,7 +95,7 @@ class TechKnowlEdgeConnect extends StatelessWidget {
           primary: Colors.grey.shade800,
           secondary: Colors.grey.shade700,
           inversePrimary: Colors.grey.shade800,
-          onSecondary: Colors.grey.shade900,
+          onSecondary: Colors.grey.shade400,
         ),
         textTheme: Theme.of(context).textTheme.apply(
               fontSizeDelta: 3,

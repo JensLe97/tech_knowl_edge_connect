@@ -261,10 +261,10 @@ packages:
     dependency: transitive
     description:
       name: dart_pubspec_licenses
-      sha256: ed8ce6e093ce94ba0cadba0c9c33d84960b5cf6b76d371d6b5cba2228dc3722e
+      sha256: fafb90d50c182dd3d4f441c6aea75baff1e5311aab2f6430d3f40f6e3a1f5885
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.10"
+    version: "3.0.12"
   dart_style:
     dependency: transitive
     description:
@@ -461,10 +461,10 @@ packages:
     dependency: transitive
     description:
       name: firebase_core_platform_interface
-      sha256: "5dbc900677dcbe5873d22ad7fbd64b047750124f1f9b7ebe2a33b9ddccc838eb"
+      sha256: "5873a370f0d232918e23a5a6137dbe4c2c47cf017301f4ea02d9d636e52f60f0"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.0"
+    version: "6.0.1"
   firebase_core_web:
     dependency: transitive
     description:
@@ -937,18 +937,18 @@ packages:
     dependency: "direct main"
     description:
       name: pdfrx
-      sha256: "54e8474eb1b4ce7a2cebcce6f0f54223e12bd252516d4a67ecc28dd6cb09313d"
+      sha256: "5d9bc994756c40d6675d11bf23bfa1ef289e33c79b877f92552e9af7d8e633d6"
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.15"
+    version: "2.1.19"
   pdfrx_engine:
     dependency: transitive
     description:
       name: pdfrx_engine
-      sha256: "1e144c7a86871f0c004049bf608b3f648057b2e54ba85b151aeca24f35cce397"
+      sha256: c26309bb2edaf775e1c3a75d2bfdbfe0ae98515969d1f36e8bd38118688dc848
       url: "https://pub.dev"
     source: hosted
-    version: "0.1.16"
+    version: "0.1.20"
   permission_handler:
     dependency: "direct main"
     description:
@@ -1081,10 +1081,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_android
-      sha256: a2608114b1ffdcbc9c120eb71a0e207c71da56202852d4aab8a5e30a82269e74
+      sha256: bd14436108211b0d4ee5038689a56d4ae3620fd72fd6036e113bf1345bc74d9e
       url: "https://pub.dev"
     source: hosted
-    version: "2.4.12"
+    version: "2.4.13"
   shared_preferences_foundation:
     dependency: transitive
     description:

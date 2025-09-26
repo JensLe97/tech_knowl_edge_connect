@@ -8,11 +8,11 @@ repos:
   - repo: https://github.com/mcsken/flutter-analyze-pre-commit
     rev: v0.1
     hooks:
-    - id: flutter-analyze
-      args: [lib/*]
-    - id: dart-format
-      args: [lib/*]
+      - id: flutter-analyze
+        args: [lib/*]
+      - id: dart-format
+        args: [lib/*]
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
-    - id: trailing-whitespace
+      - id: trailing-whitespace

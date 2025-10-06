@@ -27,10 +27,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.macOS:
         return macos;
       case TargetPlatform.windows:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for windows - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return windows;
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -44,7 +41,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDnka7UErIVm7Sj7N4aP8QHwZlwRiduWh4',
+    apiKey: 'AIzaSyBn6UyrW36DXoY9lrUBRjIqn-Xhabt_sbs',
     appId: '1:31090418784:web:63de8b9acf9d68f977cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
@@ -53,7 +50,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC4po_-2wO2OqwZOnW22zGEwvde6QMfF0s',
+    apiKey: 'AIzaSyAr3c4veWbLDjqVUnKJRcJ6QpFyr8uRBKY',
     appId: '1:31090418784:android:c6e2431b3b9cc4d277cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
@@ -61,28 +58,37 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
+    apiKey: 'AIzaSyCjmobNIjYeak7YS5Hww98tnc7AMeb1XHs',
     appId: '1:31090418784:ios:c565ee0244fea1cc77cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
     androidClientId:
-        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+        '31090418784-mlpa9in81cp77nv56k0uvss3dpklrc5n.apps.googleusercontent.com',
     iosClientId:
         '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
-    appId: '1:31090418784:ios:ebdf030b7edd1a0777cf05',
+    apiKey: 'AIzaSyCjmobNIjYeak7YS5Hww98tnc7AMeb1XHs',
+    appId: '1:31090418784:ios:c565ee0244fea1cc77cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
     androidClientId:
-        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
+        '31090418784-mlpa9in81cp77nv56k0uvss3dpklrc5n.apps.googleusercontent.com',
     iosClientId:
-        '31090418784-f24rvngfd427jjajtof4nkuigs920vp1.apps.googleusercontent.com',
-    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect.RunnerTests',
+        '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
+    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
+  );
+
+  static const FirebaseOptions windows = FirebaseOptions(
+    apiKey: 'AIzaSyBn6UyrW36DXoY9lrUBRjIqn-Xhabt_sbs',
+    appId: '1:31090418784:web:57fc5d5ac06ccb4977cf05',
+    messagingSenderId: '31090418784',
+    projectId: 'tech-knowl-edge-connect',
+    authDomain: 'tech-knowl-edge-connect.firebaseapp.com',
+    storageBucket: 'tech-knowl-edge-connect.appspot.com',
   );
 }

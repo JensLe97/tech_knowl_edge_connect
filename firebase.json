@@ -1,13 +1,46 @@
 {
   "hosting": {
     "source": ".",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
-    "frameworksBackend": {
-      "region": "europe-west1"
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "frameworksBackend": { "region": "europe-west1" }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "tech-knowl-edge-connect",
+          "appId": "1:31090418784:android:c6e2431b3b9cc4d277cf05",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "ios": {
+        "default": {
+          "projectId": "tech-knowl-edge-connect",
+          "appId": "1:31090418784:ios:c565ee0244fea1cc77cf05",
+          "uploadDebugSymbols": false,
+          "fileOutput": "ios/Runner/GoogleService-Info.plist"
+        }
+      },
+      "macos": {
+        "default": {
+          "projectId": "tech-knowl-edge-connect",
+          "appId": "1:31090418784:ios:c565ee0244fea1cc77cf05",
+          "uploadDebugSymbols": false,
+          "fileOutput": "macos/Runner/GoogleService-Info.plist"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "tech-knowl-edge-connect",
+          "configurations": {
+            "android": "1:31090418784:android:c6e2431b3b9cc4d277cf05",
+            "ios": "1:31090418784:ios:c565ee0244fea1cc77cf05",
+            "macos": "1:31090418784:ios:c565ee0244fea1cc77cf05",
+            "web": "1:31090418784:web:63de8b9acf9d68f977cf05",
+            "windows": "1:31090418784:web:57fc5d5ac06ccb4977cf05"
+          }
+        }
+      }
     }
   }
 }

@@ -50,7 +50,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAr3c4veWbLDjqVUnKJRcJ6QpFyr8uRBKY',
+    apiKey: 'AIzaSyC4po_-2wO2OqwZOnW22zGEwvde6QMfF0s',
     appId: '1:31090418784:android:c6e2431b3b9cc4d277cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
@@ -58,29 +58,29 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyCjmobNIjYeak7YS5Hww98tnc7AMeb1XHs',
+    apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
     appId: '1:31090418784:ios:c565ee0244fea1cc77cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
     androidClientId:
-        '31090418784-mlpa9in81cp77nv56k0uvss3dpklrc5n.apps.googleusercontent.com',
+        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
     iosClientId:
         '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
     iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyCjmobNIjYeak7YS5Hww98tnc7AMeb1XHs',
-    appId: '1:31090418784:ios:c565ee0244fea1cc77cf05',
+    apiKey: 'AIzaSyCY-GrbGHrII6HESm3wRZfcBk_HoVOh-zg',
+    appId: '1:31090418784:ios:ebdf030b7edd1a0777cf05',
     messagingSenderId: '31090418784',
     projectId: 'tech-knowl-edge-connect',
     storageBucket: 'tech-knowl-edge-connect.appspot.com',
     androidClientId:
-        '31090418784-mlpa9in81cp77nv56k0uvss3dpklrc5n.apps.googleusercontent.com',
+        '31090418784-prmd0ebrlqee2uift7001gqb0dp23ql9.apps.googleusercontent.com',
     iosClientId:
-        '31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com',
-    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect',
+        '31090418784-f24rvngfd427jjajtof4nkuigs920vp1.apps.googleusercontent.com',
+    iosBundleId: 'com.jenslemke.techKnowlEdgeConnect.RunnerTests',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(

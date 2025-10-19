@@ -63,10 +63,11 @@
               "client_type": 3
             },
             {
-              "client_id": "31090418784-1ov1v8rcs64dcjkucjbi53qhi4u7i2dn.apps.googleusercontent.com",
+              "client_id": "31090418784-3gcsv6ltf60llhe861j7um1m7kntmet9.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.jenslemke.techKnowlEdgeConnect"
+                "bundle_id": "com.jenslemke.techKnowlEdgeConnect",
+                "app_store_id": "6689203320"
               }
             }
           ]

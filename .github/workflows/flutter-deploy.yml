@@ -57,7 +57,7 @@ jobs:
           commit: ${{ github.sha }}
           generateReleaseNotes: true
       - name: Upload App Bundle
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: appbundle
           path: build/app/outputs/bundle/release/app-release.aab
@@ -68,7 +68,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - name: Get Appbundle from Artifacts
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: appbundle
       - name: Release App to Internal Test Track

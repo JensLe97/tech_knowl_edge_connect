@@ -86,7 +86,11 @@ class _LearningMaterialPreviewPageState
             ),
           ],
         ),
-        body: PdfViewer.uri(Uri.parse(url)),
+        body: PdfViewer.uri(
+          Uri.parse(url),
+          params: PdfViewerParams(
+              backgroundColor: Theme.of(context).colorScheme.surface),
+        ),
       );
     } else if (LearningMaterialType.imageTypes.contains(type.toLowerCase())) {
       return Scaffold(

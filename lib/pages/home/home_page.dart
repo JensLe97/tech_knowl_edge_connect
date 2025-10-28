@@ -247,7 +247,6 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-        backgroundColor: Theme.of(context).colorScheme.secondary,
         child: const Icon(FontAwesomeIcons.robot),
       ),
     );

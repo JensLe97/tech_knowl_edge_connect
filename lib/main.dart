@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
+import 'package:tech_knowl_edge_connect/theme.dart';
 
 import 'firebase_options.dart';
 
@@ -52,78 +53,8 @@ class TechKnowlEdgeConnect extends StatelessWidget {
     return MaterialApp(
       title: 'TechKnowlEdgeConnect',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.light,
-        colorScheme: ColorScheme.light(
-          surface: Colors.grey.shade100,
-          primary: Colors.grey.shade200,
-          onPrimary: Colors.grey.shade300,
-          secondary: Colors.grey.shade400,
-          inversePrimary: Colors.grey.shade700,
-          onSecondary: Colors.grey.shade800,
-        ),
-        textTheme: Theme.of(context).textTheme.apply(
-              fontSizeDelta: 3,
-              bodyColor: Colors.grey[850],
-              displayColor: Colors.black,
-            ),
-        primarySwatch: Colors.blueGrey,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade700,
-          elevation: 0,
-        ),
-        bottomSheetTheme:
-            const BottomSheetThemeData(backgroundColor: Colors.transparent),
-        snackBarTheme: SnackBarThemeData(
-          contentTextStyle: Theme.of(context).textTheme.bodyMedium?.apply(
-                color: Colors.grey[850],
-                fontSizeDelta: 3,
-              ),
-          backgroundColor: Colors.grey.shade100,
-        ),
-        switchTheme: SwitchThemeData(
-          thumbColor: WidgetStateProperty.all(Colors.grey.shade600),
-          trackColor: WidgetStateProperty.all(Colors.grey.shade400),
-        ),
-      ),
-      darkTheme: ThemeData(
-        brightness: Brightness.dark,
-        colorScheme: ColorScheme.dark(
-          surface: Colors.grey.shade900,
-          onPrimary: Colors.grey[850]!,
-          primary: Colors.grey.shade800,
-          secondary: Colors.grey.shade700,
-          inversePrimary: Colors.grey.shade800,
-          onSecondary: Colors.grey.shade400,
-        ),
-        textTheme: Theme.of(context).textTheme.apply(
-              fontSizeDelta: 3,
-              bodyColor: Colors.grey[300],
-              displayColor: Colors.white,
-            ),
-        primarySwatch: Colors.indigo,
-        appBarTheme: AppBarTheme(
-          backgroundColor: Colors.grey.shade800,
-          elevation: 0,
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-          shadowColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          backgroundColor: Colors.transparent,
-        ),
-        snackBarTheme: SnackBarThemeData(
-          contentTextStyle: Theme.of(context).textTheme.bodyMedium?.apply(
-                color: Colors.grey[300],
-                fontSizeDelta: 3,
-              ),
-          backgroundColor: Colors.grey.shade900,
-        ),
-        switchTheme: SwitchThemeData(
-          thumbColor: WidgetStateProperty.all(Colors.grey.shade700),
-          trackColor: WidgetStateProperty.all(Colors.grey.shade500),
-        ),
-      ),
+      theme: ThemeConfig.lightTheme,
+      darkTheme: ThemeConfig.darkTheme,
       supportedLocales: const [
         Locale('de'), // German
         Locale('en'), // English

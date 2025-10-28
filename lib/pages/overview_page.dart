@@ -41,12 +41,8 @@ class _OverviewPageState extends State<OverviewPage> {
       bottomNavigationBar: Container(
         color: Theme.of(context).colorScheme.inversePrimary,
         child: BottomNavigationBar(
-          elevation: 0,
-          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           currentIndex: _currentIndex,
           type: BottomNavigationBarType.fixed,
-          selectedItemColor: Theme.of(context).textTheme.displayLarge!.color,
-          unselectedItemColor: Theme.of(context).textTheme.bodyLarge!.color,
           onTap: _onTap,
           items: const [
             BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),

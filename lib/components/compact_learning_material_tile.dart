@@ -24,10 +24,15 @@ class CompactLearningMaterialTile extends StatelessWidget {
       leading: FaIcon(
         LearningMaterialType.getIconForType(material.type),
       ),
-      title: Text(material.name),
+      title: Text(
+        material.name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(fontWeight: FontWeight.bold),
+      ),
       subtitle: Text(
         _formatDate(material.createdAt.toDate()),
-        style: const TextStyle(fontSize: 12),
+        style: const TextStyle(fontSize: 14),
       ),
       onTap: onTap,
     );

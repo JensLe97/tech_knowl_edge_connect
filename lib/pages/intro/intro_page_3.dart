@@ -18,7 +18,8 @@ class _IntroPage3State extends State<IntroPage3> with TickerProviderStateMixin {
           const SizedBox(height: 83),
           const Text("Starte jetzt durch mit", style: TextStyle(fontSize: 18)),
           const SizedBox(height: 5),
-          const Text("TechKnowlEdgeConnect", style: TextStyle(fontSize: 22)),
+          const Text("TechKnowlEdgeConnect",
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
           kIsWeb
               ? SizedBox(
                   height: 400,

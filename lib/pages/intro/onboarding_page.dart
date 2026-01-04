@@ -69,7 +69,8 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
               controller: _controller,
               count: 3,
               effect: ExpandingDotsEffect(
-                  activeDotColor: Theme.of(context).colorScheme.inversePrimary,
+                  expansionFactor: 2,
+                  activeDotColor: Theme.of(context).colorScheme.primary,
                   dotColor: Theme.of(context).colorScheme.secondary,
                   spacing: 10,
                   dotHeight: 20,

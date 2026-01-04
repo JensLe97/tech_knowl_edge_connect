@@ -12,10 +12,11 @@ class IntroButton extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
-        margin: const EdgeInsets.symmetric(horizontal: 5),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(10)),
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: Text(
           text,
           style: const TextStyle(

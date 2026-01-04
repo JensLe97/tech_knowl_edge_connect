@@ -24,8 +24,8 @@ class DetailedLearningMaterialTile extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        padding: const EdgeInsets.all(20),
+        margin: const EdgeInsets.symmetric(horizontal: 25, vertical: 8),
+        padding: const EdgeInsets.all(15),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: BorderRadius.circular(18),
@@ -43,17 +43,21 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                 children: [
                   LayoutBuilder(
                     builder: (context, constraints) {
+                      const textStyle = TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      );
+                      final resolvedStyle =
+                          DefaultTextStyle.of(context).style.merge(textStyle);
                       final textSpan = TextSpan(
                         text: material.name,
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: resolvedStyle,
                       );
                       final tp = TextPainter(
                         text: textSpan,
                         maxLines: 2,
                         textDirection: ui.TextDirection.ltr,
+                        textScaler: MediaQuery.textScalerOf(context),
                       )..layout(maxWidth: constraints.maxWidth);
 
                       final lines = tp.computeLineMetrics().length;
@@ -65,13 +69,10 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                             material.name,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: textStyle,
                           ),
                           if (lines == 1)
-                            const SizedBox(height: 24), // empty second line
+                            const SizedBox(height: 18), // empty second line
                         ],
                       );
                     },
@@ -83,7 +84,7 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Center(
@@ -96,7 +97,7 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Center(
@@ -110,7 +111,7 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                         child: Container(
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
+                            color: Theme.of(context).colorScheme.onPrimary,
                             borderRadius: BorderRadius.circular(12),
                           ),
                           child: Center(

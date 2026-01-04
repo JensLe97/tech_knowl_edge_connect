@@ -136,7 +136,11 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 shrinkWrap: true,
                 children: ListTile.divideTiles(
                         context: context,
-                        tiles: snapshot.data!.docs
+                        tiles: (snapshot.data!.docs.toList()
+                              ..sort((a, b) => (a['username'] as String)
+                                  .toLowerCase()
+                                  .compareTo(
+                                      (b['username'] as String).toLowerCase())))
                             .map<Widget>((docs) => _buildUserListItem(docs))
                             .toList())
                     .toList(),
@@ -201,6 +205,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   children: [
                     Text(
                       lastTime,
+                      style: const TextStyle(fontSize: 14),
                     ),
                     unread > 0
                         ? Container(
@@ -221,7 +226,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                   ],
                 ),
                 minVerticalPadding: 15,
-                title: Text(otherUser!['username']),
+                title: Text(otherUser!['username'],
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    )),
                 subtitle: document['type'] == "text"
                     ? document['isBlocked'] &&
                             document['lastSenderId'] == otherUserId
@@ -300,7 +308,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
             size: 26,
           ),
         ),
-        title: Text(document['username']),
+        title: Text(
+          document['username'],
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
         subtitle: Text(document['email']),
         onTap: () {
           Navigator.pop(context);

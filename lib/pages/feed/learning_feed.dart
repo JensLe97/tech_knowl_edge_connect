@@ -188,8 +188,7 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
             },
           );
         },
-        separatorBuilder: (context, index) =>
-            Divider(color: Theme.of(context).colorScheme.secondary),
+        separatorBuilder: (context, index) => const Divider(),
       ),
     );
   }

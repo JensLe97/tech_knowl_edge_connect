@@ -30,7 +30,10 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
                     const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                title: Text(widget.subject.name),
+                title: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: Text(widget.subject.name),
+                ),
                 background: Stack(children: [
                   OverflowBox(
                     maxWidth: 800,

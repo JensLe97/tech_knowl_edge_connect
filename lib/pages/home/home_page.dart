@@ -247,7 +247,7 @@ class _HomePageState extends State<HomePage> {
             ),
           );
         },
-        child: const Icon(FontAwesomeIcons.robot),
+        child: const FaIcon(FontAwesomeIcons.robot),
       ),
     );
   }

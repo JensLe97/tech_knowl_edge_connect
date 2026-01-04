@@ -76,10 +76,15 @@ class _AccountPageState extends State<AccountPage> {
                                       .displayLarge!
                                       .color),
                             ),
-                            Text(
-                              user!['username'],
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  user!['username'],
+                                  style: TextStyle(
+                                      color: Theme.of(context).colorScheme.primary),
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -102,10 +107,17 @@ class _AccountPageState extends State<AccountPage> {
                                       .displayLarge!
                                       .color),
                             ),
-                            Text(
-                              user['email'],
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary),
+                            Flexible(
+                              child: FittedBox(
+                                fit: BoxFit.scaleDown,
+                                child: Text(
+                                  user['email'],
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ),
                             )
                           ],
                         ),

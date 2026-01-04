@@ -112,10 +112,10 @@ class ThemeConfig {
         seedColor: _seedColor,
         brightness: Brightness.dark,
         dynamicSchemeVariant: DynamicSchemeVariant.neutral,
-        primary: const Color.fromARGB(255, 109, 125, 152),
+        primary: const Color.fromARGB(255, 135, 155, 189),
         onPrimary: const Color.fromARGB(255, 29, 39, 52),
-        secondary: const Color.fromARGB(255, 77, 92, 111),
-        onSecondary: const Color.fromARGB(255, 95, 111, 132));
+        secondary: const Color.fromARGB(255, 88, 113, 146),
+        onSecondary: const Color.fromARGB(255, 109, 127, 150));
     final textTheme =
         Typography.material2021(platform: TargetPlatform.android).white.apply(
               bodyColor: cs.onSurface,

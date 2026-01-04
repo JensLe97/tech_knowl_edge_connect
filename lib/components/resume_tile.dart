@@ -38,10 +38,14 @@ class ResumeTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    subject.name,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                  FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      subject.name,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
                   ),
                   const SizedBox(height: 5),
                   Text(path),

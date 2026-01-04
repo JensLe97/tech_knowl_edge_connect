@@ -36,10 +36,14 @@ class SubjectTile extends StatelessWidget {
             ),
             Expanded(
               flex: 8,
-              child: Text(
-                subject.name,
-                style:
-                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  subject.name,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
               ),
             ),
           ],

@@ -199,31 +199,34 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                     size: 26,
                   ),
                 ),
-                trailing: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      lastTime,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    unread > 0
-                        ? Container(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: 2.0, horizontal: 8.0),
-                            decoration: const BoxDecoration(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15)),
-                              color: Colors.blue,
-                            ),
-                            child: Text(
-                              unread.toString(),
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.white),
-                            ),
-                          )
-                        : const SizedBox(),
-                  ],
+                trailing: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        lastTime,
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                      unread > 0
+                          ? Container(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 2.0, horizontal: 8.0),
+                              decoration: const BoxDecoration(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(15)),
+                                color: Colors.blue,
+                              ),
+                              child: Text(
+                                unread.toString(),
+                                style: const TextStyle(
+                                    fontSize: 14, color: Colors.white),
+                              ),
+                            )
+                          : const SizedBox(),
+                    ],
+                  ),
                 ),
                 minVerticalPadding: 15,
                 title: Text(otherUser!['username'],

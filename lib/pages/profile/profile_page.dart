@@ -87,19 +87,26 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       const SizedBox(height: 25),
-                      Text(
-                        user['username'],
-                        style: const TextStyle(
-                            fontSize: 24, fontWeight: FontWeight.bold),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          user['username'],
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
+                        ),
                       ),
                       const SizedBox(height: 10),
-                      Text(user['email'],
-                          style: TextStyle(
-                              color:
-                                  Theme.of(context).colorScheme.inversePrimary,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.center),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(user['email'],
+                            style: TextStyle(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .inversePrimary,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.center),
+                      ),
                       const SizedBox(height: 25),
                       // TextIconButton(
                       //   text: 'Profil bearbeiten',

@@ -50,7 +50,7 @@ dependencies:
   lottie: ^3.3.1
   confetti: 0.8.0
   collection: ^1.19.1
-  dart_openai: 6.1.0
+  dart_openai: 6.1.1
   envied: ^0.5.4+1
   intl: ^0.20.2
   image_picker: ^1.2.0

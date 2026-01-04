@@ -19,20 +19,7 @@ class LoginTextField extends StatelessWidget {
       child: TextField(
         controller: controller,
         obscureText: obscureText,
-        cursorColor: Theme.of(context).colorScheme.secondary,
         decoration: InputDecoration(
-          enabledBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.secondary),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          focusedBorder: OutlineInputBorder(
-            borderSide:
-                BorderSide(color: Theme.of(context).colorScheme.inversePrimary),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          fillColor: Theme.of(context).colorScheme.surface,
-          filled: true,
           hintText: hintText,
         ),
       ),

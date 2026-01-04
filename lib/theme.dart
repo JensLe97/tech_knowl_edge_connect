@@ -60,19 +60,15 @@ class ThemeConfig {
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
-        fillColor: cs.surfaceContainerHighest.withAlpha(15),
+        fillColor: cs.surface,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide:
-                BorderSide(color: cs.surfaceContainerHighest.withAlpha(20))),
+            borderSide: BorderSide(color: cs.secondary.withAlpha(175))),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: cs.primary, width: 1.5)),
+            borderSide: BorderSide(color: cs.secondary, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
@@ -105,6 +101,7 @@ class ThemeConfig {
         thumbColor: WidgetStateProperty.all(cs.primary),
         trackColor: WidgetStateProperty.resolveWith(
             (states) => cs.primary.withAlpha(102)),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );
@@ -162,19 +159,15 @@ class ThemeConfig {
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
-        fillColor: cs.surfaceContainerHighest.withAlpha(15),
+        fillColor: cs.surface,
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-        border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none),
         enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide:
-                BorderSide(color: cs.surfaceContainerHighest.withAlpha(20))),
+            borderSide: BorderSide(color: cs.secondary.withAlpha(175))),
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: cs.primary, width: 1.5)),
+            borderSide: BorderSide(color: cs.secondary, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
@@ -207,6 +200,7 @@ class ThemeConfig {
         thumbColor: WidgetStateProperty.all(cs.primary),
         trackColor: WidgetStateProperty.resolveWith(
             (states) => cs.primary.withAlpha(102)),
+        trackOutlineColor: WidgetStateProperty.all(Colors.transparent),
       ),
       visualDensity: VisualDensity.adaptivePlatformDensity,
     );

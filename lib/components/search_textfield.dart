@@ -24,7 +24,7 @@ class SearchTextField extends StatelessWidget {
             leading: const Icon(Icons.search),
             hintText: hintText,
             shadowColor: WidgetStateProperty.all(Colors.transparent),
-            constraints: const BoxConstraints(minHeight: 36, maxHeight: 36),
+            constraints: const BoxConstraints(minHeight: 40, maxHeight: 40),
             onTap: onTap,
             shape: WidgetStateProperty.all(const ContinuousRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(12)),

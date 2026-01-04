@@ -55,7 +55,7 @@ class _AnswerFieldState extends State<AnswerField> {
                     text: widget.answer,
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
-                      fontSize: 19,
+                      fontSize: 16,
                     )),
                 textScaler: MediaQuery.of(context).textScaler,
                 textDirection: TextDirection.ltr)
@@ -75,7 +75,7 @@ class _AnswerFieldState extends State<AnswerField> {
                       ? Colors.green
                       : Colors.red
                   : Theme.of(context).textTheme.displayLarge!.color,
-              fontSize: 18,
+              fontSize: 14,
             ),
             maxLength: answerLength,
             onChanged: (value) {
@@ -120,6 +120,10 @@ class _AnswerFieldState extends State<AnswerField> {
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
                     color: Theme.of(context).textTheme.displayLarge!.color!),
+              ),
+              disabledBorder: UnderlineInputBorder(
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.secondary),
               ),
               isDense: true,
               contentPadding: const EdgeInsets.symmetric(vertical: 0),

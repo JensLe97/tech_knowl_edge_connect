@@ -18,21 +18,18 @@ class FolderTextField extends StatelessWidget {
       controller: controller,
       validator: validator,
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.secondary),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderSide:
-              BorderSide(color: Theme.of(context).colorScheme.inversePrimary),
-          borderRadius: BorderRadius.circular(10),
-        ),
-        fillColor: Theme.of(context).colorScheme.surface,
-        filled: true,
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.error, width: 1.5)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.error, width: 1.5)),
         hintText: hintText,
         isDense: true,
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        helperText: ' ', // Reserve space for error message
       ),
     );
   }

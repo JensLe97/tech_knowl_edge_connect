@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: signUserUp,
                   text: "Registrieren",
                 ),
-                const SizedBox(height: 98),
+                const SizedBox(height: 101),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -112,6 +112,14 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 
   signUserUp() async {
+    if (usernameController.text.trim().isEmpty ||
+        emailController.text.trim().isEmpty ||
+        passwordController.text.isEmpty ||
+        confirmPasswordController.text.isEmpty) {
+      showErrorMessage(context, 'Bitte alle Felder ausfüllen!');
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -131,7 +139,7 @@ class _RegisterPageState extends State<RegisterPage> {
       } else {
         UserCredential? userCredential =
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text,
+          email: emailController.text.trim(),
           password: passwordController.text,
         );
         createUserDocument(userCredential);

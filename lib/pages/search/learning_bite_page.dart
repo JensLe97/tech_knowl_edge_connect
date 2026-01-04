@@ -119,7 +119,10 @@ class _LearningBitePageState extends State<LearningBitePage>
                     ),
                     builder: (context, value, _) => LinearProgressIndicator(
                       value: value,
-                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                       color: Theme.of(context).colorScheme.secondary,
                       minHeight: 12,
@@ -247,7 +250,7 @@ class _LearningBitePageState extends State<LearningBitePage>
             TextSpan(
               text: question.last,
             ),
-          ], style: const TextStyle(fontSize: 18)),
+          ], style: const TextStyle(fontSize: 14)),
         );
       case TaskType.freeTextFieldCloze:
         return Text.rich(
@@ -274,7 +277,7 @@ class _LearningBitePageState extends State<LearningBitePage>
             TextSpan(
               text: question.last,
             ),
-          ], style: const TextStyle(fontSize: 18)),
+          ], style: const TextStyle(fontSize: 14)),
         );
       default:
         return Text(tasks[currentTask].question);

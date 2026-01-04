@@ -32,6 +32,12 @@ class _ChatPageState extends State<ChatPage> {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final UserService _userService = UserService();
 
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
   var allMessages = [
     OpenAIChatCompletionChoiceMessageModel(
       content: [
@@ -236,7 +242,7 @@ class _ChatPageState extends State<ChatPage> {
                     Icons.add_circle_outline_rounded,
                     size: 40,
                   ),
-                  color: Theme.of(context).colorScheme.inversePrimary),
+                  color: Theme.of(context).colorScheme.secondary),
           Flexible(
             child: MessageTextField(
               controller: _messageController,
@@ -245,13 +251,23 @@ class _ChatPageState extends State<ChatPage> {
               onSubmitted: (_) => sendMessage(),
             ),
           ),
-          IconButton(
-              onPressed: sendMessage,
-              icon: const Icon(
-                Icons.send,
-                size: 40,
-              ),
-              color: Theme.of(context).colorScheme.inversePrimary),
+          ValueListenableBuilder<TextEditingValue>(
+            valueListenable: _messageController,
+            builder: (context, value, child) {
+              final isEmpty = value.text.isEmpty;
+              final color = isEmpty
+                  ? Theme.of(context).colorScheme.inversePrimary
+                  : Theme.of(context).colorScheme.secondary;
+              return IconButton(
+                onPressed: isEmpty ? null : sendMessage,
+                icon: Icon(
+                  Icons.send,
+                  size: 40,
+                  color: color,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

@@ -42,12 +42,12 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
                     ? 'Bitte Titel des Ordners eingeben'
                     : null,
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 10),
               FolderTextField(
                 controller: _descController,
                 hintText: 'Beschreibung',
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: 10),
               Row(
                 children: [
                   const Text('Öffentlich'),

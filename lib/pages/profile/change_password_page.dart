@@ -106,6 +106,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   }
 
   changeUserPassword(String email) async {
+    if (oldPasswordController.text.isEmpty ||
+        newPasswordController.text.isEmpty ||
+        confirmNewPasswordController.text.isEmpty) {
+      showErrorMessage(context, 'Bitte alle Felder ausfüllen!');
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -164,10 +171,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         if (mounted) {
           showErrorMessage(context, 'Benutzer wurde nicht gefunden!');
         }
-      } else if (e.code == 'wrong-password') {
-        if (mounted) showErrorMessage(context, 'Das alte Passwort ist falsch!');
-      } else if (e.code == 'INVALID_LOGIN_CREDENTIALS') {
-        if (mounted) showErrorMessage(context, 'Das alte Passwort ist falsch!');
+      } else if (e.code == 'wrong-password' ||
+          e.code == 'INVALID_LOGIN_CREDENTIALS' ||
+          e.code == 'invalid-credential') {
+        if (mounted) {
+          showErrorMessage(context, 'Das alte Passwort ist falsch!');
+        }
       }
     }
   }

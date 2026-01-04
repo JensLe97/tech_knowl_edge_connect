@@ -128,7 +128,13 @@ class ChatBubble extends StatelessWidget {
                               ),
                             );
                           } else {
-                            return const CircularProgressIndicator();
+                            return const SizedBox(
+                              width: 200,
+                              height: 200,
+                              child: Center(
+                                child: CircularProgressIndicator(),
+                              ),
+                            );
                           }
                         },
                       ),

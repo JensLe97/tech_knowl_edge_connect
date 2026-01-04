@@ -29,14 +29,10 @@ class AiSearchDelegate extends SearchDelegate {
               selectionColor: Theme.of(context).colorScheme.secondary,
             ),
         inputDecorationTheme: Theme.of(context).inputDecorationTheme.copyWith(
-            contentPadding: const EdgeInsets.only(top: 10, left: 10, right: 10),
-            constraints: const BoxConstraints(minHeight: 36, maxHeight: 36),
-            filled: true,
-            hoverColor: Theme.of(context).colorScheme.onPrimary,
-            fillColor: Theme.of(context).colorScheme.surface,
-            border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide.none)));
+              contentPadding:
+                  const EdgeInsets.only(top: 10, left: 10, right: 10),
+              constraints: const BoxConstraints(minHeight: 40, maxHeight: 40),
+            ));
   }
 
   @override

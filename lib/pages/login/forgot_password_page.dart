@@ -68,6 +68,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   Future resetPassword() async {
+    if (emailController.text.trim().isEmpty) {
+      showErrorMessage(context, 'Bitte E-Mail angeben!');
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {

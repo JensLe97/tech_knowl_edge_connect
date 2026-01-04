@@ -79,8 +79,7 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               user!['username'],
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  color: Theme.of(context).colorScheme.primary),
                             )
                           ],
                         ),
@@ -106,8 +105,7 @@ class _AccountPageState extends State<AccountPage> {
                             Text(
                               user['email'],
                               style: TextStyle(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary),
+                                  color: Theme.of(context).colorScheme.primary),
                             )
                           ],
                         ),

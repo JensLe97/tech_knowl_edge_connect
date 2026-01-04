@@ -70,7 +70,10 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text(
                     'Passwort vergessen?',
-                    style: TextStyle(fontSize: 20),
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 25),
@@ -153,6 +156,12 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   signUserIn() async {
+    if (emailController.text.trim().isEmpty ||
+        passwordController.text.isEmpty) {
+      showErrorMessage(context, 'Bitte E-Mail und Passwort eingeben');
+      return;
+    }
+
     showDialog(
       context: context,
       builder: (context) {
@@ -164,7 +173,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text,
+        email: emailController.text.trim(),
         password: passwordController.text,
       );
       if (mounted) Navigator.of(context).pop();

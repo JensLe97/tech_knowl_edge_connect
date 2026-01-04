@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
 import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
 import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
@@ -165,6 +166,45 @@ class _ChatPageState extends State<ChatPage> {
         ));
   }
 
+  String _formatDateHeader(DateTime date) {
+    final now = DateTime.now();
+    final today = DateTime(now.year, now.month, now.day);
+    final yesterday = today.subtract(const Duration(days: 1));
+    final messageDate = DateTime(date.year, date.month, date.day);
+
+    if (messageDate == today) {
+      return 'Heute';
+    } else if (messageDate == yesterday) {
+      return 'Gestern';
+    } else {
+      // Format: "Mo. 7. Dez. 25"
+      return DateFormat('E d. MMM yy', 'de').format(date);
+    }
+  }
+
+  Widget _buildDateSeparator(DateTime date) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
+      child: Center(
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Text(
+            _formatDateHeader(date),
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.onSurfaceVariant,
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildMessageList() {
     return StreamBuilder(
       stream: _chatService.getMessages(
@@ -177,11 +217,27 @@ class _ChatPageState extends State<ChatPage> {
         } else if (snapshot.hasError) {
           return Text("Ein Fehler ist aufgetreten: \\${snapshot.error}");
         } else if (snapshot.hasData) {
+          final docs = snapshot.data!.docs.toList(); // oldest first
+          List<Widget> messageWidgets = [];
+          DateTime? lastDate;
+
+          for (var document in docs) {
+            Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+            Timestamp timestamp = data['timestamp'];
+            DateTime messageDate = timestamp.toDate();
+            DateTime messageDayOnly =
+                DateTime(messageDate.year, messageDate.month, messageDate.day);
+
+            if (lastDate == null || lastDate != messageDayOnly) {
+              messageWidgets.add(_buildDateSeparator(messageDate));
+              lastDate = messageDayOnly;
+            }
+
+            messageWidgets.add(_buildMessageItem(document));
+          }
+
           ListView messageList = ListView(
-              reverse: true,
-              children: snapshot.data!.docs.reversed
-                  .map((document) => _buildMessageItem(document))
-                  .toList());
+              reverse: true, children: messageWidgets.reversed.toList());
           return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");

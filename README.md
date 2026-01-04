@@ -24,6 +24,20 @@ git tag vX.Y.Z
 git push origin vX.Y.Z
 ```
 
+### Upload Screenshots in Google Play Console
+
+Pixel 9 Emulator: 1080 x 2424px
+Pixel Tablet Emulator: 1600 x 2560px
+
+Select the release from the GitHub Actions builds and upload to Google Play Console.
+
 ## iOS
 
 Each tag will trigger an XCode build in Xcode Cloud with the version number from `pubspec.yaml`.
+
+### Upload Screenshots in App Store Connect
+
+iPhone 14 Plus iOS Simulator: 1284 × 2778px 
+iPad Pro 13-inch (M4) iPadOS Simulator: 2064 × 2752px
+
+Select the release from the Xcode Cloud builds and upload to App Store Connect.

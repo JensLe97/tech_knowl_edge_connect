@@ -181,6 +181,9 @@ class _LoginPageState extends State<LoginPage> {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'invalid-email' ||
           e.code == 'INVALID_LOGIN_CREDENTIALS' ||
+          e.code == 'invalid-credential' ||
+          e.code == 'user-not-found' ||
+          e.code == 'wrong-password' ||
           e.code == 'channel-error') {
         if (mounted) showErrorMessage(context, 'Anmeldedaten falsch!');
       }

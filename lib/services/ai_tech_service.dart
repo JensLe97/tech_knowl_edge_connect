@@ -20,7 +20,7 @@ class AiTechService {
     final model = FirebaseAI.googleAI(
       appCheck: FirebaseAppCheck.instance,
     ).generativeModel(model: 'gemini-2.5-flash');
-    final prompt = TextPart(
+    const prompt = TextPart(
         "Fasse die wichtigsten Punkte dieser Dateien zusammen. "
         "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache. "
         "Nutze Aufzählungen, wo es sinnvoll ist.");
@@ -77,7 +77,7 @@ class AiTechService {
         generationConfig: GenerationConfig(
             responseMimeType: 'application/json',
             responseSchema: taskJsonSchema));
-    final prompt = TextPart(
+    const prompt = TextPart(
         "Erstelle eine Liste von Tasks aus den gegebenen Dokumenten. "
         "Die Aufgaben sollen verschiedene Formate haben, z.B. Multiple oder Single Choice, Lückentexte oder Karteikarten. "
         "Die Fragen und Antworten sollen auf Deutsch sein. "

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:async';
+
 import 'package:tech_knowl_edge_connect/components/menu_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/services/admin_claims_service.dart';
 // import 'package:tech_knowl_edge_connect/components/text_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -13,12 +16,42 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   User? currentUser = FirebaseAuth.instance.currentUser;
+  bool _isAdmin = false;
+  final AdminClaimsService _claimsService = AdminClaimsService();
+  StreamSubscription<User?>? _idTokenSub;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
     return await FirebaseFirestore.instance
         .collection("Users")
         .doc(currentUser!.uid)
         .get();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _idTokenSub = FirebaseAuth.instance.idTokenChanges().listen((user) async {
+      if (user == null) {
+        if (mounted) {
+          setState(() {
+            _isAdmin = false;
+          });
+        }
+        return;
+      }
+      final isAdmin = await _claimsService.isAdmin();
+      if (mounted) {
+        setState(() {
+          _isAdmin = isAdmin;
+        });
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _idTokenSub?.cancel();
+    super.dispose();
   }
 
   @override
@@ -50,8 +83,9 @@ class _ProfilePageState extends State<ProfilePage> {
                           top: Radius.circular(20),
                         ),
                       ),
-                      builder: (BuildContext context) =>
-                          const SafeArea(child: MenuItems()));
+                      builder: (BuildContext context) {
+                        return SafeArea(child: MenuItems(isAdmin: _isAdmin));
+                      });
                 },
                 icon: const Icon(Icons.menu)),
           ]),

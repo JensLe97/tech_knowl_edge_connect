@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/pages/admin/content_admin_page.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/settings.dart';
 
 class MenuItems extends StatelessWidget {
-  const MenuItems({Key? key}) : super(key: key);
+  final bool isAdmin;
+
+  const MenuItems({Key? key, this.isAdmin = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -21,6 +24,19 @@ class MenuItems extends StatelessWidget {
             );
           },
         ),
+        if (isAdmin)
+          ListTile(
+            leading: const Icon(Icons.admin_panel_settings),
+            title: const Text('Admin Dashboard'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const ContentAdminPage(),
+                ),
+              );
+            },
+          ),
         // ListTile(
         //   leading: const Icon(Icons.subject),
         //   title: const Text('Fächer'),

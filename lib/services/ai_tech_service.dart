@@ -12,28 +12,58 @@ class AiTechService {
   Stream<GenerateContentResponse> summarizeMultipleData({
     required List<String> urls,
     required List<String> mimeTypes,
+    String? additionalText,
+    bool splitIntoParts = false,
   }) async* {
     if (urls.length != mimeTypes.length) {
       throw ArgumentError(
           'Die Anzahl der URLs muss der Anzahl der MIME-Typen entsprechen.');
     }
+
+    GenerationConfig? generationConfig;
+    String promptText;
+
+    if (splitIntoParts) {
+      final summarySchema = Schema.object(
+        properties: {
+          'parts': Schema.array(items: Schema.string()),
+        },
+      );
+      generationConfig = GenerationConfig(
+        responseMimeType: 'application/json',
+        responseSchema: summarySchema,
+      );
+      promptText =
+          "Fasse die wichtigsten Punkte dieser Dateien und Texte zusammen. "
+          "Teile die Zusammenfassung in mehrere kurze Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
+          "Jeder Abschnitt soll einen klaren Gedanken oder Aspekt behandeln. "
+          "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}";
+    } else {
+      promptText =
+          "Fasse die wichtigsten Punkte dieser Dateien und Texte zusammen. "
+          "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache. "
+          "Nutze Aufzählungen, wo es sinnvoll ist.";
+    }
+
     final model = FirebaseAI.googleAI(
       appCheck: FirebaseAppCheck.instance,
-    ).generativeModel(model: 'gemini-2.5-flash');
-    const prompt = TextPart(
-        "Fasse die wichtigsten Punkte dieser Dateien zusammen. "
-        "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache. "
-        "Nutze Aufzählungen, wo es sinnvoll ist.");
+    ).generativeModel(
+      model: 'gemini-2.5-flash',
+      generationConfig: generationConfig,
+    );
+    final prompt = TextPart(promptText);
+
     // Download all files and create their DataParts
-    final List<InlineDataPart> docParts = [];
+    final List<Part> parts = [prompt];
     for (int i = 0; i < urls.length; i++) {
       final reference = _firebaseStorage.refFromURL(urls[i]);
       final doc = await reference.getData();
-      docParts.add(InlineDataPart(mimeTypes[i], doc!));
+      parts.add(InlineDataPart(mimeTypes[i], doc!));
     }
-    // Combine prompt and all document parts
-    final content = [prompt, ...docParts];
-    final response = model.generateContentStream([Content.multi(content)]);
+    if (additionalText != null && additionalText.isNotEmpty) {
+      parts.add(TextPart("Zusätzlicher Textinhalt: $additionalText"));
+    }
+    final response = model.generateContentStream([Content.multi(parts)]);
     yield* response;
   }
 
@@ -41,6 +71,7 @@ class AiTechService {
   Future<List<tk.Task>> generateLearningBite({
     required List<String> urls,
     required List<String> mimeTypes,
+    String? additionalText,
   }) async {
     if (urls.length != mimeTypes.length) {
       throw ArgumentError(
@@ -78,7 +109,7 @@ class AiTechService {
             responseMimeType: 'application/json',
             responseSchema: taskJsonSchema));
     const prompt = TextPart(
-        "Erstelle eine Liste von Tasks aus den gegebenen Dokumenten. "
+        "Erstelle eine Liste von Tasks aus den gegebenen Dokumenten und Texten. "
         "Die Aufgaben sollen verschiedene Formate haben, z.B. Multiple oder Single Choice, Lückentexte oder Karteikarten. "
         "Die Fragen und Antworten sollen auf Deutsch sein. "
         "Achte auf Groß- und Kleinschreibung bei den Antworten und Fragen."
@@ -100,17 +131,18 @@ class AiTechService {
         "Wenn du dir unsicher bist, erstelle eine einfachere Aufgabe."
         "Erstelle mindestens 2 Aufgaben."
         "Wenn die Dokumente keinen Inhalt haben, gib eine leere Aufgabenliste zurück."
-        "Hier sind die Dokumente:");
+        "Hier sind die Dokumente und Texte:");
     // Download all files and create their DataParts
-    final List<InlineDataPart> docParts = [];
+    final List<Part> parts = [prompt];
     for (int i = 0; i < urls.length; i++) {
       final reference = _firebaseStorage.refFromURL(urls[i]);
       final doc = await reference.getData();
-      docParts.add(InlineDataPart(mimeTypes[i], doc!));
+      parts.add(InlineDataPart(mimeTypes[i], doc!));
     }
-    // Combine prompt and all document parts
-    final content = [prompt, ...docParts];
-    final response = await model.generateContent([Content.multi(content)]);
+    if (additionalText != null && additionalText.isNotEmpty) {
+      parts.add(TextPart("Zusätzlicher Textinhalt: $additionalText"));
+    }
+    final response = await model.generateContent([Content.multi(parts)]);
     String tasksJson = response.text ?? '';
     final Map<String, dynamic> parsedTasks = json.decode(tasksJson);
     List<tk.Task> tasks = (parsedTasks['tasks'] as List)

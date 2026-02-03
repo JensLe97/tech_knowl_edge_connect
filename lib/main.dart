@@ -23,19 +23,19 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // ReCaptcha V3 public site key
+  const siteKey = '6LfiidArAAAAAOr-wo5IEfX_FqSL4bzLBb4ugZdI';
   if (kDebugMode) {
     await FirebaseAppCheck.instance.activate(
-      webProvider: ReCaptchaV3Provider('recaptcha-v3-site-key'),
-      androidProvider: AndroidProvider.debug,
-      appleProvider: AppleProvider.debug,
+      providerWeb: ReCaptchaV3Provider(siteKey),
+      providerAndroid: const AndroidDebugProvider(),
+      providerApple: const AppleDebugProvider(),
     );
   } else {
-    // ReCaptcha V3 public site key
-    const siteKey = '6LfiidArAAAAAOr-wo5IEfX_FqSL4bzLBb4ugZdI';
     await FirebaseAppCheck.instance.activate(
-      webProvider: ReCaptchaV3Provider(siteKey),
-      androidProvider: AndroidProvider.playIntegrity,
-      appleProvider: AppleProvider.appAttestWithDeviceCheckFallback,
+      providerWeb: ReCaptchaV3Provider(siteKey),
+      providerAndroid: const AndroidPlayIntegrityProvider(),
+      providerApple: const AppleAppAttestWithDeviceCheckFallbackProvider(),
     );
   }
   runApp(const TechKnowlEdgeConnect());

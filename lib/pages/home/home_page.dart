@@ -73,8 +73,8 @@ class _HomePageState extends State<HomePage> {
                 );
               }
               List<List<int>> tmpResumeSubjects = [];
-              final sharedResumeSubjects =
-                  user['resumeSubjects'] ?? "[[], [], [], [], [], [], []]";
+              final sharedResumeSubjects = user['resumeSubjects'] ??
+                  jsonEncode(List.filled(subjects.length, <int>[]));
               for (var resumeSubject in jsonDecode(sharedResumeSubjects)) {
                 tmpResumeSubjects.add(List<int>.from(resumeSubject));
               }
@@ -82,7 +82,7 @@ class _HomePageState extends State<HomePage> {
 
               List<List<int>> tmpCompletedLearningBites = [];
               final sharedCompletedLearningBites =
-                  user['completedLearningBites'] ?? "[]";
+                  user['completedLearningBites'] ?? jsonEncode([]);
               for (var completedLearningBite
                   in jsonDecode(sharedCompletedLearningBites)) {
                 tmpCompletedLearningBites

@@ -73,7 +73,7 @@ Debug mode uses debug providers; production uses Play Integrity (Android), App A
 
 Educational content is structured hierarchically in `lib/data/`:
 
-- `subjects` → `categories` → `topics` → `concepts` → `learning_bites`
+- `subjects` → `categories` → `topics` → `units` → `concepts` → `learning_bites`
 - Each learning bite contains tasks (singleChoice, indexCard, cloze types)
 
 ## Localization

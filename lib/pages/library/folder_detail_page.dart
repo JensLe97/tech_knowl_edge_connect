@@ -18,6 +18,7 @@ import 'package:tech_knowl_edge_connect/models/learning_material.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
+import 'package:tech_knowl_edge_connect/services/idea_folder_service.dart';
 
 class FolderDetailPage extends StatefulWidget {
   final IdeaFolder folder;
@@ -28,6 +29,30 @@ class FolderDetailPage extends StatefulWidget {
 }
 
 class _FolderDetailPageState extends State<FolderDetailPage> {
+  Future<void> _togglePublic() async {
+    if (userId == null) return;
+    try {
+      await _folderService.toggleFolderPublic(
+          userId: userId!, folderId: widget.folder.id, isPublic: !_isPublic);
+      setState(() {
+        _isPublic = !_isPublic;
+      });
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(_isPublic
+                ? 'Ordner ist jetzt öffentlich sichtbar'
+                : 'Ordner ist jetzt privat'),
+          ),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        showErrorMessage(context, 'Fehler beim Ändern des Status: $e');
+      }
+    }
+  }
+
   Future<void> _confirmAndDeleteFolder() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -250,14 +275,17 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
 
   final LearningMaterialService _materialService = LearningMaterialService();
   final AiTechService _aiTechService = AiTechService();
+  final IdeaFolderService _folderService = IdeaFolderService();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   final String? userName =
       FirebaseAuth.instance.currentUser?.displayName ?? 'Anonymer User';
   late Future<List<LearningMaterial>> _materialsFuture;
+  late bool _isPublic;
 
   @override
   void initState() {
     super.initState();
+    _isPublic = widget.folder.isPublic;
     _materialsFuture = _materialService.getLearningMaterials(
       userId: userId!,
       folderId: widget.folder.id,
@@ -274,6 +302,12 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             elevation: 0,
             shadowColor: Colors.transparent,
             actions: [
+              IconButton(
+                icon: Icon(_isPublic ? Icons.public : Icons.lock),
+                tooltip:
+                    _isPublic ? 'Ordner ist öffentlich' : 'Ordner ist privat',
+                onPressed: _togglePublic,
+              ),
               IconButton(
                 icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
                 tooltip: 'Dokumente zusammenfassen',

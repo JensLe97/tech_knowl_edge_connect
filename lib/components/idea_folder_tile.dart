@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
 
-typedef TogglePublicCallback = void Function();
-
 class IdeaFolderTile extends StatelessWidget {
   final String title;
   final void Function()? onTap;
   final IconData icon;
   final Color color;
-  final bool isPublic;
-  final bool isPublicVisible;
-  final TogglePublicCallback? onTogglePublic;
 
   const IdeaFolderTile({
     Key? key,
@@ -17,9 +12,6 @@ class IdeaFolderTile extends StatelessWidget {
     required this.onTap,
     required this.icon,
     required this.color,
-    this.isPublic = true,
-    this.isPublicVisible = true,
-    this.onTogglePublic,
   }) : super(key: key);
 
   @override
@@ -55,17 +47,6 @@ class IdeaFolderTile extends StatelessWidget {
                     color: iconTextColor),
               ),
             ),
-            if (isPublicVisible)
-              Expanded(
-                child: GestureDetector(
-                  onTap: onTogglePublic,
-                  child: Icon(
-                    isPublic ? Icons.public : Icons.lock,
-                    color: iconTextColor,
-                    size: 28,
-                  ),
-                ),
-              ),
           ],
         ),
       ),

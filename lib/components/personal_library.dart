@@ -70,7 +70,6 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                   final folder = folders[index];
                   return IdeaFolderTile(
                     title: folder.name,
-                    isPublic: folder.isPublic,
                     icon: Icons.folder,
                     color: Theme.of(context).colorScheme.secondary,
                     onTap: () {
@@ -90,17 +89,6 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                         }
                       });
                     },
-                    onTogglePublic: () async {
-                      await _folderService.toggleFolderPublic(
-                        userId: userId!,
-                        folderId: folder.id,
-                        isPublic: !folder.isPublic,
-                      );
-                      setState(() {
-                        _foldersFuture =
-                            _folderService.getFolders(userId: userId!);
-                      });
-                    },
                   );
                 },
               );
@@ -109,11 +97,9 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
           const SizedBox(height: 0),
           IdeaFolderTile(
             title: 'Neuen Ordner erstellen',
-            isPublic: true,
             icon: Icons.create_new_folder,
             color: Theme.of(context).colorScheme.onPrimary,
             onTap: _navigateToCreateFolderPage,
-            isPublicVisible: false,
           ),
         ],
       ),

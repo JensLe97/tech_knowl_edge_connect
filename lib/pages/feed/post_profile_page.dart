@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
-import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/services/user_service.dart';
 
@@ -27,16 +27,11 @@ class _ProfilePageState extends State<PostProfilePage> {
   }
 
   void toggleBlockUser() {
+    final blockedUsers = UserState.of(context)!.blockedUsers;
     if (blockedUsers.contains(widget.uid)) {
       _userService.unblockUser(widget.uid);
-      setState(() {
-        blockedUsers.remove(widget.uid);
-      });
     } else {
       _userService.blockUser(widget.uid);
-      setState(() {
-        blockedUsers.add(widget.uid);
-      });
     }
   }
 
@@ -46,6 +41,9 @@ class _ProfilePageState extends State<PostProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final userState = UserState.of(context);
+    final blockedUsers = userState?.blockedUsers ?? [];
+
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(

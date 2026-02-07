@@ -12,6 +12,7 @@ class TaskDialog extends StatefulWidget {
   final String learningBiteId;
   final String? taskId;
   final Map<String, dynamic>? existingData;
+  final Future<void> Function()? onAfterSave;
 
   const TaskDialog({
     super.key,
@@ -24,6 +25,7 @@ class TaskDialog extends StatefulWidget {
     required this.learningBiteId,
     this.taskId,
     this.existingData,
+    this.onAfterSave,
   });
 
   @override
@@ -141,12 +143,17 @@ class _TaskDialogState extends State<TaskDialog> {
                   },
                 );
               }
-              if (!mounted) return;
+              if (widget.onAfterSave != null) {
+                await widget.onAfterSave!();
+              }
+              if (!context.mounted) return;
               Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: const Text('Speichern'),

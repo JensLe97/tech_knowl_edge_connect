@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/compact_learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/components/detailed_learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_reel_item.dart';
-import 'package:tech_knowl_edge_connect/data/index.dart' show blockedUsers;
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:tech_knowl_edge_connect/models/learning_material.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
 import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
@@ -97,6 +97,9 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
   }
 
   Widget _buildLearningFeed() {
+    final userState = UserState.of(context);
+    final blockedUsers = userState?.blockedUsers ?? [];
+
     return StreamBuilder<QuerySnapshot>(
       stream: _materialService.getAllPublicLearningMaterials(
           excludeUserId: _firebaseAuth.currentUser?.uid ?? ''),

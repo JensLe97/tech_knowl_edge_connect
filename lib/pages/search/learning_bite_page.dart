@@ -67,6 +67,7 @@ class _LearningBitePageState extends State<LearningBitePage>
   bool showAnswer = false;
 
   Task indexCard = Task(
+      id: "index_card",
       type: TaskType.indexCard,
       question: "Gewusst?",
       correctAnswer: "Ja",
@@ -74,15 +75,17 @@ class _LearningBitePageState extends State<LearningBitePage>
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> data = widget.learningBite.data;
-    List<Task> tasks = widget.learningBite.tasks ?? List.empty();
+    List<Widget> data = widget.learningBite.content
+        .map((c) => Text(c, style: Theme.of(context).textTheme.bodyLarge))
+        .toList();
+    List<Task> tasks = widget.tasks;
     int maxDataNum = data.length;
     int maxTaskNum = tasks.length;
     int maxPageNum = maxDataNum + maxTaskNum;
     int currentTask = currentPage - maxDataNum;
     if (0 <= currentTask && currentTask < maxTaskNum) {
       correctAnswers = tasks[currentTask].correctAnswer.split('{}');
-      question = tasks[currentTask].question.split('{}');
+      question = tasks[currentTask].question.split(RegExp(r'\{\s*\}'));
       answers = IterableZip([question, correctAnswers]);
       answersControllers = initFreeTextCloze
           ? List.generate(
@@ -247,9 +250,10 @@ class _LearningBitePageState extends State<LearningBitePage>
                 ),
               )
             ],
-            TextSpan(
-              text: question.last,
-            ),
+            if (question.length > correctAnswers.length)
+              TextSpan(
+                text: question.last,
+              ),
           ], style: const TextStyle(fontSize: 14)),
         );
       case TaskType.freeTextFieldCloze:
@@ -274,9 +278,10 @@ class _LearningBitePageState extends State<LearningBitePage>
                     autofocus: correctAnswersIndex == 0 ? true : false),
               )
             ],
-            TextSpan(
-              text: question.last,
-            ),
+            if (question.length > correctAnswers.length)
+              TextSpan(
+                text: question.last,
+              ),
           ], style: const TextStyle(fontSize: 14)),
         );
       default:

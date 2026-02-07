@@ -30,7 +30,6 @@ class ConceptDialog extends StatefulWidget {
 
 class _ConceptDialogState extends State<ConceptDialog> {
   late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
   late String _status;
   late int _version;
 
@@ -39,8 +38,6 @@ class _ConceptDialogState extends State<ConceptDialog> {
     super.initState();
     _nameController =
         TextEditingController(text: widget.existingData?['name'] ?? '');
-    _descriptionController =
-        TextEditingController(text: widget.existingData?['description'] ?? '');
     _status = widget.existingData?['status'] ?? 'Draft';
     _version = (widget.existingData?['version'] ?? 1) as int;
   }
@@ -48,7 +45,6 @@ class _ConceptDialogState extends State<ConceptDialog> {
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -67,17 +63,15 @@ class _ConceptDialogState extends State<ConceptDialog> {
               decoration: const InputDecoration(labelText: 'Name'),
             ),
             const SizedBox(height: 12),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Beschreibung'),
-            ),
-            const SizedBox(height: 12),
             DropdownButtonFormField<String>(
+              borderRadius: BorderRadius.circular(12),
               initialValue: AdminConstants.statusOptions.contains(_status)
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                  .map((s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(AdminConstants.statusLabels[s] ?? s)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -112,7 +106,6 @@ class _ConceptDialogState extends State<ConceptDialog> {
                   topicId: widget.topicId,
                   unitId: widget.unitId,
                   name: _nameController.text.trim(),
-                  description: _descriptionController.text.trim(),
                   status: _status,
                   version: _version,
                   userId: widget.userId,
@@ -126,17 +119,18 @@ class _ConceptDialogState extends State<ConceptDialog> {
                   conceptId: widget.conceptId!,
                   data: {
                     'name': _nameController.text.trim(),
-                    'description': _descriptionController.text.trim(),
                     'status': _status,
                     'version': _version,
                   },
                 );
               }
-              if (mounted) Navigator.pop(context);
+              if (context.mounted) Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: Text(widget.conceptId == null ? 'Erstellen' : 'Speichern'),

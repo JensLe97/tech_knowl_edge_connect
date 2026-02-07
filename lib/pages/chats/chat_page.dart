@@ -9,7 +9,7 @@ import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
 import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
 import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
-import 'package:tech_knowl_edge_connect/data/index.dart';
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:tech_knowl_edge_connect/env/env.dart';
 import 'package:tech_knowl_edge_connect/models/report_reason.dart';
 import 'package:tech_knowl_edge_connect/pages/chats/upload_image_page.dart';
@@ -96,16 +96,11 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   void toggleBlockUser() {
+    final blockedUsers = UserState.of(context)!.blockedUsers;
     if (blockedUsers.contains(widget.receiverUid)) {
       _userService.unblockUser(widget.receiverUid);
-      setState(() {
-        blockedUsers.remove(widget.receiverUid);
-      });
     } else {
       _userService.blockUser(widget.receiverUid);
-      setState(() {
-        blockedUsers.add(widget.receiverUid);
-      });
     }
   }
 
@@ -115,6 +110,9 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
+    final userState = UserState.of(context);
+    final blockedUsers = userState?.blockedUsers ?? [];
+
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         appBar: AppBar(

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite_type.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GenLearningBitePage extends StatelessWidget {
   final String name;
@@ -52,19 +52,16 @@ class GenLearningBitePage extends StatelessWidget {
         } else {
           final tasks = snapshot.data!;
           final learningBite = LearningBite(
+            id: FirebaseFirestore.instance
+                .collection('learning_bites')
+                .doc()
+                .id,
             name: name,
-            type: LearningBiteType.lesson,
+            type: 'lesson',
             iconData: Icons.checklist,
-            data: [
-              Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: MarkdownBody(
-                  data:
-                      'Das Learning Bite "$name" wurde automatisch generiert. Es enthält ${tasks.length} Aufgaben, die dir helfen sollen, das Thema besser zu verstehen.',
-                ),
-              ),
+            content: [
+              'Das Learning Bite "$name" wurde automatisch generiert. Es enthält ${tasks.length} Aufgaben, die dir helfen sollen, das Thema besser zu verstehen.',
             ],
-            tasks: tasks,
           );
           return LearningBitePage(learningBite: learningBite, tasks: tasks);
         }

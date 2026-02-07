@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tech_knowl_edge_connect/data/index.dart'
-    show likedLearningMaterials, blockedUsers;
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/idea_reaction_button.dart';
@@ -34,25 +33,24 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
       LearningMaterialService();
 
   toggleLike() async {
+    final likedLearningMaterials =
+        UserState.of(context)!.likedLearningMaterials;
     if (likedLearningMaterials.contains(widget.material.id)) {
       await _learningMaterialsService.unlikeLearningMaterial(
           _firebaseAuth.currentUser!.uid, widget.material.id);
-      likedLearningMaterials.remove(widget.material.id);
     } else {
       await _learningMaterialsService.likeLearningMaterial(
           _firebaseAuth.currentUser!.uid, widget.material.id);
-      likedLearningMaterials.add(widget.material.id);
     }
   }
 
   void toggleBlockUser() async {
+    final blockedUsers = UserState.of(context)!.blockedUsers;
     final userId = widget.material.userId;
     if (blockedUsers.contains(userId)) {
       await _userService.unblockUser(userId);
-      blockedUsers.remove(userId);
     } else {
       await _userService.blockUser(userId);
-      blockedUsers.add(userId);
     }
   }
 
@@ -68,6 +66,10 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
 
   @override
   Widget build(BuildContext context) {
+    final userState = UserState.of(context);
+    final blockedUsers = userState?.blockedUsers ?? [];
+    final likedLearningMaterials = userState?.likedLearningMaterials ?? [];
+
     final material = widget.material;
     final overlayColor = Theme.of(context).colorScheme.onSecondary;
     final isPdf =

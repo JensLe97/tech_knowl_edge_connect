@@ -1,22 +1,49 @@
-// ignore_for_file: unused_element
-
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/models/concept.dart';
+import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 
 class Unit {
-  String name;
-  IconData iconData;
-  // e.g. DEA, PDA, NEA, ...
-  List<Concept> concepts;
+  final String id;
+  final String name;
+  final IconData iconData;
+  final String? authorId;
+  final String status;
 
   Unit({
-    required this.concepts,
+    required this.id,
     required this.name,
-    required,
     required this.iconData,
+    this.authorId,
+    this.status = UserConstants.statusApproved,
   });
 
-  String get _name => name;
-  IconData get _iconData => iconData;
-  List<Concept> get _learningBites => concepts;
+  factory Unit.fromMap(Map<String, dynamic> data, String id) {
+    final iconMap = data['iconData'] as Map<String, dynamic>?;
+
+    return Unit(
+      id: id,
+      name: data['name'] ?? '',
+      iconData: iconMap != null
+          ? IconData(
+              iconMap['codePoint'] ?? 0,
+              fontFamily: iconMap['fontFamily'],
+              fontPackage: iconMap['fontPackage'],
+            )
+          : Icons.error,
+      authorId: data['authorId'],
+      status: data['status'] ?? UserConstants.statusApproved,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'iconData': {
+        'codePoint': iconData.codePoint,
+        'fontFamily': iconData.fontFamily,
+        'fontPackage': iconData.fontPackage,
+      },
+      'authorId': authorId,
+      'status': status,
+    };
+  }
 }

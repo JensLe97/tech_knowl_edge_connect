@@ -17,7 +17,10 @@ void main() {
       (WidgetTester tester) async {
     bool tapped = false;
     final subject = Subject(
-        name: 'Testfach', color: Colors.blue, iconData: FontAwesomeIcons.book);
+        id: 'test_subject',
+        name: 'Testfach',
+        color: Colors.blue,
+        iconData: FontAwesomeIcons.book);
     await tester.pumpWidget(
       makeTestableWidget(
         Scaffold(
@@ -50,16 +53,22 @@ void main() {
 
   group('Test Subject', () {
     test('Subject should return the initial values', () {
-      final subject =
-          Subject(name: 'Mathe', color: Colors.blue, iconData: Icons.add);
+      final subject = Subject(
+          id: 'test_mathe',
+          name: 'Mathe',
+          color: Colors.blue,
+          iconData: Icons.add);
       expect(subject.name, 'Mathe');
       expect(subject.color, Colors.blue);
       expect(subject.iconData, Icons.add);
     });
 
     test('Subject should return the initial values', () {
-      final subject =
-          Subject(name: 'Deutsch', color: Colors.red, iconData: Icons.book);
+      final subject = Subject(
+          id: 'test_deutsch',
+          name: 'Deutsch',
+          color: Colors.red,
+          iconData: Icons.book);
       expect(subject.name, 'Deutsch');
       expect(subject.color, Colors.red);
       expect(subject.iconData, Icons.book);

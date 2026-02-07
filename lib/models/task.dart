@@ -1,31 +1,30 @@
 import 'package:tech_knowl_edge_connect/models/task_type.dart';
 
 class Task {
+  final String id;
   final TaskType type;
-  // Questions with TaskType singleChoiceCloze or freeTextFieldCloze
-  // must start and end with a question text, e.g., a dot at the end.
   final String question;
   final String correctAnswer;
   final List<String> answers;
 
-  Task(
-      {required this.type,
-      required this.question,
-      required this.correctAnswer,
-      this.answers = const []});
+  Task({
+    required this.id,
+    required this.type,
+    required this.question,
+    required this.correctAnswer,
+    this.answers = const [],
+  });
 
-  Task.fromJson(Map<String, dynamic> json)
-      : type = TaskType.values.firstWhere((e) => e.name == json['type']),
-        question = json['question'],
-        correctAnswer = json['correctAnswer'],
-        answers = List<String>.from(json['answers'] ?? []);
-
-  Map<String, dynamic> toJson() {
-    return {
-      'type': type.name,
-      'question': question,
-      'correctAnswer': correctAnswer,
-      'answers': answers,
-    };
+  factory Task.fromMap(Map<String, dynamic> data, String id) {
+    return Task(
+      id: id,
+      type: TaskType.values.firstWhere(
+        (e) => e.name == data['type'],
+        orElse: () => TaskType.singleChoice,
+      ),
+      question: data['question'] ?? '',
+      correctAnswer: data['correctAnswer'] ?? '',
+      answers: List<String>.from(data['answers'] ?? []),
+    );
   }
 }

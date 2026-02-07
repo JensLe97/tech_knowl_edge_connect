@@ -146,7 +146,10 @@ class AiTechService {
     String tasksJson = response.text ?? '';
     final Map<String, dynamic> parsedTasks = json.decode(tasksJson);
     List<tk.Task> tasks = (parsedTasks['tasks'] as List)
-        .map((val) => tk.Task.fromJson(val))
+        .asMap()
+        .entries
+        .map((entry) => tk.Task.fromMap(entry.value,
+            'ai_generated_${DateTime.now().millisecondsSinceEpoch}_${entry.key}'))
         .toList();
     return tasks;
   }

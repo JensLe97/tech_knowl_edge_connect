@@ -45,3 +45,6 @@ __pycache__/
 .streamlit/config.toml
 
 .DS_Store
+
+# Local-only App Check debug token
+web/appcheck_debug_token.js

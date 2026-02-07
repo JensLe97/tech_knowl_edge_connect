@@ -56,7 +56,9 @@ class PreviewDialog extends StatelessWidget {
                 (task) => Card(
                   child: ListTile(
                     title: Text(task.question),
-                    subtitle: Text(task.type.name),
+                    subtitle: Text(
+                        'Antwort: ${task.correctAnswer}\nOptionen: ${task.answers.join(", ")}\nTyp: ${task.type.name}'),
+                    isThreeLine: true,
                   ),
                 ),
               ),

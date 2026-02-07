@@ -36,7 +36,6 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
   late int _version;
   late String _type;
   late IconData _selectedIcon;
-  late bool _completed;
 
   @override
   void initState() {
@@ -46,7 +45,6 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
     _status = widget.existingData?['status'] ?? 'Draft';
     _version = (widget.existingData?['version'] ?? 1) as int;
     _type = widget.existingData?['type'] ?? 'lesson';
-    _completed = widget.existingData?['completed'] ?? false;
 
     // Initialize Icon
     final iconMap = widget.existingData?['iconData'];
@@ -100,7 +98,9 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                  .map((s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(AdminConstants.statusLabels[s] ?? s)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -115,13 +115,6 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                 _version = int.tryParse(value) ?? 1;
               },
               controller: TextEditingController(text: _version.toString()),
-            ),
-            CheckboxListTile(
-              title: const Text('Abgeschlossen'),
-              value: _completed,
-              onChanged: (val) => setState(() => _completed = val ?? false),
-              controlAffinity: ListTileControlAffinity.leading,
-              contentPadding: EdgeInsets.zero,
             ),
             const SizedBox(height: 16),
             const Text('Icon wählen:',
@@ -188,7 +181,6 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   version: _version,
                   userId: widget.userId,
                   iconData: iconDataMap,
-                  completed: _completed,
                 );
               } else {
                 await widget.adminService.updateLearningBite(
@@ -205,16 +197,17 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                     'version': _version,
                     'updatedBy': widget.userId,
                     'iconData': iconDataMap,
-                    'completed': _completed,
                   },
                 );
               }
-              if (!mounted) return;
+              if (!context.mounted) return;
               Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: const Text('Speichern'),

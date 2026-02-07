@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 
 class UnitsCard extends StatelessWidget {
   final ContentAdminService adminService;
@@ -9,6 +10,7 @@ class UnitsCard extends StatelessWidget {
   final String? selectedCategoryId;
   final String? selectedTopicId;
   final String? selectedUnitId;
+  final String? statusFilter;
   final VoidCallback? onAdd;
   final Function(String id, Map<String, dynamic> data) onEdit;
   final Function(String id) onSelect;
@@ -21,6 +23,7 @@ class UnitsCard extends StatelessWidget {
     required this.selectedCategoryId,
     required this.selectedTopicId,
     required this.selectedUnitId,
+    this.statusFilter,
     required this.onAdd,
     required this.onEdit,
     required this.onSelect,
@@ -52,7 +55,13 @@ class UnitsCard extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  final docs = snapshot.data?.docs ?? [];
+                  var docs = snapshot.data?.docs ?? [];
+                  if (statusFilter != null) {
+                    docs = docs
+                        .where((doc) => doc.data()['status'] == statusFilter)
+                        .toList();
+                  }
+
                   if (docs.isEmpty) {
                     return const Text('Keine Units vorhanden.');
                   }
@@ -83,7 +92,7 @@ class UnitsCard extends StatelessWidget {
                         ),
                         title: Text(data['name'] ?? 'Unbenannt'),
                         subtitle: Text(
-                          'Status: ${data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
+                          'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
                         ),
                         onTap: () => onSelect(doc.id),
                         trailing: Wrap(

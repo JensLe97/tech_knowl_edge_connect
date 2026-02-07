@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 
 class LearningBitesCard extends StatelessWidget {
   final ContentAdminService adminService;
@@ -11,6 +12,7 @@ class LearningBitesCard extends StatelessWidget {
   final String? selectedUnitId;
   final String? selectedConceptId;
   final String? selectedLearningBiteId;
+  final String? statusFilter;
   final VoidCallback? onAdd;
   final Function(String id, Map<String, dynamic> data) onEdit;
   final Function(String id, Map<String, dynamic> data) onSelect;
@@ -26,6 +28,7 @@ class LearningBitesCard extends StatelessWidget {
     required this.selectedUnitId,
     required this.selectedConceptId,
     required this.selectedLearningBiteId,
+    this.statusFilter,
     required this.onAdd,
     required this.onEdit,
     required this.onSelect,
@@ -65,7 +68,13 @@ class LearningBitesCard extends StatelessWidget {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   }
-                  final docs = snapshot.data?.docs ?? [];
+                  var docs = snapshot.data?.docs ?? [];
+                  if (statusFilter != null) {
+                    docs = docs
+                        .where((doc) => doc.data()['status'] == statusFilter)
+                        .toList();
+                  }
+
                   if (docs.isEmpty) {
                     return const Text('Keine Learning Bites vorhanden.');
                   }
@@ -96,7 +105,7 @@ class LearningBitesCard extends StatelessWidget {
                         ),
                         title: Text(data['title'] ?? 'Unbenannt'),
                         subtitle: Text(
-                          '${data['type'] ?? 'text'} · ${data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
+                          '${data['type'] ?? 'text'} · ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
                         ),
                         onTap: () => onSelect(doc.id, data),
                         trailing: Wrap(

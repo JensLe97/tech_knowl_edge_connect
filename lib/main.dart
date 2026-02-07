@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:tech_knowl_edge_connect/theme.dart';
 
 import 'firebase_options.dart';
@@ -38,7 +39,7 @@ void main() async {
       providerApple: const AppleAppAttestWithDeviceCheckFallbackProvider(),
     );
   }
-  runApp(const TechKnowlEdgeConnect());
+  runApp(const UserProvider(child: TechKnowlEdgeConnect()));
 }
 
 class TechKnowlEdgeConnect extends StatelessWidget {

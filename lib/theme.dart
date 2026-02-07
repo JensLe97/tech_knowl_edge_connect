@@ -34,6 +34,20 @@ class ThemeConfig {
         titleTextStyle: TextStyle(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        color: cs.surface,
+        surfaceTintColor: cs.surface,
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+          shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+          backgroundColor: WidgetStateProperty.all(cs.surface),
+          surfaceTintColor: WidgetStateProperty.all(cs.surface),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: cs.primary,
@@ -69,6 +83,12 @@ class ThemeConfig {
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: cs.secondary, width: 1.5)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 1.5)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
@@ -136,6 +156,20 @@ class ThemeConfig {
         titleTextStyle: TextStyle(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        elevation: 4,
+        color: cs.surface,
+        surfaceTintColor: cs.surface,
+      ),
+      dropdownMenuTheme: DropdownMenuThemeData(
+        menuStyle: MenuStyle(
+          shape: WidgetStateProperty.all(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+          backgroundColor: WidgetStateProperty.all(cs.surface),
+          surfaceTintColor: WidgetStateProperty.all(cs.surface),
+        ),
+      ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
           backgroundColor: cs.primary,
@@ -168,6 +202,12 @@ class ThemeConfig {
         focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
             borderSide: BorderSide(color: cs.secondary, width: 1.5)),
+        errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 1.5)),
+        focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),

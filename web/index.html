@@ -122,7 +122,9 @@
   <body>
     <script>
       if (location.hostname === "localhost") {
-        self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+        const script = document.createElement("script");
+        script.src = "appcheck_debug_token.js";
+        document.head.appendChild(script);
       }
     </script>
     <picture id="splash">

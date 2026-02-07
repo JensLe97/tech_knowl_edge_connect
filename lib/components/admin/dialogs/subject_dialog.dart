@@ -22,7 +22,6 @@ class SubjectDialog extends StatefulWidget {
 
 class _SubjectDialogState extends State<SubjectDialog> {
   late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
   late String _status;
   late int _version;
   late Color _selectedColor;
@@ -33,8 +32,6 @@ class _SubjectDialogState extends State<SubjectDialog> {
     super.initState();
     _nameController =
         TextEditingController(text: widget.existingData?['name'] ?? '');
-    _descriptionController =
-        TextEditingController(text: widget.existingData?['description'] ?? '');
     _status = widget.existingData?['status'] ?? 'Draft';
     _version = (widget.existingData?['version'] ?? 1) as int;
 
@@ -62,7 +59,6 @@ class _SubjectDialogState extends State<SubjectDialog> {
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -80,17 +76,15 @@ class _SubjectDialogState extends State<SubjectDialog> {
               decoration: const InputDecoration(labelText: 'Name'),
             ),
             const SizedBox(height: 12),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Beschreibung'),
-            ),
-            const SizedBox(height: 12),
             DropdownButtonFormField<String>(
+              borderRadius: BorderRadius.circular(12),
               initialValue: AdminConstants.statusOptions.contains(_status)
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                  .map((s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(AdminConstants.statusLabels[s] ?? s)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -114,7 +108,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
               spacing: 8,
               runSpacing: 8,
               children: AdminConstants.availableColors.entries.map((entry) {
-                final isSelected = _selectedColor.value == entry.value.value;
+                final isSelected =
+                    _selectedColor.toARGB32() == entry.value.toARGB32();
                 return GestureDetector(
                   onTap: () => setState(() => _selectedColor = entry.value),
                   child: Container(
@@ -187,11 +182,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
               if (widget.subjectId == null) {
                 await widget.adminService.createSubject(
                   name: _nameController.text.trim(),
-                  description: _descriptionController.text.trim(),
                   status: _status,
                   version: _version,
                   userId: widget.userId,
-                  color: _selectedColor.value,
+                  color: _selectedColor.toARGB32(),
                   iconData: iconDataMap,
                 );
               } else {
@@ -199,21 +193,22 @@ class _SubjectDialogState extends State<SubjectDialog> {
                   subjectId: widget.subjectId!,
                   data: {
                     'name': _nameController.text.trim(),
-                    'description': _descriptionController.text.trim(),
                     'status': _status,
                     'version': _version,
-                    'color': _selectedColor.value,
+                    'color': _selectedColor.toARGB32(),
                     'iconData': iconDataMap,
                     'updatedBy': widget.userId,
                   },
                 );
               }
-              if (!mounted) return;
+              if (!context.mounted) return;
               Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: const Text('Speichern'),

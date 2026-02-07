@@ -20,6 +20,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
   final TextEditingController _adminUidController = TextEditingController();
   bool _grantingAdmin = false;
   bool _revokingAdmin = false;
+  String? _uidErrorText;
 
   @override
   void dispose() {
@@ -42,10 +43,17 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
             const SizedBox(height: 8),
             TextField(
               controller: _adminUidController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 labelText: 'UID des Benutzers',
-                border: OutlineInputBorder(),
+                border: const OutlineInputBorder(),
+                errorText: _uidErrorText,
+                helperText: ' ',
               ),
+              onChanged: (value) {
+                if (_uidErrorText != null) {
+                  setState(() => _uidErrorText = null);
+                }
+              },
             ),
             const SizedBox(height: 12),
             Wrap(
@@ -57,13 +65,20 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                       ? null
                       : () async {
                           final uid = _adminUidController.text.trim();
-                          if (uid.isEmpty) return;
-                          setState(() => _grantingAdmin = true);
+                          if (uid.isEmpty) {
+                            setState(() =>
+                                _uidErrorText = 'Bitte gib eine UID ein.');
+                            return;
+                          }
+                          setState(() {
+                            _uidErrorText = null;
+                            _grantingAdmin = true;
+                          });
                           try {
                             final ok = await widget.onEnsureAuthenticated();
                             if (!ok) return;
                             await widget.adminFunctions.setAdmin(uid: uid);
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Admin-Rechte vergeben.'),
@@ -71,9 +86,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                             );
                             _adminUidController.clear();
                           } on FirebaseFunctionsException catch (e) {
-                            debugPrint(
-                                'code=${e.code} message=${e.message} details=${e.details}');
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -82,7 +95,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                               ),
                             );
                           } catch (_) {
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -90,7 +103,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                               ),
                             );
                           } finally {
-                            if (mounted) {
+                            if (context.mounted) {
                               setState(() => _grantingAdmin = false);
                             }
                           }
@@ -105,13 +118,20 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                       ? null
                       : () async {
                           final uid = _adminUidController.text.trim();
-                          if (uid.isEmpty) return;
-                          setState(() => _revokingAdmin = true);
+                          if (uid.isEmpty) {
+                            setState(() =>
+                                _uidErrorText = 'Bitte gib eine UID ein.');
+                            return;
+                          }
+                          setState(() {
+                            _uidErrorText = null;
+                            _revokingAdmin = true;
+                          });
                           try {
                             final ok = await widget.onEnsureAuthenticated();
                             if (!ok) return;
                             await widget.adminFunctions.revokeAdmin(uid: uid);
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text('Admin-Rechte entzogen.'),
@@ -119,9 +139,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                             );
                             _adminUidController.clear();
                           } on FirebaseFunctionsException catch (e) {
-                            if (!mounted) return;
-                            debugPrint(
-                                'code=${e.code} message=${e.message} details=${e.details}');
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text(
@@ -130,7 +148,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                               ),
                             );
                           } catch (_) {
-                            if (!mounted) return;
+                            if (!context.mounted) return;
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                 content: Text(
@@ -138,7 +156,7 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                               ),
                             );
                           } finally {
-                            if (mounted) {
+                            if (context.mounted) {
                               setState(() => _revokingAdmin = false);
                             }
                           }

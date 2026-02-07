@@ -2,15 +2,17 @@ import "package:flutter/material.dart";
 import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:tech_knowl_edge_connect/models/learning_bite.dart";
 
-class LearingBiteTile extends StatelessWidget {
+class LearningBiteTile extends StatelessWidget {
   final LearningBite learningBite;
   final void Function()? onTap;
+  final void Function()? onEdit;
   final bool completed;
 
-  const LearingBiteTile({
+  const LearningBiteTile({
     super.key,
     required this.learningBite,
     required this.onTap,
+    this.onEdit,
     required this.completed,
   });
 
@@ -60,7 +62,25 @@ class LearingBiteTile extends StatelessWidget {
                   color: Theme.of(context).colorScheme.primary,
                 ),
               ),
-            )
+            ),
+            if (onEdit != null)
+              Padding(
+                padding: const EdgeInsets.all(2),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.edit, size: 20),
+                        color: Theme.of(context).colorScheme.primary,
+                        tooltip: 'Learning Bite bearbeiten',
+                        onPressed: onEdit,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
           ],
         ),
       ),

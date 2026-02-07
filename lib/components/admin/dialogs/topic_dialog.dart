@@ -26,7 +26,6 @@ class TopicDialog extends StatefulWidget {
 
 class _TopicDialogState extends State<TopicDialog> {
   late TextEditingController _nameController;
-  late TextEditingController _descriptionController;
   late String _status;
   late int _version;
 
@@ -35,8 +34,6 @@ class _TopicDialogState extends State<TopicDialog> {
     super.initState();
     _nameController =
         TextEditingController(text: widget.existingData?['name'] ?? '');
-    _descriptionController =
-        TextEditingController(text: widget.existingData?['description'] ?? '');
     _status = widget.existingData?['status'] ?? 'Draft';
     _version = (widget.existingData?['version'] ?? 1) as int;
   }
@@ -44,7 +41,6 @@ class _TopicDialogState extends State<TopicDialog> {
   @override
   void dispose() {
     _nameController.dispose();
-    _descriptionController.dispose();
     super.dispose();
   }
 
@@ -62,17 +58,15 @@ class _TopicDialogState extends State<TopicDialog> {
               decoration: const InputDecoration(labelText: 'Name'),
             ),
             const SizedBox(height: 12),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Beschreibung'),
-            ),
-            const SizedBox(height: 12),
             DropdownButtonFormField<String>(
+              borderRadius: BorderRadius.circular(12),
               initialValue: AdminConstants.statusOptions.contains(_status)
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(value: s, child: Text(s)))
+                  .map((s) => DropdownMenuItem(
+                      value: s,
+                      child: Text(AdminConstants.statusLabels[s] ?? s)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -105,7 +99,6 @@ class _TopicDialogState extends State<TopicDialog> {
                   subjectId: widget.subjectId,
                   categoryId: widget.categoryId,
                   name: _nameController.text.trim(),
-                  description: _descriptionController.text.trim(),
                   status: _status,
                   version: _version,
                   userId: widget.userId,
@@ -117,19 +110,20 @@ class _TopicDialogState extends State<TopicDialog> {
                   topicId: widget.topicId!,
                   data: {
                     'name': _nameController.text.trim(),
-                    'description': _descriptionController.text.trim(),
                     'status': _status,
                     'version': _version,
                     'updatedBy': widget.userId,
                   },
                 );
               }
-              if (!mounted) return;
+              if (!context.mounted) return;
               Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: const Text('Speichern'),

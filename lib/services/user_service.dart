@@ -15,6 +15,62 @@ class UserService extends ChangeNotifier {
     });
   }
 
+  Stream<List<String>> getCompletedLearningBites() {
+    return FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .snapshots()
+        .map((snapshot) {
+      final data = snapshot.data();
+      if (data == null || !data.containsKey('completedLearningBiteIds')) {
+        return [];
+      }
+      return List<String>.from(data['completedLearningBiteIds']);
+    });
+  }
+
+  Future<void> markLearningBiteComplete(String learningBiteId) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .set({
+      'completedLearningBiteIds': FieldValue.arrayUnion([learningBiteId])
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> updateResumeStatus(
+      String subjectId,
+      String learningBiteId,
+      String categoryId,
+      String topicId,
+      String unitId,
+      String conceptId) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .set({
+      'resumeProgress': {
+        subjectId: {
+          'learningBiteId': learningBiteId,
+          'categoryId': categoryId,
+          'topicId': topicId,
+          'unitId': unitId,
+          'conceptId': conceptId,
+          'timestamp': Timestamp.now(),
+        }
+      }
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> removeResumeStatus(String subjectId) async {
+    await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(_firebaseAuth.currentUser!.uid)
+        .update({
+      'resumeProgress.$subjectId': FieldValue.delete(),
+    });
+  }
+
   Future<void> unblockUser(String receiverId) async {
     await FirebaseFirestore.instance
         .collection("Users")

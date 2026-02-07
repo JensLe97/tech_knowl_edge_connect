@@ -5,6 +5,7 @@ import 'package:tech_knowl_edge_connect/components/admin/ai_authoring_card.dart'
 import 'package:tech_knowl_edge_connect/components/admin/categories_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/concepts_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/content_card.dart';
+import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/category_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/concept_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/confirm_delete_dialog.dart';
@@ -16,12 +17,12 @@ import 'package:tech_knowl_edge_connect/components/admin/dialogs/task_dialog.dar
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/topic_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/unit_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/learning_bites_card.dart';
+import 'package:tech_knowl_edge_connect/components/admin/pending_approvals_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/subjects_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/topics_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/units_card.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart';
-import 'package:tech_knowl_edge_connect/models/task_type.dart';
 import 'package:tech_knowl_edge_connect/services/admin_claims_service.dart';
 import 'package:tech_knowl_edge_connect/services/admin_functions_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
@@ -40,6 +41,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
   final AdminClaimsService _claimsService = AdminClaimsService();
   final AdminFunctionsService _functionsService = AdminFunctionsService();
   final AiTechService _aiService = AiTechService();
+
+  String? _statusFilter;
 
   String? _selectedSubjectId;
   String? _selectedCategoryId;
@@ -106,13 +109,88 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AdminManagementCard(
-                      adminFunctions: _functionsService,
-                      onEnsureAuthenticated: () async =>
-                          FirebaseAuth.instance.currentUser != null,
+                    _buildSectionTitle('Genehmigungen'),
+                    const SizedBox(height: 12),
+                    PendingApprovalsCard(
+                      adminService: _adminService,
+                      onPreview: (doc) {
+                        final pathSegments = doc.reference.path.split('/');
+                        // Expected path:
+                        // content_subjects/{sId}/categories/{cId}/topics/{tId}/units/{uId}/concepts/{coId}/learning_bites/{lbId}
+                        // Segments:
+                        // 0: content_subjects
+                        // 1: sId
+                        // 2: categories
+                        // 3: cId
+                        // 4: topics
+                        // 5: tId
+                        // 6: units
+                        // 7: uId
+                        // 8: concepts
+                        // 9: coId
+                        // 10: learning_bites
+                        // 11: lbId
+                        if (pathSegments.length >= 12) {
+                          _openPreviewDialog(
+                            subjectId: pathSegments[1],
+                            categoryId: pathSegments[3],
+                            topicId: pathSegments[5],
+                            unitId: pathSegments[7],
+                            conceptId: pathSegments[9],
+                            learningBiteId: doc.id,
+                            learningBiteData:
+                                doc.data() as Map<String, dynamic>,
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Konnte Pfad nicht auflösen. Vorschau nicht möglich.')),
+                          );
+                        }
+                      },
                     ),
                     const SizedBox(height: 24),
-                    _buildSectionTitle('Inhaltsverwaltung'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        _buildSectionTitle('Inhaltsverwaltung'),
+                        SizedBox(
+                          width: 200,
+                          child: InputDecorator(
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              border: OutlineInputBorder(),
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String?>(
+                                value: _statusFilter,
+                                borderRadius: BorderRadius.circular(12),
+                                isDense: true,
+                                isExpanded: true,
+                                hint: const Text('Alle Inhalte'),
+                                items: [
+                                  const DropdownMenuItem(
+                                      value: null, child: Text('Alle Inhalte')),
+                                  ...AdminConstants.statusLabels.entries.map(
+                                    (entry) => DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
+                                    ),
+                                  ),
+                                ],
+                                onChanged: (val) {
+                                  setState(() {
+                                    _statusFilter = val;
+                                  });
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 12),
 
                     // Level 1 & 2: Subjects & Categories
@@ -124,6 +202,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                   child: SubjectsCard(
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
+                                statusFilter: _statusFilter,
                                 onAdd: () =>
                                     _openSubjectDialog(userId: user.uid),
                                 onEdit: (id, data) => _openSubjectDialog(
@@ -146,7 +225,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                     onConfirm: () async {
                                       await _adminService.deleteSubject(
                                           subjectId: id);
-                                      if (_selectedSubjectId == id)
+                                      if (_selectedSubjectId == id) {
                                         setState(() {
                                           _selectedSubjectId = null;
                                           _selectedCategoryId = null;
@@ -156,6 +235,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteId = null;
                                           _selectedLearningBiteData = null;
                                         });
+                                      }
                                     }),
                               )),
                               const SizedBox(width: 12),
@@ -164,6 +244,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
+                                statusFilter: _statusFilter,
                                 onAdd: _selectedSubjectId == null
                                     ? null
                                     : () => _openCategoryDialog(
@@ -190,7 +271,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                       await _adminService.deleteCategory(
                                           subjectId: _selectedSubjectId!,
                                           categoryId: id);
-                                      if (_selectedCategoryId == id)
+                                      if (_selectedCategoryId == id) {
                                         setState(() {
                                           _selectedCategoryId = null;
                                           _selectedTopicId = null;
@@ -199,6 +280,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteId = null;
                                           _selectedLearningBiteData = null;
                                         });
+                                      }
                                     }),
                               )),
                             ],
@@ -207,6 +289,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             SubjectsCard(
                               adminService: _adminService,
                               selectedSubjectId: _selectedSubjectId,
+                              statusFilter: _statusFilter,
                               onAdd: () => _openSubjectDialog(userId: user.uid),
                               onEdit: (id, data) => _openSubjectDialog(
                                   userId: user.uid,
@@ -228,7 +311,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                   onConfirm: () async {
                                     await _adminService.deleteSubject(
                                         subjectId: id);
-                                    if (_selectedSubjectId == id)
+                                    if (_selectedSubjectId == id) {
                                       setState(() {
                                         _selectedSubjectId = null;
                                         _selectedCategoryId = null;
@@ -238,6 +321,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteId = null;
                                         _selectedLearningBiteData = null;
                                       });
+                                    }
                                   }),
                             ),
                             const SizedBox(height: 12),
@@ -245,6 +329,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               adminService: _adminService,
                               selectedSubjectId: _selectedSubjectId,
                               selectedCategoryId: _selectedCategoryId,
+                              statusFilter: _statusFilter,
                               onAdd: _selectedSubjectId == null
                                   ? null
                                   : () => _openCategoryDialog(
@@ -271,7 +356,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                     await _adminService.deleteCategory(
                                         subjectId: _selectedSubjectId!,
                                         categoryId: id);
-                                    if (_selectedCategoryId == id)
+                                    if (_selectedCategoryId == id) {
                                       setState(() {
                                         _selectedCategoryId = null;
                                         _selectedTopicId = null;
@@ -280,6 +365,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteId = null;
                                         _selectedLearningBiteData = null;
                                       });
+                                    }
                                   }),
                             ),
                           ]),
@@ -297,6 +383,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
                                 selectedTopicId: _selectedTopicId,
+                                statusFilter: _statusFilter,
                                 onAdd: (_selectedSubjectId != null &&
                                         _selectedCategoryId != null)
                                     ? () => _openTopicDialog(
@@ -326,7 +413,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           subjectId: _selectedSubjectId!,
                                           categoryId: _selectedCategoryId!,
                                           topicId: id);
-                                      if (_selectedTopicId == id)
+                                      if (_selectedTopicId == id) {
                                         setState(() {
                                           _selectedTopicId = null;
                                           _selectedUnitId = null;
@@ -334,6 +421,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteId = null;
                                           _selectedLearningBiteData = null;
                                         });
+                                      }
                                     }),
                               )),
                               const SizedBox(width: 12),
@@ -344,6 +432,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedCategoryId: _selectedCategoryId,
                                 selectedTopicId: _selectedTopicId,
                                 selectedUnitId: _selectedUnitId,
+                                statusFilter: _statusFilter,
                                 onAdd: (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null)
@@ -376,13 +465,14 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           categoryId: _selectedCategoryId!,
                                           topicId: _selectedTopicId!,
                                           unitId: id);
-                                      if (_selectedUnitId == id)
+                                      if (_selectedUnitId == id) {
                                         setState(() {
                                           _selectedUnitId = null;
                                           _selectedConceptId = null;
                                           _selectedLearningBiteId = null;
                                           _selectedLearningBiteData = null;
                                         });
+                                      }
                                     }),
                               )),
                             ],
@@ -393,6 +483,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               selectedSubjectId: _selectedSubjectId,
                               selectedCategoryId: _selectedCategoryId,
                               selectedTopicId: _selectedTopicId,
+                              statusFilter: _statusFilter,
                               onAdd: (_selectedSubjectId != null &&
                                       _selectedCategoryId != null)
                                   ? () => _openTopicDialog(
@@ -422,7 +513,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         subjectId: _selectedSubjectId!,
                                         categoryId: _selectedCategoryId!,
                                         topicId: id);
-                                    if (_selectedTopicId == id)
+                                    if (_selectedTopicId == id) {
                                       setState(() {
                                         _selectedTopicId = null;
                                         _selectedUnitId = null;
@@ -430,6 +521,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteId = null;
                                         _selectedLearningBiteData = null;
                                       });
+                                    }
                                   }),
                             ),
                             const SizedBox(height: 12),
@@ -439,6 +531,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               selectedCategoryId: _selectedCategoryId,
                               selectedTopicId: _selectedTopicId,
                               selectedUnitId: _selectedUnitId,
+                              statusFilter: _statusFilter,
                               onAdd: (_selectedSubjectId != null &&
                                       _selectedCategoryId != null &&
                                       _selectedTopicId != null)
@@ -471,13 +564,14 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         categoryId: _selectedCategoryId!,
                                         topicId: _selectedTopicId!,
                                         unitId: id);
-                                    if (_selectedUnitId == id)
+                                    if (_selectedUnitId == id) {
                                       setState(() {
                                         _selectedUnitId = null;
                                         _selectedConceptId = null;
                                         _selectedLearningBiteId = null;
                                         _selectedLearningBiteData = null;
                                       });
+                                    }
                                   }),
                             ),
                           ]),
@@ -497,6 +591,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedTopicId: _selectedTopicId,
                                 selectedUnitId: _selectedUnitId,
                                 selectedConceptId: _selectedConceptId,
+                                statusFilter: _statusFilter,
                                 onAdd: (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null &&
@@ -532,12 +627,13 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           topicId: _selectedTopicId!,
                                           unitId: _selectedUnitId!,
                                           conceptId: id);
-                                      if (_selectedConceptId == id)
+                                      if (_selectedConceptId == id) {
                                         setState(() {
                                           _selectedConceptId = null;
                                           _selectedLearningBiteId = null;
                                           _selectedLearningBiteData = null;
                                         });
+                                      }
                                     }),
                               )),
                               const SizedBox(width: 12),
@@ -550,6 +646,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedUnitId: _selectedUnitId,
                                 selectedConceptId: _selectedConceptId,
                                 selectedLearningBiteId: _selectedLearningBiteId,
+                                statusFilter: _statusFilter,
                                 onAdd: (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null &&
@@ -579,7 +676,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 onDelete: (id) => _confirmDelete(
                                     title: 'Learning Bite löschen?',
                                     message:
-                                        'Möchtest du diesen Learning Bite unwiderruflich löschen?',
+                                        'Möchtest du dieses Learning Bite unwiderruflich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteLearningBite(
                                           subjectId: _selectedSubjectId!,
@@ -612,6 +709,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               selectedTopicId: _selectedTopicId,
                               selectedUnitId: _selectedUnitId,
                               selectedConceptId: _selectedConceptId,
+                              statusFilter: _statusFilter,
                               onAdd: (_selectedSubjectId != null &&
                                       _selectedCategoryId != null &&
                                       _selectedTopicId != null &&
@@ -647,12 +745,13 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         topicId: _selectedTopicId!,
                                         unitId: _selectedUnitId!,
                                         conceptId: id);
-                                    if (_selectedConceptId == id)
+                                    if (_selectedConceptId == id) {
                                       setState(() {
                                         _selectedConceptId = null;
                                         _selectedLearningBiteId = null;
                                         _selectedLearningBiteData = null;
                                       });
+                                    }
                                   }),
                             ),
                             const SizedBox(height: 12),
@@ -664,6 +763,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               selectedUnitId: _selectedUnitId,
                               selectedConceptId: _selectedConceptId,
                               selectedLearningBiteId: _selectedLearningBiteId,
+                              statusFilter: _statusFilter,
                               onAdd: (_selectedSubjectId != null &&
                                       _selectedCategoryId != null &&
                                       _selectedTopicId != null &&
@@ -693,7 +793,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                               onDelete: (id) => _confirmDelete(
                                   title: 'Learning Bite löschen?',
                                   message:
-                                      'Möchtest du diesen Learning Bite unwiderruflich löschen?',
+                                      'Möchtest du dieses Learning Bite unwiderruflich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteLearningBite(
                                         subjectId: _selectedSubjectId!,
@@ -903,6 +1003,14 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                           });
                         }
                       },
+                    ),
+                    const SizedBox(height: 24),
+                    _buildSectionTitle('Adminverwaltung'),
+                    const SizedBox(height: 12),
+                    AdminManagementCard(
+                      adminFunctions: _functionsService,
+                      onEnsureAuthenticated: () async =>
+                          FirebaseAuth.instance.currentUser != null,
                     ),
                     const SizedBox(height: 24),
                   ],
@@ -1127,18 +1235,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
             subjectId, categoryId, topicId, unitId, conceptId, learningBiteId)
         .first;
     final tasks = tasksSnapshot.docs
-        .map((doc) => doc.data())
-        .map(
-          (data) => Task(
-            type: TaskType.values.firstWhere(
-              (e) => e.name == (data['type'] ?? 'singleChoice'),
-              orElse: () => TaskType.singleChoice,
-            ),
-            question: data['question'] ?? '',
-            correctAnswer: data['correctAnswer'] ?? '',
-            answers: List<String>.from(data['answers'] ?? []),
-          ),
-        )
+        .map((doc) => Task.fromMap(doc.data(), doc.id))
         .toList();
 
     if (!mounted) return;

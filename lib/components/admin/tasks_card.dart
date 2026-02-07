@@ -75,9 +75,13 @@ class TasksCard extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final doc = docs[index];
                       final data = doc.data();
+                      final answers = List<String>.from(data['answers'] ?? []);
                       return ListTile(
                         title: Text(data['question'] ?? 'Keine Frage'),
-                        subtitle: Text(data['type'] ?? 'unbekannt'),
+                        subtitle: Text(
+                          'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}\nOptionen: ${answers.join(", ")}\nTyp: ${data['type'] ?? 'unbekannt'}',
+                        ),
+                        isThreeLine: true,
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

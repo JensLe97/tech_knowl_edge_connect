@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 import 'package:file_picker/file_picker.dart';
 
 class ContentAdminService {
@@ -18,7 +19,6 @@ class ContentAdminService {
 
   Future<DocumentReference<Map<String, dynamic>>> createSubject({
     required String name,
-    required String description,
     required String status,
     required int version,
     required String userId,
@@ -28,7 +28,6 @@ class ContentAdminService {
     final docRef = _firestore.collection('content_subjects').doc();
     await docRef.set({
       'name': name,
-      'description': description,
       'status': status,
       'version': version,
       'color': color,
@@ -83,7 +82,6 @@ class ContentAdminService {
   Future<DocumentReference<Map<String, dynamic>>> createCategory({
     required String subjectId,
     required String name,
-    required String description,
     required String status,
     required int version,
     required String userId,
@@ -95,7 +93,6 @@ class ContentAdminService {
         .doc();
     await docRef.set({
       'name': name,
-      'description': description,
       'status': status,
       'version': version,
       'createdAt': Timestamp.now(),
@@ -167,7 +164,6 @@ class ContentAdminService {
     required String subjectId,
     required String categoryId,
     required String name,
-    required String description,
     required String status,
     required int version,
     required String userId,
@@ -181,7 +177,6 @@ class ContentAdminService {
         .doc();
     await docRef.set({
       'name': name,
-      'description': description,
       'status': status,
       'version': version,
       'createdAt': Timestamp.now(),
@@ -268,7 +263,6 @@ class ContentAdminService {
     required String categoryId,
     required String topicId,
     required String name,
-    required String description,
     required String status,
     required int version,
     required String userId,
@@ -285,7 +279,6 @@ class ContentAdminService {
         .doc();
     await docRef.set({
       'name': name,
-      'description': description,
       'status': status,
       'version': version,
       'iconData': iconData,
@@ -386,7 +379,6 @@ class ContentAdminService {
     required String topicId,
     required String unitId,
     required String name,
-    required String description,
     required String status,
     required int version,
     required String userId,
@@ -404,7 +396,6 @@ class ContentAdminService {
         .doc();
     await docRef.set({
       'name': name,
-      'description': description,
       'status': status,
       'version': version,
       'createdAt': Timestamp.now(),
@@ -548,7 +539,6 @@ class ContentAdminService {
     required int version,
     required String userId,
     required Map<String, dynamic> iconData,
-    bool completed = false,
   }) async {
     final docRef = _firestore
         .collection('content_subjects')
@@ -802,5 +792,28 @@ class ContentAdminService {
       });
     }
     return resources;
+  }
+
+  // --- Pending Approvals ---
+
+  Stream<QuerySnapshot<Map<String, dynamic>>> streamPendingLearningBites() {
+    return _firestore
+        .collectionGroup('learning_bites')
+        .where('status', isEqualTo: UserConstants.statusPending)
+        .snapshots();
+  }
+
+  Future<void> approveLearningBite(DocumentReference reference) async {
+    await reference.update({
+      'status': UserConstants.statusApproved,
+      'approvedAt': Timestamp.now(),
+    });
+  }
+
+  Future<void> rejectLearningBite(DocumentReference reference) async {
+    await reference.update({
+      'status': UserConstants.statusRejected,
+      'rejectedAt': Timestamp.now(),
+    });
   }
 }

@@ -1,53 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 
 class AdminConstants {
-  static const List<String> statusOptions = [
-    'Draft',
-    'Ausstehend',
-    'Genehmigt'
-  ];
-  static const List<String> learningBiteTypes = [
-    'lesson',
-    'text',
-    'task',
-    'video'
-  ];
-  static const List<String> taskTypes = [
-    'singleChoice',
-    'singleChoiceCloze',
-    'freeTextFieldCloze',
-    'multipleChoice',
-    'indexCard',
-  ];
+  static const List<String> statusOptions = UserConstants.statusOptions;
+  static const Map<String, String> statusLabels = UserConstants.statusLabels;
 
-  static const Map<String, IconData> availableIcons = {
-    'Code': Icons.code,
-    'Computer': Icons.computer,
-    'Book': Icons.book,
-    'Calculate': Icons.calculate,
-    'Biotech': Icons.biotech,
-    'History': Icons.history,
-    'Language': Icons.language,
-    'Science': Icons.science,
-    'Music': Icons.music_note,
-    'Art': Icons.brush,
-    'Rocket': Icons.rocket_launch,
-    'Lightbulb': Icons.lightbulb,
-    'School': Icons.school,
-    'Laptop': Icons.laptop,
-    'Menu': Icons.menu_book,
-  };
-
-  static const Map<String, Color> availableColors = {
-    'Red': Colors.red,
-    'Blue': Colors.blue,
-    'Green': Colors.green,
-    'Orange': Colors.orange,
-    'Purple': Colors.purple,
-    'Teal': Colors.teal,
-    'Indigo': Colors.indigo,
-    'Pink': Colors.pink,
-    'Cyan': Colors.cyan,
-    'Brown': Colors.brown,
-  };
+  static const List<String> learningBiteTypes = UserConstants.learningBiteTypes;
+  static const List<String> taskTypes = UserConstants.taskTypes;
+  static const Map<String, IconData> availableIcons =
+      UserConstants.availableIcons;
+  static const Map<String, Color> availableColors =
+      UserConstants.availableColors;
 }

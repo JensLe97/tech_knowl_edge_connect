@@ -73,7 +73,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   showModalBottomSheet(
                       backgroundColor: Theme.of(context)
                           .colorScheme
-                          .surface, // bottomsheet color
+                          .surface, // bottom sheet color
                       context: context,
                       isScrollControlled: true,
                       useRootNavigator: true,
@@ -141,22 +141,24 @@ class _ProfilePageState extends State<ProfilePage> {
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.center),
                       ),
+                      if (_isAdmin) ...[
+                        const SizedBox(height: 25),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 8),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).colorScheme.onPrimary,
+                              borderRadius: BorderRadius.circular(15)),
+                          child: const Text(
+                            "Admin",
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
                       const SizedBox(height: 25),
-                      // TextIconButton(
-                      //   text: 'Profil bearbeiten',
-                      //   icon: Icons.edit,
-                      //   onTap: () {
-                      //     // TODO: Add edit profile logic
-                      //   },
-                      // ),
-                      // const SizedBox(height: 10),
-                      // TextIconButton(
-                      //   text: 'Lerninhalt hinzufügen',
-                      //   icon: Icons.add,
-                      //   onTap: () {
-                      //     // TODO: Add add-learning-content logic
-                      //   },
-                      // ),
                     ],
                   ),
                 ),

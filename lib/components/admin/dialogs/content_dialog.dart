@@ -12,6 +12,7 @@ class ContentDialog extends StatefulWidget {
   final int? index;
   final String? initialContent;
   final List<String>? allContent;
+  final Future<void> Function()? onAfterSave;
 
   const ContentDialog({
     super.key,
@@ -25,6 +26,7 @@ class ContentDialog extends StatefulWidget {
     this.index,
     this.initialContent,
     this.allContent,
+    this.onAfterSave,
   });
 
   @override
@@ -120,12 +122,18 @@ class _ContentDialogState extends State<ContentDialog> {
                 data: {'content': currentContent},
               );
 
-              if (!mounted) return;
+              if (widget.onAfterSave != null) {
+                await widget.onAfterSave!();
+              }
+
+              if (!context.mounted) return;
               Navigator.pop(context);
             } catch (e) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text('Fehler: $e')),
-              );
+              if (context.mounted) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Fehler: $e')),
+                );
+              }
             }
           },
           child: const Text('Speichern'),

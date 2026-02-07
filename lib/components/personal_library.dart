@@ -50,15 +50,6 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          IdeaFolderTile(
-            title: 'Neuen Ordner erstellen',
-            isPublic: true,
-            icon: Icons.create_new_folder,
-            color: Theme.of(context).colorScheme.onPrimary,
-            onTap: _navigateToCreateFolderPage,
-            isPublicVisible: false,
-          ),
-          const SizedBox(height: 0),
           FutureBuilder<List<IdeaFolder>>(
             future: _foldersFuture,
             builder: (context, snapshot) {
@@ -114,6 +105,15 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                 },
               );
             },
+          ),
+          const SizedBox(height: 0),
+          IdeaFolderTile(
+            title: 'Neuen Ordner erstellen',
+            isPublic: true,
+            icon: Icons.create_new_folder,
+            color: Theme.of(context).colorScheme.onPrimary,
+            onTap: _navigateToCreateFolderPage,
+            isPublicVisible: false,
           ),
         ],
       ),

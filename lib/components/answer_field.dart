@@ -129,6 +129,14 @@ class _AnswerFieldState extends State<AnswerField> {
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
               counterText: '',
               errorStyle: const TextStyle(height: 0.01, fontSize: 1),
+              errorBorder: UnderlineInputBorder(
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.error),
+              ),
+              focusedErrorBorder: UnderlineInputBorder(
+                borderSide:
+                    BorderSide(color: Theme.of(context).colorScheme.error),
+              ),
             ),
           ),
         ),

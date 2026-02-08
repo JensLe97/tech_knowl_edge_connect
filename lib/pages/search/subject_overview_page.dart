@@ -60,6 +60,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         floatingActionButton: FloatingActionButton(
+          heroTag: 'subject_overview_fab',
           onPressed: () => showDialog(
             context: context,
             builder: (context) => CategoryDialog(

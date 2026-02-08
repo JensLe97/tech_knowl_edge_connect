@@ -140,6 +140,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.surface,
         floatingActionButton: FloatingActionButton(
+          heroTag: 'unit_overview_fab',
           onPressed: () => showDialog(
             context: context,
             builder: (context) => ConceptDialog(

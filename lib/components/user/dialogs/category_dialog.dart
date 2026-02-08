@@ -97,6 +97,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 8),
           TextField(
             controller: nameController,
             decoration: InputDecoration(
@@ -142,6 +143,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
                 ),
               ),
           ],
+          const SizedBox(height: 8),
         ],
       ),
       actions: [

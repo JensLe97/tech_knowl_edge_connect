@@ -75,6 +75,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             TextField(
               controller: _titleController,
               decoration: const InputDecoration(labelText: 'Titel'),
@@ -148,6 +149,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

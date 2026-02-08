@@ -16,7 +16,14 @@ class ConfirmDeleteDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlertDialog(
       title: Text(title),
-      content: Text(message),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const SizedBox(height: 8),
+          Text(message),
+          const SizedBox(height: 8),
+        ],
+      ),
       actions: [
         TextButton(
           onPressed: () => Navigator.pop(context),

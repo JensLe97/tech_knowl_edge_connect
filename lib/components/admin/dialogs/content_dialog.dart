@@ -59,6 +59,7 @@ class _ContentDialogState extends State<ContentDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             TextField(
               controller: _contentController,
               maxLines: 8,
@@ -68,6 +69,7 @@ class _ContentDialogState extends State<ContentDialog> {
                 hintText: 'Hier den Lerninhalt eingeben...',
               ),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

@@ -52,6 +52,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name'),
@@ -81,6 +82,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
               },
               controller: TextEditingController(text: _version.toString()),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

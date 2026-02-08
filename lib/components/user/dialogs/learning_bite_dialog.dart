@@ -133,6 +133,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 8),
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
@@ -223,6 +224,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                 const Text(
                     "Hinweis: Nach dem Erstellen ist der Bite noch leer.",
                     style: TextStyle(fontSize: 12, color: Colors.grey)),
+                const SizedBox(height: 8),
               ],
             ],
           ),

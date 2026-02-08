@@ -36,6 +36,7 @@ class PreviewDialog extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 8),
             if (contentParts.isNotEmpty) ...[
               const Text('Inhalte:',
                   style: TextStyle(fontWeight: FontWeight.bold)),
@@ -62,6 +63,7 @@ class PreviewDialog extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(height: 8),
             ],
           ],
         ),

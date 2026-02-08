@@ -120,6 +120,7 @@ class _UnitDialogState extends State<UnitDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 8),
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
@@ -207,6 +208,7 @@ class _UnitDialogState extends State<UnitDialog> {
                     ),
                   ),
               ],
+              const SizedBox(height: 8),
             ],
           ),
         ),

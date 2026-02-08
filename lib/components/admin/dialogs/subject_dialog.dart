@@ -71,6 +71,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name'),
@@ -160,6 +161,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
                 );
               }).toList(),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

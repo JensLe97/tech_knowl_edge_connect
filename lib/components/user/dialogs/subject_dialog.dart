@@ -114,6 +114,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              const SizedBox(height: 8),
               TextField(
                 controller: nameController,
                 decoration: InputDecoration(
@@ -240,6 +241,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
                     ),
                   ),
               ],
+              const SizedBox(height: 8),
             ],
           ),
         ),

@@ -53,6 +53,7 @@ class _TopicDialogState extends State<TopicDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             TextField(
               controller: _nameController,
               decoration: const InputDecoration(labelText: 'Name'),
@@ -82,6 +83,7 @@ class _TopicDialogState extends State<TopicDialog> {
               },
               controller: TextEditingController(text: _version.toString()),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

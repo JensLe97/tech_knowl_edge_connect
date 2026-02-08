@@ -67,6 +67,7 @@ class _TaskDialogState extends State<TaskDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            const SizedBox(height: 8),
             DropdownButtonFormField<String>(
               initialValue: AdminConstants.taskTypes.contains(_type)
                   ? _type
@@ -95,6 +96,7 @@ class _TaskDialogState extends State<TaskDialog> {
               decoration:
                   const InputDecoration(labelText: 'Antworten (kommagetrennt)'),
             ),
+            const SizedBox(height: 8),
           ],
         ),
       ),

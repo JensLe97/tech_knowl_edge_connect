@@ -103,6 +103,7 @@ class _TopicDialogState extends State<TopicDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 8),
           TextField(
             controller: nameController,
             decoration: InputDecoration(
@@ -148,6 +149,7 @@ class _TopicDialogState extends State<TopicDialog> {
                 ),
               ),
           ],
+          const SizedBox(height: 8),
         ],
       ),
       actions: [

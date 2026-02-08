@@ -111,6 +111,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          const SizedBox(height: 8),
           TextField(
             controller: nameController,
             decoration: InputDecoration(
@@ -155,6 +156,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
                   onPressed: () => _save(UserConstants.statusPrivate),
                 ),
               ),
+            const SizedBox(height: 8),
           ],
         ],
       ),

@@ -67,6 +67,8 @@ dependencies:
   flutter_markdown: ^0.7.7+1
   firebase_app_check: ^0.4.1+4
   cloud_functions: ^6.0.0
+  markdown: ^7.3.0
+  google_fonts: ^8.0.1
 
 flutter_launcher_icons:
   android: true

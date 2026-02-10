@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConfig {
   // Seed color for ColorScheme.fromSeed. Change this to match your brand.
@@ -13,10 +14,11 @@ class ThemeConfig {
         onPrimary: const Color.fromARGB(255, 224, 227, 233),
         secondary: const Color.fromARGB(255, 203, 216, 230),
         onSecondary: const Color.fromARGB(255, 80, 102, 134));
-    final textTheme =
-        Typography.material2021(platform: TargetPlatform.android).black.apply(
-              bodyColor: cs.onSurface,
-            );
+    final textTheme = GoogleFonts.nunitoTextTheme(
+      Typography.material2021(platform: TargetPlatform.android).black.apply(
+            bodyColor: cs.onSurface,
+          ),
+    );
 
     return ThemeData(
       useMaterial3: true,
@@ -136,10 +138,11 @@ class ThemeConfig {
         onPrimary: const Color.fromARGB(255, 29, 39, 52),
         secondary: const Color.fromARGB(255, 88, 113, 146),
         onSecondary: const Color.fromARGB(255, 109, 127, 150));
-    final textTheme =
-        Typography.material2021(platform: TargetPlatform.android).white.apply(
-              bodyColor: cs.onSurface,
-            );
+    final textTheme = GoogleFonts.nunitoTextTheme(
+      Typography.material2021(platform: TargetPlatform.android).white.apply(
+            bodyColor: cs.onSurface,
+          ),
+    );
 
     return ThemeData(
       useMaterial3: true,

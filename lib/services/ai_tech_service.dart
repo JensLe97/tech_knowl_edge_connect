@@ -6,6 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tech_knowl_edge_connect/models/task.dart' as tk;
 
 class AiTechService {
+  static const String _markdownStyling =
+      "Verwende dabei auch Aufzählungen, Fettdruck, Kursivschrift, horizontale Trennlinien, Codeblöcke, Tabellen, "
+      "Zitate um wichtige Stellen hervorzuheben oder andere Markdown-Elemente, wenn es sinnvoll ist. "
+      "Verwende wenn es sinnvoll ist gelegentlich verschiedene Farben um Wörter hervorzuheben, z.B. <red>roter Text</red> oder <green>grüner Text</green>."
+      "Folgende Farben stehen zur Verfügung: red, green, blue, yellow, orange, purple, grey, gray."
+      "Setze Farben nur selten ein und verwende Fettdruck und andere Hervorhebungen außerhalb der Farb-Tags.";
+
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
   /// Summarizes multiple documents by streaming their combined summary.
@@ -21,7 +28,9 @@ class AiTechService {
     }
 
     GenerationConfig? generationConfig;
-    String promptText;
+    final buffer = StringBuffer(
+      "Fasse die wichtigsten Punkte dieser Dateien und Texte zusammen. ",
+    );
 
     if (splitIntoParts) {
       final summarySchema = Schema.object(
@@ -33,17 +42,20 @@ class AiTechService {
         responseMimeType: 'application/json',
         responseSchema: summarySchema,
       );
-      promptText =
-          "Fasse die wichtigsten Punkte dieser Dateien und Texte zusammen. "
-          "Teile die Zusammenfassung in mehrere kurze Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
+      buffer.write(
+          "Teile die Zusammenfassung in mehrere Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
           "Jeder Abschnitt soll einen klaren Gedanken oder Aspekt behandeln. "
-          "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}";
-    } else {
-      promptText =
-          "Fasse die wichtigsten Punkte dieser Dateien und Texte zusammen. "
-          "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache. "
-          "Nutze Aufzählungen, wo es sinnvoll ist.";
+          "Z.B. könnte sich jeder Abschnitt auf ein bestimmtes Dokument oder einen bestimmten Themenbereich beziehen. "
+          "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}");
     }
+
+    buffer.write(
+        "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache, "
+        "sodass sie zum Lernen und schnellen Verstehen der Inhalte geeignet ist. "
+        "Die Zusammenfassung soll im Markdown-Format sein, damit sie später gut dargestellt werden können. "
+        "$_markdownStyling"
+        "Die Dokumente sind in deutscher Sprache. "
+        "Hier sind die Dokumente und Texte: ");
 
     final model = FirebaseAI.googleAI(
       appCheck: FirebaseAppCheck.instance,
@@ -51,7 +63,7 @@ class AiTechService {
       model: 'gemini-2.5-flash',
       generationConfig: generationConfig,
     );
-    final prompt = TextPart(promptText);
+    final prompt = TextPart(buffer.toString());
 
     // Download all files and create their DataParts
     final List<Part> parts = [prompt];
@@ -123,6 +135,8 @@ class AiTechService {
         '...'
         ']}'
         "Achte darauf, dass das JSON korrekt formatiert ist und keine zusätzlichen Erklärungen oder Text enthält."
+        "Die Fragen sollen im Markdown-Format sein, damit sie später gut dargestellt werden können."
+        "$_markdownStyling"
         "Nutze verschiedene Aufgabentypen und decke unterschiedliche Aspekte der Dokumente ab."
         "Die Dokumente sind in deutscher Sprache."
         "Die Aufgaben vom Typ singleChoiceCloze oder freeTextFieldCloze"

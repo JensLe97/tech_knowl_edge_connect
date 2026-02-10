@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:tech_knowl_edge_connect/components/markdown_support.dart';
 
 class SummaryPage extends StatelessWidget {
   final String name;
@@ -84,6 +85,9 @@ class _SummaryStreamAccumulatorState extends State<_SummaryStreamAccumulator> {
             data: _buffer.isEmpty
                 ? 'Keine Antwort erhalten.'
                 : _buffer.toString(),
+            styleSheet: createMarkdownStyleSheet(context),
+            extensionSet: getMarkdownExtensionSet(),
+            builders: getMarkdownColorBuilders(),
           ),
         ),
       );

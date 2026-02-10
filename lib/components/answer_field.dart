@@ -67,15 +67,19 @@ class _AnswerFieldState extends State<AnswerField> {
           child: TextFormField(
             textInputAction: widget.textInputAction,
             controller: widget.controller,
-            enabled: widget.enabled,
+            enabled:
+                widget.enabled && !(answered && currentValue == widget.answer),
             style: TextStyle(
-              color: answered
-                  ? (currentValue == widget.answer ||
-                          widget.controller.text == widget.answer)
-                      ? Colors.green
-                      : Colors.red
-                  : Theme.of(context).textTheme.displayLarge!.color,
-              fontSize: 14,
+              color: !widget.enabled
+                  ? Colors.green
+                  : answered
+                      ? (currentValue.toLowerCase() ==
+                                  widget.answer.toLowerCase() ||
+                              widget.controller.text.toLowerCase() ==
+                                  widget.answer.toLowerCase())
+                          ? Colors.green
+                          : Colors.red
+                      : Theme.of(context).textTheme.displayLarge!.color,
             ),
             maxLength: answerLength,
             onChanged: (value) {
@@ -88,6 +92,7 @@ class _AnswerFieldState extends State<AnswerField> {
             },
             validator: (value) {
               if (answered &&
+                  widget.enabled &&
                   value != null &&
                   value.toLowerCase() != widget.answer.toLowerCase()) {
                 return "";

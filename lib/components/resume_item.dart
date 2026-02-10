@@ -56,7 +56,7 @@ class ResumeItem extends StatelessWidget {
         final LearningBite learningBite = results[5] as LearningBite;
 
         final String path =
-            "${subject.name} > ${category.name} > ${topic.name} > ${unit.name} > ${concept.name}";
+            "${category.name} > ${topic.name} > ${unit.name} > ${concept.name}";
 
         return ResumeTile(
           path: path,

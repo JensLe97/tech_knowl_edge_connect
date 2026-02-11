@@ -5,6 +5,7 @@ import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
 import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
 import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AiAuthoringCard extends StatefulWidget {
   final String userId;
@@ -258,7 +259,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
         conceptId: widget.selectedConceptId!,
         learningBiteId: widget.selectedLearningBiteId!,
         data: {
-          'content': _aiContentParts,
+          'content': FieldValue.arrayUnion(_aiContentParts),
         },
       );
 

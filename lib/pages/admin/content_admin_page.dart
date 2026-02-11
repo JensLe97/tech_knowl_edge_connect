@@ -11,18 +11,19 @@ import 'package:tech_knowl_edge_connect/components/admin/dialogs/concept_dialog.
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/confirm_delete_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/content_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/learning_bite_dialog.dart';
-import 'package:tech_knowl_edge_connect/components/admin/dialogs/preview_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/subject_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/task_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/topic_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/unit_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/learning_bites_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/pending_approvals_card.dart';
+import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
+import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/components/admin/subjects_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/topics_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/units_card.dart';
-import 'package:tech_knowl_edge_connect/models/task.dart';
 import 'package:tech_knowl_edge_connect/services/admin_claims_service.dart';
 import 'package:tech_knowl_edge_connect/services/admin_functions_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
@@ -131,7 +132,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         // 10: learning_bites
                         // 11: lbId
                         if (pathSegments.length >= 12) {
-                          _openPreviewDialog(
+                          _openTestLearningBite(
                             subjectId: pathSegments[1],
                             categoryId: pathSegments[3],
                             topicId: pathSegments[5],
@@ -690,7 +691,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteData = null;
                                       });
                                     }),
-                                onPreview: (id, data) => _openPreviewDialog(
+                                onPreview: (id, data) => _openTestLearningBite(
                                     subjectId: _selectedSubjectId!,
                                     categoryId: _selectedCategoryId!,
                                     topicId: _selectedTopicId!,
@@ -807,7 +808,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                       _selectedLearningBiteData = null;
                                     });
                                   }),
-                              onPreview: (id, data) => _openPreviewDialog(
+                              onPreview: (id, data) => _openTestLearningBite(
                                   subjectId: _selectedSubjectId!,
                                   categoryId: _selectedCategoryId!,
                                   topicId: _selectedTopicId!,
@@ -1221,7 +1222,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
     );
   }
 
-  Future<void> _openPreviewDialog({
+  Future<void> _openTestLearningBite({
     required String subjectId,
     required String categoryId,
     required String topicId,
@@ -1239,18 +1240,15 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
         .toList();
 
     if (!mounted) return;
-    await showDialog(
-      context: context,
-      builder: (context) => PreviewDialog(
-        adminService: _adminService,
-        subjectId: subjectId,
-        categoryId: categoryId,
-        topicId: topicId,
-        unitId: unitId,
-        conceptId: conceptId,
-        learningBiteId: learningBiteId,
-        learningBiteData: learningBiteData,
-        tasks: tasks,
+
+    final learningBite = LearningBite.fromMap(learningBiteData, learningBiteId);
+
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => LearningBitePage(
+          learningBite: learningBite,
+          tasks: tasks,
+        ),
       ),
     );
   }

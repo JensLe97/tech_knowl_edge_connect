@@ -24,6 +24,15 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
 
   MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
     p: baseStyle,
+    horizontalRuleDecoration: BoxDecoration(
+      border: Border(
+        top: BorderSide(
+          width: 1.5,
+          color: theme.colorScheme.outlineVariant,
+        ),
+      ),
+      borderRadius: BorderRadius.circular(4),
+    ),
     code: TextStyle(
       fontFamily: 'monospace',
       fontFamilyFallback: const ['Courier New', 'Courier'],

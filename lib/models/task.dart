@@ -22,9 +22,11 @@ class Task {
         (e) => e.name == data['type'],
         orElse: () => TaskType.singleChoice,
       ),
-      question: data['question'] ?? '',
-      correctAnswer: data['correctAnswer'] ?? '',
-      answers: List<String>.from(data['answers'] ?? []),
+      question: (data['question'] ?? '').replaceAll(r'\n', '\n'),
+      correctAnswer: (data['correctAnswer'] ?? '').replaceAll(r'\n', '\n'),
+      answers: List<String>.from(data['answers'] ?? [])
+          .map((e) => e.replaceAll(r'\n', '\n'))
+          .toList(),
     );
   }
 }

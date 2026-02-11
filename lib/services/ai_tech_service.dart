@@ -7,8 +7,8 @@ import 'package:tech_knowl_edge_connect/models/task.dart' as tk;
 
 class AiTechService {
   static const String _markdownStyling =
-      "Verwende dabei auch Aufzählungen, Fettdruck, Kursivschrift, horizontale Trennlinien, Codeblöcke, Tabellen, "
-      "Zitate um wichtige Stellen hervorzuheben oder andere Markdown-Elemente, wenn es sinnvoll ist. "
+      "Verwende dabei auch Aufzählungen, Nummerierungen, Fettdruck, Kursivschrift, horizontale Trennlinien, Codeblöcke, Tabellen, "
+      "Emojis, Zitate um wichtige Stellen hervorzuheben oder andere Markdown-Elemente, wenn es sinnvoll ist. "
       "Verwende wenn es sinnvoll ist gelegentlich verschiedene Farben um Wörter hervorzuheben, z.B. <red>roter Text</red> oder <green>grüner Text</green>."
       "Folgende Farben stehen zur Verfügung: red, green, blue, yellow, orange, purple, grey, gray."
       "Setze Farben nur selten ein und verwende Fettdruck und andere Hervorhebungen außerhalb der Farb-Tags.";
@@ -46,6 +46,8 @@ class AiTechService {
           "Teile die Zusammenfassung in mehrere Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
           "Jeder Abschnitt soll einen klaren Gedanken oder Aspekt behandeln. "
           "Z.B. könnte sich jeder Abschnitt auf ein bestimmtes Dokument oder einen bestimmten Themenbereich beziehen. "
+          "Achte darauf, dass die Abschnitte inhaltlich sinnvoll aufgeteilt sind und nicht zu lang oder zu kurz sind. "
+          "Nutze keine horizontale Trennlinien, um die Abschnitte zu trennen, sondern um Themen innerhalb eines Abschnitts zu strukturieren. "
           "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}");
     }
 
@@ -136,6 +138,7 @@ class AiTechService {
         ']}'
         "Achte darauf, dass das JSON korrekt formatiert ist und keine zusätzlichen Erklärungen oder Text enthält."
         "Die Fragen sollen im Markdown-Format sein, damit sie später gut dargestellt werden können."
+        "Eine neue Zeile in einer Frage soll mit '\\n\\n' angegeben werden. "
         "$_markdownStyling"
         "Nutze verschiedene Aufgabentypen und decke unterschiedliche Aspekte der Dokumente ab."
         "Die Dokumente sind in deutscher Sprache."

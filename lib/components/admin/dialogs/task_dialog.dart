@@ -84,17 +84,20 @@ class _TaskDialogState extends State<TaskDialog> {
             TextField(
               controller: _questionController,
               decoration: const InputDecoration(labelText: 'Frage'),
+              maxLines: 4,
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _answerController,
               decoration: const InputDecoration(labelText: 'Antwort'),
+              maxLines: 4,
             ),
             const SizedBox(height: 12),
             TextField(
               controller: _answersController,
               decoration:
                   const InputDecoration(labelText: 'Antworten (kommagetrennt)'),
+              maxLines: 4,
             ),
             const SizedBox(height: 8),
           ],

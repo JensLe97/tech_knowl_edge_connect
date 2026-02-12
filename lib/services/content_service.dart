@@ -518,6 +518,35 @@ class ContentService {
         .collection('learning_bites')
         .doc(learningBiteId)
         .delete();
+
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    if (userId != null) {
+      final userDocRef = _firestore.collection('Users').doc(userId);
+
+      // Atomic array removal is safe
+      final updates = <String, dynamic>{
+        'completedLearningBiteIds': FieldValue.arrayRemove([learningBiteId]),
+      };
+
+      // Check if we need to remove from resumeProgress
+      final userSnapshot = await userDocRef.get();
+      if (userSnapshot.exists) {
+        final userData = userSnapshot.data();
+        if (userData != null && userData.containsKey('resumeProgress')) {
+          final resumeProgress =
+              userData['resumeProgress'] as Map<String, dynamic>;
+          if (resumeProgress.containsKey(subjectId)) {
+            final subjectData =
+                resumeProgress[subjectId] as Map<String, dynamic>;
+            if (subjectData['learningBiteId'] == learningBiteId) {
+              updates['resumeProgress.$subjectId'] = FieldValue.delete();
+            }
+          }
+        }
+      }
+
+      await userDocRef.update(updates);
+    }
   }
 
   Future<void> deleteConcept({

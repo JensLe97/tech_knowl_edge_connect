@@ -25,13 +25,7 @@ class Subject {
       id: id,
       name: data['name'] ?? '',
       color: Color(data['color'] ?? 0xFF000000),
-      iconData: iconMap != null
-          ? IconData(
-              iconMap['codePoint'] ?? 0,
-              fontFamily: iconMap['fontFamily'],
-              fontPackage: iconMap['fontPackage'],
-            )
-          : Icons.error,
+      iconData: UserConstants.getIconFromData(iconMap) ?? Icons.error,
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
     );

@@ -41,16 +41,9 @@ class _UnitDialogState extends State<UnitDialog> {
     _version = (widget.existingData?['version'] ?? 1) as int;
 
     // Initialize Icon
-    final iconMap = widget.existingData?['iconData'];
-    if (iconMap is Map) {
-      _selectedIcon = IconData(
-        iconMap['codePoint'],
-        fontFamily: iconMap['fontFamily'],
-        fontPackage: iconMap['fontPackage'],
-      );
-    } else {
-      _selectedIcon = AdminConstants.availableIcons.values.first;
-    }
+    final iconMap = widget.existingData?['iconData'] as Map<String, dynamic>?;
+    _selectedIcon = AdminConstants.getIconFromData(iconMap) ??
+        AdminConstants.availableIcons.values.first;
   }
 
   @override

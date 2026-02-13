@@ -22,13 +22,7 @@ class Unit {
     return Unit(
       id: id,
       name: data['name'] ?? '',
-      iconData: iconMap != null
-          ? IconData(
-              iconMap['codePoint'] ?? 0,
-              fontFamily: iconMap['fontFamily'],
-              fontPackage: iconMap['fontPackage'],
-            )
-          : Icons.error,
+      iconData: UserConstants.getIconFromData(iconMap) ?? Icons.error,
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
     );

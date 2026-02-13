@@ -33,13 +33,7 @@ class LearningBite {
       type: data['type'] ?? 'lesson',
       content: List<String>.from(data['content'] ?? []),
       completed: data['completed'] ?? false,
-      iconData: iconMap != null
-          ? IconData(
-              iconMap['codePoint'] ?? 0,
-              fontFamily: iconMap['fontFamily'],
-              fontPackage: iconMap['fontPackage'],
-            )
-          : Icons.book,
+      iconData: UserConstants.getIconFromData(iconMap) ?? Icons.book,
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
     );

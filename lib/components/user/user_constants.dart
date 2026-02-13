@@ -100,4 +100,26 @@ class UserConstants {
     'multipleChoice',
     'indexCard',
   ];
+
+  static IconData? getIconFromData(Map<String, dynamic>? data) {
+    if (data == null) return null;
+
+    final int? codePoint = data['codePoint'];
+    final String? fontFamily = data['fontFamily'];
+    final String? fontPackage = data['fontPackage'];
+
+    if (codePoint == null) return null;
+
+    try {
+      return availableIcons.values.firstWhere(
+        (icon) =>
+            icon.codePoint == codePoint &&
+            icon.fontFamily == fontFamily &&
+            icon.fontPackage == fontPackage,
+        orElse: () => Icons.error,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
 }

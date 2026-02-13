@@ -90,12 +90,8 @@ class LearningBitesCard extends StatelessWidget {
 
                       IconData? icon;
                       if (data['iconData'] != null) {
-                        final map = data['iconData'];
-                        icon = IconData(
-                          map['codePoint'],
-                          fontFamily: map['fontFamily'],
-                          fontPackage: map['fontPackage'],
-                        );
+                        icon = AdminConstants.getIconFromData(
+                            data['iconData'] as Map<String, dynamic>);
                       }
 
                       return ListTile(

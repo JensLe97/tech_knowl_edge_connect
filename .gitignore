@@ -39,6 +39,7 @@ pnpm-debug.log*
 .vscode/
 
 /keys/
+/symbols/
 .venv
 .python-version
 __pycache__/

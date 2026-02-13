@@ -11,7 +11,13 @@ class AiTechService {
       "Emojis, Zitate um wichtige Stellen hervorzuheben oder andere Markdown-Elemente, wenn es sinnvoll ist. "
       "Verwende wenn es sinnvoll ist gelegentlich verschiedene Farben um Wörter hervorzuheben, z.B. <red>roter Text</red> oder <green>grüner Text</green>."
       "Folgende Farben stehen zur Verfügung: red, green, blue, yellow, orange, purple, grey, gray."
+      "Achte darauf, dass immer die gleiche Farbe in den Opening und Closing Farb-Tags verwendet wird. "
       "Setze Farben nur selten ein und verwende Fettdruck und andere Hervorhebungen außerhalb der Farb-Tags.";
+
+  static const String _generalInstructions =
+      "Falls es erforderlich ist, spreche den Benutzer in der Du-Form an."
+      "Die Dokumente sind in deutscher Sprache. "
+      "Hier sind die Dokumente und Texte: ";
 
   final FirebaseStorage _firebaseStorage = FirebaseStorage.instance;
 
@@ -56,8 +62,7 @@ class AiTechService {
         "sodass sie zum Lernen und schnellen Verstehen der Inhalte geeignet ist. "
         "Die Zusammenfassung soll im Markdown-Format sein, damit sie später gut dargestellt werden können. "
         "$_markdownStyling"
-        "Die Dokumente sind in deutscher Sprache. "
-        "Hier sind die Dokumente und Texte: ");
+        "$_generalInstructions");
 
     final model = FirebaseAI.googleAI(
       appCheck: FirebaseAppCheck.instance,
@@ -141,14 +146,14 @@ class AiTechService {
         "Eine neue Zeile in einer Frage soll mit '\\n\\n' angegeben werden. "
         "$_markdownStyling"
         "Nutze verschiedene Aufgabentypen und decke unterschiedliche Aspekte der Dokumente ab."
-        "Die Dokumente sind in deutscher Sprache."
         "Die Aufgaben vom Typ singleChoiceCloze oder freeTextFieldCloze"
         "müssen mit einem Fragetext beginnen und enden, z.B. einem Punkt am Ende."
         "Nutze leere geschweifte Klammern {} in einer Frage, um eine Lücke zu kennzeichnen."
         "Wenn du dir unsicher bist, erstelle eine einfachere Aufgabe."
         "Erstelle mindestens 2 Aufgaben."
         "Wenn die Dokumente keinen Inhalt haben, gib eine leere Aufgabenliste zurück."
-        "Hier sind die Dokumente und Texte:");
+        "$_generalInstructions");
+
     // Download all files and create their DataParts
     final List<Part> parts = [prompt];
     for (int i = 0; i < urls.length; i++) {

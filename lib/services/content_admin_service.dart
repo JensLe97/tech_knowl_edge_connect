@@ -559,6 +559,7 @@ class ContentAdminService {
       'type': type,
       'status': status,
       'version': version,
+      'iconData': iconData,
       'resources': [],
       'createdAt': Timestamp.now(),
       'updatedAt': Timestamp.now(),

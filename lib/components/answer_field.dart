@@ -46,22 +46,32 @@ class _AnswerFieldState extends State<AnswerField> {
   @override
   Widget build(BuildContext context) {
     int answerLength = widget.answer.length;
+    final baseStyle = Theme.of(context).textTheme.bodyLarge!;
+    TextStyle textStyle = baseStyle.copyWith(
+      color: !widget.enabled
+          ? Colors.green
+          : answered
+              ? (currentValue.toLowerCase() == widget.answer.toLowerCase() ||
+                      widget.controller.text.toLowerCase() ==
+                          widget.answer.toLowerCase())
+                  ? Colors.green
+                  : Colors.red
+              : Theme.of(context).textTheme.displayLarge!.color,
+    );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5),
-      child: SizedBox(
-        width: (TextPainter(
-                text: TextSpan(
-                    text: widget.answer,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                    )),
+    double calculatedWidth = (TextPainter(
+                text: TextSpan(text: widget.answer, style: textStyle),
                 textScaler: MediaQuery.of(context).textScaler,
                 textDirection: TextDirection.ltr)
               ..layout())
             .size
-            .width,
+            .width +
+        10;
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 5),
+      child: SizedBox(
+        width: calculatedWidth < 30 ? 30 : calculatedWidth,
         child: Form(
           key: _formKey,
           child: TextFormField(
@@ -69,18 +79,7 @@ class _AnswerFieldState extends State<AnswerField> {
             controller: widget.controller,
             enabled:
                 widget.enabled && !(answered && currentValue == widget.answer),
-            style: TextStyle(
-              color: !widget.enabled
-                  ? Colors.green
-                  : answered
-                      ? (currentValue.toLowerCase() ==
-                                  widget.answer.toLowerCase() ||
-                              widget.controller.text.toLowerCase() ==
-                                  widget.answer.toLowerCase())
-                          ? Colors.green
-                          : Colors.red
-                      : Theme.of(context).textTheme.displayLarge!.color,
-            ),
+            style: textStyle,
             maxLength: answerLength,
             onChanged: (value) {
               setState(() {

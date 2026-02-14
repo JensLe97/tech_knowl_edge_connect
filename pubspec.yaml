@@ -58,7 +58,7 @@ dependencies:
   firebase_storage: ^13.0.6
   uuid: ^4.5.1
   easy_image_viewer: ^1.5.1
-  pdfrx: ^2.1.13
+  pdfrx: ^2.2.24
   video_player: ^2.10.0
   video_player_web: ^2.4.0
   sign_in_with_apple: ^6.1.4

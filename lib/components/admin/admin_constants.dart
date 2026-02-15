@@ -11,7 +11,11 @@ class AdminConstants {
       UserConstants.availableIcons;
   static const Map<String, Color> availableColors =
       UserConstants.availableColors;
-  
+  static const Map<String, String> learningBiteTypeLabels =
+      UserConstants.learningBiteTypeLabels;
+  static const Map<String, String> taskTypeLabels =
+      UserConstants.taskTypeLabels;
+
   static IconData? getIconFromData(Map<String, dynamic>? iconData) {
     if (iconData == null) return null;
     return UserConstants.getIconFromData(iconData);

@@ -153,39 +153,50 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                     ),
                     const SizedBox(height: 24),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         _buildSectionTitle('Inhaltsverwaltung'),
-                        SizedBox(
-                          width: 200,
-                          child: InputDecorator(
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              border: OutlineInputBorder(),
-                            ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String?>(
-                                value: _statusFilter,
-                                borderRadius: BorderRadius.circular(12),
-                                isDense: true,
-                                isExpanded: true,
-                                hint: const Text('Alle Inhalte'),
-                                items: [
-                                  const DropdownMenuItem(
-                                      value: null, child: Text('Alle Inhalte')),
-                                  ...AdminConstants.statusLabels.entries.map(
-                                    (entry) => DropdownMenuItem(
-                                      value: entry.key,
-                                      child: Text(entry.value),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.centerRight,
+                            child: ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 170),
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: InputDecorator(
+                                  decoration: const InputDecoration(
+                                    contentPadding: EdgeInsets.symmetric(
+                                        horizontal: 12, vertical: 6),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton<String?>(
+                                      value: _statusFilter,
+                                      borderRadius: BorderRadius.circular(12),
+                                      isDense: true,
+                                      isExpanded: true,
+                                      hint: const Text('Alle Inhalte'),
+                                      items: [
+                                        const DropdownMenuItem(
+                                            value: null,
+                                            child: Text('Alle Inhalte')),
+                                        ...AdminConstants.statusLabels.entries
+                                            .map(
+                                          (entry) => DropdownMenuItem(
+                                            value: entry.key,
+                                            child: Text(entry.value),
+                                          ),
+                                        ),
+                                      ],
+                                      onChanged: (val) {
+                                        setState(() {
+                                          _statusFilter = val;
+                                        });
+                                      },
                                     ),
                                   ),
-                                ],
-                                onChanged: (val) {
-                                  setState(() {
-                                    _statusFilter = val;
-                                  });
-                                },
+                                ),
                               ),
                             ),
                           ),

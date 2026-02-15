@@ -68,24 +68,31 @@ class CategoriesCard extends StatelessWidget {
                       final data = doc.data();
                       final isSelected = doc.id == selectedCategoryId;
                       return ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4),
                         selected: isSelected,
                         title: Text(data['name'] ?? 'Unbenannt'),
                         subtitle: Text(
                           'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
                         ),
                         onTap: () => onSelect(doc.id),
-                        trailing: Wrap(
-                          spacing: 8,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit),
                               tooltip: 'Bearbeiten',
                               onPressed: () => onEdit(doc.id, data),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
+                            const SizedBox(width: 4),
                             IconButton(
                               icon: const Icon(Icons.delete_outline),
                               tooltip: 'Löschen',
                               onPressed: () => onDelete(doc.id),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
                           ],
                         ),

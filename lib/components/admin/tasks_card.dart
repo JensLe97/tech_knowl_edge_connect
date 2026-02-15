@@ -77,6 +77,8 @@ class TasksCard extends StatelessWidget {
                       final data = doc.data();
                       final answers = List<String>.from(data['answers'] ?? []);
                       return ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4),
                         title: Text(data['question'] ?? 'Keine Frage'),
                         subtitle: Text(
                           'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}\nOptionen: ${answers.join(", ")}\nTyp: ${data['type'] ?? 'unbekannt'}',
@@ -89,11 +91,16 @@ class TasksCard extends StatelessWidget {
                               icon: const Icon(Icons.edit),
                               tooltip: 'Bearbeiten',
                               onPressed: () => onEdit(doc.id, data),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
+                            const SizedBox(width: 4),
                             IconButton(
                               icon: const Icon(Icons.delete_outline),
                               tooltip: 'Löschen',
                               onPressed: () => onDelete(doc.id),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
                           ],
                         ),

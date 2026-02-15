@@ -73,7 +73,9 @@ class _TaskDialogState extends State<TaskDialog> {
                   ? _type
                   : AdminConstants.taskTypes.first,
               items: AdminConstants.taskTypes
-                  .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                  .map((t) => DropdownMenuItem(
+                      value: t,
+                      child: Text(AdminConstants.taskTypeLabels[t] ?? t)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _type = value);

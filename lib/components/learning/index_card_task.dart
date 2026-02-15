@@ -27,7 +27,7 @@ class _IndexCardTaskState extends State<IndexCardTask> {
   final Task _controlTask = Task(
       id: "index_card_control",
       type: TaskType.indexCard,
-      question: "Gewusst?",
+      question: "## **Gewusst?**",
       correctAnswer: "Ja",
       answers: ["Nein", "Ja"]);
 

@@ -78,6 +78,8 @@ class ContentCard extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final content = contentList[index];
                       return ListTile(
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 4),
                         title: Text(
                           'Teil ${index + 1}',
                           style: const TextStyle(fontWeight: FontWeight.bold),
@@ -87,8 +89,8 @@ class ContentCard extends StatelessWidget {
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        trailing: Wrap(
-                          spacing: 8,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
                               icon: const Icon(Icons.edit),
@@ -98,7 +100,10 @@ class ContentCard extends StatelessWidget {
                                 content,
                                 contentList,
                               ),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
+                            const SizedBox(width: 4),
                             IconButton(
                               icon: const Icon(Icons.delete_outline),
                               tooltip: 'Löschen',
@@ -106,6 +111,8 @@ class ContentCard extends StatelessWidget {
                                 index,
                                 contentList,
                               ),
+                              padding: const EdgeInsets.all(8),
+                              constraints: const BoxConstraints(),
                             ),
                           ],
                         ),

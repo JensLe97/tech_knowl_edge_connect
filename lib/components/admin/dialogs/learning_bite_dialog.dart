@@ -79,7 +79,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   ? _type
                   : AdminConstants.learningBiteTypes.first,
               items: AdminConstants.learningBiteTypes
-                  .map((t) => DropdownMenuItem(value: t, child: Text(t)))
+                  .map((t) => DropdownMenuItem(
+                      value: t,
+                      child:
+                          Text(AdminConstants.learningBiteTypeLabels[t] ?? t)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _type = value);

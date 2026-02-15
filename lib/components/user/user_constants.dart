@@ -93,6 +93,18 @@ class UserConstants {
     'video'
   ];
 
+  static const String learningBiteLesson = 'lesson';
+  static const String learningBiteText = 'text';
+  static const String learningBiteTask = 'task';
+  static const String learningBiteVideo = 'video';
+
+  static const Map<String, String> learningBiteTypeLabels = {
+    learningBiteLesson: 'Lektion',
+    learningBiteText: 'Text',
+    learningBiteTask: 'Aufgabe',
+    learningBiteVideo: 'Video',
+  };
+
   static const List<String> taskTypes = [
     'singleChoice',
     'singleChoiceCloze',
@@ -100,6 +112,20 @@ class UserConstants {
     'multipleChoice',
     'indexCard',
   ];
+
+  static const String taskTypeSingleChoice = 'singleChoice';
+  static const String taskTypeSingleChoiceCloze = 'singleChoiceCloze';
+  static const String taskTypeFreeTextFieldCloze = 'freeTextFieldCloze';
+  static const String taskTypeMultipleChoice = 'multipleChoice';
+  static const String taskTypeIndexCard = 'indexCard';
+
+  static const Map<String, String> taskTypeLabels = {
+    taskTypeSingleChoice: 'Single Choice',
+    taskTypeSingleChoiceCloze: 'Lückentext (Single Choice)',
+    taskTypeFreeTextFieldCloze: 'Lückentext (Freitext)',
+    taskTypeMultipleChoice: 'Multiple Choice',
+    taskTypeIndexCard: 'Karteikarte',
+  };
 
   static IconData? getIconFromData(Map<String, dynamic>? data) {
     if (data == null) return null;

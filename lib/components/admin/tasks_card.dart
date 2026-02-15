@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 
 class TasksCard extends StatelessWidget {
   final ContentAdminService adminService;
@@ -81,7 +82,7 @@ class TasksCard extends StatelessWidget {
                             const EdgeInsets.symmetric(horizontal: 4),
                         title: Text(data['question'] ?? 'Keine Frage'),
                         subtitle: Text(
-                          'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}\nOptionen: ${answers.join(", ")}\nTyp: ${data['type'] ?? 'unbekannt'}',
+                          'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}${answers.isEmpty ? '' : '\nOptionen: ${answers.join(", ")}'}\nTyp: ${AdminConstants.taskTypeLabels[data['type']] ?? data['type'] ?? 'unbekannt'}',
                         ),
                         isThreeLine: true,
                         trailing: Row(

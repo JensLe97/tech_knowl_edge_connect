@@ -103,7 +103,7 @@ class LearningBitesCard extends StatelessWidget {
                         ),
                         title: Text(data['title'] ?? 'Unbenannt'),
                         subtitle: Text(
-                          '${data['type'] ?? 'text'} · ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
+                          '${AdminConstants.learningBiteTypeLabels[data['type']] ?? data['type'] ?? 'text'} · ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Draft'} · v${data['version'] ?? 1}',
                         ),
                         onTap: () => onSelect(doc.id, data),
                         trailing: Row(

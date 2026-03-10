@@ -10,15 +10,6 @@ import 'package:tech_knowl_edge_connect/theme.dart';
 
 import 'firebase_options.dart';
 
-/*
-  Generation of env.g.dart:
-  flutter pub run build_runner clean
-  flutter pub run build_runner build --delete-conflicting-outputs
-  For GitHub Actions:
-  Windows: certutil -encode lib\env\env.g.dart tmp.b64 && findstr /v /c:- tmp.b64 > data.b64
-  macOS: openssl base64 -in lib/env/env.g.dart -out data.b64
-*/
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(

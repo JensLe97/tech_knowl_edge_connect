@@ -41,10 +41,6 @@ flutter build web                  # Web
 
 ## Critical Patterns
 
-### Environment Variables
-
-Secrets use `envied` package. Create `.env` with `OPENAI_API_KEY`, then regenerate `lib/env/env.g.dart` with build_runner. **Never commit `env.g.dart`** - CI decodes from secrets.
-
 ### Model Serialization
 
 All Firestore models follow this pattern (see [learning_material.dart](lib/models/learning_material.dart)):

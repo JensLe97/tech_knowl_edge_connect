@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/square_tile.dart';
-import 'package:tech_knowl_edge_connect/components/submit_button.dart';
-import 'package:tech_knowl_edge_connect/components/terms_section.dart';
-import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/forms/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/square_tile.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
+import 'package:tech_knowl_edge_connect/components/library/terms_section.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
 import 'package:tech_knowl_edge_connect/pages/login/forgot_password_page.dart';
-import 'package:tech_knowl_edge_connect/services/auth_service.dart';
+import 'package:tech_knowl_edge_connect/services/auth/auth_service.dart';
 
 class LoginPage extends StatefulWidget {
   final Function()? onTap;

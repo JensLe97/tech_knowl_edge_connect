@@ -2,9 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/change_password_page.dart';
-import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);

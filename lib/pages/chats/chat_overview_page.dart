@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/pages/chats/chat_page.dart';
 
 class ChatOverviewPage extends StatefulWidget {
@@ -161,8 +163,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   }
 
   Widget _buildChatListItem(DocumentSnapshot document) {
-    if (document.id.contains(currentUser!.uid) &&
-        !document.id.contains("aitech")) {
+    if (document.id.contains(currentUser!.uid)) {
       Map<String, dynamic>? docData = document.data() as Map<String, dynamic>?;
       String otherUserId = document.id
           .split("_")
@@ -171,8 +172,11 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           future: getUserDetails(otherUserId),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
+              return const SizedBox(
+                height: 70,
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
               );
             } else if (snapshot.hasError) {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
@@ -246,11 +250,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                           )
-                    : const Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Icon(Icons.image),
-                        ],
+                    : FaIcon(
+                        LearningMaterialType.getIconForMessageType(
+                            document['type'] as String? ?? ''),
+                        size: 16,
                       ),
                 onTap: () {
                   if (document.id.split("_").first == currentUser!.uid) {
@@ -298,7 +301,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
-    if (currentUser!.uid != document.id && document.id != "aitech") {
+    if (currentUser!.uid != document.id) {
       String otherUserId = document.id;
       return ListTile(
         leading: Container(

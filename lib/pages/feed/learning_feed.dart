@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/compact_learning_material_tile.dart';
-import 'package:tech_knowl_edge_connect/components/detailed_learning_material_tile.dart';
-import 'package:tech_knowl_edge_connect/components/learning_material_reel_item.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/compact_learning_material_tile.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/detailed_learning_material_tile.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_reel_item.dart';
 import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
-import 'package:tech_knowl_edge_connect/models/learning_material.dart';
+import 'package:tech_knowl_edge_connect/models/user/learning_material.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
-import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
+import 'package:tech_knowl_edge_connect/services/user/learning_material_service.dart';
 
 class LearningFeedPage extends StatefulWidget {
   const LearningFeedPage({super.key});
@@ -23,8 +23,24 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
 
   int _currentView = 0; // 0: Reel, 1: Detailed List, 2: Compact List
 
+  final PageController _reelPageController = PageController();
   final LearningMaterialService _materialService = LearningMaterialService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
+  late final Stream<QuerySnapshot> _materialsStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _materialsStream = _materialService.getAllPublicLearningMaterials(
+        excludeUserId: _firebaseAuth.currentUser?.uid ?? '');
+  }
+
+  @override
+  void dispose() {
+    _reelPageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +117,7 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
     final blockedUsers = userState?.blockedUsers ?? [];
 
     return StreamBuilder<QuerySnapshot>(
-      stream: _materialService.getAllPublicLearningMaterials(
-          excludeUserId: _firebaseAuth.currentUser?.uid ?? ''),
+      stream: _materialsStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(child: CircularProgressIndicator());
@@ -136,9 +151,13 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
     return RefreshIndicator(
       onRefresh: _onRefresh,
       child: PageView(
+        controller: _reelPageController,
         scrollDirection: Axis.vertical,
         children: materials.map((material) {
-          return LearningMaterialReelItem(material: material);
+          return LearningMaterialReelItem(
+            key: ValueKey(material.id),
+            material: material,
+          );
         }).toList(),
       ),
     );

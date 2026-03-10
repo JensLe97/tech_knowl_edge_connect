@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
 class ContentDialog extends StatefulWidget {
   final ContentAdminService adminService;

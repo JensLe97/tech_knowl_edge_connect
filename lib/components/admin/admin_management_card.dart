@@ -1,6 +1,6 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/services/admin_functions_service.dart';
+import 'package:tech_knowl_edge_connect/services/auth/admin_functions_service.dart';
 
 class AdminManagementCard extends StatefulWidget {
   final AdminFunctionsService adminFunctions;

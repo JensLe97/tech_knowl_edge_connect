@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 import 'package:tech_knowl_edge_connect/components/admin/hierarchy_breadcrumbs.dart';
 
 class PendingApprovalsCard extends StatelessWidget {

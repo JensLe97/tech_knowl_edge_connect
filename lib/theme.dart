@@ -52,22 +52,22 @@ class ThemeConfig {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: cs.primary,
-          foregroundColor: cs.onPrimary,
-          elevation: 2,
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          backgroundColor: cs.secondary,
+          foregroundColor: cs.onSurface,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.all(10),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: cs.primary,
-          side: BorderSide(color: cs.primary.withAlpha(31)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          padding: const EdgeInsets.all(10),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -94,7 +94,9 @@ class ThemeConfig {
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
-      // Card theme kept minimal; cards inherit surface color and elevation from Material defaults
+      cardTheme: CardThemeData(
+          color: cs.surfaceContainerLow.withAlpha(210),
+          clipBehavior: Clip.antiAlias),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: cs.surface,
         selectedItemColor: cs.primary,
@@ -175,22 +177,22 @@ class ThemeConfig {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: cs.primary,
-          foregroundColor: cs.onPrimary,
-          elevation: 2,
-          padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 20),
+          backgroundColor: cs.secondary,
+          foregroundColor: cs.onSurface,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          padding: const EdgeInsets.all(10),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          textStyle: const TextStyle(fontWeight: FontWeight.w600),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          textStyle: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: cs.primary,
-          side: BorderSide(color: cs.onSurface.withAlpha(31)),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 18),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          padding: const EdgeInsets.all(10),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -214,7 +216,9 @@ class ThemeConfig {
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
-      // Card theme kept minimal; cards inherit surface color and elevation from Material defaults
+      cardTheme: CardThemeData(
+          color: cs.secondaryContainer.withAlpha(90),
+          clipBehavior: Clip.antiAlias),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: cs.surface,
         selectedItemColor: cs.primary,

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
-import 'package:tech_knowl_edge_connect/components/answer_field.dart';
+import 'package:tech_knowl_edge_connect/components/forms/answer_field.dart';
 import 'package:tech_knowl_edge_connect/components/learning/cloze_markdown_support.dart';
-import 'package:tech_knowl_edge_connect/components/markdown_support.dart';
-import 'package:tech_knowl_edge_connect/components/lesson_button.dart';
-import 'package:tech_knowl_edge_connect/models/task.dart';
+import 'package:tech_knowl_edge_connect/components/library/markdown_support.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/lesson_button.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task.dart';
 
 class SingleChoiceClozeTask extends StatefulWidget {
   final Task task;

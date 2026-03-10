@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/submit_button.dart';
-import 'package:tech_knowl_edge_connect/components/terms_section.dart';
-import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/forms/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
+import 'package:tech_knowl_edge_connect/components/library/terms_section.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: signUserUp,
                   text: "Registrieren",
                 ),
-                const SizedBox(height: 101),
+                const SizedBox(height: 109),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [

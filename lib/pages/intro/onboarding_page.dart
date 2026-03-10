@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:tech_knowl_edge_connect/components/intro_button.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/intro_button.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/intro_page_1.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/intro_page_2.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/intro_page_3.dart';

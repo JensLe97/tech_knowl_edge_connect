@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
 class ConceptDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -38,7 +38,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
     super.initState();
     _nameController =
         TextEditingController(text: widget.existingData?['name'] ?? '');
-    _status = widget.existingData?['status'] ?? 'Draft';
+    _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
   }
 

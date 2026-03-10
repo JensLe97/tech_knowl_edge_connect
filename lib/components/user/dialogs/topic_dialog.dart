@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
-import 'package:tech_knowl_edge_connect/models/topic.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
+import 'package:tech_knowl_edge_connect/models/content/topic.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 
 class TopicDialog extends StatefulWidget {
   final String subjectId;

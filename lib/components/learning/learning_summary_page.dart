@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:tech_knowl_edge_connect/components/lesson_button.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/lesson_button.dart';
 
 class LearningSummaryPage extends StatelessWidget {
   final int points;

@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
-import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/blocked_field.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
-import 'package:tech_knowl_edge_connect/models/report_reason.dart';
-import 'package:tech_knowl_edge_connect/services/user_service.dart';
+import 'package:tech_knowl_edge_connect/models/user/report_reason.dart';
+import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 
 class PostProfilePage extends StatefulWidget {
   final String username;

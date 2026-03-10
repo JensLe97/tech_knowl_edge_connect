@@ -51,7 +51,7 @@ class _UserProviderState extends State<UserProvider> {
         setState(() {
           currentUser = user;
           _userStream = FirebaseFirestore.instance
-              .collection("Users")
+              .collection('Users')
               .doc(currentUser!.uid)
               .snapshots();
         });

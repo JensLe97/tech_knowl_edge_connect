@@ -1,0 +1,391 @@
+<mxfile host="65bd71144e">
+    <diagram name="AI Agent Flow &amp; Modellaufrufe" id="ai-agent-flow-v2">
+        <mxGraphModel dx="583" dy="353" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1950" pageHeight="1250" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="title" value="&lt;b&gt;AI Agent Architecture – Agentenfluss &amp;amp; Modellaufrufe · TechKnowlEdgeConnect&lt;/b&gt;&lt;br&gt;Gemini 2.5 Flash (kDefaultAiModel) · Firebase AI SDK · Calls via generateContent() / generateContentStream()&lt;br&gt;&lt;font color=&quot;#444444&quot;&gt;★ AnalyzeAgent ×1 Gemini Call ist in JEDEM Intent-Pfad enthalten (Routing-Overhead, außer triggerFeedback)&lt;/font&gt;" style="text;html=1;align=center;verticalAlign=middle;fontSize=13;fontStyle=1;" parent="1" vertex="1">
+                    <mxGeometry y="8" width="1930" height="52" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_user" value="&lt;b&gt;User&lt;/b&gt;&lt;br&gt;sendet Nachricht" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="78" width="120" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="top_user" target="top_orch" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_orch" value="&lt;b&gt;AiTechOrchestrator&lt;/b&gt;&lt;br&gt;persist Msg · load 12-Msg-Context&lt;br&gt;build ContentHistory" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="175" y="72" width="220" height="67" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="top_orch" target="top_analyze" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_analyze" value="&lt;b&gt;AnalyzeAgent&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;&lt;b&gt;×1 Gemini call&lt;/b&gt;&lt;/font&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;→ 1 Intent-Key" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="445" y="67" width="200" height="77" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_arr3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="top_analyze" target="top_dispatch" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_dispatch" value="&lt;b&gt;Dispatch&lt;/b&gt;&lt;br&gt;switch(AgentIntent)&lt;br&gt;sealed class" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="695" y="72" width="165" height="67" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_arr4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="top_dispatch" target="top_response" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_response" value="&lt;b&gt;OrchestratorResponse&lt;/b&gt;&lt;br&gt;intent · message · journeyId?&lt;br&gt;→ persist to Firestore · UI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="910" y="67" width="230" height="77" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_gensvc" value="&lt;b&gt;AiTechGenService&lt;/b&gt; (shared service)&lt;br&gt;generateLearningBites() · ×1 Gemini (JSON Schema + Google Search)&lt;br&gt;generateLearningBiteTasks() · ×1 Gemini per Bite (JSON Schema)&lt;br&gt;summarizeMultipleData() · ×1 Gemini streaming (Library-Feature)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;spacingLeft=6;" parent="1" vertex="1">
+                    <mxGeometry x="1410" y="62" width="480" height="82" as="geometry"/>
+                </mxCell>
+                <mxCell id="top_arr_gensvc" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;strokeColor=#82b366;" parent="1" source="top_dispatch" target="top_gensvc" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_intent" value="&lt;b&gt;Intent (AgentIntent)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="172" width="155" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_agent" value="&lt;b&gt;Primär-Agent&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="172" width="175" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_trigger" value="&lt;b&gt;Beispiel-Trigger (User sagt …)&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="172" width="220" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_chain" value="&lt;b&gt;Aufruf-Kette (Call Chain) — AnalyzeAgent-Overhead nicht dargestellt&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="172" width="850" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_calls" value="&lt;b&gt;∑ Gemini Calls&lt;/b&gt;&lt;br&gt;(inkl. Routing)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1410" y="172" width="130" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="hdr_notes" value="&lt;b&gt;Hinweise&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="172" width="360" height="35" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_intent" value="&lt;b&gt;journey.create&lt;/b&gt;&lt;br&gt;JourneySkill.create" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="207" width="155" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_agent" value="&lt;b&gt;LearningJourney&lt;br&gt;Agent&lt;/b&gt;&lt;br&gt;createLearning&lt;br&gt;Journey()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="207" width="175" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_trig" value="&quot;Ich will X lernen&quot;&lt;br&gt;&quot;Erkläre mir X von Grund auf&quot;&lt;br&gt;&quot;Starte eine Lernreise über X&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="207" width="220" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_c1" value="&lt;b&gt;generateSession&lt;br&gt;Title()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ GeneralAgent.generateText" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="213" width="145" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r1_c1" target="r1_c2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_c2" value="&lt;b&gt;LJA.analyze()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Anweisung für&lt;br&gt;Content-Agent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="723" y="213" width="140" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r1_c2" target="r1_c3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_c3" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;Bites()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ 2–3 Bites JSON" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="881" y="213" width="155" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_arr3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r1_c3" target="r1_c4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_c4" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;BiteTasks()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#cc0000&quot;&gt;×N Gemini (N = 2–3)&lt;/font&gt;&lt;br&gt;&lt;font color=&quot;#0000cc&quot;&gt;‖ parallel (Future.wait)&lt;/font&gt;&lt;br&gt;→ Tasks JSON per Bite" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="1054" y="207" width="165" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_arr4" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r1_c4" target="r1_c5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_c5" value="&lt;b&gt;Firestore&lt;/b&gt;&lt;br&gt;Journey-Doc +&lt;br&gt;Bites + Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="1237" y="213" width="145" height="65" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_total" value="&lt;b&gt;6–7&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1430" y="223" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r1_notes" value="AnalyzeAgent ×1 + generateSessionTitle ×1 + LJA.analyze ×1 + generateBites ×1 + generateTasks ×(2–3)&lt;br&gt;LJA.analyze = gibt Einstiegskonzept + Schwierigkeit + Stil vor&lt;br&gt;Google Search Tool aktiv (Grounding)&lt;br&gt;&lt;font color=&quot;#0000cc&quot;&gt;generateTasks-Calls laufen parallel (Future.wait) → Latenz ≈ 1× statt N×&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="207" width="360" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_intent" value="&lt;b&gt;journey.update&lt;/b&gt;&lt;br&gt;JourneySkill.update" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="302" width="155" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_agent" value="&lt;b&gt;LearningJourney&lt;br&gt;Agent&lt;/b&gt; +&lt;br&gt;&lt;b&gt;FeedbackAgent&lt;/b&gt;&lt;br&gt;updateLearning&lt;br&gt;Journey()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="302" width="175" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_trig" value="&quot;Zu einfach&quot; · &quot;Zu schwer&quot;&lt;br&gt;&quot;Ja weiter&quot; · &quot;Gerne&quot; · &quot;Ja bitte&quot;&lt;br&gt;&quot;Nächstes Thema&quot; · &quot;Machen wir&quot;&lt;br&gt;&quot;Weiter lernen&quot; · &quot;langsamer bitte&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="302" width="220" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_c1" value="&lt;b&gt;LJA.reactOnFeedback()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini*&lt;/font&gt;&lt;br&gt;→ neue Anweisung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="308" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r2_c1" target="r2_c2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_c2" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;Bites()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ 1 Bite" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="733" y="308" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r2_c2" target="r2_c3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_c3" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;BiteTasks()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="906" y="308" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_arr3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r2_c3" target="r2_c4" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_c4" value="&lt;b&gt;FA.confirmation&lt;br&gt;Message()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini*&lt;/font&gt;&lt;br&gt;→ Bestätigung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="1079" y="308" width="150" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_total" value="&lt;b&gt;4–5&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1430" y="316" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r2_notes" value="* reactOnFeedback: wenn feedbackText vorhanden (praktisch immer)&lt;br&gt;* confirmationMessage: nur wenn pendingRecommendation gesetzt (Bestätigung nach recommend)&lt;br&gt;User-initiated (kein pending): AnalyzeAgent ×1 + 3 intern = 4 total" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="302" width="360" height="95" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_intent" value="&lt;b&gt;journey.addBite&lt;/b&gt;&lt;br&gt;JourneySkill.addBite" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="397" width="155" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_agent" value="&lt;b&gt;LearningJourney&lt;br&gt;Agent&lt;/b&gt;&lt;br&gt;addBiteToJourney()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="397" width="175" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_trig" value="&quot;Füge eine Einheit über X hinzu&quot;&lt;br&gt;&quot;Ich will auch X lernen&quot;&lt;br&gt;&quot;Ergänze meine Lernreise um X&quot;&lt;br&gt;&quot;Noch eine Aufgabe zu X&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="397" width="220" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_c1" value="&lt;b&gt;LJA.analyze()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Anweisung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="403" width="145" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r3_c1" target="r3_c2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_c2" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;Bites()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ 1 Bite" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="723" y="403" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r3_c2" target="r3_c3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_c3" value="&lt;b&gt;GenSvc.generateLearning&lt;br&gt;BiteTasks()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Tasks" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="896" y="403" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_arr3" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r3_c3" target="r3_c5" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_c5" value="&lt;b&gt;Firestore&lt;/b&gt;&lt;br&gt;Bite + Tasks&lt;br&gt;hinzugefügt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="1069" y="403" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_total" value="&lt;b&gt;4&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="410" width="70" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="r3_notes" value="AnalyzeAgent ×1 + LJA.analyze ×1 + generateBites ×1 + generateTasks ×1&lt;br&gt;Nutzer nennt konkretes neues Thema → 1 neuer Bite wird ergänzt" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="397" width="360" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_intent" value="&lt;b&gt;feedback.give&lt;/b&gt;&lt;br&gt;FeedbackSkill.giveFeedback" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="477" width="155" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_agent" value="&lt;b&gt;FeedbackAgent&lt;/b&gt;&lt;br&gt;giveFeedback()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="477" width="175" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_trig" value="&quot;Wie gut war ich?&quot;&lt;br&gt;&quot;Was ist mein Fortschritt?&quot;&lt;br&gt;&quot;Wo stehe ich gerade?&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="477" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_c1" value="&lt;b&gt;FA.giveFeedback()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Fortschrittsbericht" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="483" width="200" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="487" width="70" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="r4_notes" value="AnalyzeAgent ×1 + giveFeedback ×1&lt;br&gt;Lädt Bite-Ergebnisse (Punkte) aus Firestore; stellt KEINE Folgefrage" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="477" width="360" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_intent" value="&lt;b&gt;feedback.recommend&lt;/b&gt;&lt;br&gt;FeedbackSkill.recommend" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="547" width="155" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_agent" value="&lt;b&gt;FeedbackAgent&lt;/b&gt;&lt;br&gt;recommend()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="547" width="175" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_trig" value="&quot;Was soll ich als Nächstes tun?&quot;&lt;br&gt;&quot;Was empfiehlst du mir?&quot;&lt;br&gt;&quot;Wie soll ich weitermachen?&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="547" width="220" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_c1" value="&lt;b&gt;FA.analyze()&lt;/b&gt;&lt;br&gt;generateText()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Verdict" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="553" width="150" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r5_c1" target="r5_c2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_c2" value="&lt;b&gt;FA.generateFeedback&lt;br&gt;Message()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Empfehlung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="728" y="553" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r5_c2" target="r5_c3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_c3" value="&lt;b&gt;Firestore&lt;/b&gt;&lt;br&gt;pendingRecom&lt;br&gt;mendation saved" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="906" y="553" width="140" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_total" value="&lt;b&gt;3&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="557" width="70" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="r5_notes" value="AnalyzeAgent ×1 + FA.analyze ×1 + generateFeedbackMessage ×1&lt;br&gt;Verdict: advance / repeat / review / custom:…&lt;br&gt;Nutzer muss danach bestätigen (→ journey.update)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="547" width="360" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_intent" value="&lt;b&gt;explain&lt;/b&gt;&lt;br&gt;ExplainIntent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="617" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_agent" value="&lt;b&gt;ExplainAgent&lt;/b&gt;&lt;br&gt;answer()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="617" width="175" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_trig" value="&quot;Was bedeutet X?&quot;&lt;br&gt;&quot;Erkläre mir kurz X&quot;&lt;br&gt;&quot;Was ist überhaupt X?&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="617" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_c1" value="&lt;b&gt;ExplainAgent.answer()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="622" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="624" width="70" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="r6_notes" value="Definition → Kernidee → Analogie → Zusammenfassung" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#f5f5f5;strokeColor=#aaaaaa;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="617" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_intent" value="&lt;b&gt;hint&lt;/b&gt;&lt;br&gt;HintIntent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="677" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_agent" value="&lt;b&gt;HintAgent&lt;/b&gt;&lt;br&gt;answer()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="677" width="175" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_trig" value="&quot;Ich stecke fest&quot;&lt;br&gt;&quot;Hilf mir weiter&quot;&lt;br&gt;&quot;Gib mir einen Tipp&quot; · &quot;Hinweis bitte&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="677" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_c1" value="&lt;b&gt;HintAgent.answer()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="682" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="684" width="70" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="r7_notes" value="1–2 Denkanstöße · kein direktes Verraten der Antwort" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#f5f5f5;strokeColor=#aaaaaa;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="677" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_intent" value="&lt;b&gt;quiz&lt;/b&gt;&lt;br&gt;QuizIntent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="737" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_agent" value="&lt;b&gt;QuizAgent&lt;/b&gt;&lt;br&gt;answer()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="737" width="175" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_trig" value="&quot;Teste mein Wissen&quot;&lt;br&gt;&quot;Quiz starten&quot;&lt;br&gt;&quot;Stelle mir Fragen zu X&quot;&lt;br&gt;&quot;Ich will geprüft werden&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="737" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_c1" value="&lt;b&gt;QuizAgent.answer()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="742" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="744" width="70" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="r8_notes" value="2 Fragen (einfach→mittel→anspruchsvoll) + Antwort + 1-Satz-Begründung" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#f5f5f5;strokeColor=#aaaaaa;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="737" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_intent" value="&lt;b&gt;review&lt;/b&gt;&lt;br&gt;ReviewIntent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="797" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_agent" value="&lt;b&gt;ReviewAgent&lt;/b&gt;&lt;br&gt;summarize()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="797" width="175" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_trig" value="&quot;Fass das Gespräch zusammen&quot;&lt;br&gt;&quot;Wiederhole das Gelernte&quot;&lt;br&gt;&quot;Was haben wir besprochen?&quot;" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="797" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_c1" value="&lt;b&gt;ReviewAgent.summarize()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="802" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="804" width="70" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="r9_notes" value="Strukturierte Zusammenfassung des Gesprächsverlaufs" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#f5f5f5;strokeColor=#aaaaaa;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="797" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_intent" value="&lt;b&gt;general&lt;/b&gt;&lt;br&gt;GeneralIntent" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="857" width="155" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_agent" value="&lt;b&gt;GeneralPurpose&lt;br&gt;Agent&lt;/b&gt;&lt;br&gt;answer()" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="857" width="175" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_trig" value="&quot;Danke&quot; · &quot;Nein danke&quot; · &quot;Nicht jetzt&quot;&lt;br&gt;Smalltalk · Ablehnung&lt;br&gt;Nicht kategorisierbare Eingabe" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#fff2cc;strokeColor=#d6b656;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="857" width="220" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_c1" value="&lt;b&gt;GeneralPurposeAgent.answer()&lt;/b&gt;&lt;br&gt;generateTextWithHistory()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="862" width="230" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="864" width="70" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="r10_notes" value="Smalltalk · Ablehnung · Nicht kategorisierbare Eingaben" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#f5f5f5;strokeColor=#aaaaaa;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="857" width="360" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_sep" value="" style="endArrow=none;html=1;dashed=1;strokeColor=#888888;" parent="1" edge="1">
+                    <mxGeometry x="10" y="917" width="1660" height="10" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1670" y="922"/>
+                        </Array>
+                        <mxPoint x="10" y="922" as="sourcePoint"/>
+                        <mxPoint x="1930" y="922" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="r11_intent" value="&lt;b&gt;triggerFeedback()&lt;/b&gt;&lt;br&gt;(UI-triggered,&lt;br&gt;kein Chat-Intent)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="927" width="155" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_agent" value="&lt;b&gt;FeedbackAgent&lt;/b&gt;&lt;br&gt;recommend()&lt;br&gt;(direkt, ohne&lt;br&gt;Routing)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="165" y="927" width="175" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_trig" value="Kein Chat-Input –&lt;br&gt;ausgelöst wenn Nutzer&lt;br&gt;&lt;b&gt;alle Bites abgeschlossen&lt;/b&gt;&lt;br&gt;hat (UI-Callback)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#f5f5f5;strokeColor=#888888;spacingLeft=5;" vertex="1" parent="1">
+                    <mxGeometry x="340" y="927" width="220" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_c1" value="&lt;b&gt;FA.analyze()&lt;/b&gt;&lt;br&gt;generateText()&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Verdict" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="560" y="933" width="150" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_arr1" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r11_c1" target="r11_c2" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_c2" value="&lt;b&gt;FA.generateFeedback&lt;br&gt;Message()&lt;/b&gt;&lt;br&gt;&lt;font color=&quot;#006600&quot;&gt;×1 Gemini&lt;/font&gt;&lt;br&gt;→ Empfehlung" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="728" y="933" width="160" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_arr2" style="edgeStyle=orthogonalEdgeStyle;html=1;" parent="1" source="r11_c2" target="r11_c3" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_c3" value="&lt;b&gt;Firestore&lt;/b&gt;&lt;br&gt;pendingRecom&lt;br&gt;mendation saved&lt;br&gt;Chat-Msg posted" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=9;" parent="1" vertex="1">
+                    <mxGeometry x="906" y="933" width="145" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_total" value="&lt;b&gt;2&lt;/b&gt;" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=18;" parent="1" vertex="1">
+                    <mxGeometry x="1435" y="938" width="70" height="55" as="geometry"/>
+                </mxCell>
+                <mxCell id="r11_notes" value="Ausgelöst wenn Nutzer alle Bites abgeschlossen hat.&lt;br&gt;KEIN AnalyzeAgent-Overhead (kein Chat-Turn).&lt;br&gt;Danach: Nutzer bestätigt → journey.update (+4-5 Calls)" style="rounded=0;whiteSpace=wrap;html=1;align=left;fontSize=9;fillColor=#fff9f0;strokeColor=#d79b00;spacingLeft=5;" parent="1" vertex="1">
+                    <mxGeometry x="1540" y="927" width="360" height="75" as="geometry"/>
+                </mxCell>
+                <mxCell id="gensvc_box" value="&lt;b&gt;AiTechGenService · Shared Service (von LearningJourneyAgent verwendet)&lt;/b&gt;&lt;br&gt;• &lt;b&gt;generateLearningBites()&lt;/b&gt; — JSON Schema responseSchema; optional Google Search Tool grounding; ×1 Gemini call; returns 2–3 Bites (create) oder 1 Bite (update/addBite)&lt;br&gt;• &lt;b&gt;generateLearningBiteTasks()&lt;/b&gt; — JSON Schema; optional Google Search Tool; ×1 Gemini call per Bite; &lt;font color=&quot;#0000cc&quot;&gt;alle Bites parallel via Future.wait()&lt;/font&gt;; generates 3–5 Tasks (singleChoice, singleChoiceCloze, freeTextFieldCloze, indexCard)&lt;br&gt;• &lt;b&gt;summarizeMultipleData()&lt;/b&gt; — Streaming (generateContentStream); ×1 Gemini streaming call; unabhängig vom Agent-System (Library-Feature, direkter Aufruf)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#d5e8d4;strokeColor=#82b366;spacingLeft=8;spacingTop=5;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="1018" width="1360" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="summary_box" value="&lt;b&gt;∑ Gemini Calls pro User-Turn (Schnellübersicht)&lt;/b&gt;&lt;br&gt;journey.create: &lt;b&gt;6–7&lt;/b&gt; · journey.update: &lt;b&gt;4–5&lt;/b&gt; · journey.addBite: &lt;b&gt;4&lt;/b&gt;&lt;br&gt;feedback.recommend: &lt;b&gt;3&lt;/b&gt; · feedback.give: &lt;b&gt;2&lt;/b&gt; · triggerFeedback (UI): &lt;b&gt;2&lt;/b&gt; (kein Routing)&lt;br&gt;explain / hint / quiz / review / general: je &lt;b&gt;2&lt;/b&gt; (1× Routing + 1× Skill)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fontSize=10;fillColor=#dae8fc;strokeColor=#6c8ebf;spacingLeft=8;spacingTop=5;" parent="1" vertex="1">
+                    <mxGeometry x="1375" y="1018" width="515" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg_title" value="&lt;b&gt;Legende&lt;/b&gt;" style="text;html=1;fontStyle=1;fontSize=11;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="1120" width="80" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg1" value="User / Orchestrator / Response" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="1142" width="210" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg2" value="LearningJourneyAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="228" y="1142" width="175" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg3" value="FeedbackAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="411" y="1142" width="145" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg4" value="ExplainAgent / HintAgent / QuizAgent / ReviewAgent / GeneralPurposeAgent" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="563" y="1142" width="310" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg5" value="AiTechGenService" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="880" y="1142" width="150" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg6" value="AnalyzeAgent (Routing)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="1036" y="1142" width="155" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg7" value="Firestore / Extern" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="1418" y="1142" width="140" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg8" value="UI-Trigger (kein Chat-Intent)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="1566" y="1142" width="195" height="28" as="geometry"/>
+                </mxCell>
+                <mxCell id="leg_var" value="×N = variabel je nach Anzahl generierter Bites (min=2, max=3 für create; min=max=1 für update/addBite)  |  * = konditional" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#b85450;fontSize=9;fontColor=#b85450;" parent="1" vertex="1">
+                    <mxGeometry x="10" y="1177" width="1750" height="26" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

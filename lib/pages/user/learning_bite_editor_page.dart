@@ -7,10 +7,10 @@ import 'package:tech_knowl_edge_connect/components/admin/dialogs/task_dialog.dar
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/learning_bite_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 
 class LearningBiteEditorPage extends StatefulWidget {
   final String subjectId;
@@ -39,7 +39,7 @@ class LearningBiteEditorPage extends StatefulWidget {
 class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
   final ContentAdminService _adminService = ContentAdminService();
   final ContentService _contentService = ContentService();
-  final AiTechService _aiService = AiTechService();
+  final AiTechGenService _aiTechGenService = AiTechGenService();
 
   Future<void> _markNeedsPublish() async {
     await _adminService.updateLearningBite(
@@ -474,7 +474,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                     AiAuthoringCard(
                       userId: user.uid,
                       adminService: _adminService,
-                      aiService: _aiService,
+                      aiTechGenService: _aiTechGenService,
                       selectedSubjectId: widget.subjectId,
                       selectedCategoryId: widget.categoryId,
                       selectedTopicId: widget.topicId,

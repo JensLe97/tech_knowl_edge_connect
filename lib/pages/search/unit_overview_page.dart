@@ -2,17 +2,18 @@ import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tech_knowl_edge_connect/components/learning_bite_tile.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/learning_bite_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/concept_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/learning_bite_dialog.dart';
-import 'package:tech_knowl_edge_connect/models/concept.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
-import 'package:tech_knowl_edge_connect/models/unit.dart';
+import 'package:tech_knowl_edge_connect/models/content/concept.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
+import 'package:tech_knowl_edge_connect/models/content/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/user/learning_bite_editor_page.dart';
 import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
-import 'package:tech_knowl_edge_connect/services/user_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
+import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 
 class UnitOverviewPage extends StatefulWidget {
   final String subjectId;
@@ -81,7 +82,7 @@ class _CompletionDialogState extends State<_CompletionDialog> {
               padding: const EdgeInsets.all(12),
               child: Center(
                 child: Text(
-                  'Du hast alle Lektionen zum Thema ${widget.conceptName} abgeschlossen!',
+                  'Du hast alle Lektionen zum Thema "${widget.conceptName}" abgeschlossen!',
                 ),
               ),
             ),
@@ -402,6 +403,32 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                 }
 
                                                 if (context.mounted) {
+                                                  // Attach bite to user's progress (create unit entry if missing)
+                                                  try {
+                                                    final userId = FirebaseAuth
+                                                        .instance
+                                                        .currentUser
+                                                        ?.uid;
+                                                    if (userId != null) {
+                                                      await _contentService
+                                                          .startLearningBiteForUser(
+                                                              userId: userId,
+                                                              subjectId: widget
+                                                                  .subjectId,
+                                                              categoryId: widget
+                                                                  .categoryId,
+                                                              topicId: widget
+                                                                  .topicId,
+                                                              unitId: widget
+                                                                  .unit.id,
+                                                              conceptId:
+                                                                  concept.id,
+                                                              learningBiteId:
+                                                                  learningBite
+                                                                      .id);
+                                                    }
+                                                  } catch (_) {}
+
                                                   await _userService
                                                       .updateResumeStatus(
                                                           widget.subjectId,
@@ -415,8 +442,8 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
 
                                                   Navigator.pop(
                                                       context); // Hide loading
-                                                  final result =
-                                                      await Navigator.push(
+                                                  final result = await Navigator
+                                                      .push<LearningBiteResult>(
                                                     context,
                                                     MaterialPageRoute(
                                                         builder: (context) =>
@@ -427,7 +454,8 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                             )),
                                                   );
 
-                                                  if (result == true) {
+                                                  if (result != null &&
+                                                      result.completed) {
                                                     final allCompletedBefore =
                                                         learningBites.every((lb) =>
                                                             completedLearningBiteIds
@@ -455,7 +483,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                     } else {
                                                       await _userService
                                                           .removeResumeStatus(
-                                                              widget.subjectId);
+                                                              learningBite.id);
                                                     }
 
                                                     if (context.mounted) {

@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:tech_knowl_edge_connect/components/menu_bottom_sheet.dart';
-import 'package:tech_knowl_edge_connect/services/admin_claims_service.dart';
-// import 'package:tech_knowl_edge_connect/components/text_icon_button.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/menu_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/services/auth/admin_claims_service.dart';
+// import 'package:tech_knowl_edge_connect/components/buttons/text_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});

@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/login_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/submit_button.dart';
-import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/forms/login_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   const ForgotPasswordPage({super.key});

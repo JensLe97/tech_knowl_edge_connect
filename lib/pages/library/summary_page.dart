@@ -1,33 +1,31 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
-import 'package:tech_knowl_edge_connect/components/markdown_support.dart';
+import 'package:tech_knowl_edge_connect/components/library/markdown_support.dart';
 
 class SummaryPage extends StatelessWidget {
   final String name;
-  final List<String> urls;
-  final List<String> mimeTypes;
-  final AiTechService _aiTechService;
+  final List<Part> fileParts;
+  final AiTechGenService _aiTechGenService;
 
   const SummaryPage({
     super.key,
     required this.name,
-    required this.urls,
-    required this.mimeTypes,
-    required AiTechService aiTechService,
-  }) : _aiTechService = aiTechService;
+    this.fileParts = const [],
+    required AiTechGenService aiTechGenService,
+  }) : _aiTechGenService = aiTechGenService;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('AI Tech Zusammenfassung'),
+        centerTitle: true,
       ),
       body: StreamBuilder<GenerateContentResponse>(
-        stream: _aiTechService.summarizeMultipleData(
-          urls: urls,
-          mimeTypes: mimeTypes,
+        stream: _aiTechGenService.summarizeMultipleData(
+          fileParts: fileParts,
         ),
         builder: (context, snapshot) {
           // Accumulate all streamed text parts

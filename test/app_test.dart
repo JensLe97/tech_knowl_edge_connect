@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-import 'package:tech_knowl_edge_connect/models/subject.dart';
-import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
+import 'package:tech_knowl_edge_connect/models/content/subject.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 
 void main() {
   Widget makeTestableWidget(Widget child) {
@@ -37,15 +37,14 @@ void main() {
     expect(find.text('Testfach'), findsOneWidget);
     // Check icon
     expect(find.byType(FaIcon), findsOneWidget);
-    // Check color (Container background)
-    final container = tester.widget<Container>(find
+    // Check color (Card background)
+    final card = tester.widget<Card>(find
         .descendant(
           of: find.byType(SubjectTile),
-          matching: find.byType(Container),
+          matching: find.byType(Card),
         )
         .first);
-    final BoxDecoration? decoration = container.decoration as BoxDecoration?;
-    expect(decoration?.color, Colors.blue);
+    expect(card.color, Colors.blue);
     // Check tap
     await tester.tap(find.byType(SubjectTile));
     expect(tapped, isTrue);

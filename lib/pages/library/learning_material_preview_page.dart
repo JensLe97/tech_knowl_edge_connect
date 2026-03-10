@@ -1,11 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
+import 'package:firebase_ai/firebase_ai.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:video_player/video_player.dart';
 
 class LearningMaterialPreviewPage extends StatefulWidget {
@@ -27,37 +30,47 @@ class LearningMaterialPreviewPage extends StatefulWidget {
 
 class _LearningMaterialPreviewPageState
     extends State<LearningMaterialPreviewPage> {
-  final AiTechService _aiTechService = AiTechService();
+  final AiTechGenService _aiTechGenService = AiTechGenService();
 
-  void _summarizeMaterial() {
+  void _summarizeMaterial() async {
     final url = widget.url;
     final type = widget.type;
     final mimeType = LearningMaterialType.getMimeType(type);
+    final List<Part> fileParts = [];
+    try {
+      final data = await FirebaseStorage.instance.refFromURL(url).getData();
+      if (data != null) fileParts.add(InlineDataPart(mimeType, data));
+    } catch (_) {}
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => SummaryPage(
           name: widget.name,
-          urls: [url],
-          mimeTypes: [mimeType],
-          aiTechService: _aiTechService,
+          fileParts: fileParts,
+          aiTechGenService: _aiTechGenService,
         ),
       ),
     );
   }
 
-  void _generateLearningBite() {
+  void _generateLearningBite() async {
     final url = widget.url;
     final type = widget.type;
     final mimeType = LearningMaterialType.getMimeType(type);
+    final List<Part> fileParts = [];
+    try {
+      final data = await FirebaseStorage.instance.refFromURL(url).getData();
+      if (data != null) fileParts.add(InlineDataPart(mimeType, data));
+    } catch (_) {}
+    if (!mounted) return;
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => GenLearningBitePage(
           name: widget.name,
-          urls: [url],
-          mimeTypes: [mimeType],
-          aiTechService: _aiTechService,
+          fileParts: fileParts,
+          aiTechGenService: _aiTechGenService,
         ),
       ),
     );
@@ -132,6 +145,13 @@ class _LearningMaterialPreviewPageState
         summarizeMaterial: _summarizeMaterial,
         generateLearningBite: _generateLearningBite,
       );
+    } else if (LearningMaterialType.textTypes.contains(type.toLowerCase())) {
+      return _TextPreview(
+        url: url,
+        name: name,
+        summarizeMaterial: _summarizeMaterial,
+        generateLearningBite: _generateLearningBite,
+      );
     } else {
       // Fallback: just show the URL
       return Scaffold(
@@ -144,6 +164,92 @@ class _LearningMaterialPreviewPageState
         ),
       );
     }
+  }
+}
+
+class _TextPreview extends StatefulWidget {
+  final String url;
+  final String name;
+  final Function() summarizeMaterial;
+  final Function() generateLearningBite;
+  const _TextPreview(
+      {Key? key,
+      required this.url,
+      required this.name,
+      required this.summarizeMaterial,
+      required this.generateLearningBite})
+      : super(key: key);
+
+  @override
+  State<_TextPreview> createState() => _TextPreviewState();
+}
+
+class _TextPreviewState extends State<_TextPreview> {
+  String? _content;
+  bool _loading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadText();
+  }
+
+  Future<void> _loadText() async {
+    try {
+      final data =
+          await FirebaseStorage.instance.refFromURL(widget.url).getData();
+      if (data != null) {
+        setState(() {
+          _content = utf8.decode(data, allowMalformed: true);
+          _loading = false;
+        });
+      } else {
+        setState(() {
+          _error = 'Datei konnte nicht geladen werden.';
+          _loading = false;
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _error = 'Fehler beim Laden: $e';
+        _loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(widget.name),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+            onPressed: widget.summarizeMaterial,
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+            onPressed: widget.generateLearningBite,
+          ),
+        ],
+      ),
+      body: _loading
+          ? const Center(child: CircularProgressIndicator())
+          : _error != null
+              ? Center(child: Text(_error!))
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.all(16),
+                  child: SelectableText(
+                    _content!,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontFamily: 'monospace',
+                          height: 1.5,
+                        ),
+                  ),
+                ),
+    );
   }
 }
 

@@ -6,9 +6,10 @@ import 'package:tech_knowl_edge_connect/components/learning/learning_summary_pag
 import 'package:tech_knowl_edge_connect/components/learning/multiple_choice_task.dart';
 import 'package:tech_knowl_edge_connect/components/learning/single_choice_cloze_task.dart';
 import 'package:tech_knowl_edge_connect/components/learning/single_choice_task.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
-import 'package:tech_knowl_edge_connect/models/task.dart';
-import 'package:tech_knowl_edge_connect/models/task_type.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task_type.dart';
 
 class LearningBitePage extends StatefulWidget {
   final LearningBite learningBite;
@@ -62,7 +63,10 @@ class _LearningBitePageState extends State<LearningBitePage>
         );
       }
     } else {
-      Navigator.pop(context, true);
+      Navigator.pop(
+          context,
+          LearningBiteResult(
+              completed: true, points: points, maxPoints: widget.tasks.length));
     }
   }
 
@@ -145,7 +149,12 @@ class _LearningBitePageState extends State<LearningBitePage>
                   return LearningSummaryPage(
                     points: points,
                     maxPoints: maxTaskNum,
-                    onComplete: () => Navigator.pop(context, true),
+                    onComplete: () => Navigator.pop(
+                        context,
+                        LearningBiteResult(
+                            completed: true,
+                            points: points,
+                            maxPoints: maxTaskNum)),
                   );
                 } else if (currentPageIndex < maxDataNum) {
                   return LearningContentPage(

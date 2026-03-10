@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tech_knowl_edge_connect/components/unit_tile.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/unit_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/category_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/topic_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/unit_dialog.dart';
-import 'package:tech_knowl_edge_connect/models/category.dart';
-import 'package:tech_knowl_edge_connect/models/subject.dart';
-import 'package:tech_knowl_edge_connect/models/topic.dart';
-import 'package:tech_knowl_edge_connect/models/unit.dart';
+import 'package:tech_knowl_edge_connect/models/content/category.dart';
+import 'package:tech_knowl_edge_connect/models/content/subject.dart';
+import 'package:tech_knowl_edge_connect/models/content/topic.dart';
+import 'package:tech_knowl_edge_connect/models/content/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/search/unit_overview_page.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 
 class SubjectOverviewPage extends StatefulWidget {
   final Subject subject;

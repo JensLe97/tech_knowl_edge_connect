@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
 class LearningBiteDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -42,7 +42,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
     super.initState();
     _titleController =
         TextEditingController(text: widget.existingData?['title'] ?? '');
-    _status = widget.existingData?['status'] ?? 'Draft';
+    _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
     _type = widget.existingData?['type'] ?? 'lesson';
 

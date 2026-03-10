@@ -1,24 +1,26 @@
 import 'dart:io';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_ai/firebase_ai.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:tech_knowl_edge_connect/components/dialog_button.dart';
-import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
-import 'package:tech_knowl_edge_connect/components/show_error_message.dart';
-import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/models/user/idea_folder.dart';
 import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
-import 'package:tech_knowl_edge_connect/services/learning_material_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
+import 'package:tech_knowl_edge_connect/services/user/learning_material_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tech_knowl_edge_connect/models/learning_material.dart';
-import 'package:tech_knowl_edge_connect/components/learning_material_tile.dart';
+import 'package:tech_knowl_edge_connect/models/user/learning_material.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/learning_material_tile.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
-import 'package:tech_knowl_edge_connect/services/idea_folder_service.dart';
+import 'package:tech_knowl_edge_connect/services/user/idea_folder_service.dart';
 
 class FolderDetailPage extends StatefulWidget {
   final IdeaFolder folder;
@@ -34,6 +36,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     try {
       await _folderService.toggleFolderPublic(
           userId: userId!, folderId: widget.folder.id, isPublic: !_isPublic);
+      if (!mounted) return;
       setState(() {
         _isPublic = !_isPublic;
       });
@@ -211,6 +214,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
         folderId: widget.folder.id,
         material: material,
       );
+      if (!mounted) return;
       setState(() {
         _materialsFuture = _materialService.getLearningMaterials(
           userId: userId!,
@@ -230,18 +234,24 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
       showErrorMessage(context, 'Keine Lerninhalte zum Zusammenfassen.');
       return;
     }
-    final urls = materials.map((m) => m.url).toList();
-    final mimeTypes =
-        materials.map((m) => LearningMaterialType.getMimeType(m.type)).toList();
+    final List<Part> fileParts = [];
+    for (final m in materials) {
+      try {
+        final data = await FirebaseStorage.instance.refFromURL(m.url).getData();
+        if (data != null) {
+          fileParts.add(
+              InlineDataPart(LearningMaterialType.getMimeType(m.type), data));
+        }
+      } catch (_) {}
+    }
     if (mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => SummaryPage(
             name: widget.folder.name,
-            urls: urls,
-            mimeTypes: mimeTypes,
-            aiTechService: _aiTechService,
+            fileParts: fileParts,
+            aiTechGenService: _aiTechGenService,
           ),
         ),
       );
@@ -255,18 +265,24 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
           'Keine Lerninhalte zum Erstellen eines Learning Bites vorhanden.');
       return;
     }
-    final urls = materials.map((m) => m.url).toList();
-    final mimeTypes =
-        materials.map((m) => LearningMaterialType.getMimeType(m.type)).toList();
+    final List<Part> fileParts = [];
+    for (final m in materials) {
+      try {
+        final data = await FirebaseStorage.instance.refFromURL(m.url).getData();
+        if (data != null) {
+          fileParts.add(
+              InlineDataPart(LearningMaterialType.getMimeType(m.type), data));
+        }
+      } catch (_) {}
+    }
     if (mounted) {
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => GenLearningBitePage(
             name: widget.folder.name,
-            urls: urls,
-            mimeTypes: mimeTypes,
-            aiTechService: _aiTechService,
+            fileParts: fileParts,
+            aiTechGenService: _aiTechGenService,
           ),
         ),
       );
@@ -274,7 +290,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   final LearningMaterialService _materialService = LearningMaterialService();
-  final AiTechService _aiTechService = AiTechService();
+  final AiTechGenService _aiTechGenService = AiTechGenService();
   final IdeaFolderService _folderService = IdeaFolderService();
   final String? userId = FirebaseAuth.instance.currentUser?.uid;
   final String? userName =
@@ -375,7 +391,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
-                    return Text('Fehler: \\${snapshot.error}');
+                    return Text('Fehler: ${snapshot.error}');
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                     return SizedBox(
                       height: MediaQuery.of(context).size.height * 0.5,
@@ -459,6 +475,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                       materialId: material.id,
                                       fileUrl: material.url,
                                     );
+                                    if (!mounted) return;
                                     setState(() {
                                       _materialsFuture =
                                           _materialService.getLearningMaterials(

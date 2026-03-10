@@ -17,17 +17,18 @@ import 'package:tech_knowl_edge_connect/components/admin/dialogs/topic_dialog.da
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/unit_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/learning_bites_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/pending_approvals_card.dart';
-import 'package:tech_knowl_edge_connect/models/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
-import 'package:tech_knowl_edge_connect/models/task.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task.dart';
 import 'package:tech_knowl_edge_connect/components/admin/subjects_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/topics_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/units_card.dart';
-import 'package:tech_knowl_edge_connect/services/admin_claims_service.dart';
-import 'package:tech_knowl_edge_connect/services/admin_functions_service.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/auth/admin_claims_service.dart';
+import 'package:tech_knowl_edge_connect/services/auth/admin_functions_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 
 class ContentAdminPage extends StatefulWidget {
   const ContentAdminPage({super.key});
@@ -41,7 +42,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
   final ContentAdminService _adminService = ContentAdminService();
   final AdminClaimsService _claimsService = AdminClaimsService();
   final AdminFunctionsService _functionsService = AdminFunctionsService();
-  final AiTechService _aiService = AiTechService();
+  final AiTechGenService _aiTechGenService = AiTechGenService();
 
   String? _statusFilter;
 
@@ -982,7 +983,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                     AiAuthoringCard(
                       userId: user.uid,
                       adminService: _adminService,
-                      aiService: _aiService,
+                      aiTechGenService: _aiTechGenService,
                       selectedSubjectId: _selectedSubjectId,
                       selectedCategoryId: _selectedCategoryId,
                       selectedTopicId: _selectedTopicId,
@@ -1254,6 +1255,24 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
 
     final learningBite = LearningBite.fromMap(learningBiteData, learningBiteId);
 
+    // Attach bite to current user's progress (best-effort)
+    try {
+      final userId = FirebaseAuth.instance.currentUser?.uid;
+      if (userId != null) {
+        final contentService = ContentService();
+        await contentService.startLearningBiteForUser(
+          userId: userId,
+          subjectId: subjectId,
+          categoryId: categoryId,
+          topicId: topicId,
+          unitId: unitId,
+          conceptId: conceptId,
+          learningBiteId: learningBiteId,
+        );
+      }
+    } catch (_) {}
+
+    if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
         builder: (context) => LearningBitePage(

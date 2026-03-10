@@ -1,20 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dart_openai/dart_openai.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
-import 'package:tech_knowl_edge_connect/components/blocked_field.dart';
-import 'package:tech_knowl_edge_connect/components/chat_bubble.dart';
-import 'package:tech_knowl_edge_connect/components/message_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/user_bottom_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/blocked_field.dart';
+import 'package:tech_knowl_edge_connect/components/chat/chat_bubble.dart';
+import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
-import 'package:tech_knowl_edge_connect/env/env.dart';
-import 'package:tech_knowl_edge_connect/models/report_reason.dart';
-import 'package:tech_knowl_edge_connect/pages/chats/upload_image_page.dart';
-import 'package:tech_knowl_edge_connect/services/chat_service.dart';
-import 'package:tech_knowl_edge_connect/services/user_service.dart';
+import 'package:tech_knowl_edge_connect/models/user/report_reason.dart';
+import 'package:tech_knowl_edge_connect/services/chat/chat_service.dart';
+import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 import 'package:uuid/uuid.dart';
 
 class ChatPage extends StatefulWidget {
@@ -32,6 +32,14 @@ class _ChatPageState extends State<ChatPage> {
   final ChatService _chatService = ChatService();
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final UserService _userService = UserService();
+  late final Stream<QuerySnapshot> _messagesStream;
+
+  @override
+  void initState() {
+    super.initState();
+    _messagesStream = _chatService.getMessages(
+        _firebaseAuth.currentUser!.uid, widget.receiverUid);
+  }
 
   @override
   void dispose() {
@@ -39,28 +47,44 @@ class _ChatPageState extends State<ChatPage> {
     super.dispose();
   }
 
-  var allMessages = [
-    OpenAIChatCompletionChoiceMessageModel(
-      content: [
-        OpenAIChatCompletionChoiceMessageContentItemModel.text(
-          "You are a helpful assistant.",
-        ),
-      ],
-      role: OpenAIChatMessageRole.system,
-    )
-  ];
-
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
-      String prompt = _messageController.text;
       await _chatService.sendMessage(
           widget.receiverUid, _messageController.text);
       _messageController.clear();
-      if (widget.receiverUid == "aitech") {
-        String response = await askOpenAi(allMessages, prompt);
-        await _chatService.sendMessage(_firebaseAuth.currentUser!.uid, response,
-            fromAI: true);
+    }
+  }
+
+  Future<void> _sendFiles(List<PlatformFile> files) async {
+    for (final file in files) {
+      if (file.bytes == null) {
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+                content:
+                    Text('Datei ${file.name} konnte nicht gelesen werden.')),
+          );
+        }
+        continue;
       }
+      final ext = (file.extension ?? '').toLowerCase();
+      final storageFileName =
+          file.name.isNotEmpty ? file.name : '${const Uuid().v4()}.$ext';
+      final ref =
+          FirebaseStorage.instance.ref('chat_files').child(storageFileName);
+      final mime = LearningMaterialType.getMimeType(ext);
+      final task = await ref.putData(
+        file.bytes!,
+        SettableMetadata(
+            contentType: mime.isEmpty ? 'application/octet-stream' : mime),
+      );
+      final url = await task.ref.getDownloadURL();
+      String type = 'file';
+      if (LearningMaterialType.imageTypes.contains(ext)) type = 'image';
+      if (LearningMaterialType.videoTypes.contains(ext)) type = 'video';
+      if (LearningMaterialType.pdfTypes.contains(ext)) type = 'pdf';
+      if (LearningMaterialType.textTypes.contains(ext)) type = 'textfile';
+      await _chatService.sendMessage(widget.receiverUid, url, type: type);
     }
   }
 
@@ -119,32 +143,29 @@ class _ChatPageState extends State<ChatPage> {
             title: Text(widget.receiverUsername),
             centerTitle: true,
             actions: [
-              widget.receiverUid == "aitech"
-                  ? const SizedBox()
-                  : IconButton(
-                      onPressed: () {
-                        showModalBottomSheet(
-                          backgroundColor:
-                              Theme.of(context).colorScheme.surface,
-                          context: context,
-                          isScrollControlled: true,
-                          useRootNavigator: true,
-                          enableDrag: true,
-                          shape: const RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
-                            ),
-                          ),
-                          builder: (BuildContext context) => SafeArea(
-                            child: UserBottomSheet(
-                                toggleBlockUser: toggleBlockUser,
-                                report: reportUser,
-                                isBlocked:
-                                    blockedUsers.contains(widget.receiverUid)),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.more_horiz)),
+              IconButton(
+                  onPressed: () {
+                    showModalBottomSheet(
+                      backgroundColor: Theme.of(context).colorScheme.surface,
+                      context: context,
+                      isScrollControlled: true,
+                      useRootNavigator: true,
+                      enableDrag: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(20),
+                        ),
+                      ),
+                      builder: (BuildContext context) => SafeArea(
+                        child: UserBottomSheet(
+                            toggleBlockUser: toggleBlockUser,
+                            report: reportUser,
+                            isBlocked:
+                                blockedUsers.contains(widget.receiverUid)),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.more_horiz)),
             ]),
         body: SafeArea(
           child: Column(
@@ -205,15 +226,14 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildMessageList() {
     return StreamBuilder(
-      stream: _chatService.getMessages(
-          _firebaseAuth.currentUser!.uid, widget.receiverUid),
+      stream: _messagesStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: CircularProgressIndicator(),
           );
         } else if (snapshot.hasError) {
-          return Text("Ein Fehler ist aufgetreten: \\${snapshot.error}");
+          return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
         } else if (snapshot.hasData) {
           final docs = snapshot.data!.docs.toList(); // oldest first
           List<Widget> messageWidgets = [];
@@ -235,7 +255,9 @@ class _ChatPageState extends State<ChatPage> {
           }
 
           ListView messageList = ListView(
-              reverse: true, children: messageWidgets.reversed.toList());
+              reverse: true,
+              cacheExtent: 1500,
+              children: messageWidgets.reversed.toList());
           return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");
@@ -253,7 +275,7 @@ class _ChatPageState extends State<ChatPage> {
     return Container(
       alignment: alignment,
       child: Padding(
-        padding: const EdgeInsets.all(5),
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
         child: ChatBubble(
           uid: data['senderId'],
           message: data['message'],
@@ -267,100 +289,14 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildMessageInput() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      child: Row(
-        children: [
-          widget.receiverUid == "aitech"
-              ? const SizedBox()
-              : IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                        backgroundColor: Theme.of(context).colorScheme.surface,
-                        context: context,
-                        isScrollControlled: true,
-                        useRootNavigator: true,
-                        enableDrag: true,
-                        shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.vertical(
-                            top: Radius.circular(20),
-                          ),
-                        ),
-                        builder: (BuildContext context) => SafeArea(
-                              child: UploadImagePage(
-                                sendImage: sendImage,
-                              ),
-                            ));
-                  },
-                  icon: const Icon(
-                    Icons.add_circle_outline_rounded,
-                    size: 40,
-                  ),
-                  color: Theme.of(context).colorScheme.secondary),
-          Flexible(
-            child: MessageTextField(
-              controller: _messageController,
-              hintText: 'Nachricht schreiben...',
-              obscureText: false,
-              onSubmitted: (_) => sendMessage(),
-            ),
-          ),
-          ValueListenableBuilder<TextEditingValue>(
-            valueListenable: _messageController,
-            builder: (context, value, child) {
-              final isEmpty = value.text.isEmpty;
-              final color = isEmpty
-                  ? Theme.of(context).colorScheme.inversePrimary
-                  : Theme.of(context).colorScheme.secondary;
-              return IconButton(
-                onPressed: isEmpty ? null : sendMessage,
-                icon: Icon(
-                  Icons.send,
-                  size: 40,
-                  color: color,
-                ),
-              );
-            },
-          ),
-        ],
+    return ChatInputBar(
+      controller: _messageController,
+      hintText: 'Nachricht schreiben...',
+      onSend: sendMessage,
+      onAttachmentTap: () => showAttachmentPickerSheet(
+        context,
+        onFilesAdded: _sendFiles,
       ),
     );
-  }
-
-  Future<String> askOpenAi(
-    List<OpenAIChatCompletionChoiceMessageModel> thisMessages,
-    String prompt,
-  ) async {
-    OpenAI.apiKey = Env.openaiApiKey;
-    List<OpenAIChatCompletionChoiceMessageModel> newMessages = [];
-    for (var messageElement in thisMessages) {
-      newMessages.add(messageElement);
-    }
-
-    newMessages.add(OpenAIChatCompletionChoiceMessageModel(
-      content: [OpenAIChatCompletionChoiceMessageContentItemModel.text(prompt)],
-      role: OpenAIChatMessageRole.user,
-    ));
-
-    OpenAIChatCompletionModel chatCompletion =
-        await OpenAI.instance.chat.create(
-      model: "gpt-3.5-turbo",
-      messages: newMessages,
-      n: 1,
-      maxTokens: 2000,
-      temperature: 0.7,
-    );
-    String response = chatCompletion.choices.first.message.content!.first.text!;
-    newMessages.add(
-      OpenAIChatCompletionChoiceMessageModel(
-        content: [
-          OpenAIChatCompletionChoiceMessageContentItemModel.text(response)
-        ],
-        role: OpenAIChatMessageRole.assistant,
-      ),
-    );
-    allMessages = newMessages;
-
-    return response;
   }
 }

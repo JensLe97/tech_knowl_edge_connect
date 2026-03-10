@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tech_knowl_edge_connect/models/idea_folder.dart';
-import 'package:tech_knowl_edge_connect/components/folder_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/submit_button.dart';
+import 'package:tech_knowl_edge_connect/models/user/idea_folder.dart';
+import 'package:tech_knowl_edge_connect/components/forms/folder_textfield.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
 
 class CreateFolderPage extends StatefulWidget {
   final void Function(IdeaFolder folder) onCreate;

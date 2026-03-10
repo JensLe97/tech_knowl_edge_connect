@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
 class UnitDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -37,7 +37,7 @@ class _UnitDialogState extends State<UnitDialog> {
     super.initState();
     _nameController =
         TextEditingController(text: widget.existingData?['name'] ?? '');
-    _status = widget.existingData?['status'] ?? 'Draft';
+    _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
 
     // Initialize Icon

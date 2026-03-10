@@ -1,16 +1,18 @@
 import 'dart:convert';
 import 'package:file_picker/file_picker.dart';
+import 'package:firebase_ai/firebase_ai.dart';
+import 'package:firebase_storage/firebase_storage.dart' hide Task;
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/models/task.dart';
-import 'package:tech_knowl_edge_connect/services/ai_tech_service.dart';
-import 'package:tech_knowl_edge_connect/services/content_admin_service.dart';
-import 'package:tech_knowl_edge_connect/components/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AiAuthoringCard extends StatefulWidget {
   final String userId;
   final ContentAdminService adminService;
-  final AiTechService aiService;
+  final AiTechGenService aiTechGenService;
   final String? selectedSubjectId;
   final String? selectedCategoryId;
   final String? selectedTopicId;
@@ -24,7 +26,7 @@ class AiAuthoringCard extends StatefulWidget {
     super.key,
     required this.userId,
     required this.adminService,
-    required this.aiService,
+    required this.aiTechGenService,
     required this.selectedSubjectId,
     required this.selectedCategoryId,
     required this.selectedTopicId,
@@ -187,16 +189,24 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
         .where((type) => type.isNotEmpty)
         .toList();
 
+    // Download uploaded files and convert to inline parts.
+    final List<Part> fileParts = [];
+    for (int i = 0; i < urls.length; i++) {
+      try {
+        final data =
+            await FirebaseStorage.instance.refFromURL(urls[i]).getData();
+        if (data != null) fileParts.add(InlineDataPart(mimeTypes[i], data));
+      } catch (_) {}
+    }
+
     try {
-      final tasks = await widget.aiService.generateLearningBite(
-        urls: urls,
-        mimeTypes: mimeTypes,
+      final tasks = await widget.aiTechGenService.generateLearningBiteTasks(
+        fileParts: fileParts,
         additionalText: _manualSourceText.trim(),
       );
       final summaryBuffer = StringBuffer();
-      await for (final chunk in widget.aiService.summarizeMultipleData(
-        urls: urls,
-        mimeTypes: mimeTypes,
+      await for (final chunk in widget.aiTechGenService.summarizeMultipleData(
+        fileParts: fileParts,
         additionalText: _manualSourceText.trim(),
         splitIntoParts: true,
       )) {

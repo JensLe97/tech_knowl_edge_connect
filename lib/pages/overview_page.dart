@@ -38,19 +38,23 @@ class _OverviewPageState extends State<OverviewPage> {
         index: _currentIndex,
         children: _tabs,
       ),
-      bottomNavigationBar: Container(
-        color: Theme.of(context).colorScheme.inversePrimary,
-        child: BottomNavigationBar(
-          currentIndex: _currentIndex,
-          type: BottomNavigationBarType.fixed,
-          onTap: _onTap,
-          items: const [
-            BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(label: 'Suche', icon: Icon(Icons.search)),
-            BottomNavigationBarItem(label: 'Feed', icon: Icon(Icons.feed)),
-            BottomNavigationBarItem(label: 'Chats', icon: Icon(Icons.chat)),
-            BottomNavigationBarItem(label: 'Profil', icon: Icon(Icons.person)),
-          ],
+      bottomNavigationBar: Theme(
+        data: Theme.of(context).copyWith(highlightColor: Colors.transparent),
+        child: Container(
+          color: Theme.of(context).colorScheme.inversePrimary,
+          child: BottomNavigationBar(
+            currentIndex: _currentIndex,
+            type: BottomNavigationBarType.fixed,
+            onTap: _onTap,
+            items: const [
+              BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
+              BottomNavigationBarItem(label: 'Suche', icon: Icon(Icons.search)),
+              BottomNavigationBarItem(label: 'Feed', icon: Icon(Icons.feed)),
+              BottomNavigationBarItem(label: 'Chats', icon: Icon(Icons.chat)),
+              BottomNavigationBarItem(
+                  label: 'Profil', icon: Icon(Icons.person)),
+            ],
+          ),
         ),
       ),
     );

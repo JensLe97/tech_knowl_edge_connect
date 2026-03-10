@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/personal_library.dart';
-import 'package:tech_knowl_edge_connect/components/search_textfield.dart';
-import 'package:tech_knowl_edge_connect/components/subject_tile.dart';
+import 'package:tech_knowl_edge_connect/components/library/personal_library.dart';
+import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
-import 'package:tech_knowl_edge_connect/models/subject.dart';
-import 'package:tech_knowl_edge_connect/pages/search/ai_search_page.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_page.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/session_type.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
+import 'package:tech_knowl_edge_connect/models/content/subject.dart';
 import 'package:tech_knowl_edge_connect/pages/search/subject_overview_page.dart';
 
 class SearchPage extends StatefulWidget {
@@ -19,6 +26,18 @@ class _SearchPageState extends State<SearchPage> {
   final subjectController = TextEditingController();
   final searchController = TextEditingController();
   final ContentService _contentService = ContentService();
+  final AiTechService _aiTechService = AiTechService();
+  final TextEditingController _messageController = TextEditingController();
+  List<PlatformFile> _pickedFiles = [];
+
+  Future<void> _pickFiles() async {
+    await showAttachmentPickerSheet(
+      context,
+      onFilesAdded: (files) => setState(() {
+        _pickedFiles = [..._pickedFiles, ...files];
+      }),
+    );
+  }
 
   void navigateToSubjectPage(Subject subject) {
     Navigator.push(
@@ -33,15 +52,8 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: Center(
-            child: SearchTextField(
-          controller: searchController,
-          hintText: "Was möchtest du wissen?",
-          onTap: () => {
-            showSearch(context: context, delegate: AiSearchDelegate())
-                .then((value) => FocusManager.instance.primaryFocus?.unfocus())
-          },
-        )),
+        title: const Text("Suche"),
+        centerTitle: true,
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -50,9 +62,74 @@ class _SearchPageState extends State<SearchPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 25),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                    stream: _aiTechService.streamSessions(
+                        FirebaseAuth.instance.currentUser?.uid ?? ''),
+                    builder: (context, snap) {
+                      if (snap.connectionState == ConnectionState.waiting) {
+                        return const SizedBox.shrink();
+                      }
+                      if (snap.hasError) return const SizedBox.shrink();
+                      final docs = snap.data?.docs ?? [];
+                      if (docs.isEmpty) return const SizedBox.shrink();
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Meine Lernreisen',
+                              style: TextStyle(
+                                  fontSize: 20, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 8),
+                          ListView.builder(
+                            physics: const NeverScrollableScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: docs.length,
+                            itemBuilder: (context, i) {
+                              final doc = docs[i];
+                              final data = doc.data();
+                              final sessionId = doc.id;
+                              final ts = data['lastTimestamp'] as Timestamp?;
+                              final last =
+                                  ts != null ? ts.toDate() : DateTime.now();
+                              final fmt =
+                                  DateTime.now().difference(last).inDays >= 1
+                                      ? DateFormat('dd.MM.yyyy')
+                                      : DateFormat('HH:mm');
+                              final lastStr = fmt.format(last);
+                              final unit = (data['unit'] as String?) ?? '';
+                              return Card(
+                                margin: const EdgeInsets.symmetric(vertical: 6),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12)),
+                                clipBehavior: Clip.antiAlias,
+                                child: ListTile(
+                                  title:
+                                      Text(unit.isNotEmpty ? unit : 'Session'),
+                                  subtitle: Text(lastStr),
+                                  onTap: () => Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => AiTechPage(
+                                        sessionId: sessionId,
+                                        unitTitle: unit.isNotEmpty
+                                            ? unit
+                                            : 'AI Tech Session',
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                          const SizedBox(height: 12),
+                        ],
+                      );
+                    },
+                  ),
+                ),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     "Meine Fächer",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -98,49 +175,29 @@ class _SearchPageState extends State<SearchPage> {
                           );
                         },
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          showDialog(
-                            context: context,
-                            builder: (context) => const SubjectDialog(),
-                          );
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.onPrimary,
-                            borderRadius: BorderRadius.circular(12),
+                      Card(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                        margin: const EdgeInsets.symmetric(vertical: 6),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12)),
+                        clipBehavior: Clip.antiAlias,
+                        child: ListTile(
+                          onTap: () {
+                            showDialog(
+                              context: context,
+                              builder: (context) => const SubjectDialog(),
+                            );
+                          },
+                          leading: const Icon(
+                            Icons.add_circle_outline,
+                            size: 25,
                           ),
-                          margin: const EdgeInsets.all(8),
-                          padding: const EdgeInsets.all(5),
-                          child: const Row(
-                            children: [
-                              Expanded(
-                                flex: 2,
-                                child: Center(
-                                  child: Padding(
-                                    padding: EdgeInsets.all(8.0),
-                                    child: Icon(
-                                      Icons.add_circle_outline,
-                                      size: 25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              Expanded(
-                                flex: 8,
-                                child: FittedBox(
-                                  fit: BoxFit.scaleDown,
-                                  alignment: Alignment.centerLeft,
-                                  child: Text(
-                                    "Neues Fach erstellen",
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+                          title: const Text(
+                            "Neues Fach erstellen",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
                       ),
@@ -149,7 +206,7 @@ class _SearchPageState extends State<SearchPage> {
                 ),
                 const SizedBox(height: 12),
                 const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 25.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Text(
                     "Meine Lerninhalte",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
@@ -161,6 +218,56 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
+      bottomNavigationBar: SafeArea(
+        minimum: const EdgeInsets.all(8.0),
+        child: ChatInputBar(
+          controller: _messageController,
+          hintText: 'Was möchtest du lernen?',
+          onSend: _startSessionFromMessage,
+          onAttachmentTap: _pickFiles,
+          pickedFiles: _pickedFiles,
+          onRemoveFile: (f) => setState(() => _pickedFiles.remove(f)),
+        ),
+      ),
     );
+  }
+
+  Future<void> _startSessionFromMessage() async {
+    final text = _messageController.text.trim();
+    if (text.isEmpty && _pickedFiles.isEmpty) return;
+    try {
+      final sid = await _aiTechService.startSession(
+          type: SessionType.study, concept: text);
+
+      final passedFiles = List<PlatformFile>.from(_pickedFiles);
+      _messageController.clear();
+      setState(() {
+        _pickedFiles = [];
+      });
+
+      if (!mounted) return;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => AiTechPage(
+                  sessionId: sid,
+                  unitTitle: '',
+                  initialUserMessage: text,
+                  initialPickedFiles: passedFiles,
+                )),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Fehler beim Starten: $e')));
+    }
+  }
+
+  @override
+  void dispose() {
+    subjectController.dispose();
+    searchController.dispose();
+    _messageController.dispose();
+    super.dispose();
   }
 }

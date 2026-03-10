@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
-import 'package:tech_knowl_edge_connect/models/concept.dart';
-import 'package:tech_knowl_edge_connect/services/content_service.dart';
+import 'package:tech_knowl_edge_connect/models/content/concept.dart';
+import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 
 class ConceptDialog extends StatefulWidget {
   final String subjectId;

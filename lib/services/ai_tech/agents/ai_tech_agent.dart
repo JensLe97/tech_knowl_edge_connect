@@ -138,6 +138,28 @@ class AiTechOrchestrator implements AiTechAgent {
     String responseText;
     String? journeyId;
 
+    // Clean up any stale pending recommendation when the user's intent is NOT
+    // the confirmation path (journey.update). This covers rejection ("Nein
+    // danke" → general), topic changes, and any other conversational move
+    // that signals the user has moved on from the recommendation.
+    if (intent is! JourneyIntent || intent.skill != JourneySkill.update) {
+      final journeysSnapCleanup = await service.streamJourneys(sessionId).first;
+      if (journeysSnapCleanup.docs.isNotEmpty) {
+        final latestId = journeysSnapCleanup.docs.last.id;
+        final data = await service.getJourneyById(latestId);
+        if (data?['pendingRecommendation'] != null) {
+          await service.updateLearningJourneyDoc(
+            journeyId: latestId,
+            updateData: {
+              'pendingRecommendation': FieldValue.delete(),
+              'pendingFeedbackPrompt': FieldValue.delete(),
+              'status': 'idle',
+            },
+          );
+        }
+      }
+    }
+
     switch (intent) {
       // -----------------------------------------------------------------------
       // LearningJourneyAgent skills

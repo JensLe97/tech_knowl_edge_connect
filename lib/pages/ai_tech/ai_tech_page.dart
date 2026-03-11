@@ -164,6 +164,25 @@ class _AiTechPageState extends State<AiTechPage> {
     final int totalPoints = result?.maxPoints ?? 0;
 
     if (completed) {
+      // Snapshot completed IDs *before* marking so we can detect the
+      // transition from incomplete → complete (prevents re-showing the
+      // completion dialog for already-finished journeys).
+      final userId = _firebaseAuth.currentUser?.uid;
+      List<String> beforeCompleted = <String>[];
+      try {
+        if (userId != null) {
+          final userDoc = await FirebaseFirestore.instance
+              .collection('Users')
+              .doc(userId)
+              .get();
+          beforeCompleted =
+              (userDoc.data()?['completedLearningBiteIds'] as List<dynamic>?)
+                      ?.map((e) => e.toString())
+                      .toList() ??
+                  <String>[];
+        }
+      } catch (_) {}
+
       // Update local cache immediately so the checkmark shows without reload.
       if (mounted) setState(() => _completedBiteIds.add(learningBiteId));
 
@@ -173,7 +192,6 @@ class _AiTechPageState extends State<AiTechPage> {
 
       // Save score after marking complete (single write, preserves all fields).
       try {
-        final userId = _firebaseAuth.currentUser?.uid;
         if (userId != null && (earnedPoints > 0 || totalPoints > 0)) {
           await _progressService.updateBiteProgress(userId,
               unitId: widget.sessionId,
@@ -196,7 +214,6 @@ class _AiTechPageState extends State<AiTechPage> {
             .get();
         final docs = snap.docs;
         final idx = docs.indexWhere((d) => d.id == learningBiteId);
-        final userId = _firebaseAuth.currentUser?.uid;
         if (idx != -1 && userId != null) {
           if (idx < docs.length - 1) {
             final nextId = docs[idx + 1].id;
@@ -229,33 +246,26 @@ class _AiTechPageState extends State<AiTechPage> {
         }
       } catch (_) {}
 
-      // Check if all bites in journey are completed to show Confetti Dialog
+      // Check if all bites in journey are completed to show Confetti Dialog.
+      // Only show when transitioning from incomplete → complete (not on re-play).
       try {
-        final userId = _firebaseAuth.currentUser?.uid;
         if (userId != null) {
-          final userDoc = await FirebaseFirestore.instance
-              .collection('Users')
-              .doc(userId)
-              .get();
-          final completedIds =
-              (userDoc.data()?['completedLearningBiteIds'] as List<dynamic>?)
-                      ?.map((e) => e.toString())
-                      .toList() ??
-                  <String>[];
-
           final snap = await FirebaseFirestore.instance
               .collection('ai_tech_journeys')
               .doc(journeyId)
               .collection('learning_bites')
               .get();
 
-          // Ensure there are learning bites and ALL of them are in the global completed array
-          final allCompleted = snap.docs.isNotEmpty &&
-              snap.docs.every((d) => completedIds.contains(d.id));
+          final allCompletedBefore = snap.docs.isNotEmpty &&
+              snap.docs.every((d) => beforeCompleted.contains(d.id));
 
-          // Note: we can't easily check 'allCompletedBefore' like in home_page,
-          // but marking current bite will guarantee it triggers when the last one is done.
-          if (allCompleted) {
+          // Treat the current bite as completed even if the server write
+          // hasn't propagated yet (same pattern as HomePage).
+          final allCompleted = snap.docs.isNotEmpty &&
+              snap.docs.every((d) =>
+                  d.id == learningBiteId || beforeCompleted.contains(d.id));
+
+          if (allCompleted && !allCompletedBefore) {
             String journeyName = 'Lernreise';
             try {
               final jdoc = await FirebaseFirestore.instance

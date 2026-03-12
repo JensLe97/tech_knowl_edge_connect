@@ -18,6 +18,7 @@ import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/agents/ai_tech_agent.dart';
 import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
+import 'package:uuid/uuid.dart';
 import 'package:tech_knowl_edge_connect/components/dialogs/completion_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/chat/typing_indicator.dart';
 
@@ -330,8 +331,9 @@ class _AiTechPageState extends State<AiTechPage> {
       String? url;
       if (f.bytes != null) {
         try {
+          final uniqueName = '${const Uuid().v4()}_${f.name}';
           final ref = FirebaseStorage.instance
-              .ref('ai_tech_attachments/$uid/${widget.sessionId}/${f.name}');
+              .ref('ai_tech_attachments/$uid/${widget.sessionId}/$uniqueName');
           final mime = LearningMaterialType.getMimeType(ext);
           await ref.putData(
               f.bytes!,
@@ -341,8 +343,15 @@ class _AiTechPageState extends State<AiTechPage> {
           url = await ref.getDownloadURL();
         } catch (_) {}
       }
+      // Replace generic image_picker names with readable timestamp names.
+      final isImagePicker = f.name.startsWith('image_picker');
+      final isVideo = LearningMaterialType.videoTypes.contains(ext);
+      final displayName = isImagePicker
+          ? '${isVideo ? 'Video' : 'Foto'}_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$ext'
+          : f.name;
+
       fileAttachments.add({
-        'name': f.name,
+        'name': displayName,
         'ext': ext,
         if (url != null) 'url': url,
       });

@@ -68,8 +68,7 @@ class _ChatPageState extends State<ChatPage> {
         continue;
       }
       final ext = (file.extension ?? '').toLowerCase();
-      final storageFileName =
-          file.name.isNotEmpty ? file.name : '${const Uuid().v4()}.$ext';
+      final storageFileName = '${const Uuid().v4()}.$ext';
       final ref =
           FirebaseStorage.instance.ref('chat_files').child(storageFileName);
       final mime = LearningMaterialType.getMimeType(ext);
@@ -84,7 +83,15 @@ class _ChatPageState extends State<ChatPage> {
       if (LearningMaterialType.videoTypes.contains(ext)) type = 'video';
       if (LearningMaterialType.pdfTypes.contains(ext)) type = 'pdf';
       if (LearningMaterialType.textTypes.contains(ext)) type = 'textfile';
-      await _chatService.sendMessage(widget.receiverUid, url, type: type);
+
+      // Use the original name for user-picked files, but replace generic
+      // image_picker names (camera/gallery) with a readable timestamp name.
+      final displayName = file.name.startsWith('image_picker')
+          ? '${type == 'video' ? 'Video' : 'Foto'}_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$ext'
+          : file.name;
+
+      await _chatService.sendMessage(widget.receiverUid, url,
+          type: type, fileName: displayName);
     }
   }
 
@@ -113,8 +120,10 @@ class _ChatPageState extends State<ChatPage> {
 
         String imageUrl = await taskSnapshot.ref.getDownloadURL();
 
+        final displayName =
+            'Foto_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$extension';
         await _chatService.sendMessage(widget.receiverUid, imageUrl,
-            type: "image");
+            type: "image", fileName: displayName);
       }
     }
   }
@@ -283,6 +292,7 @@ class _ChatPageState extends State<ChatPage> {
           isMe: data['senderId'] == _firebaseAuth.currentUser!.uid,
           time: data['timestamp'],
           userService: _userService,
+          fileName: data['fileName'] as String?,
         ),
       ),
     );

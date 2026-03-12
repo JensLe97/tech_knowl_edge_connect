@@ -38,7 +38,7 @@ class ChatService extends ChangeNotifier {
   }
 
   Future<void> sendMessage(String receiverId, String message,
-      {String type = "text"}) async {
+      {String type = "text", String? fileName}) async {
     final String currentUserId = _firebaseAuth.currentUser!.uid;
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserName =
@@ -57,6 +57,7 @@ class ChatService extends ChangeNotifier {
       type: type,
       timestamp: timestamp,
       blocked: isUserBlocked,
+      fileName: fileName,
     );
 
     List<String> ids = [currentUserId, receiverId];

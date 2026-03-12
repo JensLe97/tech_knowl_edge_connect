@@ -9,6 +9,7 @@ class Message {
   final String type;
   final Timestamp timestamp;
   final bool blocked;
+  final String? fileName;
 
   Message(
       {required this.senderId,
@@ -18,7 +19,8 @@ class Message {
       required this.message,
       required this.type,
       required this.timestamp,
-      this.blocked = false});
+      this.blocked = false,
+      this.fileName});
 
   Map<String, dynamic> toMap() {
     return {
@@ -30,6 +32,7 @@ class Message {
       'type': type,
       'timestamp': timestamp,
       'blocked': blocked,
+      if (fileName != null) 'fileName': fileName,
     };
   }
 }

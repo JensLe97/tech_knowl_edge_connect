@@ -135,19 +135,72 @@ class ColorBuilder extends MarkdownElementBuilder {
         color = parentStyle?.color ?? Colors.black;
     }
 
-    // Use parentStyle as base since preferredStyle (from styleSheet.styles[tag])
-    // is null for custom color tags.
-    final baseStyle = preferredStyle ?? parentStyle;
+    // Merge preferred + parent styles so inline emphasis (e.g. **bold**, *italic*)
+    // is preserved when color tags are nested inside markdown formatting.
+    final baseStyle = (preferredStyle ?? const TextStyle()).merge(parentStyle);
+    final parsed = _parseInlineEmphasis(element.textContent);
+    var style = baseStyle.copyWith(color: color);
+    if (parsed.isBold) {
+      style = style.copyWith(fontWeight: FontWeight.bold);
+    }
+    if (parsed.isItalic) {
+      style = style.copyWith(fontStyle: FontStyle.italic);
+    }
     // Must use Text.rich with a TextSpan so flutter_markdown's
     // _mergeInlineChildren can extract and merge it with adjacent spans.
     // A plain Text("string") has textSpan == null and breaks the inline flow.
     return Text.rich(
       TextSpan(
-        text: element.textContent,
-        style: baseStyle?.copyWith(color: color) ?? TextStyle(color: color),
+        text: parsed.text,
+        style: style,
       ),
     );
   }
+}
+
+class _InlineEmphasisResult {
+  final String text;
+  final bool isBold;
+  final bool isItalic;
+
+  const _InlineEmphasisResult({
+    required this.text,
+    required this.isBold,
+    required this.isItalic,
+  });
+}
+
+_InlineEmphasisResult _parseInlineEmphasis(String input) {
+  var text = input;
+  var isBold = false;
+  var isItalic = false;
+
+  // Handle ***text*** first.
+  final boldItalic = RegExp(r'^\*\*\*(.+)\*\*\*$', dotAll: true);
+  final boldItalicMatch = boldItalic.firstMatch(text);
+  if (boldItalicMatch != null) {
+    text = boldItalicMatch.group(1) ?? text;
+    isBold = true;
+    isItalic = true;
+    return _InlineEmphasisResult(
+        text: text, isBold: isBold, isItalic: isItalic);
+  }
+
+  final bold = RegExp(r'^\*\*(.+)\*\*$', dotAll: true);
+  final boldMatch = bold.firstMatch(text);
+  if (boldMatch != null) {
+    text = boldMatch.group(1) ?? text;
+    isBold = true;
+  }
+
+  final italic = RegExp(r'^\*(.+)\*$', dotAll: true);
+  final italicMatch = italic.firstMatch(text);
+  if (italicMatch != null) {
+    text = italicMatch.group(1) ?? text;
+    isItalic = true;
+  }
+
+  return _InlineEmphasisResult(text: text, isBold: isBold, isItalic: isItalic);
 }
 
 Map<String, MarkdownElementBuilder> getMarkdownColorBuilders() {

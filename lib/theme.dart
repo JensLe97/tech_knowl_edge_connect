@@ -56,6 +56,7 @@ class ThemeConfig {
           foregroundColor: cs.onSurface,
           elevation: 0,
           shadowColor: Colors.transparent,
+          minimumSize: const Size(0, 48),
           padding: const EdgeInsets.all(10),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -181,6 +182,7 @@ class ThemeConfig {
           foregroundColor: cs.onSurface,
           elevation: 0,
           shadowColor: Colors.transparent,
+          minimumSize: const Size(0, 48),
           padding: const EdgeInsets.all(10),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

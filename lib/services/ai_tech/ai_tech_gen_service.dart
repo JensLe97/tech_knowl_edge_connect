@@ -261,14 +261,17 @@ Regeln:
 - Bei singleChoice/singleChoiceCloze: mindestens 2 Einträge in "answers", davon 1 korrekt
 - KRITISCH: Bei singleChoice und singleChoiceCloze muss "correctAnswer" exakt (Zeichen für Zeichen, gleiche Groß-/Kleinschreibung) mit einem der Einträge in "answers" übereinstimmen
 - Fragen und Antworten auf Deutsch, korrekte Groß-/Kleinschreibung
-- Markdown in Fragen erlaubt (**fett**, `Code`); Zeilenumbrüche als \\n\\n
+- In "question" ist Markdown erlaubt (z. B. **fett**, *kursiv*, `Code`)
+- In "correctAnswer" und "answers" NUR Klartext (plain text): KEIN Markdown, KEINE HTML-Tags, KEINE Farbtags
+- KEINE Antwortlabels oder Buchstaben-Optionen wie "A", "B", "C", "D" als Antworten
+- KEINE Formulierungen wie "A) ...", "B) ...", "C) ...", "D) ..." in Fragen oder Antworten
+- Jede Option in "answers" muss der tatsächliche inhaltliche Antworttext sein (z. B. "Paris", "Berlin"), nicht nur ein Buchstabe oder Label
+- Vermeide die Frageform „Welche Aussage ist korrekt? A/B/C/D“ vollständig
 
 Gib AUSSCHLIESSLICH das JSON zurück. Kein erklärender Text.
 Format: {"tasks": [{"type": "singleChoice|singleChoiceCloze|freeTextFieldCloze|indexCard", "question": "...", "correctAnswer": "...", "answers": ["...", "..."]}, ...]}
 Beispiel singleChoice: {"type": "singleChoice", "question": "Was ist 2+2?", "correctAnswer": "4", "answers": ["3", "4", "5", "6"]}
 → correctAnswer "4" ist identisch mit dem Eintrag "4" in answers.
-
-$_markdownStyling
 Lerninhalt:
 ''');
 

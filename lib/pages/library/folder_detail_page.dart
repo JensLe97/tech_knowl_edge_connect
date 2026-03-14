@@ -82,74 +82,6 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     }
   }
 
-  Future<void> _showFileSelector() async {
-    if (userId == null) return;
-    showModalBottomSheet(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        isScrollControlled: true,
-        useRootNavigator: true,
-        useSafeArea: true,
-        enableDrag: true,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(20),
-          ),
-        ),
-        context: context,
-        builder: (context) {
-          return Container(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    IconButton(
-                      tooltip: "Foto aufnehmen",
-                      onPressed: () async {
-                        _pickAndUploadImageOrVideo(ImageSource.camera, "image");
-                      },
-                      icon: const Icon(Icons.camera_alt),
-                    ),
-                    IconButton(
-                      tooltip: "Foto aus Galerie auswählen",
-                      onPressed: () async {
-                        _pickAndUploadImageOrVideo(
-                            ImageSource.gallery, "image");
-                      },
-                      icon: const Icon(Icons.image),
-                    ),
-                    IconButton(
-                      tooltip: "Video aufnehmen",
-                      onPressed: () async {
-                        _pickAndUploadImageOrVideo(ImageSource.camera, "video");
-                      },
-                      icon: const Icon(Icons.video_call),
-                    ),
-                    IconButton(
-                      tooltip: "Video aus Galerie auswählen",
-                      onPressed: () async {
-                        _pickAndUploadImageOrVideo(
-                            ImageSource.gallery, "video");
-                      },
-                      icon: const Icon(Icons.video_file),
-                    ),
-                    IconButton(
-                      tooltip: "Datei auswählen",
-                      onPressed: () async {
-                        await _pickAndUploadFile();
-                      },
-                      icon: const Icon(Icons.attach_file),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
   Future<void> _pickAndUploadImageOrVideo(
       ImageSource imageSource, String type) async {
     ImagePicker imagePicker = ImagePicker();
@@ -185,7 +117,6 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   Future<void> _uploadFile(XFile file, String fullName) async {
-    if (mounted) Navigator.of(context).pop(); // Close the modal bottom sheet
     final ext = fullName.contains('.') ? fullName.split('.').last : '';
     final fileNameWithoutExt = fullName.contains('.')
         ? fullName.substring(0, fullName.lastIndexOf('.'))
@@ -318,31 +249,114 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             elevation: 0,
             shadowColor: Colors.transparent,
             actions: [
-              IconButton(
-                icon: Icon(_isPublic ? Icons.public : Icons.lock),
-                tooltip:
-                    _isPublic ? 'Ordner ist öffentlich' : 'Ordner ist privat',
-                onPressed: _togglePublic,
-              ),
-              IconButton(
-                icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
-                tooltip: 'Dokumente zusammenfassen',
-                onPressed: _summarizeMaterials,
-              ),
-              IconButton(
-                icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
-                tooltip: 'Learning Bite erstellen',
-                onPressed: _generateLearningBite,
-              ),
-              IconButton(
-                icon: const FaIcon(FontAwesomeIcons.folderMinus),
-                tooltip: 'Ordner löschen',
-                onPressed: _confirmAndDeleteFolder,
-              ),
-              IconButton(
+              PopupMenuButton<String>(
                 icon: const Icon(Icons.add_circle),
                 tooltip: 'Lerninhalt hochladen',
-                onPressed: _showFileSelector,
+                onSelected: (value) {
+                  switch (value) {
+                    case 'camera_image':
+                      _pickAndUploadImageOrVideo(ImageSource.camera, 'image');
+                    case 'gallery_image':
+                      _pickAndUploadImageOrVideo(ImageSource.gallery, 'image');
+                    case 'camera_video':
+                      _pickAndUploadImageOrVideo(ImageSource.camera, 'video');
+                    case 'gallery_video':
+                      _pickAndUploadImageOrVideo(ImageSource.gallery, 'video');
+                    case 'file':
+                      _pickAndUploadFile();
+                  }
+                },
+                itemBuilder: (context) => const [
+                  PopupMenuItem<String>(
+                    value: 'camera_image',
+                    child: ListTile(
+                      leading: Icon(Icons.camera_alt),
+                      title: Text('Foto aufnehmen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'gallery_image',
+                    child: ListTile(
+                      leading: Icon(Icons.image),
+                      title: Text('Foto aus Galerie auswählen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'camera_video',
+                    child: ListTile(
+                      leading: Icon(Icons.video_call),
+                      title: Text('Video aufnehmen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'gallery_video',
+                    child: ListTile(
+                      leading: Icon(Icons.video_file),
+                      title: Text('Video aus Galerie auswählen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  PopupMenuItem<String>(
+                    value: 'file',
+                    child: ListTile(
+                      leading: Icon(Icons.attach_file),
+                      title: Text('Datei auswählen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ],
+              ),
+              PopupMenuButton<String>(
+                onSelected: (value) {
+                  switch (value) {
+                    case 'toggle_public':
+                      _togglePublic();
+                    case 'summarize':
+                      _summarizeMaterials();
+                    case 'learning_bite':
+                      _generateLearningBite();
+                    case 'delete':
+                      _confirmAndDeleteFolder();
+                  }
+                },
+                itemBuilder: (context) => [
+                  PopupMenuItem<String>(
+                    value: 'toggle_public',
+                    child: ListTile(
+                      leading: Icon(_isPublic ? Icons.lock : Icons.public),
+                      title: Text(
+                          _isPublic ? 'Auf Privat stellen' : 'Veröffentlichen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'summarize',
+                    child: ListTile(
+                      leading: FaIcon(FontAwesomeIcons.wandMagicSparkles),
+                      title: Text('AI Tech Zusammenfassung'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'learning_bite',
+                    child: ListTile(
+                      leading: FaIcon(FontAwesomeIcons.schoolCircleCheck),
+                      title: Text('AI Tech Lektion erstellen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'delete',
+                    child: ListTile(
+                      leading: FaIcon(FontAwesomeIcons.folderMinus),
+                      title: Text('Ordner löschen'),
+                      contentPadding: EdgeInsets.zero,
+                    ),
+                  ),
+                ],
               ),
             ],
             flexibleSpace: FlexibleSpaceBar(

@@ -299,12 +299,12 @@ class _HomePageState extends State<HomePage> {
       }
       if (!mounted) return;
       Navigator.pop(context);
-      final result = await Navigator.push(
+      final result = await Navigator.push<LearningBiteResult>(
           context,
           MaterialPageRoute(
               builder: (_) =>
                   LearningBitePage(learningBite: learningBite, tasks: tasks)));
-      if (result is Map && result['completed'] == true) {
+      if (result != null && result.completed) {
         try {
           await _handlePostCompletionForContent(
               path['subjectId']!,
@@ -313,8 +313,8 @@ class _HomePageState extends State<HomePage> {
               path['unitId']!,
               path['conceptId']!,
               path['learningBiteId']!,
-              points: result['points'] as int? ?? 0,
-              maxPoints: result['maxPoints'] as int? ?? 0);
+              points: result.points,
+              maxPoints: result.maxPoints);
         } catch (_) {}
       }
     } catch (e) {

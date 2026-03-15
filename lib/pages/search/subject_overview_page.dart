@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/unit_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/category_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
@@ -129,7 +128,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                       OverflowBox(
                         maxWidth: 800,
                         maxHeight: 800,
-                        child: FaIcon(
+                        child: Icon(
                           currentSubject.iconData,
                           color: currentSubject.color,
                           size: 50,

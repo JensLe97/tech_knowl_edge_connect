@@ -60,7 +60,7 @@ class _AccountPageState extends State<AccountPage> {
                     children: <Widget>[
                       ListTile(
                         enabled: false,
-                        leading: Icon(FontAwesomeIcons.solidUser,
+                        leading: FaIcon(FontAwesomeIcons.solidUser,
                             color: Theme.of(context)
                                 .textTheme
                                 .displayLarge!

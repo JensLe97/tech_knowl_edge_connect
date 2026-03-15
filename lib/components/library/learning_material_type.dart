@@ -1,5 +1,4 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:flutter/material.dart';
 
 class LearningMaterialType {
   static const List<String> supportedTypes = [
@@ -29,7 +28,7 @@ class LearningMaterialType {
   ];
   static const List<String> videoTypes = ['mp4', 'mov', 'webm', 'mkv'];
 
-  static IconData getIconForMessageType(String type) {
+  static FaIconData getIconForMessageType(String type) {
     return switch (type) {
       'image' => FontAwesomeIcons.fileImage,
       'video' => FontAwesomeIcons.fileVideo,
@@ -39,7 +38,7 @@ class LearningMaterialType {
     };
   }
 
-  static IconData getIconForType(String type) {
+  static FaIconData getIconForType(String type) {
     final t = type.toLowerCase();
     if (textTypes.contains(t)) {
       return FontAwesomeIcons.fileLines;

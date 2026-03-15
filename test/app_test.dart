@@ -20,7 +20,7 @@ void main() {
         id: 'test_subject',
         name: 'Testfach',
         color: Colors.blue,
-        iconData: FontAwesomeIcons.book);
+        iconData: Icons.book);
     await tester.pumpWidget(
       makeTestableWidget(
         Scaffold(

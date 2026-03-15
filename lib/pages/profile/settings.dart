@@ -69,17 +69,17 @@ class _SettingsPageState extends State<SettingsPage> {
             onTap: () => openUrl(helpAndSupport),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.paperclip),
+            leading: const FaIcon(FontAwesomeIcons.paperclip),
             title: const Text('Impressum'),
             onTap: () => openUrl(disclosure),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.userShield),
+            leading: const FaIcon(FontAwesomeIcons.userShield),
             title: const Text('Datenschutz'),
             onTap: () => openUrl(privacyPolicy),
           ),
           ListTile(
-            leading: const Icon(FontAwesomeIcons.fileShield),
+            leading: const FaIcon(FontAwesomeIcons.fileShield),
             title: const Text('Nutzungsbedingungen'),
             onTap: () => openUrl(termsAndConditions),
           ),

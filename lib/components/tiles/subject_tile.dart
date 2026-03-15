@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:tech_knowl_edge_connect/models/content/subject.dart";
 
 class SubjectTile extends StatelessWidget {
@@ -21,7 +20,7 @@ class SubjectTile extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       child: ListTile(
         onTap: onTap,
-        leading: FaIcon(subject.iconData, size: 25),
+        leading: Icon(subject.iconData, size: 25),
         title: Text(
           subject.name,
           style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

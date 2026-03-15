@@ -36,7 +36,7 @@ void main() {
     // Check name
     expect(find.text('Testfach'), findsOneWidget);
     // Check icon
-    expect(find.byType(FaIcon), findsOneWidget);
+    expect(find.byType(Icon), findsOneWidget);
     // Check color (Card background)
     final card = tester.widget<Card>(find
         .descendant(

@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   StreamSubscription<List<UnitProgress>>? _unitsSub;
   StreamSubscription<List<Subject>>? _subjectsSub;
   List<UnitProgress> _units = [];
+  bool _isLoadingUnits = true;
   final Map<String, Color> _subjectColors = {};
   bool _isDisposed = false;
 
@@ -87,14 +88,21 @@ class _HomePageState extends State<HomePage> {
     _unitsSub?.cancel();
     final uid = _user?.uid;
     if (uid == null) {
-      _safeSetState(() => _units = []);
+      _safeSetState(() {
+        _units = [];
+        _isLoadingUnits = false;
+      });
       return;
     }
+    _safeSetState(() => _isLoadingUnits = true);
     _unitsSub = _progressService.subscribeUserUnits(uid).listen((list) {
       _safeSetState(() {
         _units = list;
+        _isLoadingUnits = false;
       });
-    }, onError: (_) {});
+    }, onError: (_) {
+      _safeSetState(() => _isLoadingUnits = false);
+    });
   }
 
   @override
@@ -718,8 +726,16 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          HomeGreetingHeader(username: _userData?['username'] ?? 'Nutzer'),
-          if (_units.isNotEmpty) ...[
+          HomeGreetingHeader(
+            username: _userData?['username'],
+            isLoading: _userData == null && _user != null,
+          ),
+          if (_isLoadingUnits)
+            const Padding(
+              padding: EdgeInsets.only(top: 32.0),
+              child: Center(child: CircularProgressIndicator()),
+            )
+          else if (_units.isNotEmpty) ...[
             const Text('In Bearbeitung',
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
             const SizedBox(height: 8),

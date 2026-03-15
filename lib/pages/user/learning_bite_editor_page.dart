@@ -230,43 +230,24 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                   children: [
                     Row(
                       children: [
-                        Chip(
-                          label: Text(
-                            UserConstants.statusLabels[status] ?? status,
+                        Container(
+                          height: 44,
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color: UserConstants.getStatusColor(status),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          backgroundColor: UserConstants.getStatusColor(status),
-                          labelStyle: const TextStyle(color: Colors.white),
-                        ),
-                        if (status == UserConstants.statusPending) ...[
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Row(
-                              children: [
-                                Icon(Icons.info_outline,
-                                    size: 20,
-                                    color:
-                                        Theme.of(context).colorScheme.outline),
-                                const SizedBox(width: 8),
-                                Flexible(
-                                  child: Text(
-                                    'Ein Admin prüft derzeit dieses Learning Bite sowie das übergeordnete Konzept, die Einheit, das Thema, die Kategorie und das Fach.',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .outline),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
+                          alignment: Alignment.center,
+                          child: Text(
+                            UserConstants.statusLabels[status] ?? status,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                          const SizedBox(width: 8),
-                        ] else
-                          const Spacer(),
+                        ),
+                        const Spacer(),
                         if (status == UserConstants.statusPrivate ||
                             status == UserConstants.statusRejected)
                           ElevatedButton.icon(
@@ -313,6 +294,32 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                           ),
                       ],
                     ),
+                    if (status == UserConstants.statusPending) ...[
+                      const SizedBox(height: 12),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Icon(
+                            Icons.info_outline,
+                            size: 20,
+                            color: Theme.of(context).colorScheme.outline,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              'Ein Admin prüft derzeit dieses Learning Bite sowie das übergeordnete Konzept, die Einheit, das Thema, die Kategorie und das Fach.',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.copyWith(
+                                    color:
+                                        Theme.of(context).colorScheme.outline,
+                                  ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                     const SizedBox(height: 16),
                     if (isWide)
                       Row(

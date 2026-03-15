@@ -542,7 +542,8 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             const SizedBox(height: 8),
             Text(
               'Hinweis: KI-Inhalte müssen vor Veröffentlichung geprüft werden.',
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ],
         ),

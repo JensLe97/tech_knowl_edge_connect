@@ -170,7 +170,8 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
             const SizedBox(height: 6),
             Text(
               'Hinweis: Der Benutzer muss sich ab- und wieder anmelden, um die Rolle zu sehen.',
-              style: TextStyle(color: Theme.of(context).colorScheme.secondary),
+              style:
+                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ],
         ),

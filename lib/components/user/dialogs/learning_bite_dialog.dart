@@ -221,9 +221,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                     ),
                   ),
               ] else ...[
-                const Text(
-                    "Hinweis: Nach dem Erstellen ist der Bite noch leer.",
-                    style: TextStyle(fontSize: 12, color: Colors.grey)),
+                Text("Hinweis: Nach dem Erstellen ist der Bite noch leer.",
+                    style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(context).colorScheme.onSecondary)),
                 const SizedBox(height: 8),
               ],
             ],

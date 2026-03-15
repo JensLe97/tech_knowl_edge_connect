@@ -115,6 +115,7 @@ class ThemeConfig {
         elevation: 8,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
+        clipBehavior: Clip.antiAlias,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
       ),
@@ -250,6 +251,7 @@ class ThemeConfig {
         elevation: 8,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
+        clipBehavior: Clip.antiAlias,
         backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
       ),

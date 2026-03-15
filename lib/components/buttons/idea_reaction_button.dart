@@ -21,21 +21,18 @@ class IdeaReactionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: GestureDetector(
-        onTap: onTap,
-        child: Column(
-          children: [
-            Icon(
-              icon,
-              size: 40,
-              color: isLiked ? Colors.red : color,
-            ),
-            const SizedBox(height: 10),
-            hasCounter
-                ? Text(number.toString(), style: TextStyle(color: color))
-                : const SizedBox(),
-          ],
-        ),
+      child: Column(
+        children: [
+          IconButton(
+            onPressed: onTap,
+            icon: Icon(icon),
+            iconSize: 40,
+            color: isLiked ? Colors.red : color,
+          ),
+          hasCounter
+              ? Text(number.toString(), style: TextStyle(color: color))
+              : const SizedBox(),
+        ],
       ),
     );
   }

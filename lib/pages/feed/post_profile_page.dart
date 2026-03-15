@@ -72,7 +72,7 @@ class _ProfilePageState extends State<PostProfilePage> {
                     ),
                   );
                 },
-                icon: const Icon(Icons.more_vert)),
+                icon: const Icon(Icons.more_horiz)),
           ]),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: getUserDetails(),

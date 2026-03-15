@@ -142,8 +142,8 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
               mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
+                TextButton(
+                  onPressed: () {
                     Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => PostProfilePage(
                         username: material.userName,
@@ -151,6 +151,11 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                       ),
                     ));
                   },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: Text(
                     '@${material.userName}',
                     style: TextStyle(
@@ -159,18 +164,14 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                         color: isPdf ? overlayColor : Colors.white),
                   ),
                 ),
-                const SizedBox(height: 10),
-                RichText(
-                    text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: material.name,
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: isPdf ? overlayColor : Colors.white),
-                    ),
-                  ],
-                )),
+                const SizedBox(height: 8),
+                Text(
+                  material.name,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isPdf ? overlayColor : Colors.white,
+                  ),
+                ),
               ],
             ),
           ),

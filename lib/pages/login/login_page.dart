@@ -69,7 +69,7 @@ class _LoginPageState extends State<LoginPage> {
                     }));
                   },
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
@@ -142,7 +142,7 @@ class _LoginPageState extends State<LoginPage> {
                     TextButton(
                       onPressed: widget.onTap,
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),

@@ -21,12 +21,14 @@ class SubmitButton extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
-            textStyle: const TextStyle(
+          ),
+          child: Text(
+            text,
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 20,
             ),
           ),
-          child: Text(text),
         ),
       ),
     );

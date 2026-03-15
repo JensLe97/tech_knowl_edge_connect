@@ -41,7 +41,7 @@ class TermsAndConditions extends StatelessWidget {
           TextButton(
             onPressed: () => openUrl(termsAndConditions),
             style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),
@@ -66,7 +66,7 @@ class TermsAndConditions extends StatelessWidget {
           TextButton(
             onPressed: () => openUrl(privacyPolicy),
             style: TextButton.styleFrom(
-              padding: EdgeInsets.zero,
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
               minimumSize: Size.zero,
               tapTargetSize: MaterialTapTargetSize.shrinkWrap,
             ),

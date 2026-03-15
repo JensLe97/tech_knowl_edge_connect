@@ -37,23 +37,20 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 },
                 children: const [
                   SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
                     child: IntroPage1(),
                   ),
                   SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
                     child: IntroPage2(),
                   ),
                   SingleChildScrollView(
-                    physics: NeverScrollableScrollPhysics(),
                     child: IntroPage3(),
                   ),
                 ],
               ),
             ),
             Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 60),
+              padding: const EdgeInsets.only(
+                  left: 8.0, right: 8.0, top: 16.0, bottom: 24.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

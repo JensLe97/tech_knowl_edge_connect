@@ -80,7 +80,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   onTap: signUserUp,
                   text: "Registrieren",
                 ),
-                const SizedBox(height: 109),
+                const SizedBox(height: 111),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -93,7 +93,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     TextButton(
                       onPressed: widget.onTap,
                       style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
+                        padding: const EdgeInsets.symmetric(horizontal: 4.0),
                         minimumSize: Size.zero,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),

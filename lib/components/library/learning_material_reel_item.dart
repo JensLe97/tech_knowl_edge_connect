@@ -152,7 +152,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                     ));
                   },
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.zero,
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
                     minimumSize: Size.zero,
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),

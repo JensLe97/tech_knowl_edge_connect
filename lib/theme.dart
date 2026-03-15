@@ -60,7 +60,8 @@ class ThemeConfig {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -70,7 +71,8 @@ class ThemeConfig {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -78,9 +80,9 @@ class ThemeConfig {
           foregroundColor: cs.primary,
           minimumSize: const Size(0, 44),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -196,7 +198,8 @@ class ThemeConfig {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
@@ -206,7 +209,8 @@ class ThemeConfig {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -214,9 +218,9 @@ class ThemeConfig {
           foregroundColor: cs.primary,
           minimumSize: const Size(0, 44),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          textStyle: textTheme.labelLarge?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          textStyle: textTheme.labelLarge
+              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(

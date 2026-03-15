@@ -149,6 +149,27 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                           return const Center(
                               child: CircularProgressIndicator());
                         }
+
+                        if (categorySnapshot.hasError) {
+                          final err = categorySnapshot.error;
+                          debugPrint('Category stream error: $err');
+                          return SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.5,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 15),
+                              child: Center(
+                                child: Text(
+                                  'Fehler beim Laden der Kategorien: $err',
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.red),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+
                         final categories = categorySnapshot.data ?? [];
 
                         if (categories.isEmpty) {
@@ -180,7 +201,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                             return Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const SizedBox(height: 20),
                                 Padding(
                                   padding: const EdgeInsets.only(
                                       left: 20, right: 20),
@@ -242,7 +262,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                     ],
                                   ),
                                 ),
-                                const SizedBox(height: 6),
                                 StreamBuilder<List<Topic>>(
                                   stream: _contentService.getTopics(
                                       currentSubject.id, category.id),
@@ -267,7 +286,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            const SizedBox(height: 10),
                                             Padding(
                                               padding: const EdgeInsets.only(
                                                   left: 20, right: 20),

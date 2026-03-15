@@ -13,7 +13,7 @@ class ContentAdminService {
   Stream<QuerySnapshot<Map<String, dynamic>>> streamSubjects() {
     return _firestore
         .collection('content_subjects')
-        .orderBy('name')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -75,7 +75,7 @@ class ContentAdminService {
         .collection('content_subjects')
         .doc(subjectId)
         .collection('categories')
-        .orderBy('name')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -156,7 +156,7 @@ class ContentAdminService {
         .collection('categories')
         .doc(categoryId)
         .collection('topics')
-        .orderBy('name')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -254,7 +254,7 @@ class ContentAdminService {
         .collection('topics')
         .doc(topicId)
         .collection('units')
-        .orderBy('name')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -369,7 +369,7 @@ class ContentAdminService {
         .collection('units')
         .doc(unitId)
         .collection('concepts')
-        .orderBy('name')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -498,7 +498,7 @@ class ContentAdminService {
         .collection('concepts')
         .doc(conceptId)
         .collection('learning_bites')
-        .orderBy('title')
+        .orderBy('createdAt')
         .snapshots();
   }
 
@@ -1004,6 +1004,7 @@ class ContentAdminService {
     return _firestore
         .collectionGroup('learning_bites')
         .where('status', isEqualTo: UserConstants.statusPending)
+        .orderBy('createdAt')
         .snapshots();
   }
 

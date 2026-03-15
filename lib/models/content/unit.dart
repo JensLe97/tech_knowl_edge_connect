@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 
 class Unit {
@@ -7,6 +8,7 @@ class Unit {
   final IconData iconData;
   final String? authorId;
   final String status;
+  final DateTime? createdAt;
 
   Unit({
     required this.id,
@@ -14,10 +16,12 @@ class Unit {
     required this.iconData,
     this.authorId,
     this.status = UserConstants.statusApproved,
+    this.createdAt,
   });
 
   factory Unit.fromMap(Map<String, dynamic> data, String id) {
     final iconMap = data['iconData'] as Map<String, dynamic>?;
+    final createdTs = data['createdAt'] as Timestamp?;
 
     return Unit(
       id: id,
@@ -25,6 +29,7 @@ class Unit {
       iconData: UserConstants.getIconFromData(iconMap) ?? Icons.error,
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
+      createdAt: createdTs?.toDate(),
     );
   }
 

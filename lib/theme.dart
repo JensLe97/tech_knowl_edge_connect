@@ -33,7 +33,8 @@ class ThemeConfig {
         foregroundColor: cs.onSurface,
         elevation: 8,
         centerTitle: false,
-        titleTextStyle: TextStyle(
+        toolbarTextStyle: textTheme.bodyLarge?.copyWith(color: cs.onSurface),
+        titleTextStyle: textTheme.titleLarge?.copyWith(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
       popupMenuTheme: PopupMenuThemeData(
@@ -171,7 +172,8 @@ class ThemeConfig {
         foregroundColor: cs.onSurface,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: TextStyle(
+        toolbarTextStyle: textTheme.bodyLarge?.copyWith(color: cs.onSurface),
+        titleTextStyle: textTheme.titleLarge?.copyWith(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
       popupMenuTheme: PopupMenuThemeData(

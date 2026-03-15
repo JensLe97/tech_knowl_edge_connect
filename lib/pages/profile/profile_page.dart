@@ -87,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         return SafeArea(child: MenuItems(isAdmin: _isAdmin));
                       });
                 },
-                icon: const Icon(Icons.menu)),
+                icon: const Icon(Icons.more_horiz)),
           ]),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
           future: getUserDetails(),

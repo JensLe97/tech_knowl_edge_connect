@@ -91,6 +91,8 @@ class _LearningBitePageState extends State<LearningBitePage>
     int maxDataNum = data.length;
     int maxTaskNum = tasks.length;
     int maxPageNum = maxDataNum + maxTaskNum;
+    final double progressValue =
+        maxPageNum > 0 ? currentPage.toDouble() / maxPageNum : 0.0;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -116,10 +118,7 @@ class _LearningBitePageState extends State<LearningBitePage>
                   TweenAnimationBuilder<double>(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
-                    tween: Tween<double>(
-                      begin: 0,
-                      end: currentPage.toDouble() / maxPageNum,
-                    ),
+                    tween: Tween<double>(begin: 0, end: progressValue),
                     builder: (context, value, _) => LinearProgressIndicator(
                       value: value,
                       backgroundColor: Theme.of(context)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 
 class LearningBite {
@@ -11,6 +12,7 @@ class LearningBite {
   final String? authorId;
   final String
       status; // 'private', 'pending', UserConstants.statusApproved, 'rejected'
+  final DateTime? createdAt;
 
   LearningBite({
     required this.id,
@@ -22,10 +24,12 @@ class LearningBite {
     this.authorId,
     this.status = UserConstants
         .statusApproved, // Default to approved for existing static content
+    this.createdAt,
   });
 
   factory LearningBite.fromMap(Map<String, dynamic> data, String id) {
     final iconMap = data['iconData'] as Map<String, dynamic>?;
+    final createdTs = data['createdAt'] as Timestamp?;
 
     return LearningBite(
       id: id,
@@ -36,6 +40,7 @@ class LearningBite {
       iconData: UserConstants.getIconFromData(iconMap) ?? Icons.book,
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
+      createdAt: createdTs?.toDate(),
     );
   }
 

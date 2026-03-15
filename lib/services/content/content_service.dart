@@ -20,19 +20,24 @@ class ContentService {
     final globalStream = _firestore
         .collection('content_subjects')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       final subjects = snapshot.docs.map((doc) {
         return Subject.fromMap(doc.data(), doc.id);
       }).toList();
-      subjects.sort((a, b) => a.name.compareTo(b.name));
+      subjects.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return subjects;
     });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => a.name.compareTo(b.name));
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
         return list;
       });
     }
@@ -40,12 +45,15 @@ class ContentService {
     final userStream = _firestore
         .collection('content_subjects')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       final subjects = snapshot.docs.map((doc) {
         return Subject.fromMap(doc.data(), doc.id);
       }).toList();
-      subjects.sort((a, b) => a.name.compareTo(b.name));
+      subjects.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return subjects;
     });
 
@@ -60,8 +68,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -73,6 +82,7 @@ class ContentService {
         .doc(subjectId)
         .collection('categories')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -81,13 +91,21 @@ class ContentService {
     });
 
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return globalStream;
+    if (user == null) {
+      return globalStream.map((list) {
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        return list;
+      });
+    }
 
     final userStream = _firestore
         .collection('content_subjects')
         .doc(subjectId)
         .collection('categories')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -106,8 +124,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -121,6 +140,7 @@ class ContentService {
         .doc(categoryId)
         .collection('topics')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -129,7 +149,14 @@ class ContentService {
     });
 
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return globalStream;
+    if (user == null) {
+      return globalStream.map((list) {
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        return list;
+      });
+    }
 
     final userStream = _firestore
         .collection('content_subjects')
@@ -138,6 +165,7 @@ class ContentService {
         .doc(categoryId)
         .collection('topics')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -156,8 +184,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -174,6 +203,7 @@ class ContentService {
         .doc(topicId)
         .collection('units')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -182,7 +212,14 @@ class ContentService {
     });
 
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return globalStream;
+    if (user == null) {
+      return globalStream.map((list) {
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        return list;
+      });
+    }
 
     final userStream = _firestore
         .collection('content_subjects')
@@ -193,6 +230,7 @@ class ContentService {
         .doc(topicId)
         .collection('units')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -211,8 +249,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -231,6 +270,7 @@ class ContentService {
         .doc(unitId)
         .collection('concepts')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -239,7 +279,14 @@ class ContentService {
     });
 
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return globalStream;
+    if (user == null) {
+      return globalStream.map((list) {
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        return list;
+      });
+    }
 
     final userStream = _firestore
         .collection('content_subjects')
@@ -252,6 +299,7 @@ class ContentService {
         .doc(unitId)
         .collection('concepts')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -270,8 +318,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -292,6 +341,7 @@ class ContentService {
         .doc(conceptId)
         .collection('learning_bites')
         .where('status', isEqualTo: UserConstants.statusApproved)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -300,7 +350,14 @@ class ContentService {
     });
 
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return globalStream;
+    if (user == null) {
+      return globalStream.map((list) {
+        list.sort((a, b) => (a.createdAt ??
+                DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        return list;
+      });
+    }
 
     final userStream = _firestore
         .collection('content_subjects')
@@ -315,6 +372,7 @@ class ContentService {
         .doc(conceptId)
         .collection('learning_bites')
         .where('authorId', isEqualTo: user.uid)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -333,8 +391,9 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList
-          .sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+      sortedList.sort((a, b) => (a.createdAt ??
+              DateTime.fromMillisecondsSinceEpoch(0))
+          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
       return sortedList;
     });
   }
@@ -344,6 +403,7 @@ class ContentService {
     return _firestore
         .collectionGroup('learning_bites')
         .where('authorId', isEqualTo: userId)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -357,6 +417,7 @@ class ContentService {
     return _firestore
         .collectionGroup('learning_bites')
         .where('status', isEqualTo: UserConstants.statusPending)
+        .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
       return snapshot.docs.map((doc) {
@@ -373,6 +434,12 @@ class ContentService {
       String unitId,
       String conceptId,
       LearningBite bite) async {
+    final userId = FirebaseAuth.instance.currentUser?.uid;
+    final map = Map<String, dynamic>.from(bite.toMap())
+      ..putIfAbsent('authorId', () => bite.authorId ?? userId)
+      ..putIfAbsent('createdAt', () => FieldValue.serverTimestamp())
+      ..putIfAbsent('updatedAt', () => FieldValue.serverTimestamp());
+
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -385,9 +452,8 @@ class ContentService {
         .collection('concepts')
         .doc(conceptId)
         .collection('learning_bites')
-        .add(bite.toMap());
+        .add(map);
 
-    final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
       try {
         await _progressService.changeExpectedBiteCount(userId, unitId, 1);

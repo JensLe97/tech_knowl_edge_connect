@@ -38,12 +38,15 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
       fontFamilyFallback: const ['Courier New', 'Courier'],
       fontSize: baseStyle.fontSize! * 0.9,
       color: baseStyle.color,
+      fontWeight: FontWeight.normal,
+      fontStyle: FontStyle.normal,
+      backgroundColor: theme.colorScheme.surfaceContainerHighest,
     ),
     codeblockDecoration: BoxDecoration(
       color: theme.colorScheme.surfaceContainerHighest,
       borderRadius: BorderRadius.circular(8),
     ),
-    codeblockPadding: const EdgeInsets.all(12),
+    codeblockPadding: const EdgeInsets.all(8),
     blockquote: baseStyle.copyWith(
       color: theme.colorScheme.onSurfaceVariant,
       fontStyle: FontStyle.italic,
@@ -64,6 +67,41 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
   return styleSheet;
 }
 
+class PreBuilder extends MarkdownElementBuilder {
+  @override
+  Widget? visitElementAfterWithContext(
+    BuildContext context,
+    md.Element element,
+    TextStyle? preferredStyle,
+    TextStyle? parentStyle,
+  ) {
+    final theme = Theme.of(context);
+
+    final textStyle = (preferredStyle ?? theme.textTheme.bodyMedium!).copyWith(
+      fontFamily: 'monospace',
+      fontFamilyFallback: const ['Courier New', 'Courier'],
+      fontSize: theme.textTheme.bodyLarge!.fontSize! * 0.9,
+      color: theme.colorScheme.onSurface,
+      // Clear any inherited background color from the inline code style
+      backgroundColor: Colors.transparent,
+    );
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerHighest,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        element.textContent.trimRight(),
+        style: textStyle,
+        softWrap: true, // Prevents horizontal scrolling
+      ),
+    );
+  }
+}
+
 class InlineCodeBuilder extends MarkdownElementBuilder {
   @override
   Widget? visitElementAfterWithContext(
@@ -73,20 +111,32 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
     TextStyle? parentStyle,
   ) {
     final theme = Theme.of(context);
+    final baseStyle =
+        (preferredStyle ?? theme.textTheme.bodyMedium!).merge(parentStyle);
+    final codeStyle = baseStyle.copyWith(
+      fontFamily: 'monospace',
+      fontFamilyFallback: const ['Courier New', 'Courier'],
+      fontSize:
+          (baseStyle.fontSize ?? theme.textTheme.bodyLarge!.fontSize!) * 0.9,
+      color: theme.colorScheme.onSurface,
+      backgroundColor: Colors.transparent,
+    );
+
     return Text.rich(
       TextSpan(
         children: [
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+              margin: const EdgeInsets.symmetric(horizontal: 2),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest,
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
-                element.textContent.trimRight(),
-                style: preferredStyle,
+                element.textContent,
+                style: codeStyle,
               ),
             ),
           ),
@@ -206,6 +256,7 @@ _InlineEmphasisResult _parseInlineEmphasis(String input) {
 Map<String, MarkdownElementBuilder> getMarkdownColorBuilders() {
   final colorBuilder = ColorBuilder();
   return {
+    'pre': PreBuilder(),
     'code': InlineCodeBuilder(),
     'colored-text': colorBuilder,
     'red': colorBuilder,

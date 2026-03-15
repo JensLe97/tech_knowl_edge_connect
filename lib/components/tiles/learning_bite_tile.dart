@@ -38,7 +38,7 @@ class LearningBiteTile extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: FaIcon(learningBite.iconData, size: 30),
+                          child: Icon(learningBite.iconData, size: 30),
                         ),
                       ),
                     ),
@@ -55,7 +55,7 @@ class LearningBiteTile extends StatelessWidget {
                   padding: const EdgeInsets.all(5),
                   child: Align(
                     alignment: Alignment.topRight,
-                    child: Icon(
+                    child: FaIcon(
                       completed || learningBite.completed
                           ? FontAwesomeIcons.circleCheck
                           : FontAwesomeIcons.circle,

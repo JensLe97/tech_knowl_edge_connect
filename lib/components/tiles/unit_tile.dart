@@ -1,5 +1,4 @@
 import "package:flutter/material.dart";
-import "package:font_awesome_flutter/font_awesome_flutter.dart";
 import "package:tech_knowl_edge_connect/models/content/unit.dart";
 
 class UnitTile extends StatelessWidget {
@@ -38,7 +37,7 @@ class UnitTile extends StatelessWidget {
                       child: Center(
                         child: Padding(
                           padding: const EdgeInsets.all(10.0),
-                          child: FaIcon(unit.iconData, size: 30),
+                          child: Icon(unit.iconData, size: 30),
                         ),
                       ),
                     ),

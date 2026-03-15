@@ -1,7 +1,6 @@
 import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/learning_bite_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/concept_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/learning_bite_dialog.dart';
@@ -166,7 +165,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                   OverflowBox(
                     maxWidth: 800,
                     maxHeight: 800,
-                    child: FaIcon(
+                    child: Icon(
                       widget.unit.iconData,
                       size: 50,
                     ),

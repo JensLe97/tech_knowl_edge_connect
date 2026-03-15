@@ -435,10 +435,6 @@ class ContentService {
       String conceptId,
       LearningBite bite) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
-    final map = Map<String, dynamic>.from(bite.toMap())
-      ..putIfAbsent('authorId', () => bite.authorId ?? userId)
-      ..putIfAbsent('createdAt', () => FieldValue.serverTimestamp())
-      ..putIfAbsent('updatedAt', () => FieldValue.serverTimestamp());
 
     await _firestore
         .collection('content_subjects')
@@ -452,7 +448,7 @@ class ContentService {
         .collection('concepts')
         .doc(conceptId)
         .collection('learning_bites')
-        .add(map);
+        .add(bite.toMap());
 
     if (userId != null) {
       try {

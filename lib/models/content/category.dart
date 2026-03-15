@@ -7,6 +7,7 @@ class Category {
   final String? authorId;
   final String status;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Category({
     required this.id,
@@ -14,16 +15,19 @@ class Category {
     this.authorId,
     this.status = UserConstants.statusApproved,
     this.createdAt,
+    this.updatedAt,
   });
 
   factory Category.fromMap(Map<String, dynamic> data, String id) {
     final createdTs = data['createdAt'] as Timestamp?;
+    final updatedTs = data['updatedAt'] as Timestamp?;
     return Category(
       id: id,
       name: data['name'] ?? '',
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
       createdAt: createdTs?.toDate(),
+      updatedAt: updatedTs?.toDate(),
     );
   }
 
@@ -32,6 +36,8 @@ class Category {
       'name': name,
       'authorId': authorId,
       'status': status,
+      if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
+      if (updatedAt != null) 'updatedAt': Timestamp.fromDate(updatedAt!),
     };
   }
 }

@@ -79,6 +79,8 @@ class _UnitDialogState extends State<UnitDialog> {
         iconData: selectedIcon,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addUnit(
         widget.subjectId,

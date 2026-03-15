@@ -10,6 +10,7 @@ class Subject {
   final String? authorId;
   final String status;
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   Subject({
     required this.id,
@@ -19,11 +20,13 @@ class Subject {
     this.authorId,
     this.status = UserConstants.statusApproved,
     this.createdAt,
+    this.updatedAt,
   });
 
   factory Subject.fromMap(Map<String, dynamic> data, String id) {
     final iconMap = data['iconData'] as Map<String, dynamic>?;
     final createdTs = data['createdAt'] as Timestamp?;
+    final updatedTs = data['updatedAt'] as Timestamp?;
     return Subject(
       id: id,
       name: data['name'] ?? '',
@@ -32,6 +35,7 @@ class Subject {
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
       createdAt: createdTs?.toDate(),
+      updatedAt: updatedTs?.toDate(),
     );
   }
 
@@ -46,6 +50,8 @@ class Subject {
       },
       'authorId': authorId,
       'status': status,
+      if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
+      if (updatedAt != null) 'updatedAt': Timestamp.fromDate(updatedAt!),
     };
   }
 }

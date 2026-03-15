@@ -71,6 +71,8 @@ class _CategoryDialogState extends State<CategoryDialog> {
         name: nameController.text,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addCategory(widget.subjectId, newItem);
     } else {

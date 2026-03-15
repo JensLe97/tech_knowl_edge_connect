@@ -13,6 +13,7 @@ class LearningBite {
   final String
       status; // 'private', 'pending', UserConstants.statusApproved, 'rejected'
   final DateTime? createdAt;
+  final DateTime? updatedAt;
 
   LearningBite({
     required this.id,
@@ -25,11 +26,13 @@ class LearningBite {
     this.status = UserConstants
         .statusApproved, // Default to approved for existing static content
     this.createdAt,
+    this.updatedAt,
   });
 
   factory LearningBite.fromMap(Map<String, dynamic> data, String id) {
     final iconMap = data['iconData'] as Map<String, dynamic>?;
     final createdTs = data['createdAt'] as Timestamp?;
+    final updatedTs = data['updatedAt'] as Timestamp?;
 
     return LearningBite(
       id: id,
@@ -41,6 +44,7 @@ class LearningBite {
       authorId: data['authorId'],
       status: data['status'] ?? UserConstants.statusApproved,
       createdAt: createdTs?.toDate(),
+      updatedAt: updatedTs?.toDate(),
     );
   }
 
@@ -57,6 +61,8 @@ class LearningBite {
       },
       'authorId': authorId,
       'status': status,
+      if (createdAt != null) 'createdAt': Timestamp.fromDate(createdAt!),
+      if (updatedAt != null) 'updatedAt': Timestamp.fromDate(updatedAt!),
     };
   }
 }

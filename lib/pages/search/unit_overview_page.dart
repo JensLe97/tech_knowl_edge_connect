@@ -187,6 +187,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                       final concepts = conceptSnapshot.data!;
 
                       return ListView.builder(
+                          padding: EdgeInsets.zero,
                           physics: const ClampingScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,

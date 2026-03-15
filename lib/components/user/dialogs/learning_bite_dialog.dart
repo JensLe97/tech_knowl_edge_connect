@@ -86,6 +86,8 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
         iconData: selectedIcon,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addLearningBite(
         widget.subjectId,

@@ -77,6 +77,8 @@ class _ConceptDialogState extends State<ConceptDialog> {
         name: nameController.text,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addConcept(
         widget.subjectId,

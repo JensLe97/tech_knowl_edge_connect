@@ -77,6 +77,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
         iconData: selectedIcon,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addSubject(newSubject);
     } else {

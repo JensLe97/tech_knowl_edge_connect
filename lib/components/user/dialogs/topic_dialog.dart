@@ -73,6 +73,8 @@ class _TopicDialogState extends State<TopicDialog> {
         name: nameController.text,
         authorId: user.uid,
         status: status,
+        createdAt: DateTime.now(),
+        updatedAt: DateTime.now(),
       );
       await _contentService.addTopic(
         widget.subjectId,

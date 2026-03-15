@@ -189,6 +189,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                         }
 
                         return ListView.builder(
+                          padding: EdgeInsets.zero,
                           physics: const ClampingScrollPhysics(),
                           scrollDirection: Axis.vertical,
                           shrinkWrap: true,
@@ -272,6 +273,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                     final topics = topicSnapshot.data!;
 
                                     return ListView.builder(
+                                      padding: EdgeInsets.zero,
                                       physics: const ClampingScrollPhysics(),
                                       scrollDirection: Axis.vertical,
                                       shrinkWrap: true,

@@ -23,7 +23,7 @@ class HomeEmptyState extends StatelessWidget {
                 ],
               ),
             ),
-            TextSpan(text: ' in der unteren Navigationsleiste'),
+            TextSpan(text: '  in der unteren Navigationsleiste.'),
           ],
         ),
       ),

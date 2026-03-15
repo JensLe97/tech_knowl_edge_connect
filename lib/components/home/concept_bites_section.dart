@@ -48,24 +48,6 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
   @override
   Widget build(BuildContext context) {
     _scrollController ??= ScrollController();
-    if (!_hasAutoScrolled) {
-      _hasAutoScrolled = true;
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        final ctrl = _scrollController;
-        if (ctrl == null || !ctrl.hasClients) return;
-        final firstIncomplete =
-            widget.conceptBites.indexWhere((ub) => ub.progress < 100);
-        final idx = firstIncomplete == -1 ? 0 : firstIncomplete;
-        const tileWidth = 160.0;
-        final target =
-            (idx * tileWidth).clamp(0.0, ctrl.position.maxScrollExtent);
-        try {
-          ctrl.animateTo(target,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOut);
-        } catch (_) {}
-      });
-    }
 
     return FutureBuilder<List<dynamic>>(
       key: ValueKey('concept_${widget.conceptId}'),
@@ -99,6 +81,34 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
             0, (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0));
         final denom = bitesList.length;
         final conceptPercent = denom == 0 ? 0 : (totalProgress / denom).round();
+
+        // Auto-scroll to first incomplete bite based on the fetched bitesList
+        if (!_hasAutoScrolled) {
+          _hasAutoScrolled = true;
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            final ctrl = _scrollController;
+            if (ctrl == null || !ctrl.hasClients) return;
+            // find first index in bitesList where corresponding UnitBiteProgress is incomplete
+            int firstIncomplete = 0;
+            for (int i = 0; i < bitesList.length; i++) {
+              final lb = bitesList[i];
+              final up = widget.unit.bites[lb.id];
+              if (up == null || up.progress < 100) {
+                firstIncomplete = i;
+                break;
+              }
+            }
+            final idx = firstIncomplete.clamp(0, bitesList.length - 1);
+            const tileWidth = 160.0;
+            final target =
+                (idx * tileWidth).clamp(0.0, ctrl.position.maxScrollExtent);
+            try {
+              ctrl.animateTo(target,
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut);
+            } catch (_) {}
+          });
+        }
 
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,

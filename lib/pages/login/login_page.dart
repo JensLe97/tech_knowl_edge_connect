@@ -61,13 +61,18 @@ class _LoginPageState extends State<LoginPage> {
                   obscureText: true,
                 ),
                 const SizedBox(height: 15),
-                GestureDetector(
-                  onTap: () {
+                TextButton(
+                  onPressed: () {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) {
                       return const ForgotPasswordPage();
                     }));
                   },
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.zero,
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
                   child: const Text(
                     'Passwort vergessen?',
                     style: TextStyle(
@@ -134,8 +139,13 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(
                       width: 4,
                     ),
-                    GestureDetector(
-                      onTap: widget.onTap,
+                    TextButton(
+                      onPressed: widget.onTap,
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                       child: const Text(
                         "Jetzt registrieren",
                         style: TextStyle(

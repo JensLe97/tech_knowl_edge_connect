@@ -90,8 +90,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(
                       width: 4,
                     ),
-                    GestureDetector(
-                      onTap: widget.onTap,
+                    TextButton(
+                      onPressed: widget.onTap,
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: Size.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
                       child: const Text(
                         "Jetzt anmelden",
                         style: TextStyle(

@@ -38,8 +38,13 @@ class TermsAndConditions extends StatelessWidget {
           const SizedBox(
             width: 4,
           ),
-          GestureDetector(
-            onTap: () => openUrl(termsAndConditions),
+          TextButton(
+            onPressed: () => openUrl(termsAndConditions),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             child: const Text(
               "AGB",
               style: TextStyle(
@@ -58,8 +63,13 @@ class TermsAndConditions extends StatelessWidget {
           const SizedBox(
             width: 4,
           ),
-          GestureDetector(
-            onTap: () => openUrl(privacyPolicy),
+          TextButton(
+            onPressed: () => openUrl(privacyPolicy),
+            style: TextButton.styleFrom(
+              padding: EdgeInsets.zero,
+              minimumSize: Size.zero,
+              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            ),
             child: const Text(
               "Datenschutzbestimmungen",
               style: TextStyle(

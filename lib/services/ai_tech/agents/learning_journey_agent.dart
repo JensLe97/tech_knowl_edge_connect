@@ -2,12 +2,48 @@ import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/agents/base_agent.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
+import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
+import 'package:tech_knowl_edge_connect/models/learning/task.dart'
+    as task_model;
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 
 class LearningJourneyAgent extends BaseAgent {
   final AiTechService aiTechService;
   final AiTechGenService aiTechGenService = AiTechGenService();
   LearningJourneyAgent(this.aiTechService);
+
+  /// Helper: generate tasks for each bite in parallel then persist bites
+  /// sequentially to preserve order.
+  Future<void> _generateTasksAndPersistBites({
+    required String journeyId,
+    required String userId,
+    required String subject,
+    required List<Part> fileParts,
+    required List<LearningBite> learningBites,
+  }) async {
+    final biteTaskPairs = await Future.wait(learningBites.map((bite) async {
+      final tasks = await aiTechGenService.generateLearningBiteTasks(
+        additionalText:
+            bite.content.isNotEmpty ? bite.content.join('\n') : bite.name,
+        biteTitle: bite.name,
+        subject: subject,
+        fileParts: fileParts,
+        useGoogleSearchTool: true,
+      );
+      return {'bite': bite, 'tasks': tasks};
+    }));
+
+    for (final pair in biteTaskPairs) {
+      final bite = pair['bite'] as LearningBite;
+      final tasks = (pair['tasks'] as List).cast<task_model.Task>();
+      await aiTechService.addLearningBiteWithTasks(
+        journeyId: journeyId,
+        bite: bite.toMap(),
+        tasks: tasks.map((t) => t.toMap()).toList(),
+        userId: userId,
+      );
+    }
+  }
 
   /// Generates a learning journey and learning bites for the user, using user message as context
   Future<String> createLearningJourney({
@@ -60,23 +96,14 @@ class LearningJourneyAgent extends BaseAgent {
       maxBites: length + 1,
     );
 
-    // 4. For each bite generate tasks in parallel; pass bite title + subject for context.
-    await Future.wait(learningBites.map((bite) async {
-      final tasks = await aiTechGenService.generateLearningBiteTasks(
-        additionalText:
-            bite.content.isNotEmpty ? bite.content.join('\n') : bite.name,
-        biteTitle: bite.name,
-        subject: goal,
-        fileParts: fileParts,
-        useGoogleSearchTool: true,
-      );
-      await aiTechService.addLearningBiteWithTasks(
-        journeyId: journeyId,
-        bite: bite.toMap(),
-        tasks: tasks.map((t) => t.toMap()).toList(),
-        userId: userId,
-      );
-    }));
+    // 4. Generate tasks and persist bites (helper keeps ordering consistent).
+    await _generateTasksAndPersistBites(
+      journeyId: journeyId,
+      userId: userId,
+      subject: goal,
+      fileParts: fileParts,
+      learningBites: learningBites,
+    );
 
     return journeyId;
   }
@@ -129,22 +156,14 @@ class LearningJourneyAgent extends BaseAgent {
         minBites: 1,
         maxBites: 1,
       );
-      await Future.wait(learningBites.map((bite) async {
-        final tasks = await aiTechGenService.generateLearningBiteTasks(
-          additionalText:
-              bite.content.isNotEmpty ? bite.content.join('\n') : bite.name,
-          biteTitle: bite.name,
-          subject: journeyGoal,
-          fileParts: fileParts,
-          useGoogleSearchTool: true,
-        );
-        await aiTechService.addLearningBiteWithTasks(
-          journeyId: journeyId,
-          bite: bite.toMap(),
-          tasks: tasks.map((t) => t.toMap()).toList(),
-          userId: userId,
-        );
-      }));
+
+      await _generateTasksAndPersistBites(
+        journeyId: journeyId,
+        userId: userId,
+        subject: journeyGoal ?? '',
+        fileParts: fileParts,
+        learningBites: learningBites,
+      );
     }
   }
 
@@ -173,22 +192,13 @@ class LearningJourneyAgent extends BaseAgent {
       maxBites: 1,
     );
 
-    await Future.wait(learningBites.map((bite) async {
-      final tasks = await aiTechGenService.generateLearningBiteTasks(
-        additionalText:
-            bite.content.isNotEmpty ? bite.content.join('\n') : bite.name,
-        biteTitle: bite.name,
-        subject: journeyGoal ?? userMessage,
-        fileParts: fileParts,
-        useGoogleSearchTool: true,
-      );
-      await aiTechService.addLearningBiteWithTasks(
-        journeyId: journeyId,
-        bite: bite.toMap(),
-        tasks: tasks.map((t) => t.toMap()).toList(),
-        userId: userId,
-      );
-    }));
+    await _generateTasksAndPersistBites(
+      journeyId: journeyId,
+      userId: userId,
+      subject: journeyGoal ?? userMessage,
+      fileParts: fileParts,
+      learningBites: learningBites,
+    );
   }
 
   // ---------------------------------------------------------------------------

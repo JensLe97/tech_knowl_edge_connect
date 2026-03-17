@@ -20,7 +20,7 @@ class MessageTextField extends StatelessWidget {
       controller: controller,
       obscureText: obscureText,
       textInputAction: TextInputAction.send,
-      onEditingComplete: () {},
+      onEditingComplete: () => FocusScope.of(context).unfocus(),
       onSubmitted: onSubmitted,
       cursorColor: Theme.of(context).colorScheme.inversePrimary,
       decoration: InputDecoration(

@@ -50,12 +50,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 25),
                 LoginTextField(
+                  key: const ValueKey('login_email_field'),
+                  fieldKey: const ValueKey('login_email'),
                   controller: emailController,
                   hintText: 'E-Mail',
                   obscureText: false,
                 ),
                 const SizedBox(height: 10),
                 LoginTextField(
+                  key: const ValueKey('login_password_field'),
+                  fieldKey: const ValueKey('login_password'),
                   controller: passwordController,
                   hintText: 'Passwort',
                   obscureText: true,
@@ -83,6 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 const SizedBox(height: 25),
                 SubmitButton(
+                  key: const ValueKey('submit_login'),
                   onTap: signUserIn,
                   text: "Anmelden",
                 ),
@@ -117,6 +122,7 @@ class _LoginPageState extends State<LoginPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     SquareTile(
+                      key: const ValueKey('social_google'),
                       imagePath: 'images/google.png',
                       onTap: () => AuthService().signInWithGoogle(),
                     ),
@@ -124,6 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 10,
                     ),
                     SquareTile(
+                      key: const ValueKey('social_apple'),
                       imagePath: 'images/apple.png',
                       onTap: () => AuthService().signInWithApple(),
                     )
@@ -140,6 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                       width: 4,
                     ),
                     TextButton(
+                      key: const ValueKey('toggle_register'),
                       onPressed: widget.onTap,
                       style: TextButton.styleFrom(
                         padding: const EdgeInsets.symmetric(horizontal: 4.0),

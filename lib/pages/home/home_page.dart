@@ -33,6 +33,7 @@ class _HomePageState extends State<HomePage> {
   final ProgressService _progressService = ProgressService();
   late final AiTechOrchestrator _orchestrator =
       AiTechOrchestrator(AiTechService());
+  final AiTechService _aiTechService = AiTechService();
 
   User? _user = FirebaseAuth.instance.currentUser;
   Map<String, dynamic>? _userData;
@@ -231,9 +232,7 @@ class _HomePageState extends State<HomePage> {
               try {
                 await _progressService.startOrAttachBite(userId,
                     biteId: lb.id,
-                    biteTitle: lb.name,
                     unitId: unit.unitId,
-                    unitTitle: unit.title,
                     subjectId: null,
                     journeyId: resolvedJourneyId,
                     initialProgress: 0);
@@ -368,9 +367,7 @@ class _HomePageState extends State<HomePage> {
                 try {
                   await _progressService.startOrAttachBite(userId,
                       biteId: lb.id,
-                      biteTitle: lb.name,
                       unitId: unit.unitId,
-                      unitTitle: unit.title,
                       subjectId: null,
                       journeyId: unit.unitId,
                       initialProgress: 0);
@@ -420,9 +417,7 @@ class _HomePageState extends State<HomePage> {
         try {
           await _progressService.startOrAttachBite(userId,
               biteId: lb.id,
-              biteTitle: lb.name,
               unitId: unit.unitId,
-              unitTitle: unit.title,
               subjectId: null,
               journeyId: resolvedJourneyId,
               initialProgress: 0);
@@ -599,7 +594,6 @@ class _HomePageState extends State<HomePage> {
             journeyId: existing?.journeyId,
             categoryId: existing?.categoryId ?? categoryId,
             topicId: existing?.topicId ?? topicId,
-            biteTitle: existing?.biteTitle ?? '',
             status: 'completed',
             progress: 100,
             lastUpdated: Timestamp.now(),
@@ -620,7 +614,6 @@ class _HomePageState extends State<HomePage> {
           final updatedUnit = UnitProgress(
               unitId: unit.unitId,
               subjectId: unit.subjectId,
-              title: unit.title,
               source: unit.source,
               status: agg >= 100 ? 'completed' : 'in_progress',
               progress: agg,
@@ -642,7 +635,6 @@ class _HomePageState extends State<HomePage> {
             if (journeyId != null) {
               await _progressService.startOrAttachBite(uid,
                   biteId: nextLB.id,
-                  biteTitle: nextLB.name,
                   unitId: unitId,
                   subjectId: null,
                   journeyId: journeyId,
@@ -745,25 +737,38 @@ class _HomePageState extends State<HomePage> {
               itemCount: _units.length,
               itemBuilder: (context, idx) {
                 final unit = _units[idx];
-                return UnitProgressCard(
-                  unit: unit,
-                  subjectColor: _subjectColors[unit.subjectId],
-                  onOpenUnit: () => _openUnitOverview(unit),
-                  onOpenAiSession: () => Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => AiTechPage(
-                              sessionId: unit.unitId, unitTitle: unit.title))),
-                  onBiteTap: _openBiteFromUnit,
-                  onJourneyBiteTap: (u, lb, {required journeyId}) =>
-                      _openAiTechJourneyLearningBite(u, lb.id,
-                          journeyId: journeyId),
-                  onContentBiteTap: (u, lb,
-                          {required categoryId,
-                          required topicId,
-                          required conceptId}) =>
-                      _openLearningBitePath(u.subjectId, categoryId, topicId,
-                          u.unitId, conceptId, lb.id),
+                return StreamBuilder<String>(
+                  stream: _aiTechService.streamUnitTitle(
+                      unitId: unit.unitId, subjectId: unit.subjectId),
+                  builder: (ctx, titleSnap) {
+                    final title =
+                        (titleSnap.data != null && titleSnap.data!.isNotEmpty)
+                            ? titleSnap.data!
+                            : null;
+                    return UnitProgressCard(
+                      unit: unit,
+                      unitTitle: title,
+                      subjectColor: _subjectColors[unit.subjectId],
+                      onOpenUnit: () => _openUnitOverview(unit),
+                      onOpenAiSession: () async {
+                        if (!mounted) return;
+                        final navigator = Navigator.of(context);
+                        navigator.push(MaterialPageRoute(
+                            builder: (_) => AiTechPage(
+                                sessionId: unit.unitId, sessionTitle: title)));
+                      },
+                      onBiteTap: _openBiteFromUnit,
+                      onJourneyBiteTap: (u, lb, {required journeyId}) =>
+                          _openAiTechJourneyLearningBite(u, lb.id,
+                              journeyId: journeyId),
+                      onContentBiteTap: (u, lb,
+                              {required categoryId,
+                              required topicId,
+                              required conceptId}) =>
+                          _openLearningBitePath(u.subjectId, categoryId,
+                              topicId, u.unitId, conceptId, lb.id),
+                    );
+                  },
                 );
               },
             ),

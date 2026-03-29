@@ -74,27 +74,14 @@ class UserService extends ChangeNotifier {
           final topicId = path['topicId']!;
           final unitId = path['unitId']!;
           final conceptId = path['conceptId']!;
-          // fetch title if possible
-          String? biteTitle;
-          try {
-            final lb = await _contentService.getLearningBite(subjectId,
-                categoryId, topicId, unitId, conceptId, learningBiteId);
-            biteTitle = lb.name;
-          } catch (e) {
-            if (kDebugMode) {
-              print('Could not fetch bite title: $e');
-            }
-          }
           try {
             await _progressService.startOrAttachBite(uid,
                 biteId: learningBiteId,
-                biteTitle: biteTitle,
                 unitId: unitId,
                 subjectId: subjectId,
                 categoryId: categoryId,
                 topicId: topicId,
                 conceptId: conceptId,
-                unitTitle: '',
                 initialProgress: 100);
           } catch (e) {
             if (kDebugMode) {
@@ -108,7 +95,6 @@ class UserService extends ChangeNotifier {
         }
       }
     }
-    // 3) If still not attached, try to locate the bite in any AI journeys and
     // attach it to the journey unit (preferred). This avoids creating a
     // synthetic standalone unit document and prevents duplicate units.
     if (!attached) {
@@ -165,24 +151,11 @@ class UserService extends ChangeNotifier {
               }
             }
 
-            // derive bite title from the found doc when possible
-            String? biteTitle;
-            try {
-              final data = d.data();
-              biteTitle =
-                  (data['name'] as String?) ?? (data['title'] as String?);
-            } catch (e) {
-              // Ignore format errors; biteTitle remains null
-              biteTitle = null;
-            }
-
-            // attach to session-level unit with a readable unitTitle when possible
+            // attach to session-level unit when possible
             try {
               await _progressService.startOrAttachBite(uid,
                   biteId: learningBiteId,
-                  biteTitle: biteTitle,
                   unitId: targetUnitId,
-                  unitTitle: unitTitle ?? '',
                   subjectId: null,
                   journeyId: journeyId,
                   initialProgress: 100);
@@ -206,7 +179,7 @@ class UserService extends ChangeNotifier {
     if (!attached) {
       try {
         await _progressService.startOrAttachBite(uid,
-            biteId: learningBiteId, biteTitle: null, initialProgress: 100);
+            biteId: learningBiteId, initialProgress: 100);
       } catch (e) {
         if (kDebugMode) {
           print('Failed to attach generic bite progress: $e');
@@ -227,23 +200,14 @@ class UserService extends ChangeNotifier {
       String topicId,
       String unitId,
       String conceptId) async {
-    String? biteTitle;
-    try {
-      final lb = await _contentService.getLearningBite(
-          subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
-      biteTitle = lb.name;
-    } catch (_) {
-      biteTitle = null;
-    }
-    // store resume pointer (attach into unit doc) and include title when available
+    // store resume pointer (attach into unit doc)
     await _progressService.setResumePointer(_firebaseAuth.currentUser!.uid,
         learningBiteId: learningBiteId,
         subjectId: subjectId,
         categoryId: categoryId,
         topicId: topicId,
         unitId: unitId,
-        conceptId: conceptId,
-        biteTitle: biteTitle);
+        conceptId: conceptId);
   }
 
   /// Remove the resume pointer for a specific learning bite id.

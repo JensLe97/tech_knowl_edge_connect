@@ -61,6 +61,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                           width: 130,
                         )
                       : IntroButton(
+                          key: const ValueKey('onboarding_skip'),
                           text: "Überspringen",
                           onTap: () {
                             leaveOnBoarding();
@@ -79,12 +80,14 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                   ),
                   onLastPage
                       ? IntroButton(
+                          key: const ValueKey('onboarding_start'),
                           text: "Loslegen!",
                           onTap: () {
                             leaveOnBoarding();
                           },
                         )
                       : IntroButton(
+                          key: const ValueKey('onboarding_next'),
                           text: "Weiter",
                           onTap: () {
                             _controller.nextPage(

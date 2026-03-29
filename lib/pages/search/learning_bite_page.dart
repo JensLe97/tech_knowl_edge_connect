@@ -51,6 +51,7 @@ class _LearningBitePageState extends State<LearningBitePage>
   bool firstTry = true;
 
   void _nextPage(int maxPageNum) {
+    if (!mounted) return;
     if (currentPage < maxPageNum) {
       setState(() {
         currentPage++;
@@ -63,6 +64,7 @@ class _LearningBitePageState extends State<LearningBitePage>
         );
       }
     } else {
+      if (!mounted) return;
       Navigator.pop(
           context,
           LearningBiteResult(
@@ -71,6 +73,7 @@ class _LearningBitePageState extends State<LearningBitePage>
   }
 
   void _onResult(bool correct) {
+    if (!mounted) return;
     if (correct) {
       if (firstTry) {
         setState(() {

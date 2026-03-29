@@ -27,25 +27,42 @@ class JourneyBitesSection extends StatefulWidget {
 }
 
 class _JourneyBitesSectionState extends State<JourneyBitesSection> {
-  ScrollController? _scrollController;
+  late ScrollController _scrollController;
   bool _hasAutoScrolled = false;
+
+  // Constants to match bite_cards.dart dimensions
+  static const double _cardWidth = 150.0;
+  static const double _cardMargin = 8.0;
+  static const double _totalStep = _cardWidth + _cardMargin;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
 
   @override
   void dispose() {
-    _scrollController?.dispose();
+    _scrollController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<List<dynamic>>(
+    return StreamBuilder<List<LearningBite>>(
       key: ValueKey('journey_${widget.journeyId}'),
-      future: _fetchJourneyData(),
+      stream: FirebaseFirestore.instance
+          .collection('ai_tech_journeys')
+          .doc(widget.journeyId)
+          .collection('learning_bites')
+          .orderBy('createdAt')
+          .snapshots()
+          .map((snap) => snap.docs
+              .map((d) => LearningBite.fromMap(d.data(), d.id))
+              .toList()),
       builder: (context, snap) {
         if (!snap.hasData) return const SizedBox.shrink();
-        final data = snap.data!;
-        final bitesList = data[0] as List<LearningBite>;
-        final journeyName = data[1] as String;
+        final bitesList = snap.data!;
         if (bitesList.isEmpty) return const SizedBox.shrink();
 
         final totalProgress = bitesList.fold<int>(
@@ -53,109 +70,109 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
         final denom = bitesList.length;
         final journeyPercent = denom == 0 ? 0 : (totalProgress / denom).round();
 
-        _scrollController ??= ScrollController();
-        if (!_hasAutoScrolled) {
+        if (!_hasAutoScrolled && bitesList.isNotEmpty) {
           _hasAutoScrolled = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
-            final ctrl = _scrollController;
-            if (ctrl == null || !ctrl.hasClients) return;
+            if (!_scrollController.hasClients) return;
+
             final firstIncomplete = bitesList.indexWhere(
                 (lb) => (widget.unit.bites[lb.id]?.progress ?? 0) < 100);
+
             final idx = firstIncomplete == -1 ? 0 : firstIncomplete;
-            const tileWidth = 160.0;
-            final target =
-                (idx * tileWidth).clamp(0.0, ctrl.position.maxScrollExtent);
-            try {
-              ctrl.animateTo(target,
-                  duration: const Duration(milliseconds: 300),
-                  curve: Curves.easeOut);
-            } catch (_) {}
+
+            final target = (idx * _totalStep)
+                .clamp(0.0, _scrollController.position.maxScrollExtent);
+
+            _scrollController.animateTo(
+              target,
+              duration: const Duration(milliseconds: 500),
+              curve: Curves.easeInOut,
+            );
           });
         }
 
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 8),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: FirebaseFirestore.instance
+              .collection('ai_tech_journeys')
+              .doc(widget.journeyId)
+              .snapshots(),
+          builder: (context, journeySnap) {
+            final journeyDocData = journeySnap.data?.data();
+            String journeyName = widget.journeyId;
+            if (journeyDocData != null) {
+              if (journeyDocData['goal'] is String &&
+                  (journeyDocData['goal'] as String).isNotEmpty) {
+                journeyName = journeyDocData['goal'] as String;
+              } else if (journeyDocData['context'] is String &&
+                  (journeyDocData['context'] as String).isNotEmpty) {
+                journeyName = journeyDocData['context'] as String;
+              } else if (journeyDocData['name'] is String &&
+                  (journeyDocData['name'] as String).isNotEmpty) {
+                journeyName = journeyDocData['name'] as String;
+              }
+            }
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                    child: Text(journeyName,
+                const SizedBox(height: 8),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                        child: Text(journeyName,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold))),
+                    CircularProgressIndicator(
+                      value: (journeyPercent.clamp(0, 100)) / 100.0,
+                      strokeWidth: 4,
+                      constraints:
+                          const BoxConstraints(minWidth: 20, minHeight: 20),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.primary.withAlpha(50),
+                    ),
+                    const SizedBox(width: 8),
+                    Text('$journeyPercent%',
                         style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold))),
-                CircularProgressIndicator(
-                  value: (journeyPercent.clamp(0, 100)) / 100.0,
-                  strokeWidth: 5,
-                  constraints:
-                      const BoxConstraints(minWidth: 20, minHeight: 20),
-                  backgroundColor:
-                      Theme.of(context).colorScheme.primary.withAlpha(50),
+                            fontSize: 14, fontWeight: FontWeight.w500)),
+                  ],
                 ),
-                const SizedBox(width: 6),
-                Text('$journeyPercent%',
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.onSurface)),
+                const SizedBox(height: 10),
+                SizedBox(
+                  height: 110,
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.horizontal,
+                    itemCount: bitesList.length,
+                    itemBuilder: (context, j) {
+                      final lb = bitesList[j];
+                      final up = widget.unit.bites[lb.id];
+
+                      return Padding(
+                        padding: const EdgeInsets.only(right: _cardMargin),
+                        child: SizedBox(
+                          width: _cardWidth,
+                          child: up != null
+                              ? UnitBiteCard(
+                                  bite: up,
+                                  authoritativeTitle: lb.name,
+                                  onTap: () =>
+                                      widget.onBiteTap(widget.unit, up))
+                              : NewBiteCard(
+                                  title: lb.name,
+                                  onTap: () => widget.onNewBiteTap(
+                                      widget.unit, lb,
+                                      journeyId: widget.journeyId)),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ],
-            ),
-            const SizedBox(height: 6),
-            SizedBox(
-              height: 110,
-              child: ListView.builder(
-                controller: _scrollController,
-                scrollDirection: Axis.horizontal,
-                itemCount: bitesList.length,
-                itemBuilder: (context, j) {
-                  final lb = bitesList[j];
-                  final up = widget.unit.bites[lb.id];
-                  if (up != null) {
-                    return UnitBiteCard(
-                        bite: up,
-                        onTap: () => widget.onBiteTap(widget.unit, up));
-                  }
-                  return NewBiteCard(
-                      title: lb.name,
-                      onTap: () => widget.onNewBiteTap(widget.unit, lb,
-                          journeyId: widget.journeyId));
-                },
-              ),
-            ),
-          ],
+            );
+          },
         );
       },
     );
-  }
-
-  Future<List<dynamic>> _fetchJourneyData() async {
-    final res = <LearningBite>[];
-    String journeyName = 'Lernreise';
-    try {
-      final lbSnap = await FirebaseFirestore.instance
-          .collection('ai_tech_journeys')
-          .doc(widget.journeyId)
-          .collection('learning_bites')
-          .orderBy('createdAt')
-          .get();
-      for (final d in lbSnap.docs) {
-        try {
-          res.add(LearningBite.fromMap(d.data(), d.id));
-        } catch (_) {}
-      }
-    } catch (_) {}
-    try {
-      final journeyDoc = await FirebaseFirestore.instance
-          .collection('ai_tech_journeys')
-          .doc(widget.journeyId)
-          .get();
-      if (journeyDoc.exists) {
-        final goal =
-            journeyDoc.data()?['goal'] ?? journeyDoc.data()?['context'];
-        if (goal is String && goal.isNotEmpty) {
-          journeyName = goal;
-        }
-      }
-    } catch (_) {}
-    return [res, journeyName];
   }
 }

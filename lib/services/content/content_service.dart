@@ -1035,23 +1035,10 @@ class ContentService {
     required String conceptId,
     required String learningBiteId,
   }) async {
-    String unitTitle = 'Lernreise';
-    try {
-      final unit = await getUnit(subjectId, categoryId, topicId, unitId);
-      unitTitle = unit.name;
-    } catch (_) {}
-
     try {
       // enrich with task metadata so resume UI can show task progress without extra lookups
       final tasks = await getTasks(
           subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
-      // fetch the learning bite to obtain its title for resume display
-      String? learningBiteTitle;
-      try {
-        final lb = await getLearningBite(
-            subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
-        learningBiteTitle = lb.name;
-      } catch (_) {}
       final Map<String, TaskProgress> tasksMap = {
         for (final t in tasks)
           t.id: TaskProgress(
@@ -1062,13 +1049,11 @@ class ContentService {
       };
       await _progressService.startOrAttachBite(userId,
           biteId: learningBiteId,
-          biteTitle: learningBiteTitle,
           unitId: unitId,
           subjectId: subjectId,
           categoryId: categoryId,
           topicId: topicId,
           conceptId: conceptId,
-          unitTitle: unitTitle,
           tasks: tasksMap,
           initialProgress: 0);
     } catch (_) {

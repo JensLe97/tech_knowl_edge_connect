@@ -10,6 +10,7 @@ import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
 class UnitProgressCard extends StatelessWidget {
   final UnitProgress unit;
   final Color? subjectColor;
+  final String? unitTitle;
   final VoidCallback onOpenUnit;
   final VoidCallback onOpenAiSession;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
@@ -24,6 +25,7 @@ class UnitProgressCard extends StatelessWidget {
     super.key,
     required this.unit,
     this.subjectColor,
+    this.unitTitle,
     required this.onOpenUnit,
     required this.onOpenAiSession,
     required this.onBiteTap,
@@ -65,12 +67,15 @@ class UnitProgressCard extends StatelessWidget {
   }
 
   Widget _buildHeader(BuildContext context, bool isAiUnit) {
+    final displayTitle = (unitTitle != null && unitTitle!.isNotEmpty)
+        ? unitTitle!
+        : (isAiUnit ? 'Lernreise' : 'Einheit');
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
             child: Row(children: [
-          Text(unit.title.isNotEmpty ? unit.title : 'Lernreise',
+          Text(displayTitle,
               style:
                   const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(width: 8),
@@ -88,7 +93,8 @@ class UnitProgressCard extends StatelessWidget {
             ),
         ])),
         const SizedBox(width: 8),
-        Text('${unit.progress}%'),
+        Text('${unit.progress}%',
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500)),
       ],
     );
   }

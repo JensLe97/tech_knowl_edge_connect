@@ -47,12 +47,21 @@ class _OverviewPageState extends State<OverviewPage> {
             type: BottomNavigationBarType.fixed,
             onTap: _onTap,
             items: const [
-              BottomNavigationBarItem(label: 'Home', icon: Icon(Icons.home)),
-              BottomNavigationBarItem(label: 'Suche', icon: Icon(Icons.search)),
-              BottomNavigationBarItem(label: 'Feed', icon: Icon(Icons.feed)),
-              BottomNavigationBarItem(label: 'Chats', icon: Icon(Icons.chat)),
               BottomNavigationBarItem(
-                  label: 'Profil', icon: Icon(Icons.person)),
+                  label: 'Home',
+                  icon: Icon(Icons.home, key: ValueKey('tab_home'))),
+              BottomNavigationBarItem(
+                  label: 'Suche',
+                  icon: Icon(Icons.search, key: ValueKey('tab_search'))),
+              BottomNavigationBarItem(
+                  label: 'Feed',
+                  icon: Icon(Icons.feed, key: ValueKey('tab_feed'))),
+              BottomNavigationBarItem(
+                  label: 'Chats',
+                  icon: Icon(Icons.chat, key: ValueKey('tab_chats'))),
+              BottomNavigationBarItem(
+                  label: 'Profil',
+                  icon: Icon(Icons.person, key: ValueKey('tab_profile'))),
             ],
           ),
         ),

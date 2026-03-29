@@ -7,7 +7,6 @@ class UnitBiteProgress {
   final String? journeyId;
   final String? categoryId;
   final String? topicId;
-  final String? biteTitle;
   final String status; // not_started | in_progress | completed
   final int progress; // 0-100
   final int points; // earned points
@@ -23,7 +22,6 @@ class UnitBiteProgress {
     this.journeyId,
     this.categoryId,
     this.topicId,
-    this.biteTitle,
     required this.status,
     required this.progress,
     this.points = 0,
@@ -36,7 +34,6 @@ class UnitBiteProgress {
 
   Map<String, dynamic> toMap() => {
         'biteId': biteId,
-        if (biteTitle != null) 'title': biteTitle,
         if (conceptId != null) 'conceptId': conceptId,
         if (journeyId != null) 'journeyId': journeyId,
         if (categoryId != null) 'categoryId': categoryId,
@@ -63,7 +60,6 @@ class UnitBiteProgress {
       journeyId: map['journeyId'] as String?,
       categoryId: map['categoryId'] as String?,
       topicId: map['topicId'] as String?,
-      biteTitle: map['title'] as String?,
       status: map['status'] as String? ?? 'not_started',
       progress: (map['progress'] as num?)?.toInt() ?? 0,
       points: (map['points'] as num?)?.toInt() ?? 0,
@@ -113,7 +109,6 @@ class TaskProgress {
 class UnitProgress {
   final String unitId;
   final String subjectId;
-  final String title;
   final String source; // search | ai_generated
   final String status; // not_started | in_progress | completed
   final int progress; // 0-100 aggregate
@@ -124,7 +119,6 @@ class UnitProgress {
   UnitProgress({
     required this.unitId,
     required this.subjectId,
-    required this.title,
     required this.source,
     required this.status,
     required this.progress,
@@ -136,7 +130,6 @@ class UnitProgress {
   Map<String, dynamic> toMap() => {
         'unitId': unitId,
         'subjectId': subjectId,
-        'title': title,
         'source': source,
         'status': status,
         'expectedBiteCount': expectedBiteCount,
@@ -157,7 +150,6 @@ class UnitProgress {
     return UnitProgress(
       unitId: data['unitId'] as String? ?? doc.id,
       subjectId: data['subjectId'] as String? ?? '',
-      title: data['title'] as String? ?? '',
       source: data['source'] as String? ?? 'search',
       status: data['status'] as String? ?? 'not_started',
       expectedBiteCount:
@@ -239,13 +231,11 @@ class ProgressService {
   /// perform collectionGroup lookups at display time.
   Future<void> startOrAttachBite(String uid,
       {required String biteId,
-      String? biteTitle,
       String? unitId,
       String? subjectId,
       String? categoryId,
       String? topicId,
       String? conceptId,
-      String? unitTitle,
       String? journeyId,
       Map<String, TaskProgress>? tasks,
       int initialProgress = 0}) async {
@@ -331,13 +321,11 @@ class ProgressService {
         tx.set(docRef, {
           'unitId': targetUnitId,
           'subjectId': subjectId ?? '',
-          'title': unitTitle ?? 'Lernreise',
           'source': subjectId == null ? 'ai_generated' : 'search',
           'status': 'in_progress',
           'bites': {
             biteId: {
               'biteId': biteId,
-              if (biteTitle != null) 'title': biteTitle,
               if (conceptId != null) 'conceptId': conceptId,
               if (categoryId != null) 'categoryId': categoryId,
               if (topicId != null) 'topicId': topicId,
@@ -376,7 +364,6 @@ class ProgressService {
       existingBite['createdAt'] =
           existingBite['createdAt'] ?? FieldValue.serverTimestamp();
       existingBite['currentTaskIndex'] = existingBite['currentTaskIndex'] ?? 0;
-      if (biteTitle != null) existingBite['title'] = biteTitle;
       if (conceptId != null) existingBite['conceptId'] = conceptId;
       if (categoryId != null) existingBite['categoryId'] = categoryId;
       if (topicId != null) existingBite['topicId'] = topicId;
@@ -401,7 +388,6 @@ class ProgressService {
         'bites': bites,
         'progress': agg >= 100 ? 100 : agg,
         'status': agg >= 100 ? 'completed' : 'in_progress',
-        if (unitTitle != null && unitTitle.isNotEmpty) 'title': unitTitle,
         'lastUpdated': FieldValue.serverTimestamp(),
       });
     });
@@ -472,8 +458,24 @@ class ProgressService {
       for (final bite in bites.values) {
         if (bite is Map<String, dynamic> &&
             (bite['journeyId'] as String?) == journeyId) {
+          final String biteId = (bite['biteId'] as String?) ?? '';
+          String title = '';
+          try {
+            if (biteId.isNotEmpty) {
+              final docRef = await _firestore
+                  .collection('ai_tech_journeys')
+                  .doc(journeyId)
+                  .collection('learning_bites')
+                  .doc(biteId)
+                  .get();
+              if (docRef.exists) {
+                title = (docRef.data()?['title'] as String?) ?? '';
+              }
+            }
+          } catch (_) {}
           results.add({
-            'title': bite['title'] ?? '',
+            'title': title,
+            'biteId': biteId,
             'points': (bite['points'] as num?)?.toInt() ?? 0,
             'maxPoints': (bite['maxPoints'] as num?)?.toInt() ?? 0,
             'status': bite['status'] as String? ?? 'not_started',
@@ -494,20 +496,16 @@ class ProgressService {
       required String categoryId,
       required String topicId,
       required String unitId,
-      required String conceptId,
-      String? biteTitle}) async {
+      required String conceptId}) async {
     // Attach the bite into the unit document under users/{uid}/resumeProgress/{unitId}
-    // by reusing startOrAttachBite which ensures a unit doc with a `bites` map. Pass biteTitle when
-    // available so the UI shows a readable title for the next resume bite.
+    // by reusing startOrAttachBite which ensures a unit doc with a `bites` map.
     await startOrAttachBite(uid,
         biteId: learningBiteId,
-        biteTitle: biteTitle,
         unitId: unitId,
         subjectId: subjectId,
         categoryId: categoryId,
         topicId: topicId,
         conceptId: conceptId,
-        unitTitle: '',
         initialProgress: 0);
   }
 

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_ai/firebase_ai.dart';
@@ -24,14 +25,14 @@ import 'package:tech_knowl_edge_connect/components/chat/typing_indicator.dart';
 
 class AiTechPage extends StatefulWidget {
   final String sessionId;
-  final String unitTitle;
   final String? initialUserMessage;
+  final String? sessionTitle;
   final List<PlatformFile> initialPickedFiles;
   const AiTechPage(
       {Key? key,
       required this.sessionId,
-      required this.unitTitle,
       this.initialUserMessage,
+      this.sessionTitle,
       this.initialPickedFiles = const []})
       : super(key: key);
 
@@ -44,7 +45,7 @@ class _AiTechPageState extends State<AiTechPage> {
   final TextEditingController _controller = TextEditingController();
   late List<PlatformFile> _pickedFiles;
 
-  /// Displayed session title – starts as [widget.unitTitle] and is replaced
+  /// Displayed session title – starts empty and is replaced
   /// with an AI-generated title on the first message when the title is empty.
   String _sessionTitle = '';
   bool _sessionTitleGenerated = false;
@@ -73,15 +74,35 @@ class _AiTechPageState extends State<AiTechPage> {
   /// cause cascading rebuild loops (especially visible on Flutter Web).
   final Map<String, Stream<QuerySnapshot>> _biteStreams = {};
   late final Stream<QuerySnapshot> _messagesStream;
+  Stream<String>? _sessionTitleStream;
+  StreamSubscription<String>? _sessionTitleSub;
 
   @override
   void initState() {
     super.initState();
     _orchestrator = AiTechOrchestrator(_service);
-    _sessionTitle = widget.unitTitle;
+    _sessionTitle = widget.sessionTitle ?? '';
     _pickedFiles = List<PlatformFile>.of(widget.initialPickedFiles);
     _messagesStream = _service.streamMessages(
         widget.sessionId, _firebaseAuth.currentUser!.uid);
+    // Subscribe to authoritative session title updates so the UI reflects
+    // the generated title (replaces the initial user input once available).
+    _sessionTitleStream = _service.streamSessionTitle(widget.sessionId);
+    _sessionTitleSub = _sessionTitleStream?.listen((title) {
+      if (title.isNotEmpty) {
+        // Only adopt the streamed title if we haven't already generated a
+        // session title locally. This ensures the generated title replaces
+        // the provisional user input.
+        if (!_sessionTitleGenerated) {
+          if (mounted) {
+            setState(() {
+              _sessionTitle = title;
+              _sessionTitleGenerated = true;
+            });
+          }
+        }
+      }
+    });
     _loadCompletedBiteIds();
     if (widget.initialUserMessage != null &&
         widget.initialUserMessage!.trim().isNotEmpty) {
@@ -113,6 +134,7 @@ class _AiTechPageState extends State<AiTechPage> {
 
   @override
   void dispose() {
+    _sessionTitleSub?.cancel();
     _controller.dispose();
     super.dispose();
   }
@@ -129,13 +151,6 @@ class _AiTechPageState extends State<AiTechPage> {
     final tasks = tasksSnapshot.docs
         .map((doc) => tk.Task.fromMap(doc.data(), doc.id))
         .toList();
-    // Attach the bite to the user's progress (journey unit). Include a
-    // readable unit title (use journey) so resume entries are helpful.
-    final unitTitle = _sessionTitle.isNotEmpty
-        ? _sessionTitle
-        : widget.unitTitle.isNotEmpty
-            ? widget.unitTitle
-            : 'Lernreise';
     try {
       final userId = _firebaseAuth.currentUser?.uid;
       if (userId != null) {
@@ -144,9 +159,7 @@ class _AiTechPageState extends State<AiTechPage> {
         // `journeyId` so UI can group bites by journey without extra queries.
         await _progressService.startOrAttachBite(userId,
             biteId: learningBiteId,
-            biteTitle: learningBite.name,
             unitId: widget.sessionId,
-            unitTitle: unitTitle,
             subjectId: null,
             journeyId: journeyId,
             initialProgress: 0);
@@ -218,13 +231,10 @@ class _AiTechPageState extends State<AiTechPage> {
         if (idx != -1 && userId != null) {
           if (idx < docs.length - 1) {
             final nextId = docs[idx + 1].id;
-            final nextTitle = (docs[idx + 1].data()['title'] as String?) ?? '';
             try {
               await _progressService.startOrAttachBite(userId,
                   biteId: nextId,
-                  biteTitle: nextTitle,
                   unitId: widget.sessionId,
-                  unitTitle: unitTitle,
                   subjectId: null,
                   journeyId: journeyId,
                   initialProgress: 0);
@@ -357,9 +367,12 @@ class _AiTechPageState extends State<AiTechPage> {
       });
     }
 
-    // On the first message without a title, generate one and await it so the
-    // orchestrator already receives the correct sessionTitle on this turn.
-    if (!_sessionTitleGenerated && _sessionTitle.isEmpty) {
+    // On the first message without a generated title, generate one and
+    // await it so the orchestrator already receives the correct
+    // `sessionTitle` on this turn. Treat an existing title that exactly
+    // matches the user's initial input as provisional and regenerate.
+    if (!_sessionTitleGenerated &&
+        (_sessionTitle.isEmpty || _sessionTitle == text)) {
       _titleGenerationFuture ??= _orchestrator
           .generateSessionTitle(
               text.isNotEmpty
@@ -740,7 +753,7 @@ class _AiTechPageState extends State<AiTechPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text(_sessionTitle.isNotEmpty ? _sessionTitle : widget.unitTitle),
+            Text(_sessionTitle.isNotEmpty ? _sessionTitle : 'Lernreise'),
           ],
         ),
         centerTitle: true,

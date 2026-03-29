@@ -107,17 +107,23 @@ class _SearchPageState extends State<SearchPage> {
                                   title:
                                       Text(unit.isNotEmpty ? unit : 'Session'),
                                   subtitle: Text(lastStr),
-                                  onTap: () => Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => AiTechPage(
-                                        sessionId: sessionId,
-                                        unitTitle: unit.isNotEmpty
-                                            ? unit
-                                            : 'AI Tech Session',
+                                  onTap: () {
+                                    // Use the unit field if present as the session title
+                                    final sessionTitle =
+                                        (data['unit'] as String?)?.isNotEmpty ==
+                                                true
+                                            ? (data['unit'] as String?)
+                                            : null;
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => AiTechPage(
+                                          sessionId: sessionId,
+                                          sessionTitle: sessionTitle,
+                                        ),
                                       ),
-                                    ),
-                                  ),
+                                    );
+                                  },
                                 ),
                               );
                             },
@@ -246,16 +252,22 @@ class _SearchPageState extends State<SearchPage> {
       });
 
       if (!mounted) return;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => AiTechPage(
-                  sessionId: sid,
-                  unitTitle: '',
-                  initialUserMessage: text,
-                  initialPickedFiles: passedFiles,
-                )),
-      );
+      final navigator = Navigator.of(context);
+
+      // Try to read the session doc via AiTechService to obtain an authoritative title.
+      String? sessionTitle;
+      try {
+        sessionTitle = await _aiTechService.fetchSessionTitle(sid);
+      } catch (_) {}
+
+      navigator.push(MaterialPageRoute(
+        builder: (_) => AiTechPage(
+          sessionId: sid,
+          initialUserMessage: text,
+          initialPickedFiles: passedFiles,
+          sessionTitle: sessionTitle,
+        ),
+      ));
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context)

@@ -292,6 +292,67 @@ class AiTechService {
         .snapshots();
   }
 
+  /// Fetch a session document and return its display title (`unit` or `title`).
+  Future<String?> fetchSessionTitle(String sessionId) async {
+    try {
+      final snap =
+          await firestore.collection('ai_tech_sessions').doc(sessionId).get();
+      if (!snap.exists) return null;
+      final data = snap.data();
+      return (data?['unit'] as String?) ?? (data?['title'] as String?);
+    } catch (_) {
+      return null;
+    }
+  }
+
+  /// Stream the session's display title (`unit` or `title`). Emits empty string
+  /// when no title is present.
+  Stream<String> streamSessionTitle(String sessionId) {
+    return firestore
+        .collection('ai_tech_sessions')
+        .doc(sessionId)
+        .snapshots()
+        .map((snap) {
+      try {
+        return (snap.data()?['unit'] as String?) ??
+            (snap.data()?['title'] as String?) ??
+            '';
+      } catch (_) {
+        return '';
+      }
+    }).distinct();
+  }
+
+  /// Stream a content unit title by watching collectionGroup('units') and
+  /// returning the name/title for the matching unit id. Emits empty string
+  /// when not found.
+  Stream<String> streamContentUnitTitle(String unitId) {
+    return firestore.collectionGroup('units').snapshots().map((snap) {
+      try {
+        for (final doc in snap.docs) {
+          if (doc.id == unitId) {
+            final data = doc.data() as Map<String, dynamic>?;
+            return (data?['name'] as String?) ??
+                (data?['title'] as String?) ??
+                '';
+          }
+        }
+      } catch (_) {}
+      return '';
+    }).distinct();
+  }
+
+  /// Convenience method: return a stream that yields the authoritative title
+  /// for a unit. If `subjectId` is empty, treat the unit as a session and
+  /// stream the session title; otherwise stream the content unit title.
+  Stream<String> streamUnitTitle(
+      {required String unitId, required String subjectId}) {
+    if (subjectId.isEmpty) {
+      return streamSessionTitle(unitId);
+    }
+    return streamContentUnitTitle(unitId);
+  }
+
   /// Start a new AI Tech session (study, review, or journey)
   Future<String> startSession({
     required SessionType type,

@@ -1,10 +1,10 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/library/personal_library.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
-import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
 import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -56,183 +56,510 @@ class _SearchPageState extends State<SearchPage> {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: _aiTechService.streamSessions(
-                        FirebaseAuth.instance.currentUser?.uid ?? ''),
-                    builder: (context, snap) {
-                      if (snap.connectionState == ConnectionState.waiting) {
-                        return const SizedBox.shrink();
-                      }
-                      if (snap.hasError) return const SizedBox.shrink();
-                      final docs = snap.data?.docs ?? [];
-                      if (docs.isEmpty) return const SizedBox.shrink();
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Meine Lernreisen',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: docs.length,
-                            itemBuilder: (context, i) {
-                              final doc = docs[i];
-                              final data = doc.data();
-                              final sessionId = doc.id;
-                              final ts = data['lastTimestamp'] as Timestamp?;
-                              final last =
-                                  ts != null ? ts.toDate() : DateTime.now();
-                              final fmt =
-                                  DateTime.now().difference(last).inDays >= 1
-                                      ? DateFormat('dd.MM.yyyy')
-                                      : DateFormat('HH:mm');
-                              final lastStr = fmt.format(last);
-                              final unit = (data['unit'] as String?) ?? '';
-                              return Card(
-                                margin: const EdgeInsets.symmetric(vertical: 6),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12)),
-                                clipBehavior: Clip.antiAlias,
-                                child: ListTile(
-                                  title:
-                                      Text(unit.isNotEmpty ? unit : 'Session'),
-                                  subtitle: Text(lastStr),
-                                  onTap: () {
-                                    // Use the unit field if present as the session title
+        bottom: false,
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 120),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        stream: _aiTechService.streamSessions(
+                            FirebaseAuth.instance.currentUser?.uid ?? ''),
+                        builder: (context, snap) {
+                          if (snap.connectionState == ConnectionState.waiting) {
+                            return const SizedBox.shrink();
+                          }
+                          if (snap.hasError) return const SizedBox.shrink();
+                          final docs = snap.data?.docs ?? [];
+                          if (docs.isEmpty) return const SizedBox.shrink();
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const Text('Meine Lernreisen',
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w900)),
+                              const SizedBox(height: 12),
+                              SizedBox(
+                                height: 150,
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  itemCount: docs.length,
+                                  itemBuilder: (context, i) {
+                                    final doc = docs[i];
+                                    final data = doc.data();
+                                    final sessionId = doc.id;
+                                    final ts =
+                                        data['lastTimestamp'] as Timestamp?;
+                                    final last = ts != null
+                                        ? ts.toDate()
+                                        : DateTime.now();
+                                    final fmt = DateTime.now()
+                                                .difference(last)
+                                                .inDays >=
+                                            1
+                                        ? DateFormat('dd.MM.yyyy')
+                                        : DateFormat('HH:mm');
+                                    final lastStr = fmt.format(last);
+                                    final unit =
+                                        (data['unit'] as String?) ?? '';
                                     final sessionTitle =
-                                        (data['unit'] as String?)?.isNotEmpty ==
-                                                true
-                                            ? (data['unit'] as String?)
-                                            : null;
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => AiTechPage(
-                                          sessionId: sessionId,
-                                          sessionTitle: sessionTitle,
+                                        unit.isNotEmpty ? unit : 'Session';
+                                    final colorScheme =
+                                        Theme.of(context).colorScheme;
+
+                                    return Card(
+                                      margin: const EdgeInsets.only(right: 12),
+                                      clipBehavior: Clip.antiAlias,
+                                      elevation: 0,
+                                      color: colorScheme.surfaceContainerHigh,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(16),
+                                        side: BorderSide(
+                                          color: colorScheme.outlineVariant
+                                              .withAlpha(51),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: InkWell(
+                                        onTap: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (_) => AiTechPage(
+                                                sessionId: sessionId,
+                                                sessionTitle: sessionTitle,
+                                              ),
+                                            ),
+                                          );
+                                        },
+                                        child: SizedBox(
+                                          width: 160,
+                                          height: double.infinity,
+                                          child: Stack(
+                                            children: [
+                                              Positioned(
+                                                top: -20,
+                                                right: -20,
+                                                child: Icon(
+                                                  Icons.psychology,
+                                                  size: 100,
+                                                  color: colorScheme.primary
+                                                      .withAlpha(15),
+                                                ),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(16.0),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      padding: const EdgeInsets
+                                                          .symmetric(
+                                                          horizontal: 6,
+                                                          vertical: 2),
+                                                      decoration: BoxDecoration(
+                                                        color: colorScheme
+                                                            .primaryContainer,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(4),
+                                                      ),
+                                                      child: Text(
+                                                        lastStr,
+                                                        style: TextStyle(
+                                                          fontSize: 10,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: colorScheme
+                                                              .onPrimaryContainer,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    Text(
+                                                      sessionTitle,
+                                                      maxLines: 3,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      style: TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: colorScheme
+                                                            .onSurface,
+                                                        height: 1.2,
+                                                      ),
+                                                    ),
+                                                    const SizedBox(height: 8),
+                                                    Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .spaceBetween,
+                                                      children: [
+                                                        Text(
+                                                          "Session öffnen",
+                                                          style: TextStyle(
+                                                            fontSize: 10,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color: colorScheme
+                                                                .onSurfaceVariant,
+                                                          ),
+                                                        ),
+                                                        Icon(
+                                                          Icons
+                                                              .arrow_forward_ios,
+                                                          size: 14,
+                                                          color: colorScheme
+                                                              .primary,
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
                                       ),
                                     );
                                   },
                                 ),
-                              );
-                            },
-                          ),
-                          const SizedBox(height: 12),
-                        ],
-                      );
-                    },
-                  ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Meine Fächer",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                  child: Column(
-                    children: [
-                      StreamBuilder<List<Subject>>(
-                        stream: _contentService.getSubjects(),
-                        builder: (context, snapshot) {
-                          if (snapshot.connectionState ==
-                              ConnectionState.waiting) {
-                            return const Center(
-                                child: CircularProgressIndicator());
-                          }
-                          if (snapshot.hasError) {
-                            return Center(
-                                child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text("Fehler: ${snapshot.error}"),
-                            ));
-                          }
-                          final subjects = snapshot.data ?? [];
-                          if (subjects.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
-                          return ListView.builder(
-                            physics: const NeverScrollableScrollPhysics(),
-                            scrollDirection: Axis.vertical,
-                            shrinkWrap: true,
-                            itemCount: subjects.length,
-                            itemBuilder:
-                                (BuildContext context, int subjectIndex) {
-                              final subject = subjects[subjectIndex];
-                              return SubjectTile(
-                                onTap: () => navigateToSubjectPage(subject),
-                                subject: subject,
-                              );
-                            },
+                              ),
+                              const SizedBox(height: 24),
+                            ],
                           );
                         },
                       ),
-                      Card(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                        margin: const EdgeInsets.symmetric(vertical: 6),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        clipBehavior: Clip.antiAlias,
-                        child: ListTile(
-                          onTap: () {
-                            showDialog(
-                              context: context,
-                              builder: (context) => const SubjectDialog(),
-                            );
-                          },
-                          leading: const Icon(
-                            Icons.add_circle_outline,
-                            size: 25,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        "Meine Fächer",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 15, vertical: 5),
+                      child: Column(
+                        children: [
+                          StreamBuilder<List<Subject>>(
+                            stream: _contentService.getSubjects(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                    child: CircularProgressIndicator());
+                              }
+                              if (snapshot.hasError) {
+                                return Center(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text("Fehler: ${snapshot.error}"),
+                                ));
+                              }
+                              final subjects = snapshot.data ?? [];
+                              if (subjects.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+                              return ListView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemCount: subjects.length,
+                                itemBuilder:
+                                    (BuildContext context, int subjectIndex) {
+                                  final subject = subjects[subjectIndex];
+                                  return SubjectTile(
+                                    onTap: () => navigateToSubjectPage(subject),
+                                    subject: subject,
+                                  );
+                                },
+                              );
+                            },
                           ),
-                          title: const Text(
-                            "Neues Fach erstellen",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
+                          Card(
+                            margin: const EdgeInsets.symmetric(vertical: 6),
+                            clipBehavior: Clip.antiAlias,
+                            elevation: 0,
+                            color:
+                                Theme.of(context).colorScheme.surfaceContainer,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                              side: BorderSide(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .outlineVariant
+                                    .withAlpha(51),
+                                width: 1,
+                              ),
+                            ),
+                            child: InkWell(
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (context) => const SubjectDialog(),
+                                );
+                              },
+                              child: SizedBox(
+                                width: double.infinity,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16),
+                                  child: Row(
+                                    children: [
+                                      Container(
+                                        width: 40,
+                                        height: 40,
+                                        decoration: BoxDecoration(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary
+                                              .withAlpha(26),
+                                          borderRadius:
+                                              BorderRadius.circular(20),
+                                        ),
+                                        child: Icon(
+                                          Icons.add_circle_outline,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          size: 20,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 20),
+                                      Text(
+                                        "Neues Fach erstellen",
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Text(
+                        "Meine Lerninhalte",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    const PersonalLibrary(),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    AnimatedSize(
+                      duration: const Duration(milliseconds: 200),
+                      alignment: Alignment.bottomCenter,
+                      child: _pickedFiles.isEmpty
+                          ? const SizedBox(width: double.infinity, height: 0)
+                          : SizedBox(
+                              height: 46,
+                              child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
+                                itemCount: _pickedFiles.length,
+                                itemBuilder: (context, index) {
+                                  final file = _pickedFiles[index];
+                                  return Padding(
+                                    padding: const EdgeInsets.only(right: 6),
+                                    child: InputChip(
+                                      label: Text(
+                                        file.name,
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      deleteIcon: const Icon(Icons.close),
+                                      onDeleted: () => setState(
+                                          () => _pickedFiles.remove(file)),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                    ),
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(16),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(25),
+                                blurRadius: 24,
+                                offset: const Offset(0, 8),
+                              ),
+                            ],
+                          ),
+                        ),
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(16),
+                          child: BackdropFilter(
+                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                            child: Container(
+                              padding: const EdgeInsets.all(16),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .surfaceContainerHigh
+                                    .withAlpha(242), // ~95%
+                                borderRadius: BorderRadius.circular(16),
+                                border: Border.all(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .outlineVariant
+                                      .withAlpha(76), // ~30%
+                                ),
+                              ),
+                              child: Row(
+                                children: [
+                                  Icon(
+                                    Icons.search,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                  ),
+                                  const SizedBox(width: 16),
+                                  Expanded(
+                                    child: TextField(
+                                      controller: _messageController,
+                                      decoration: InputDecoration(
+                                        hintText: 'Was möchtest du lernen?',
+                                        hintStyle: TextStyle(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurfaceVariant,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                        border: InputBorder.none,
+                                        enabledBorder: InputBorder.none,
+                                        focusedBorder: InputBorder.none,
+                                        errorBorder: InputBorder.none,
+                                        disabledBorder: InputBorder.none,
+                                        filled: false,
+                                        isDense: true,
+                                        contentPadding: EdgeInsets.zero,
+                                      ),
+                                      style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onSurface,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                      onSubmitted: (_) =>
+                                          _startSessionFromMessage(),
+                                    ),
+                                  ),
+                                  ValueListenableBuilder<TextEditingValue>(
+                                    valueListenable: _messageController,
+                                    builder: (context, value, _) {
+                                      final hasText = value.text.isNotEmpty;
+                                      return Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Material(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .primaryContainer,
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            clipBehavior: Clip.antiAlias,
+                                            child: InkWell(
+                                              onTap: _pickFiles,
+                                              child: Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8),
+                                                child: Icon(
+                                                  Icons.attach_file,
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onPrimaryContainer,
+                                                  size: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          if (hasText ||
+                                              _pickedFiles.isNotEmpty) ...[
+                                            const SizedBox(width: 8),
+                                            Material(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              clipBehavior: Clip.antiAlias,
+                                              child: InkWell(
+                                                onTap: _startSessionFromMessage,
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  child: Icon(
+                                                    Icons.send,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .onPrimary,
+                                                    size: 20,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ]
+                                        ],
+                                      );
+                                    },
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 12),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    "Meine Lerninhalte",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                const PersonalLibrary(),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.all(8.0),
-        child: ChatInputBar(
-          controller: _messageController,
-          hintText: 'Was möchtest du lernen?',
-          onSend: _startSessionFromMessage,
-          onAttachmentTap: _pickFiles,
-          pickedFiles: _pickedFiles,
-          onRemoveFile: (f) => setState(() => _pickedFiles.remove(f)),
+          ],
         ),
       ),
     );

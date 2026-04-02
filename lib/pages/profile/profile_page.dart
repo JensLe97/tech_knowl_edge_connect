@@ -71,18 +71,10 @@ class _ProfilePageState extends State<ProfilePage> {
             IconButton(
                 onPressed: () {
                   showModalBottomSheet(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .surface, // bottom sheet color
                       context: context,
                       isScrollControlled: true,
                       useRootNavigator: true,
                       enableDrag: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
-                        ),
-                      ),
                       builder: (BuildContext context) {
                         return SafeArea(child: MenuItems(isAdmin: _isAdmin));
                       });

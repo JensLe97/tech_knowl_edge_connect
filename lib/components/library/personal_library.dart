@@ -61,12 +61,25 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                 return const SizedBox.shrink();
               }
               final folders = snapshot.data!;
-              return ListView.separated(
+              return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: folders.length,
-                separatorBuilder: (context, index) => const SizedBox(height: 0),
+                gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 200.0,
+                  crossAxisSpacing: 16.0,
+                  mainAxisSpacing: 16.0,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: folders.length + 1,
                 itemBuilder: (context, index) {
+                  if (index == folders.length) {
+                    return IdeaFolderTile(
+                      title: 'Neuen Ordner erstellen',
+                      icon: Icons.create_new_folder,
+                      color: Theme.of(context).colorScheme.primary,
+                      onTap: _navigateToCreateFolderPage,
+                    );
+                  }
                   final folder = folders[index];
                   return IdeaFolderTile(
                     title: folder.name,
@@ -93,13 +106,6 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                 },
               );
             },
-          ),
-          const SizedBox(height: 0),
-          IdeaFolderTile(
-            title: 'Neuen Ordner erstellen',
-            icon: Icons.create_new_folder,
-            color: Theme.of(context).colorScheme.onPrimary,
-            onTap: _navigateToCreateFolderPage,
           ),
         ],
       ),

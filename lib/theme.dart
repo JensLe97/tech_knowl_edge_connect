@@ -126,10 +126,33 @@ class ThemeConfig {
         showSelectedLabels: true,
         elevation: 8,
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
+      chipTheme: ChipThemeData(
+        backgroundColor: cs.primaryContainer,
+        side: BorderSide(
+          color: cs.outlineVariant.withAlpha(51),
+          width: 1,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        labelStyle: TextStyle(
+          fontSize: 12,
+          color: cs.onPrimaryContainer,
+        ),
+        deleteIconColor: cs.onPrimaryContainer,
+        iconTheme: IconThemeData(color: cs.onPrimaryContainer, size: 16),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
         clipBehavior: Clip.antiAlias,
-        backgroundColor: Colors.transparent,
+        backgroundColor:
+            cs.surfaceContainerHighest.withAlpha(242), // 95% Light Mode
         surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(51),
+            width: 1,
+          ),
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: cs.surfaceContainerHighest,
@@ -274,10 +297,33 @@ class ThemeConfig {
         showSelectedLabels: true,
         elevation: 8,
       ),
-      bottomSheetTheme: const BottomSheetThemeData(
+      chipTheme: ChipThemeData(
+        backgroundColor: cs.primaryContainer,
+        side: BorderSide(
+          color: cs.outlineVariant.withAlpha(51),
+          width: 1,
+        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        labelStyle: TextStyle(
+          fontSize: 12,
+          color: cs.onPrimaryContainer,
+        ),
+        deleteIconColor: cs.onPrimaryContainer,
+        iconTheme: IconThemeData(color: cs.onPrimaryContainer, size: 16),
+      ),
+      bottomSheetTheme: BottomSheetThemeData(
         clipBehavior: Clip.antiAlias,
-        backgroundColor: Colors.transparent,
+        backgroundColor:
+            cs.surfaceContainerHighest.withAlpha(230), // 90% Dark Mode
         surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(51),
+            width: 1,
+          ),
+        ),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: cs.surfaceContainerHighest,

@@ -53,16 +53,10 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
             icon: const Icon(Icons.more_horiz),
             onPressed: () {
               showModalBottomSheet(
-                backgroundColor: Theme.of(context).colorScheme.surface,
                 context: context,
                 isScrollControlled: true,
                 useRootNavigator: true,
                 enableDrag: true,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(20),
-                  ),
-                ),
                 builder: (BuildContext context) {
                   return SafeArea(
                     child: Column(

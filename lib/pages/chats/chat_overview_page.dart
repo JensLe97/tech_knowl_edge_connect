@@ -33,28 +33,22 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
               IconButton(
                   onPressed: () {
                     showModalBottomSheet(
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .surface, // bottomsheet color
                       context: context,
                       isScrollControlled: true,
                       useRootNavigator: true,
                       enableDrag: true,
                       useSafeArea: true,
-                      shape: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.vertical(
-                          top: Radius.circular(20),
+                      builder: (BuildContext context) => SafeArea(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(height: 20),
+                            const Text("Neuer Chat",
+                                style: TextStyle(fontSize: 20)),
+                            const SizedBox(height: 20),
+                            _buildUserList(),
+                          ],
                         ),
-                      ),
-                      builder: (BuildContext context) => Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 20),
-                          const Text("Neuer Chat",
-                              style: TextStyle(fontSize: 20)),
-                          const SizedBox(height: 20),
-                          _buildUserList(),
-                        ],
                       ),
                     );
                   },

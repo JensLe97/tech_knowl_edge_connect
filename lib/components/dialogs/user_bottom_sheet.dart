@@ -47,16 +47,10 @@ class UserBottomSheet extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             showModalBottomSheet(
-              backgroundColor: Theme.of(context).colorScheme.surface,
               context: context,
               isScrollControlled: true,
               useRootNavigator: true,
               enableDrag: true,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  top: Radius.circular(20),
-                ),
-              ),
               builder: (BuildContext context) => SafeArea(
                 child: ReportReasonBottomSheet(
                   report: report,

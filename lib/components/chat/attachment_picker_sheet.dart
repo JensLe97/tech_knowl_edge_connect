@@ -15,16 +15,14 @@ Future<void> showAttachmentPickerSheet(
   required void Function(List<PlatformFile> files) onFilesAdded,
 }) {
   return showModalBottomSheet(
-    backgroundColor: Theme.of(context).colorScheme.surface,
     context: context,
     isScrollControlled: true,
     useRootNavigator: true,
     useSafeArea: true,
     enableDrag: true,
-    shape: const RoundedRectangleBorder(
-      borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+    builder: (_) => SafeArea(
+      child: _AttachmentPickerSheet(onFilesAdded: onFilesAdded),
     ),
-    builder: (_) => _AttachmentPickerSheet(onFilesAdded: onFilesAdded),
   );
 }
 

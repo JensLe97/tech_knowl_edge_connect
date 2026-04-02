@@ -191,17 +191,11 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
               IdeaReactionButton(
                 onTap: () {
                   showModalBottomSheet(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
                     context: context,
                     isScrollControlled: true,
                     useRootNavigator: true,
                     useSafeArea: true,
                     enableDrag: true,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
-                      ),
-                    ),
                     builder: (BuildContext context) => SafeArea(
                       child: UserBottomSheet(
                         toggleBlockUser: toggleBlockUser,

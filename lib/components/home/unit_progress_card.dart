@@ -145,6 +145,7 @@ class UnitProgressCard extends StatelessWidget {
               minHeight: 8,
               backgroundColor: colorScheme.surfaceContainerHighest,
               valueColor: AlwaysStoppedAnimation<Color>(colorScheme.primary),
+              borderRadius: BorderRadius.circular(12),
             ),
           ),
           const SizedBox(height: 24),

@@ -10,6 +10,7 @@ import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
 class JourneyBitesSection extends StatefulWidget {
   final UnitProgress unit;
   final String journeyId;
+  final Widget Function(String subtitle, int progress) headerBuilder;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
   final void Function(UnitProgress unit, LearningBite lb,
       {required String journeyId}) onNewBiteTap;
@@ -18,6 +19,7 @@ class JourneyBitesSection extends StatefulWidget {
     super.key,
     required this.unit,
     required this.journeyId,
+    required this.headerBuilder,
     required this.onBiteTap,
     required this.onNewBiteTap,
   });
@@ -31,8 +33,8 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
   bool _hasAutoScrolled = false;
 
   // Constants to match bite_cards.dart dimensions
-  static const double _cardWidth = 150.0;
-  static const double _cardMargin = 8.0;
+  static const double _cardWidth = 160.0;
+  static const double _cardMargin = 12.0;
   static const double _totalStep = _cardWidth + _cardMargin;
 
   @override
@@ -61,9 +63,23 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
               .map((d) => LearningBite.fromMap(d.data(), d.id))
               .toList()),
       builder: (context, snap) {
-        if (!snap.hasData) return const SizedBox.shrink();
+        if (!snap.hasData) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.headerBuilder('Lernreise', widget.unit.progress),
+            ],
+          );
+        }
         final bitesList = snap.data!;
-        if (bitesList.isEmpty) return const SizedBox.shrink();
+        if (bitesList.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.headerBuilder('Lernreise', widget.unit.progress),
+            ],
+          );
+        }
 
         final totalProgress = bitesList.fold<int>(
             0, (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0));
@@ -98,7 +114,7 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
               .snapshots(),
           builder: (context, journeySnap) {
             final journeyDocData = journeySnap.data?.data();
-            String journeyName = widget.journeyId;
+            String journeyName = 'Lernreise';
             if (journeyDocData != null) {
               if (journeyDocData['goal'] is String &&
                   (journeyDocData['goal'] as String).isNotEmpty) {
@@ -115,34 +131,13 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                        child: Text(journeyName,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold))),
-                    CircularProgressIndicator(
-                      value: (journeyPercent.clamp(0, 100)) / 100.0,
-                      strokeWidth: 4,
-                      constraints:
-                          const BoxConstraints(minWidth: 20, minHeight: 20),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primary.withAlpha(50),
-                    ),
-                    const SizedBox(width: 8),
-                    Text('$journeyPercent%',
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                const SizedBox(height: 10),
+                widget.headerBuilder(journeyName, journeyPercent),
                 SizedBox(
-                  height: 110,
+                  height: 112,
                   child: ListView.builder(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.none,
                     itemCount: bitesList.length,
                     itemBuilder: (context, j) {
                       final lb = bitesList[j];
@@ -150,20 +145,16 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
 
                       return Padding(
                         padding: const EdgeInsets.only(right: _cardMargin),
-                        child: SizedBox(
-                          width: _cardWidth,
-                          child: up != null
-                              ? UnitBiteCard(
-                                  bite: up,
-                                  authoritativeTitle: lb.name,
-                                  onTap: () =>
-                                      widget.onBiteTap(widget.unit, up))
-                              : NewBiteCard(
-                                  title: lb.name,
-                                  onTap: () => widget.onNewBiteTap(
-                                      widget.unit, lb,
-                                      journeyId: widget.journeyId)),
-                        ),
+                        child: up != null
+                            ? UnitBiteCard(
+                                bite: up,
+                                authoritativeTitle: lb.name,
+                                onTap: () => widget.onBiteTap(widget.unit, up))
+                            : NewBiteCard(
+                                title: lb.name,
+                                onTap: () => widget.onNewBiteTap(
+                                    widget.unit, lb,
+                                    journeyId: widget.journeyId)),
                       );
                     },
                   ),

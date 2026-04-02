@@ -49,3 +49,5 @@ __pycache__/
 
 # Local-only App Check debug token
 web/appcheck_debug_token.js
+
+stitch/

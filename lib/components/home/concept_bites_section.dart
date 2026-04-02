@@ -13,6 +13,7 @@ class ConceptBitesSection extends StatefulWidget {
   final String categoryId;
   final String topicId;
   final List<UnitBiteProgress> conceptBites;
+  final Widget Function(String subtitle, int progress) headerBuilder;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
   final void Function(UnitProgress unit, LearningBite lb,
       {required String categoryId,
@@ -26,6 +27,7 @@ class ConceptBitesSection extends StatefulWidget {
     required this.categoryId,
     required this.topicId,
     required this.conceptBites,
+    required this.headerBuilder,
     required this.onBiteTap,
     required this.onNewBiteTap,
   });
@@ -40,8 +42,8 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
   bool _hasAutoScrolled = false;
 
   // Exact dimensions to match the Card file
-  static const double _cardWidth = 150.0;
-  static const double _cardMargin = 8.0;
+  static const double _cardWidth = 160.0;
+  static const double _cardMargin = 12.0;
   static const double _totalStep = _cardWidth + _cardMargin;
 
   @override
@@ -68,9 +70,23 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
         widget.conceptId,
       ),
       builder: (context, snap) {
-        if (!snap.hasData) return const SizedBox.shrink();
+        if (!snap.hasData) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.headerBuilder('Lerneinheit', widget.unit.progress),
+            ],
+          );
+        }
         final bitesList = snap.data!;
-        if (bitesList.isEmpty) return const SizedBox.shrink();
+        if (bitesList.isEmpty) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              widget.headerBuilder('Lerneinheit', widget.unit.progress),
+            ],
+          );
+        }
 
         final totalProgress = bitesList.fold<int>(
             0, (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0));
@@ -116,39 +132,18 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
             final conceptName =
                 (conceptDoc != null && conceptDoc['name'] is String)
                     ? conceptDoc['name'] as String
-                    : widget.conceptId;
+                    : 'Lerneinheit';
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(conceptName,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold)),
-                    ),
-                    CircularProgressIndicator(
-                      value: (conceptPercent.clamp(0, 100)) / 100.0,
-                      strokeWidth: 4,
-                      constraints:
-                          const BoxConstraints(minWidth: 20, minHeight: 20),
-                      backgroundColor:
-                          Theme.of(context).colorScheme.primary.withAlpha(50),
-                    ),
-                    const SizedBox(width: 8),
-                    Text('$conceptPercent%',
-                        style: const TextStyle(
-                            fontSize: 14, fontWeight: FontWeight.w500)),
-                  ],
-                ),
-                const SizedBox(height: 10),
+                widget.headerBuilder(conceptName, conceptPercent),
                 SizedBox(
-                  height: 110,
+                  height: 112,
                   child: ListView.builder(
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
+                    clipBehavior: Clip.none,
                     itemCount: bitesList.length,
                     itemBuilder: (context, j) {
                       final lb = bitesList[j];
@@ -156,22 +151,18 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
 
                       return Padding(
                         padding: const EdgeInsets.only(right: _cardMargin),
-                        child: SizedBox(
-                          width: _cardWidth,
-                          child: up != null
-                              ? UnitBiteCard(
-                                  bite: up,
-                                  authoritativeTitle: lb.name,
-                                  onTap: () =>
-                                      widget.onBiteTap(widget.unit, up))
-                              : NewBiteCard(
-                                  title: lb.name,
-                                  onTap: () => widget.onNewBiteTap(
-                                      widget.unit, lb,
-                                      categoryId: widget.categoryId,
-                                      topicId: widget.topicId,
-                                      conceptId: widget.conceptId)),
-                        ),
+                        child: up != null
+                            ? UnitBiteCard(
+                                bite: up,
+                                authoritativeTitle: lb.name,
+                                onTap: () => widget.onBiteTap(widget.unit, up))
+                            : NewBiteCard(
+                                title: lb.name,
+                                onTap: () => widget.onNewBiteTap(
+                                    widget.unit, lb,
+                                    categoryId: widget.categoryId,
+                                    topicId: widget.topicId,
+                                    conceptId: widget.conceptId)),
                       );
                     },
                   ),

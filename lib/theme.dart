@@ -3,17 +3,26 @@ import 'package:google_fonts/google_fonts.dart';
 
 class ThemeConfig {
   // Seed color for ColorScheme.fromSeed. Change this to match your brand.
-  static const Color _seedColor = Color.fromARGB(255, 104, 101, 140);
+  static const Color _seedColor = Color(0xFF68658C);
 
   static ThemeData get lightTheme {
     final cs = ColorScheme.fromSeed(
         seedColor: _seedColor,
         brightness: Brightness.light,
         dynamicSchemeVariant: DynamicSchemeVariant.neutral,
-        primary: const Color.fromARGB(255, 121, 142, 175),
-        onPrimary: const Color.fromARGB(255, 224, 227, 233),
-        secondary: const Color.fromARGB(255, 203, 216, 230),
-        onSecondary: const Color.fromARGB(255, 80, 102, 134));
+        primary: const Color(0xFF798EAF),
+        secondary: const Color(0xFFCBD8E6),
+        tertiary: const Color(0xFF506686),
+        surface: const Color(0xFFFEF7FF),
+        surfaceContainerLowest: const Color(0xFFFFFFFF),
+        surfaceContainerLow: const Color(0xFFF7F3FA),
+        surfaceContainer: const Color(0xFFF1EDF4),
+        surfaceContainerHigh: const Color(0xFFEBE7EF),
+        surfaceContainerHighest: const Color(0xFFE5E1E9),
+        outlineVariant: const Color(0xFFC5C6D0),
+        onSurface: const Color(0xFF1D1B20),
+        onPrimary: const Color(0xFFE0E3E9),
+        onSecondary: const Color(0xFF506686));
     final textTheme = GoogleFonts.nunitoTextTheme(
       Typography.material2021(platform: TargetPlatform.android).black.apply(
             bodyColor: cs.onSurface,
@@ -150,10 +159,19 @@ class ThemeConfig {
         seedColor: _seedColor,
         brightness: Brightness.dark,
         dynamicSchemeVariant: DynamicSchemeVariant.neutral,
-        primary: const Color.fromARGB(255, 135, 155, 189),
-        onPrimary: const Color.fromARGB(255, 29, 39, 52),
-        secondary: const Color.fromARGB(255, 88, 113, 146),
-        onSecondary: const Color.fromARGB(255, 109, 127, 150));
+        primary: const Color(0xFF879BBD),
+        secondary: const Color(0xFF587192),
+        tertiary: const Color(0xFF6D7F96),
+        surface: const Color(0xFF101418),
+        surfaceContainerLowest: const Color(0xFF0A0F13),
+        surfaceContainerLow: const Color(0xFF181C20),
+        surfaceContainer: const Color(0xFF1C2024),
+        surfaceContainerHigh: const Color(0xFF262A2F),
+        surfaceContainerHighest: const Color(0xFF31353A),
+        outlineVariant: const Color(0xFF44474D),
+        onSurface: const Color(0xFFE0E3E9),
+        onPrimary: const Color(0xFF1D2734),
+        onSecondary: const Color(0xFF6D7F96));
     final textTheme = GoogleFonts.nunitoTextTheme(
       Typography.material2021(platform: TargetPlatform.android).white.apply(
             bodyColor: cs.onSurface,

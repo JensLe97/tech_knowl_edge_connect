@@ -714,70 +714,77 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Home'), centerTitle: true),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          HomeGreetingHeader(
-            username: _userData?['username'],
-            isLoading: _userData == null && _user != null,
-          ),
-          if (_isLoadingUnits)
-            const Padding(
-              padding: EdgeInsets.only(top: 32.0),
-              child: Center(child: CircularProgressIndicator()),
-            )
-          else if (_units.isNotEmpty) ...[
-            const Text('In Bearbeitung',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 8),
-            ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: _units.length,
-              itemBuilder: (context, idx) {
-                final unit = _units[idx];
-                return StreamBuilder<String>(
-                  stream: _aiTechService.streamUnitTitle(
-                      unitId: unit.unitId, subjectId: unit.subjectId),
-                  builder: (ctx, titleSnap) {
-                    final title =
-                        (titleSnap.data != null && titleSnap.data!.isNotEmpty)
-                            ? titleSnap.data!
-                            : null;
-                    return UnitProgressCard(
-                      unit: unit,
-                      unitTitle: title,
-                      subjectColor: _subjectColors[unit.subjectId],
-                      onOpenUnit: () => _openUnitOverview(unit),
-                      onOpenAiSession: () async {
-                        if (!mounted) return;
-                        final navigator = Navigator.of(context);
-                        navigator.push(MaterialPageRoute(
-                            builder: (_) => AiTechPage(
-                                sessionId: unit.unitId, sessionTitle: title)));
-                      },
-                      onBiteTap: _openBiteFromUnit,
-                      onJourneyBiteTap: (u, lb, {required journeyId}) =>
-                          _openAiTechJourneyLearningBite(u, lb.id,
-                              journeyId: journeyId),
-                      onContentBiteTap: (u, lb,
-                              {required categoryId,
-                              required topicId,
-                              required conceptId}) =>
-                          _openLearningBitePath(u.subjectId, categoryId,
-                              topicId, u.unitId, conceptId, lb.id),
-                    );
-                  },
-                );
-              },
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            HomeGreetingHeader(
+              username: _userData?['username'],
+              isLoading: _userData == null && _user != null,
             ),
-          ] else ...[
-            const SizedBox(height: 12),
-            const HomeEmptyState(),
-          ],
-          const SizedBox(height: 8),
-        ]),
+            const SizedBox(height: 24),
+            if (_isLoadingUnits)
+              const Padding(
+                padding: EdgeInsets.only(top: 32.0),
+                child: Center(child: CircularProgressIndicator()),
+              )
+            else if (_units.isNotEmpty) ...[
+              const Text('In Bearbeitung',
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: -0.5)),
+              const SizedBox(height: 12),
+              ListView.builder(
+                physics: const NeverScrollableScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: _units.length,
+                itemBuilder: (context, idx) {
+                  final unit = _units[idx];
+                  return StreamBuilder<String>(
+                    stream: _aiTechService.streamUnitTitle(
+                        unitId: unit.unitId, subjectId: unit.subjectId),
+                    builder: (ctx, titleSnap) {
+                      final title =
+                          (titleSnap.data != null && titleSnap.data!.isNotEmpty)
+                              ? titleSnap.data!
+                              : null;
+                      return UnitProgressCard(
+                        unit: unit,
+                        unitTitle: title,
+                        subjectColor: _subjectColors[unit.subjectId],
+                        onOpenUnit: () => _openUnitOverview(unit),
+                        onOpenAiSession: () async {
+                          if (!mounted) return;
+                          final navigator = Navigator.of(context);
+                          navigator.push(MaterialPageRoute(
+                              builder: (_) => AiTechPage(
+                                  sessionId: unit.unitId,
+                                  sessionTitle: title)));
+                        },
+                        onBiteTap: _openBiteFromUnit,
+                        onJourneyBiteTap: (u, lb, {required journeyId}) =>
+                            _openAiTechJourneyLearningBite(u, lb.id,
+                                journeyId: journeyId),
+                        onContentBiteTap: (u, lb,
+                                {required categoryId,
+                                required topicId,
+                                required conceptId}) =>
+                            _openLearningBitePath(u.subjectId, categoryId,
+                                topicId, u.unitId, conceptId, lb.id),
+                      );
+                    },
+                  );
+                },
+              ),
+            ] else ...[
+              const SizedBox(height: 12),
+              const HomeEmptyState(),
+            ],
+            const SizedBox(height: 16),
+          ]),
+        ),
       ),
     );
   }

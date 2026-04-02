@@ -16,35 +16,50 @@ class UnitBiteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final title = authoritativeTitle ?? bite.biteId;
     final completed = (bite.progress >= 100) || bite.status == 'completed';
 
-    return Card(
-      margin: EdgeInsets.zero,
-      color: Theme.of(context).colorScheme.secondary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
+    return Container(
+      width: 160,
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withAlpha(51),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Icon(
-                      completed
-                          ? Icons.check_circle
-                          : Icons.radio_button_unchecked,
-                      color: Theme.of(context).colorScheme.primary),
-                )
-              ]),
+                Icon(
+                  completed ? Icons.check_circle : Icons.radio_button_unchecked,
+                  color: colorScheme.primary,
+                  size: 24,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                    height: 1.2,
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -60,31 +75,48 @@ class NewBiteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.zero,
-      color: Theme.of(context).colorScheme.secondary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Container(
+      width: 160,
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withAlpha(51),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(12),
+          onTap: onTap,
+          child: Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(title,
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Icon(
-                    Icons.radio_button_unchecked,
-                    color: Theme.of(context).colorScheme.primary,
+                Icon(
+                  Icons.lock_outline,
+                  color: colorScheme.outline,
+                  size: 24,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  title,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
+                    color: colorScheme.onSurface,
+                    height: 1.2,
                   ),
-                )
-              ]),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

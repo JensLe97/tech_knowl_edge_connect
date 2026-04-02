@@ -30,6 +30,60 @@ class _OverviewPageState extends State<OverviewPage> {
     });
   }
 
+  Widget _buildNavItem(BuildContext context,
+      {required int index,
+      required IconData icon,
+      required IconData activeIcon,
+      required String label}) {
+    final isSelected = _currentIndex == index;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    return AnimatedContainer(
+        duration: const Duration(milliseconds: 150),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? colorScheme.primaryContainer.withAlpha(188)
+              : colorScheme.primaryContainer.withAlpha(0),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: () => _onTap(index),
+              borderRadius: BorderRadius.circular(16),
+              hoverColor: colorScheme.primaryContainer.withAlpha(40),
+              splashColor: colorScheme.primaryContainer.withAlpha(0),
+              highlightColor: colorScheme.primaryContainer.withAlpha(60),
+              child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      isSelected ? activeIcon : icon,
+                      color: isSelected
+                          ? colorScheme.onPrimaryContainer
+                          : colorScheme.onSurfaceVariant,
+                      size: 24,
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      label,
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: isSelected
+                            ? colorScheme.onPrimaryContainer
+                            : colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,31 +92,62 @@ class _OverviewPageState extends State<OverviewPage> {
         index: _currentIndex,
         children: _tabs,
       ),
-      bottomNavigationBar: Theme(
-        data: Theme.of(context).copyWith(highlightColor: Colors.transparent),
-        child: Container(
-          color: Theme.of(context).colorScheme.inversePrimary,
-          child: BottomNavigationBar(
-            currentIndex: _currentIndex,
-            type: BottomNavigationBarType.fixed,
-            onTap: _onTap,
-            items: const [
-              BottomNavigationBarItem(
-                  label: 'Home',
-                  icon: Icon(Icons.home, key: ValueKey('tab_home'))),
-              BottomNavigationBarItem(
-                  label: 'Suche',
-                  icon: Icon(Icons.search, key: ValueKey('tab_search'))),
-              BottomNavigationBarItem(
-                  label: 'Feed',
-                  icon: Icon(Icons.feed, key: ValueKey('tab_feed'))),
-              BottomNavigationBarItem(
-                  label: 'Chats',
-                  icon: Icon(Icons.chat, key: ValueKey('tab_chats'))),
-              BottomNavigationBarItem(
-                  label: 'Profil',
-                  icon: Icon(Icons.person, key: ValueKey('tab_profile'))),
-            ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.surface,
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(13),
+              blurRadius: 12,
+              offset: const Offset(0, -4),
+            ),
+          ],
+          border: Border(
+            top: BorderSide(
+              color:
+                  Theme.of(context).colorScheme.outlineVariant.withAlpha(128),
+              width: 1,
+            ),
+          ),
+        ),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          child: SafeArea(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _buildNavItem(context,
+                      index: 0,
+                      icon: Icons.home_outlined,
+                      activeIcon: Icons.home,
+                      label: 'Home'),
+                  _buildNavItem(context,
+                      index: 1,
+                      icon: Icons.search_outlined,
+                      activeIcon: Icons.search,
+                      label: 'Suche'),
+                  _buildNavItem(context,
+                      index: 2,
+                      icon: Icons.feed_outlined,
+                      activeIcon: Icons.feed,
+                      label: 'Feed'),
+                  _buildNavItem(context,
+                      index: 3,
+                      icon: Icons.chat_bubble_outline,
+                      activeIcon: Icons.chat,
+                      label: 'Chats'),
+                  _buildNavItem(context,
+                      index: 4,
+                      icon: Icons.person_outline,
+                      activeIcon: Icons.person,
+                      label: 'Profil'),
+                ],
+              ),
+            ),
           ),
         ),
       ),

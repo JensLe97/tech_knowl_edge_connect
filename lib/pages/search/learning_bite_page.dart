@@ -101,12 +101,12 @@ class _LearningBitePageState extends State<LearningBitePage>
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        toolbarHeight: 90,
+        toolbarHeight: 70,
         titleSpacing: 0,
         title: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 10, right: 48),
+              padding: const EdgeInsets.only(top: 0, bottom: 0, right: 48),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
@@ -124,13 +124,11 @@ class _LearningBitePageState extends State<LearningBitePage>
                     tween: Tween<double>(begin: 0, end: progressValue),
                     builder: (context, value, _) => LinearProgressIndicator(
                       value: value,
-                      backgroundColor: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withValues(alpha: 0.1),
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).colorScheme.secondary,
-                      minHeight: 12,
+                      backgroundColor:
+                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      borderRadius: BorderRadius.circular(12),
+                      color: Theme.of(context).colorScheme.primary,
+                      minHeight: 10,
                     ),
                   ),
                 ],

@@ -51,13 +51,14 @@ class ClozeBuilder extends MarkdownElementBuilder {
     // _mergeInlineChildren can extract the TextSpan and merge it
     // with adjacent text spans into a single RichText widget.
     // This keeps the cloze field truly inline with surrounding text.
-    final lineHeight = (parentStyle?.fontSize ?? 16) * 1.5;
+    final lineHeight = (parentStyle?.fontSize ?? 16) * 1.9;
     return Text.rich(
       TextSpan(
         children: [
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
-            child: SizedBox(
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 2),
               height: lineHeight,
               child: child,
             ),

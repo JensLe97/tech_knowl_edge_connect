@@ -256,8 +256,8 @@ Aufgabentypen und wann verwenden:
 
 Regeln:
 - Variiere die Aufgabentypen (nicht nur singleChoice)
-- Lückentexte (cloze) enden mit einem Satzzeichen und markieren die Lücke mit {}
-- Bei freeTextFieldCloze: correctAnswer = das fehlende Wort / die kurze Phrase (nicht ein ganzer Satz)
+- Lückentexte (cloze) enden mit einem Satzzeichen und markieren die Lücken mit {}
+- Bei freeTextFieldCloze: correctAnswer = die fehlenden Wörter/Phrasen in der Reihenfolge ihres Auftretens, getrennt durch '{}', z. B. "Wort1{}Wort2"
 - Bei singleChoice/singleChoiceCloze: mindestens 2 Einträge in "answers", davon 1 korrekt
 - KRITISCH: Bei singleChoice und singleChoiceCloze muss "correctAnswer" exakt (Zeichen für Zeichen, gleiche Groß-/Kleinschreibung) mit einem der Einträge in "answers" übereinstimmen
 - Fragen und Antworten auf Deutsch, korrekte Groß-/Kleinschreibung

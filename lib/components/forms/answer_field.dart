@@ -30,7 +30,6 @@ class _AnswerFieldState extends State<AnswerField> {
   @override
   void initState() {
     super.initState();
-
     focusNode = FocusNode();
     if (widget.autofocus) {
       focusNode.requestFocus();
@@ -46,45 +45,73 @@ class _AnswerFieldState extends State<AnswerField> {
   @override
   Widget build(BuildContext context) {
     int answerLength = widget.answer.length;
-    final baseStyle = Theme.of(context).textTheme.bodyLarge!;
-    TextStyle textStyle = baseStyle.copyWith(
-      color: !widget.enabled
-          ? Colors.green
-          : answered
-              ? (currentValue.toLowerCase() == widget.answer.toLowerCase() ||
-                      widget.controller.text.toLowerCase() ==
-                          widget.answer.toLowerCase())
-                  ? Colors.green
-                  : Colors.red
-              : Theme.of(context).textTheme.displayLarge!.color,
-    );
+
+    bool isCorrectInput = (currentValue.toLowerCase() ==
+            widget.answer.toLowerCase() ||
+        widget.controller.text.toLowerCase() == widget.answer.toLowerCase());
+
+    bool isFieldEnabled = widget.enabled && !(answered && isCorrectInput);
+
+    Color textColor = Theme.of(context).colorScheme.primary;
+    Color borderColor = Theme.of(context).colorScheme.primary;
+
+    if (!widget.enabled) {
+      textColor = Colors.green;
+      borderColor = Colors.green;
+    } else if (answered) {
+      if (isCorrectInput) {
+        textColor = Colors.green;
+        borderColor = Colors.green;
+      } else {
+        textColor = Theme.of(context).colorScheme.error;
+        borderColor = Theme.of(context).colorScheme.error;
+      }
+    }
 
     double calculatedWidth = (TextPainter(
-                text: TextSpan(text: widget.answer, style: textStyle),
-                textScaler: MediaQuery.of(context).textScaler,
-                textDirection: TextDirection.ltr)
-              ..layout())
-            .size
-            .width +
-        10;
+                    text: TextSpan(
+                        text: widget.answer,
+                        style: TextStyle(
+                          color: textColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                        )),
+                    textScaler: MediaQuery.of(context).textScaler,
+                    textDirection: TextDirection.ltr)
+                  ..layout())
+                .size
+                .width *
+            1.02 +
+        28; // Extra padding for web font rendering and cursor
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5),
       child: SizedBox(
-        width: calculatedWidth < 30 ? 30 : calculatedWidth,
+        width: calculatedWidth < 45 ? 45 : calculatedWidth,
         child: Form(
           key: _formKey,
           child: TextFormField(
             textInputAction: widget.textInputAction,
             controller: widget.controller,
-            enabled:
-                widget.enabled && !(answered && currentValue == widget.answer),
-            style: textStyle,
-            maxLength: answerLength,
+            enabled: isFieldEnabled,
+            maxLines: 1,
+            textAlign: TextAlign.left,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+              height: 1.2,
+            ),
+            maxLength: answerLength > 0 ? answerLength : 50,
+            buildCounter: (context,
+                    {required currentLength, required isFocused, maxLength}) =>
+                null,
             onChanged: (value) {
-              setState(() {
-                answered = false;
-              });
+              if (answered) {
+                setState(() {
+                  answered = false;
+                });
+              }
               setState(() {
                 _formKey.currentState!.validate();
               });
@@ -109,37 +136,41 @@ class _AnswerFieldState extends State<AnswerField> {
                   currentValue = value;
                   focusNode.requestFocus();
                 }
-                widget.setAllCorrect!();
+                if (widget.setAllCorrect != null) {
+                  widget.setAllCorrect!();
+                }
               });
               setState(() {
                 _formKey.currentState!.validate();
               });
             },
-            cursorColor: Theme.of(context).textTheme.displayLarge!.color,
+            cursorHeight: 18,
+            cursorColor: Theme.of(context).colorScheme.primary,
             decoration: InputDecoration(
+              isDense: true,
+              contentPadding:
+                  const EdgeInsets.only(left: 4, right: 4, top: 6, bottom: 6),
               enabledBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+                borderSide: BorderSide(color: borderColor, width: 2),
               ),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).textTheme.displayLarge!.color!),
+                    color: Theme.of(context).colorScheme.tertiary, width: 2),
               ),
               disabledBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.secondary),
+                borderSide: BorderSide(
+                  color: borderColor.withAlpha(100),
+                  width: 2,
+                ),
               ),
-              isDense: true,
-              contentPadding: const EdgeInsets.symmetric(vertical: 0),
-              counterText: '',
               errorStyle: const TextStyle(height: 0.01, fontSize: 1),
               errorBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.error),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.error, width: 2),
               ),
               focusedErrorBorder: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.error),
+                borderSide: BorderSide(
+                    color: Theme.of(context).colorScheme.error, width: 2),
               ),
             ),
           ),

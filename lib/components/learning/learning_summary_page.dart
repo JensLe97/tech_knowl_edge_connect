@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:tech_knowl_edge_connect/components/buttons/lesson_button.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/bottom_action_bar.dart';
 
 class LearningSummaryPage extends StatelessWidget {
   final int points;
@@ -16,16 +16,13 @@ class LearningSummaryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
-            child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Center(
-              child: Column(
-            children: [
-              const SizedBox(height: 200),
-              Builder(builder: (context) {
+        Positioned.fill(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.only(left: 16, right: 16, top: 80, bottom: 120),
+            child: Center(
+              child: Builder(builder: (context) {
                 final double ratio = maxPoints > 0 ? points / maxPoints : 1.0;
                 final String headerText;
                 final IconData headerIcon;
@@ -65,43 +62,72 @@ class LearningSummaryPage extends StatelessWidget {
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Icon(headerIcon, size: 72, color: iconColor),
-                    const SizedBox(height: 12),
+                    Container(
+                      padding: const EdgeInsets.all(32),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: Theme.of(context).colorScheme.outlineVariant.withAlpha(50),
+                          width: 2,
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: iconColor.withAlpha(40),
+                            blurRadius: 40,
+                            spreadRadius: 10,
+                          ),
+                        ],
+                      ),
+                      child: Icon(headerIcon, size: 84, color: iconColor),
+                    ),
+                    const SizedBox(height: 32),
                     Text(
                       '$emoji  $headerText',
                       textAlign: TextAlign.center,
                       style:
                           Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontSize: 26,
+                                fontSize: 28,
                                 fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.onSurface,
                               ),
                     ),
-                    const SizedBox(height: 30),
-                    Text(
-                      maxPoints > 0
-                          ? 'Du hast $points von $maxPoints Punkten erhalten.'
-                          : 'Diese Lektion wurde als abgeschlossen markiert.',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                            fontSize: 18,
-                          ),
+                    const SizedBox(height: 16),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surfaceContainer,
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: Text(
+                        maxPoints > 0
+                            ? 'Du hast $points von $maxPoints Punkten erhalten.'
+                            : 'Diese Lektion wurde als abgeschlossen markiert.',
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                            ),
+                      ),
                     ),
                   ],
                 );
               }),
-            ],
-          )),
-        )),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 40),
-          child: Wrap(direction: Axis.horizontal, children: [
-            LessonButton(
-              onTap: onComplete,
-              text: "Lektion abschließen",
-            )
-          ]),
+            ),
+          ),
+        ),
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: BottomActionBar(
+            text: "Lektion abschließen",
+            onPressed: onComplete,
+          ),
         ),
       ],
     );
   }
 }
+

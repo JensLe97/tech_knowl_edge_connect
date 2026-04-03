@@ -47,10 +47,16 @@ class ThemeConfig {
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
       popupMenuTheme: PopupMenuThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 4,
-        color: cs.surface,
-        surfaceTintColor: cs.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(51),
+            width: 1,
+          ),
+        ),
+        elevation: 0,
+        color: cs.surfaceContainerHighest.withAlpha(242), // 95% Light Mode
+        surfaceTintColor: Colors.transparent,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
@@ -218,10 +224,16 @@ class ThemeConfig {
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
       popupMenuTheme: PopupMenuThemeData(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        elevation: 4,
-        color: cs.surface,
-        surfaceTintColor: cs.surface,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(51),
+            width: 1,
+          ),
+        ),
+        elevation: 0,
+        color: cs.surfaceContainerHighest.withAlpha(230), // 90% Dark Mode
+        surfaceTintColor: Colors.transparent,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(

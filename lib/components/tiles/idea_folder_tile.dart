@@ -64,14 +64,6 @@ class IdeaFolderTile extends StatelessWidget {
                     color: colorScheme.onSurface,
                   ),
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  "",
-                  style: TextStyle(
-                    fontSize: 10,
-                    color: colorScheme.onSurfaceVariant,
-                  ),
-                )
               ],
             ),
           ),

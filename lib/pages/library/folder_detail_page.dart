@@ -243,245 +243,284 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: CustomScrollView(
-        slivers: [
-          SliverAppBar.large(
-            elevation: 0,
-            shadowColor: Colors.transparent,
-            actions: [
-              PopupMenuButton<String>(
-                icon: const Icon(Icons.add_circle),
-                tooltip: 'Lerninhalt hochladen',
-                onSelected: (value) {
-                  switch (value) {
-                    case 'camera_image':
-                      _pickAndUploadImageOrVideo(ImageSource.camera, 'image');
-                    case 'gallery_image':
-                      _pickAndUploadImageOrVideo(ImageSource.gallery, 'image');
-                    case 'camera_video':
-                      _pickAndUploadImageOrVideo(ImageSource.camera, 'video');
-                    case 'gallery_video':
-                      _pickAndUploadImageOrVideo(ImageSource.gallery, 'video');
-                    case 'file':
-                      _pickAndUploadFile();
-                  }
-                },
-                itemBuilder: (context) => const [
-                  PopupMenuItem<String>(
-                    value: 'camera_image',
-                    child: ListTile(
-                      leading: Icon(Icons.camera_alt),
-                      title: Text('Foto aufnehmen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'gallery_image',
-                    child: ListTile(
-                      leading: Icon(Icons.image),
-                      title: Text('Foto aus Galerie auswählen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'camera_video',
-                    child: ListTile(
-                      leading: Icon(Icons.video_call),
-                      title: Text('Video aufnehmen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'gallery_video',
-                    child: ListTile(
-                      leading: Icon(Icons.video_file),
-                      title: Text('Video aus Galerie auswählen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  PopupMenuItem<String>(
-                    value: 'file',
-                    child: ListTile(
-                      leading: Icon(Icons.attach_file),
-                      title: Text('Datei auswählen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ],
+      appBar: AppBar(
+        title: Text(widget.folder.name),
+        actions: [
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.add),
+            tooltip: 'Lerninhalt hochladen',
+            onSelected: (value) {
+              switch (value) {
+                case 'camera_image':
+                  _pickAndUploadImageOrVideo(ImageSource.camera, 'image');
+                case 'gallery_image':
+                  _pickAndUploadImageOrVideo(ImageSource.gallery, 'image');
+                case 'camera_video':
+                  _pickAndUploadImageOrVideo(ImageSource.camera, 'video');
+                case 'gallery_video':
+                  _pickAndUploadImageOrVideo(ImageSource.gallery, 'video');
+                case 'file':
+                  _pickAndUploadFile();
+              }
+            },
+            itemBuilder: (context) => const [
+              PopupMenuItem<String>(
+                value: 'camera_image',
+                child: ListTile(
+                  leading: Icon(Icons.camera_alt),
+                  title: Text('Foto aufnehmen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
               ),
-              PopupMenuButton<String>(
-                onSelected: (value) {
-                  switch (value) {
-                    case 'toggle_public':
-                      _togglePublic();
-                    case 'summarize':
-                      _summarizeMaterials();
-                    case 'learning_bite':
-                      _generateLearningBite();
-                    case 'delete':
-                      _confirmAndDeleteFolder();
-                  }
-                },
-                itemBuilder: (context) => [
-                  PopupMenuItem<String>(
-                    value: 'toggle_public',
-                    child: ListTile(
-                      leading: Icon(_isPublic ? Icons.lock : Icons.public),
-                      title: Text(
-                          _isPublic ? 'Auf Privat stellen' : 'Veröffentlichen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'summarize',
-                    child: ListTile(
-                      leading: FaIcon(FontAwesomeIcons.wandMagicSparkles),
-                      title: Text('AI Tech Zusammenfassung'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'learning_bite',
-                    child: ListTile(
-                      leading: FaIcon(FontAwesomeIcons.schoolCircleCheck),
-                      title: Text('AI Tech Lektion erstellen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                  const PopupMenuItem<String>(
-                    value: 'delete',
-                    child: ListTile(
-                      leading: FaIcon(FontAwesomeIcons.folderMinus),
-                      title: Text('Ordner löschen'),
-                      contentPadding: EdgeInsets.zero,
-                    ),
-                  ),
-                ],
+              PopupMenuItem<String>(
+                value: 'gallery_image',
+                child: ListTile(
+                  leading: Icon(Icons.image),
+                  title: Text('Foto aus Galerie auswählen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'camera_video',
+                child: ListTile(
+                  leading: Icon(Icons.video_call),
+                  title: Text('Video aufnehmen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'gallery_video',
+                child: ListTile(
+                  leading: Icon(Icons.video_file),
+                  title: Text('Video aus Galerie auswählen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              PopupMenuItem<String>(
+                value: 'file',
+                child: ListTile(
+                  leading: Icon(Icons.attach_file),
+                  title: Text('Datei auswählen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
               ),
             ],
-            flexibleSpace: FlexibleSpaceBar(
-              titlePadding:
-                  const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-              title: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    widget.folder.name,
-                    style: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  if (widget.folder.description.isNotEmpty) ...[
-                    const SizedBox(height: 4),
-                    Text(
-                      widget.folder.description,
-                      style: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.normal),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ],
+          ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_horiz),
+            onSelected: (value) {
+              switch (value) {
+                case 'toggle_public':
+                  _togglePublic();
+                case 'summarize':
+                  _summarizeMaterials();
+                case 'learning_bite':
+                  _generateLearningBite();
+                case 'delete':
+                  _confirmAndDeleteFolder();
+              }
+            },
+            itemBuilder: (context) => [
+              PopupMenuItem<String>(
+                value: 'toggle_public',
+                child: ListTile(
+                  leading: Icon(_isPublic ? Icons.lock : Icons.public),
+                  title: Text(
+                      _isPublic ? 'Auf Privat stellen' : 'Veröffentlichen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
               ),
-              background: Stack(children: [
-                OverflowBox(
-                  maxWidth: 800,
-                  maxHeight: 800,
-                  child: FaIcon(
-                    FontAwesomeIcons.folder,
-                    color: Theme.of(context).colorScheme.secondary,
-                    size: 50,
+              const PopupMenuItem<String>(
+                value: 'summarize',
+                child: ListTile(
+                  leading: FaIcon(FontAwesomeIcons.wandMagicSparkles),
+                  title: Text('AI Tech Zusammenfassung'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'learning_bite',
+                child: ListTile(
+                  leading: FaIcon(FontAwesomeIcons.schoolCircleCheck),
+                  title: Text('AI Tech Lektion erstellen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'delete',
+                child: ListTile(
+                  leading:
+                      FaIcon(FontAwesomeIcons.folderMinus, color: Colors.red),
+                  title: Text('Ordner löschen',
+                      style: TextStyle(color: Colors.red)),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      body: SafeArea(
+        child: FutureBuilder<List<LearningMaterial>>(
+          future: _materialsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Fehler: ${snapshot.error}'));
+            }
+
+            final materials = snapshot.data ?? [];
+            final colorScheme = Theme.of(context).colorScheme;
+
+            return CustomScrollView(
+              slivers: [
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0, vertical: 12.0),
+                  sliver: SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 24.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Ideensammlung",
+                                style: TextStyle(
+                                  color: colorScheme.onSurfaceVariant,
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Text(
+                                    "${materials.length} ${materials.length == 1 ? 'Datei' : 'Dateien'}",
+                                    style: TextStyle(
+                                      fontSize: 28,
+                                      fontWeight: FontWeight.bold,
+                                      color: colorScheme.onSurface,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8, vertical: 4),
+                                    decoration: BoxDecoration(
+                                      color: colorScheme.secondaryContainer,
+                                      borderRadius: BorderRadius.circular(6),
+                                    ),
+                                    child: Text(
+                                      _isPublic ? 'Öffentlich' : 'Privat',
+                                      style: TextStyle(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.onSecondaryContainer,
+                                        letterSpacing: 1.2,
+                                      ),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              if (widget.folder.description.isNotEmpty) ...[
+                                const SizedBox(height: 8),
+                                Text(
+                                  widget.folder.description,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
+                                ),
+                              ]
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ]),
-              centerTitle: true,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: Center(
-              child: FutureBuilder<List<LearningMaterial>>(
-                future: _materialsFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Fehler: ${snapshot.error}');
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return SizedBox(
-                      height: MediaQuery.of(context).size.height * 0.5,
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Center(
-                            child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              "Erstelle einen neuen Lerninhalt",
-                              style: TextStyle(fontSize: 20),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  "über das ",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                                Icon(Icons.add_circle),
-                                Text(
-                                  " oben rechts.",
-                                  style: TextStyle(fontSize: 20),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 2),
-                          ],
-                        )),
+                if (materials.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.folder_open,
+                              size: 64, color: colorScheme.outlineVariant),
+                          const SizedBox(height: 16),
+                          const Text(
+                            "Erstelle einen neuen Lerninhalt",
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                          ),
+                          const SizedBox(height: 8),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text("über das ",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: colorScheme.onSurfaceVariant)),
+                              Icon(Icons.add,
+                                  size: 18, color: colorScheme.primary),
+                              Text(" oben rechts.",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: colorScheme.onSurfaceVariant)),
+                            ],
+                          ),
+                        ],
                       ),
-                    );
-                  }
-                  final materials = snapshot.data!;
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: GridView.builder(
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 8),
+                    ),
+                  )
+                else
+                  SliverPadding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16.0, vertical: 12.0),
+                    sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
                         maxCrossAxisExtent: 200,
-                        mainAxisSpacing: 8,
-                        crossAxisSpacing: 8,
-                        childAspectRatio: 200 / 155,
+                        mainAxisSpacing: 16,
+                        crossAxisSpacing: 16,
+                        childAspectRatio: 200 / 175,
                       ),
-                      itemCount: materials.length,
-                      itemBuilder: (context, index) {
-                        final material = materials[index];
-                        return Stack(
-                          children: [
-                            LearningMaterialTile(
-                              material: material,
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        LearningMaterialPreviewPage(
-                                      url: material.url,
-                                      type: material.type,
-                                      name: material.name,
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final material = materials[index];
+                          return Stack(
+                            children: [
+                              LearningMaterialTile(
+                                material: material,
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          LearningMaterialPreviewPage(
+                                        url: material.url,
+                                        type: material.type,
+                                        name: material.name,
+                                      ),
                                     ),
-                                  ),
-                                );
-                              },
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Align(
-                                alignment: Alignment.topRight,
+                                  );
+                                },
+                              ),
+                              Positioned(
+                                top: 4,
+                                right: 4,
                                 child: IconButton(
-                                  icon: const FaIcon(FontAwesomeIcons.trash,
-                                      size: 21),
+                                  icon: FaIcon(
+                                    FontAwesomeIcons.trash,
+                                    size: 16,
+                                    color: colorScheme.onSurfaceVariant,
+                                  ),
                                   tooltip: 'Löschen',
                                   onPressed: () async {
                                     await _materialService
@@ -500,17 +539,17 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                   },
                                 ),
                               ),
-                            ),
-                          ],
-                        );
-                      },
+                            ],
+                          );
+                        },
+                        childCount: materials.length,
+                      ),
                     ),
-                  );
-                },
-              ),
-            ),
-          ),
-        ],
+                  ),
+              ],
+            );
+          },
+        ),
       ),
     );
   }

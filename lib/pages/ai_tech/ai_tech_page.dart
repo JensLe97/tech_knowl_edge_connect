@@ -489,11 +489,14 @@ class _AiTechPageState extends State<AiTechPage> {
             }
           }
 
-          ListView messageList =
-              ListView(reverse: true, cacheExtent: 1500, children: [
-            if (_isAiThinking) const TypingIndicator(),
-            ...messageWidgets.reversed,
-          ]);
+          ListView messageList = ListView(
+              reverse: true,
+              cacheExtent: 1500,
+              padding: const EdgeInsets.only(top: 16, bottom: 120),
+              children: [
+                if (_isAiThinking) const TypingIndicator(),
+                ...messageWidgets.reversed,
+              ]);
           return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");
@@ -538,7 +541,9 @@ class _AiTechPageState extends State<AiTechPage> {
               : null;
           final bitesDocs = bitesSnapshot?.docs ?? <QueryDocumentSnapshot>[];
           return Card(
-            color: Theme.of(context).colorScheme.primary.withAlpha(25),
+            color: Theme.of(context).brightness == Brightness.light
+                ? Theme.of(context).colorScheme.surfaceContainerLowest
+                : Theme.of(context).colorScheme.primary.withAlpha(20),
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
             child: Column(
               children: [
@@ -688,44 +693,52 @@ class _AiTechPageState extends State<AiTechPage> {
 
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
-      child: Column(
-        crossAxisAlignment:
-            isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          if (text.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-              child: ChatBubble(
-                uid: data['userId'] ?? '',
-                message: text,
-                type: data['type'] ?? 'text',
-                isMe: isUser,
-                time: data['ts'],
-                userService: _userService,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Use Flexible so text doesn't overflow
+            Flexible(
+              child: Column(
+                crossAxisAlignment:
+                    isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                children: [
+                  if (text.isNotEmpty)
+                    ChatBubble(
+                      uid: data['userId'] ?? '',
+                      message: text,
+                      type: data['type'] ?? 'text',
+                      isMe: isUser,
+                      time: data['ts'],
+                      userService: _userService,
+                    ),
+                  if (attachments != null && attachments.isNotEmpty)
+                    ...attachments.map<Widget>((att) {
+                      final a = att as Map<String, dynamic>;
+                      final name = (a['name'] as String?) ?? 'Datei';
+                      final ext = (a['ext'] as String?) ?? '';
+                      final url = (a['url'] as String?) ?? '';
+                      if (url.isEmpty) return const SizedBox.shrink();
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 8.0),
+                        child: ChatBubble(
+                          uid: data['userId'] ?? '',
+                          message: url,
+                          type: ext,
+                          fileName: name,
+                          isMe: isUser,
+                          time: data['ts'],
+                          userService: _userService,
+                        ),
+                      );
+                    }),
+                ],
               ),
             ),
-          if (attachments != null && attachments.isNotEmpty)
-            ...attachments.map<Widget>((att) {
-              final a = att as Map<String, dynamic>;
-              final name = (a['name'] as String?) ?? 'Datei';
-              final ext = (a['ext'] as String?) ?? '';
-              final url = (a['url'] as String?) ?? '';
-              if (url.isEmpty) return const SizedBox.shrink();
-              return Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 4, horizontal: 12),
-                child: ChatBubble(
-                  uid: data['userId'] ?? '',
-                  message: url,
-                  type: ext,
-                  fileName: name,
-                  isMe: isUser,
-                  time: data['ts'],
-                  userService: _userService,
-                ),
-              );
-            }),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -796,17 +809,36 @@ class _AiTechPageState extends State<AiTechPage> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            // --- Chat Section ---
-            Expanded(child: _buildMessageList()),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+      body: Stack(
+        children: [
+          // --- Chat Section ---
+          Positioned.fill(child: _buildMessageList()),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  end: Alignment.topCenter,
+                  colors: [
+                    Theme.of(context).colorScheme.surface,
+                    Theme.of(context).colorScheme.surface.withAlpha(230),
+                    Theme.of(context).colorScheme.surface.withAlpha(0),
+                  ],
+                ),
+              ),
+              padding: EdgeInsets.fromLTRB(
+                10,
+                24,
+                10,
+                MediaQuery.of(context).padding.bottom + 16,
+              ),
               child: _buildMessageInput(),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

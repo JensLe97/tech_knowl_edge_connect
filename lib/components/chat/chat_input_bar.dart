@@ -1,6 +1,5 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:tech_knowl_edge_connect/components/forms/message_textfield.dart';
 
 /// A unified bottom input bar used in all chat/AI/search pages.
 ///
@@ -35,6 +34,8 @@ class ChatInputBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +49,7 @@ class ChatInputBar extends StatelessWidget {
                   height: 46,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
-                    padding: const EdgeInsets.fromLTRB(10, 4, 10, 2),
+                    padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
                     itemCount: pickedFiles.length,
                     itemBuilder: (context, index) {
                       final file = pickedFiles[index];
@@ -71,40 +72,96 @@ class ChatInputBar extends StatelessWidget {
                   ),
                 ),
         ),
-        Row(
-          children: [
-            if (onAttachmentTap != null)
-              IconButton(
-                onPressed: onAttachmentTap,
-                icon: const Icon(Icons.add_circle_outline_rounded, size: 40),
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            Flexible(
-              child: MessageTextField(
-                controller: controller,
-                hintText: hintText,
-                obscureText: false,
-                onSubmitted: (_) => onSend(),
-              ),
+        Container(
+          padding: const EdgeInsets.all(8),
+          decoration: BoxDecoration(
+            color: colorScheme.surfaceContainerLowest, // or bright surface
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(
+              color: colorScheme.outlineVariant.withAlpha(51),
             ),
-            ValueListenableBuilder<TextEditingValue>(
-              valueListenable: controller,
-              builder: (context, value, _) {
-                final canSend = value.text.isNotEmpty || pickedFiles.isNotEmpty;
-                return IconButton(
-                  icon: Icon(
-                    Icons.send,
-                    size: 40,
-                    color: canSend
-                        ? Theme.of(context).colorScheme.secondary
-                        : Theme.of(context).colorScheme.inversePrimary,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(12),
+                blurRadius: 16,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              if (onAttachmentTap != null)
+                Material(
+                  color: colorScheme.surfaceContainer,
+                  borderRadius: BorderRadius.circular(12),
+                  clipBehavior: Clip.antiAlias,
+                  child: InkWell(
+                    onTap: onAttachmentTap,
+                    child: SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Icon(
+                        Icons.add,
+                        color: colorScheme.onSurfaceVariant,
+                      ),
+                    ),
                   ),
-                  onPressed: canSend ? onSend : null,
-                  tooltip: 'Nachricht senden',
-                );
-              },
-            ),
-          ],
+                ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: TextField(
+                  controller: controller,
+                  textInputAction: TextInputAction.send,
+                  onSubmitted: (_) => onSend(),
+                  decoration: InputDecoration(
+                    hintText: hintText,
+                    border: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    filled: false,
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 8),
+              ValueListenableBuilder<TextEditingValue>(
+                valueListenable: controller,
+                builder: (context, value, _) {
+                  final canSend = value.text.trim().isNotEmpty || pickedFiles.isNotEmpty;
+                  return AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: canSend ? colorScheme.primary : colorScheme.surfaceContainerHigh,
+                      borderRadius: BorderRadius.circular(12),
+                      boxShadow: canSend ? [
+                        BoxShadow(
+                          color: colorScheme.primary.withAlpha(76),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        )
+                      ] : null,
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: canSend ? onSend : null,
+                        borderRadius: BorderRadius.circular(12),
+                        child: Icon(
+                          Icons.arrow_upward,
+                          color: canSend ? colorScheme.onPrimary : colorScheme.onSurfaceVariant.withAlpha(128),
+                        ),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ],
     );

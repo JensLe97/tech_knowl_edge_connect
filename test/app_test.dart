@@ -35,15 +35,10 @@ void main() {
     // Check name
     expect(find.text('Testfach'), findsOneWidget);
     // Check icon
-    expect(find.byType(Icon), findsOneWidget);
+    expect(find.byType(Icon), findsNWidgets(3));
     // Check color (Card background)
-    final card = tester.widget<Card>(find
-        .descendant(
-          of: find.byType(SubjectTile),
-          matching: find.byType(Card),
-        )
-        .first);
-    expect(card.color, Colors.blue);
+    final icon = tester.widget<Icon>(find.byWidgetPredicate((widget) => widget is Icon && widget.color == Colors.blue).first);
+    expect(icon.color, Colors.blue);
     // Check tap
     await tester.tap(find.byType(SubjectTile));
     expect(tapped, isTrue);

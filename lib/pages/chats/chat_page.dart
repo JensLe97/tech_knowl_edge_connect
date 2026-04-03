@@ -170,21 +170,41 @@ class _ChatPageState extends State<ChatPage> {
                   },
                   icon: const Icon(Icons.more_horiz)),
             ]),
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              Expanded(child: _buildMessageList()),
-              const SizedBox(height: 2),
-              blockedUsers.contains(widget.receiverUid)
-                  ? BlockedField(
-                      toggleBlockUser: toggleBlockUser,
-                      isBlocked: true,
-                    )
-                  : _buildMessageInput(),
-              const SizedBox(height: 8),
-            ],
-          ),
+        body: Stack(
+          children: [
+            // --- Chat Section ---
+            Positioned.fill(child: _buildMessageList()),
+            Positioned(
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Theme.of(context).colorScheme.surface,
+                      Theme.of(context).colorScheme.surface.withAlpha(230),
+                      Theme.of(context).colorScheme.surface.withAlpha(0),
+                    ],
+                  ),
+                ),
+                padding: EdgeInsets.fromLTRB(
+                  10,
+                  24,
+                  10,
+                  MediaQuery.of(context).padding.bottom + 16,
+                ),
+                child: blockedUsers.contains(widget.receiverUid)
+                    ? BlockedField(
+                        toggleBlockUser: toggleBlockUser,
+                        isBlocked: true,
+                      )
+                    : _buildMessageInput(),
+              ),
+            ),
+          ],
         ));
   }
 
@@ -260,6 +280,7 @@ class _ChatPageState extends State<ChatPage> {
           ListView messageList = ListView(
               reverse: true,
               cacheExtent: 1500,
+              padding: const EdgeInsets.only(top: 16, bottom: 120),
               children: messageWidgets.reversed.toList());
           return TextFieldTapRegion(child: messageList);
         } else {

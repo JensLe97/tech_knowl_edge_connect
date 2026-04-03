@@ -61,7 +61,7 @@ class ThemeConfig {
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
           shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
           backgroundColor: WidgetStateProperty.all(cs.surface),
           surfaceTintColor: WidgetStateProperty.all(cs.surface),
         ),
@@ -108,16 +108,16 @@ class ThemeConfig {
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: cs.secondary.withAlpha(175))),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(80))),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.secondary, width: 1.5)),
         errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.error, width: 1.5)),
         focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.error, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
@@ -238,7 +238,7 @@ class ThemeConfig {
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
           shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
           backgroundColor: WidgetStateProperty.all(cs.surface),
           surfaceTintColor: WidgetStateProperty.all(cs.surface),
         ),
@@ -285,16 +285,16 @@ class ThemeConfig {
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide(color: cs.secondary.withAlpha(175))),
+            borderRadius: BorderRadius.circular(16),
+            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(80))),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.secondary, width: 1.5)),
         errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.error, width: 1.5)),
         focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
             borderSide: BorderSide(color: cs.error, width: 1.5)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),

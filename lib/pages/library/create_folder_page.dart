@@ -50,7 +50,7 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
               const SizedBox(height: 10),
               Row(
                 children: [
-                  const Text('Öffentlich'),
+                  const Text('Öffentlich', style: TextStyle(fontSize: 16)),
                   const Spacer(),
                   Switch(
                     value: _isPublic,

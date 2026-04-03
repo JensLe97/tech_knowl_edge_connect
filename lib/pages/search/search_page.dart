@@ -534,7 +534,7 @@ class _SearchPageState extends State<SearchPage> {
                                                   padding:
                                                       const EdgeInsets.all(8),
                                                   child: Icon(
-                                                    Icons.send,
+                                                    Icons.arrow_upward,
                                                     color: Theme.of(context)
                                                         .colorScheme
                                                         .onPrimary,

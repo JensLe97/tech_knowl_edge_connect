@@ -732,9 +732,9 @@ class _HomePageState extends State<HomePage> {
             else if (_units.isNotEmpty) ...[
               const Text('In Bearbeitung',
                   style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: -0.5)),
+                    fontSize: 20,
+                    fontWeight: FontWeight.w900,
+                  )),
               const SizedBox(height: 12),
               ListView.builder(
                 physics: const NeverScrollableScrollPhysics(),

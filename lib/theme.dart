@@ -166,7 +166,7 @@ class ThemeConfig {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           side: BorderSide(
             color: cs.outlineVariant.withAlpha(51),
             width: 1,
@@ -356,7 +356,7 @@ class ThemeConfig {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           side: BorderSide(
             color: cs.outlineVariant.withAlpha(51),
             width: 1,

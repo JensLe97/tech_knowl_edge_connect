@@ -79,24 +79,44 @@ class _ProfilePageState extends State<PostProfilePage> {
               return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
             } else if (snapshot.hasData) {
               Map<String, dynamic>? user = snapshot.data!.data();
+              String username = user!['username'];
+              final parts = username.trim().split(RegExp(r'\s+'));
+              String initials = parts.isEmpty || parts[0].isEmpty
+                  ? '?'
+                  : parts.length > 1
+                      ? (parts[0][0] + parts.last[0]).toUpperCase()
+                      : parts[0].length > 1
+                          ? parts[0].substring(0, 2).toUpperCase()
+                          : parts[0].toUpperCase();
+
               return SingleChildScrollView(
                 child: Center(
                   child: Column(
                     children: [
                       const SizedBox(height: 50),
                       Container(
+                        width: 120,
+                        height: 120,
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primary,
-                            borderRadius: BorderRadius.circular(24)),
-                        padding: const EdgeInsets.all(25),
-                        child: const Icon(
-                          Icons.person,
-                          size: 64,
+                          color:
+                              Theme.of(context).colorScheme.secondaryContainer,
+                          borderRadius: BorderRadius.circular(24),
+                        ),
+                        alignment: Alignment.center,
+                        child: Text(
+                          initials,
+                          style: TextStyle(
+                            color: Theme.of(context)
+                                .colorScheme
+                                .onSecondaryContainer,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 48,
+                          ),
                         ),
                       ),
                       const SizedBox(height: 25),
                       Text(
-                        user!['username'],
+                        user['username'],
                         style: const TextStyle(
                             fontSize: 24, fontWeight: FontWeight.bold),
                       ),

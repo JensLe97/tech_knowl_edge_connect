@@ -10,6 +10,14 @@ class HomeGreetingHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
+    final parts = (username ?? '').trim().split(RegExp(r'\s+'));
+    final String initials = parts.isEmpty || parts[0].isEmpty
+        ? '?'
+        : parts.length > 1
+            ? (parts[0][0] + parts.last[0]).toUpperCase()
+            : parts[0].length > 1
+                ? parts[0].substring(0, 2).toUpperCase()
+                : parts[0].toUpperCase();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -19,20 +27,19 @@ class HomeGreetingHeader extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 40,
-                height: 40,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: colorScheme.secondaryContainer,
-                    width: 2,
-                  ),
+                  color: colorScheme.secondaryContainer,
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                child: ClipOval(
-                  child: Container(
-                    color: colorScheme.primary,
-                    child: Icon(Icons.person,
-                        color: colorScheme.onPrimary, size: 24),
+                alignment: Alignment.center,
+                child: Text(
+                  initials,
+                  style: TextStyle(
+                    color: colorScheme.onSecondaryContainer,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
                   ),
                 ),
               ),

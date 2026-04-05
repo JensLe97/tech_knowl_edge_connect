@@ -135,50 +135,46 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                       .contains(material.type.toLowerCase())
                   ? VideoPlayerWidget(url: material.url)
                   : Center(
-                      child: Container(
-                        margin: const EdgeInsets.symmetric(horizontal: 16),
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 80, horizontal: 16),
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).brightness == Brightness.light
-                                  ? Theme.of(context)
-                                      .colorScheme
-                                      .surfaceContainerLowest
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .primary
-                                      .withAlpha(20),
-                          borderRadius: BorderRadius.circular(20),
-                          border: Border.all(
-                              color: secondaryOutlineColor.withAlpha(77)),
-                        ),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            FaIcon(
-                              LearningMaterialType.getIconForType(
-                                  material.type),
-                              size: 56,
-                              color: cs.primary,
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              material.name,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: cs.onSurface,
+                      child: FractionallySizedBox(
+                        heightFactor: 0.50,
+                        widthFactor: 1.0,
+                        child: Container(
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).brightness == Brightness.light
+                                    ? Theme.of(context)
+                                        .colorScheme
+                                        .surfaceContainerLowest
+                                    : Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withAlpha(20),
+                            borderRadius: BorderRadius.circular(24),
+                            border: Border.all(
+                                color: secondaryOutlineColor.withAlpha(77)),
+                          ),
+                          child: Center(
+                            child: Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                color: cs.primary.withAlpha(26),
+                                shape: BoxShape.circle,
+                              ),
+                              alignment: Alignment.center,
+                              child: FaIcon(
+                                LearningMaterialType.getIconForType(
+                                    material.type),
+                                size: 40,
+                                color: cs.primary,
                               ),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),
         ),
-
         // Bottom Details & Actions
         Positioned(
           bottom: 0,
@@ -428,7 +424,16 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   @override
   Widget build(BuildContext context) {
     return _controller.value.isInitialized
-        ? IgnorePointer(child: VideoPlayer(_controller))
+        ? SizedBox.expand(
+            child: FittedBox(
+              fit: BoxFit.cover,
+              child: SizedBox(
+                width: _controller.value.size.width,
+                height: _controller.value.size.height,
+                child: IgnorePointer(child: VideoPlayer(_controller)),
+              ),
+            ),
+          )
         : const Center(child: CircularProgressIndicator());
   }
 }

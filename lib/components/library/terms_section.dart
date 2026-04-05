@@ -18,74 +18,60 @@ class TermsAndConditions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
+    final buttonStyle = TextButton.styleFrom(
+      padding: const EdgeInsets.symmetric(horizontal: 4.0),
+      minimumSize: Size.zero,
+      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+    );
+
+    final textStyle = TextStyle(
+      fontSize: 12,
+      color: cs.onSurfaceVariant,
+      height: 1.5,
+    );
+
+    final linkStyle = TextStyle(
+      fontSize: 12,
+      color: cs.primary,
+      fontWeight: FontWeight.bold,
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Wrap(
-        crossAxisAlignment: WrapCrossAlignment.center,
-        alignment: WrapAlignment.center,
-        children: [
-          const Text(
-            "Mit dem Benutzen der App bestätigst du, dass du",
-            style: TextStyle(fontSize: 14),
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          const Text(
-            "unsere",
-            style: TextStyle(fontSize: 14),
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          TextButton(
-            onPressed: () => openUrl(termsAndConditions),
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      child: Text.rich(
+        TextSpan(
+          style: textStyle,
+          children: [
+            const TextSpan(
+              text: "Mit dem Benutzen der App bestätigst du, dass du unsere",
             ),
-            child: const Text(
-              "AGB",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: TextButton(
+                onPressed: () => openUrl(termsAndConditions),
+                style: buttonStyle,
+                child: Text("AGB", style: linkStyle),
+              ),
             ),
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          const Text(
-            "und",
-            style: TextStyle(fontSize: 14),
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          TextButton(
-            onPressed: () => openUrl(privacyPolicy),
-            style: TextButton.styleFrom(
-              padding: const EdgeInsets.symmetric(horizontal: 4.0),
-              minimumSize: Size.zero,
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+            const TextSpan(
+              text: "und",
             ),
-            child: const Text(
-              "Datenschutzbestimmungen",
-              style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14),
+            WidgetSpan(
+              alignment: PlaceholderAlignment.middle,
+              child: TextButton(
+                onPressed: () => openUrl(privacyPolicy),
+                style: buttonStyle,
+                child: Text("Datenschutzbestimmungen", style: linkStyle),
+              ),
             ),
-          ),
-          const SizedBox(
-            width: 4,
-          ),
-          const Text(
-            "gelesen und akzeptiert hast.",
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
+            const TextSpan(
+              text: "gelesen und akzeptiert hast.",
+            ),
+          ],
+        ),
+        textAlign: TextAlign.center,
       ),
     );
   }

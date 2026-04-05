@@ -48,7 +48,7 @@ class ThemeConfig {
       ),
       popupMenuTheme: PopupMenuThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           side: BorderSide(
             color: cs.outlineVariant.withAlpha(51),
             width: 1,
@@ -61,7 +61,7 @@ class ThemeConfig {
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
           shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
           backgroundColor: WidgetStateProperty.all(cs.surface),
           surfaceTintColor: WidgetStateProperty.all(cs.surface),
         ),
@@ -82,7 +82,7 @@ class ThemeConfig {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size(0, 56),
+          minimumSize: const Size(0, 44),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -117,21 +117,21 @@ class ThemeConfig {
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
-        fillColor: cs.surface,
+        fillColor: cs.surfaceContainerLow.withAlpha(128),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(80))),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(128))),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.secondary, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.primary, width: 2.0)),
         errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.error, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 2.0)),
         focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.error, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 2.0)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
@@ -179,8 +179,8 @@ class ThemeConfig {
         behavior: SnackBarBehavior.floating,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: cs.primary,
-        foregroundColor: cs.onPrimary,
+        backgroundColor: cs.secondary,
+        foregroundColor: cs.onSurface,
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.all(cs.primary),
@@ -238,7 +238,7 @@ class ThemeConfig {
       ),
       popupMenuTheme: PopupMenuThemeData(
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           side: BorderSide(
             color: cs.outlineVariant.withAlpha(51),
             width: 1,
@@ -251,7 +251,7 @@ class ThemeConfig {
       dropdownMenuTheme: DropdownMenuThemeData(
         menuStyle: MenuStyle(
           shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16))),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
           backgroundColor: WidgetStateProperty.all(cs.surface),
           surfaceTintColor: WidgetStateProperty.all(cs.surface),
         ),
@@ -272,7 +272,7 @@ class ThemeConfig {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size(0, 56),
+          minimumSize: const Size(0, 44),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -307,21 +307,21 @@ class ThemeConfig {
       inputDecorationTheme: InputDecorationTheme(
         isDense: true,
         filled: true,
-        fillColor: cs.surface,
+        fillColor: cs.surfaceContainerLow.withAlpha(128),
         contentPadding:
             const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(80))),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.outlineVariant.withAlpha(128))),
         focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.secondary, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.primary, width: 2.0)),
         errorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.error, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 2.0)),
         focusedErrorBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide(color: cs.error, width: 1.5)),
+            borderRadius: BorderRadius.circular(12),
+            borderSide: BorderSide(color: cs.error, width: 2.0)),
         hintStyle: TextStyle(color: cs.onSurface.withAlpha(153)),
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
@@ -369,8 +369,8 @@ class ThemeConfig {
         behavior: SnackBarBehavior.floating,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: cs.primary,
-        foregroundColor: cs.onPrimary,
+        backgroundColor: cs.secondary,
+        foregroundColor: cs.onSurface,
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.all(cs.primary),

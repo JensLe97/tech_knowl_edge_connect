@@ -5,6 +5,10 @@ class LoginTextField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final Key? fieldKey;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
 
   const LoginTextField({
     super.key,
@@ -12,6 +16,10 @@ class LoginTextField extends StatelessWidget {
     required this.hintText,
     required this.obscureText,
     this.fieldKey,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.keyboardType,
+    this.textInputAction,
   });
 
   @override
@@ -22,8 +30,12 @@ class LoginTextField extends StatelessWidget {
         key: fieldKey,
         controller: controller,
         obscureText: obscureText,
+        keyboardType: keyboardType,
+        textInputAction: textInputAction,
         decoration: InputDecoration(
           hintText: hintText,
+          prefixIcon: prefixIcon,
+          suffixIcon: suffixIcon,
         ),
       ),
     );

@@ -29,7 +29,10 @@ class ReportReasonBottomSheet extends StatelessWidget {
             "Wir informieren das Konto nicht darüber, wer es gemeldet hat.",
             style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).colorScheme.inversePrimary),
+                color: Theme.of(context)
+                    .colorScheme
+                    .onSurfaceVariant
+                    .withAlpha(200)),
           ),
         ),
         ListTile(

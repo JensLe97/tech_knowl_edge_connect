@@ -1,11 +1,11 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:tech_knowl_edge_connect/components/buttons/idea_reaction_button.dart';
-import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
+import 'package:timeago/timeago.dart' as timeago;
 import 'package:tech_knowl_edge_connect/components/dialogs/user_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/models/user/learning_material.dart';
+import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
+import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/pages/feed/post_profile_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/learning_material_preview_page.dart';
 import 'package:tech_knowl_edge_connect/services/user/learning_material_service.dart';
@@ -64,6 +64,11 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
     );
   }
 
+  String _formatTimeAgo(DateTime date) {
+    timeago.setLocaleMessages('de', timeago.DeMessages());
+    return timeago.format(date, locale: 'de');
+  }
+
   @override
   Widget build(BuildContext context) {
     final userState = UserState.of(context);
@@ -71,11 +76,40 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
     final likedLearningMaterials = userState?.likedLearningMaterials ?? [];
 
     final material = widget.material;
-    final overlayColor = Theme.of(context).colorScheme.onSecondary;
-    final isPdf =
-        LearningMaterialType.pdfTypes.contains(material.type.toLowerCase());
+    final cs = Theme.of(context).colorScheme;
+
+    final parts = material.userName.trim().split(RegExp(r'\s+'));
+    String initials = parts.isEmpty || parts[0].isEmpty
+        ? '?'
+        : parts.length > 1
+            ? (parts[0][0] + parts.last[0]).toUpperCase()
+            : parts[0].length > 1
+                ? parts[0].substring(0, 2).toUpperCase()
+                : parts[0].toUpperCase();
+
+    final isMedia = LearningMaterialType.imageTypes
+            .contains(material.type.toLowerCase()) ||
+        LearningMaterialType.videoTypes.contains(material.type.toLowerCase());
+
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final useGlassMode = isDarkMode || isMedia;
+
+    final textColor = useGlassMode ? Colors.white : cs.onSurface;
+    final secondaryTextColor =
+        useGlassMode ? Colors.white.withAlpha(220) : cs.onSecondaryContainer;
+    final pillBgColor = useGlassMode
+        ? Colors.black.withAlpha(80)
+        : cs.secondaryContainer.withAlpha(220);
+    final outlineColor = useGlassMode
+        ? Colors.white.withAlpha(40)
+        : cs.outlineVariant.withAlpha(100);
+    final secondaryOutlineColor =
+        useGlassMode ? Colors.white.withAlpha(40) : cs.outlineVariant;
+
     return Stack(
+      fit: StackFit.expand,
       children: [
+        // Background Layer (Video / Image / Placeholder)
         GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
@@ -89,130 +123,274 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
               ),
             );
           },
-          child: Container(
-            child: LearningMaterialType.imageTypes
-                    .contains(material.type.toLowerCase())
-                ? Image.network(
-                    material.url,
-                    height: double.infinity,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  )
-                : LearningMaterialType.videoTypes
-                        .contains(material.type.toLowerCase())
-                    ? VideoPlayerWidget(url: material.url)
-                    : isPdf
-                        ? Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                FaIcon(
-                                  LearningMaterialType.getIconForType(
-                                      material.type),
-                                  size: 100,
-                                  color: overlayColor,
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  material.name,
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: overlayColor,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ],
+          child: LearningMaterialType.imageTypes
+                  .contains(material.type.toLowerCase())
+              ? Image.network(
+                  material.url,
+                  height: double.infinity,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                )
+              : LearningMaterialType.videoTypes
+                      .contains(material.type.toLowerCase())
+                  ? VideoPlayerWidget(url: material.url)
+                  : Center(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 16),
+                        width: double.infinity,
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 80, horizontal: 16),
+                        decoration: BoxDecoration(
+                          color:
+                              Theme.of(context).brightness == Brightness.light
+                                  ? Theme.of(context)
+                                      .colorScheme
+                                      .surfaceContainerLowest
+                                  : Theme.of(context)
+                                      .colorScheme
+                                      .primary
+                                      .withAlpha(20),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                              color: secondaryOutlineColor.withAlpha(77)),
+                        ),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            FaIcon(
+                              LearningMaterialType.getIconForType(
+                                  material.type),
+                              size: 56,
+                              color: cs.primary,
                             ),
-                          )
-                        : const Center(
-                            child: Text(
-                              'Vorschau für diesen Dateityp nicht verfügbar.\nTippen zum Öffnen.',
-                              style: TextStyle(fontSize: 18),
+                            const SizedBox(height: 16),
+                            Text(
+                              material.name,
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: cs.onSurface,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+        ),
+
+        // Bottom Details & Actions
+        Positioned(
+          bottom: 0,
+          left: 0,
+          right: 0,
+          child: SafeArea(
+            top: false,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(16, 20, 16, 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // User Info Drop
+                        Transform.translate(
+                          offset: const Offset(-6, 0),
+                          child: Material(
+                            color: pillBgColor,
+                            borderRadius: BorderRadius.circular(30),
+                            clipBehavior: Clip.antiAlias,
+                            child: InkWell(
+                              onTap: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => PostProfilePage(
+                                    username: material.userName,
+                                    uid: material.userId,
+                                  ),
+                                ));
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: outlineColor),
+                                  borderRadius: BorderRadius.circular(30),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Container(
+                                      width: 36,
+                                      height: 36,
+                                      decoration: BoxDecoration(
+                                        color: cs.primaryContainer,
+                                        shape: BoxShape.circle,
+                                        border: Border.all(
+                                            color: secondaryOutlineColor),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        initials,
+                                        style: TextStyle(
+                                          color: cs.onSecondaryContainer,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(
+                                              material.userName,
+                                              style: TextStyle(
+                                                color: secondaryTextColor,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 13,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        Text(
+                                          _formatTimeAgo(
+                                              material.createdAt.toDate()),
+                                          style: TextStyle(
+                                            color: secondaryTextColor,
+                                            fontSize: 11,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Container(
-            alignment: const Alignment(-1, 1),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PostProfilePage(
-                        username: material.userName,
-                        uid: material.userId,
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          material.name,
+                          style: TextStyle(
+                            color: textColor,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w900,
+                            height: 1.2,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      _buildReelActionButton(
+                        context: context,
+                        icon: likedLearningMaterials.contains(material.id)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        label: material.numberOfLikes.toString(),
+                        onTap: toggleLike,
+                        isActive: likedLearningMaterials.contains(material.id),
+                        activeColor: Colors.redAccent,
+                        isMedia: isMedia,
                       ),
-                    ));
-                  },
-                  style: TextButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    minimumSize: Size.zero,
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      const SizedBox(height: 16),
+                      _buildReelActionButton(
+                        context: context,
+                        icon: Icons.more_horiz,
+                        label: "",
+                        isMedia: isMedia,
+                        onTap: () {
+                          showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            useRootNavigator: true,
+                            useSafeArea: true,
+                            enableDrag: true,
+                            builder: (BuildContext context) => SafeArea(
+                              child: UserBottomSheet(
+                                toggleBlockUser: toggleBlockUser,
+                                report: reportContent,
+                                isBlocked:
+                                    blockedUsers.contains(material.userId),
+                                isContent: true,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ],
                   ),
-                  child: Text(
-                    '@${material.userName}',
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                        color: isPdf ? overlayColor : Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  material.name,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: isPdf ? overlayColor : Colors.white,
-                  ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Container(
-            alignment: const Alignment(1, 1),
-            child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-              IdeaReactionButton(
-                onTap: toggleLike,
-                icon: Icons.favorite,
-                number: material.numberOfLikes,
-                isLiked: likedLearningMaterials.contains(material.id),
-                color: isPdf ? overlayColor : Colors.white,
+      ],
+    );
+  }
+
+  Widget _buildReelActionButton({
+    required BuildContext context,
+    required IconData icon,
+    required String label,
+    required VoidCallback onTap,
+    required bool isMedia,
+    bool isActive = false,
+    Color? activeColor,
+  }) {
+    final cs = Theme.of(context).colorScheme;
+    final isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final useGlassMode = isDarkMode || isMedia;
+
+    final textColor = useGlassMode ? Colors.white : cs.onSurface;
+    final pillBgColor = useGlassMode
+        ? Colors.black.withAlpha(80)
+        : cs.secondaryContainer.withAlpha(220);
+    final outlineColor = useGlassMode
+        ? Colors.white.withAlpha(40)
+        : cs.outlineVariant.withAlpha(100);
+
+    return Column(
+      children: [
+        Material(
+          color: pillBgColor,
+          shape: const CircleBorder(),
+          clipBehavior: Clip.hardEdge,
+          child: InkWell(
+            onTap: onTap,
+            customBorder: const CircleBorder(),
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(color: outlineColor),
               ),
-              IdeaReactionButton(
-                onTap: () {
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    useRootNavigator: true,
-                    useSafeArea: true,
-                    enableDrag: true,
-                    builder: (BuildContext context) => SafeArea(
-                      child: UserBottomSheet(
-                        toggleBlockUser: toggleBlockUser,
-                        report: reportContent,
-                        isBlocked: blockedUsers.contains(material.userId),
-                        isContent: true,
-                      ),
-                    ),
-                  );
-                },
-                icon: Icons.more_horiz,
-                hasCounter: false,
-                color: isPdf ? overlayColor : Colors.white,
+              child: Icon(
+                icon,
+                color: isActive ? (activeColor ?? textColor) : textColor,
+                size: 28,
               ),
-            ]),
+            ),
           ),
-        )
+        ),
+        if (label.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          Text(
+            label,
+            style: TextStyle(
+              color: textColor,
+              fontWeight: FontWeight.bold,
+              fontSize: 12,
+            ),
+          ),
+        ]
       ],
     );
   }

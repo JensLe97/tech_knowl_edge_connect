@@ -186,7 +186,7 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
   Widget _buildCompactListView(List<LearningMaterial> materials) {
     return RefreshIndicator(
       onRefresh: _onRefresh,
-      child: ListView.separated(
+      child: ListView.builder(
         itemCount: materials.length,
         itemBuilder: (context, index) {
           return CompactLearningMaterialTile(
@@ -204,7 +204,6 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
             },
           );
         },
-        separatorBuilder: (context, index) => const Divider(),
       ),
     );
   }

@@ -68,6 +68,7 @@ dependencies:
   cloud_functions: ^6.0.0
   markdown: ^7.3.0
   google_fonts: ^8.0.1
+  timeago: ^3.7.1
 
 flutter_launcher_icons:
   android: true

@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 import 'package:tech_knowl_edge_connect/models/content/unit.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
@@ -112,9 +113,28 @@ class _UnitDialogState extends State<UnitDialog> {
   @override
   Widget build(BuildContext context) {
     final isEditing = widget.unit != null;
+    final cs = Theme.of(context).colorScheme;
 
     return AlertDialog(
-      title: Text(isEditing ? "Einheit bearbeiten" : "Neue Einheit erstellen"),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cs.primaryContainer.withAlpha(76),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: cs.primary.withAlpha(25),
+          ),
+        ),
+        child: Icon(
+          isEditing ? Icons.edit : Icons.add,
+          size: 32,
+          color: cs.primary,
+        ),
+      ),
+      title: Text(
+        isEditing ? "Einheit bearbeiten" : "Neue Einheit erstellen",
+        textAlign: TextAlign.center,
+      ),
       content: SizedBox(
         width: double.maxFinite,
         child: SingleChildScrollView(
@@ -216,23 +236,28 @@ class _UnitDialogState extends State<UnitDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("Abbrechen"),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            String statusToSave = _currentStatus;
-            if (widget.unit == null) {
-              statusToSave = UserConstants.statusPrivate;
-            } else {
-              if (_isDirty) {
-                statusToSave = UserConstants.statusPrivate;
-              }
-            }
-            _save(statusToSave);
-          },
-          child: Text(isEditing ? "Speichern" : "Erstellen"),
+        Row(
+          children: [
+            DialogButton(
+              text: "Abbrechen",
+              onTap: () => Navigator.pop(context),
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: isEditing ? "Speichern" : "Erstellen",
+              onTap: () {
+                String statusToSave = _currentStatus;
+                if (widget.unit == null) {
+                  statusToSave = UserConstants.statusPrivate;
+                } else {
+                  if (_isDirty) {
+                    statusToSave = UserConstants.statusPrivate;
+                  }
+                }
+                _save(statusToSave);
+              },
+            ),
+          ],
         ),
       ],
     );

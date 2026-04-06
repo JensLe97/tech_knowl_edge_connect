@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class CategoryDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -45,9 +46,24 @@ class _CategoryDialogState extends State<CategoryDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.categoryId == null
-          ? 'Kategorie hinzufügen'
-          : 'Kategorie bearbeiten'),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.category,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      title: Text(
+        widget.categoryId == null
+            ? 'Kategorie hinzufügen'
+            : 'Kategorie bearbeiten',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -87,43 +103,49 @@ class _CategoryDialogState extends State<CategoryDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_nameController.text.trim().isEmpty) return;
-            try {
-              if (widget.categoryId == null) {
-                await widget.adminService.createCategory(
-                  subjectId: widget.subjectId,
-                  name: _nameController.text.trim(),
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                );
-              } else {
-                await widget.adminService.updateCategory(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId!,
-                  data: {
-                    'name': _nameController.text.trim(),
-                    'status': _status,
-                    'version': _version,
-                  },
-                );
-              }
-              if (context.mounted) Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: Text(widget.categoryId == null ? 'Erstellen' : 'Speichern'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: widget.categoryId == null ? 'Erstellen' : 'Speichern',
+              onTap: () async {
+                if (_nameController.text.trim().isEmpty) return;
+                try {
+                  if (widget.categoryId == null) {
+                    await widget.adminService.createCategory(
+                      subjectId: widget.subjectId,
+                      name: _nameController.text.trim(),
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                    );
+                  } else {
+                    await widget.adminService.updateCategory(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId!,
+                      data: {
+                        'name': _nameController.text.trim(),
+                        'status': _status,
+                        'version': _version,
+                      },
+                    );
+                  }
+                  if (context.mounted) Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class UnitDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -55,8 +56,22 @@ class _UnitDialogState extends State<UnitDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title:
-          Text(widget.unitId == null ? 'Unit hinzufügen' : 'Unit bearbeiten'),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.library_books,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      title: Text(
+        widget.unitId == null ? 'Unit hinzufügen' : 'Unit bearbeiten',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -128,57 +143,64 @@ class _UnitDialogState extends State<UnitDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_nameController.text.trim().isEmpty) return;
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+              
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: widget.unitId == null ? 'Erstellen' : 'Speichern',
+              onTap: () async {
+                if (_nameController.text.trim().isEmpty) return;
 
-            final iconDataMap = {
-              'codePoint': _selectedIcon.codePoint,
-              'fontFamily': _selectedIcon.fontFamily,
-              'fontPackage': _selectedIcon.fontPackage,
-            };
+                final iconDataMap = {
+                  'codePoint': _selectedIcon.codePoint,
+                  'fontFamily': _selectedIcon.fontFamily,
+                  'fontPackage': _selectedIcon.fontPackage,
+                };
 
-            try {
-              if (widget.unitId == null) {
-                await widget.adminService.createUnit(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  name: _nameController.text.trim(),
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                  iconData: iconDataMap,
-                );
-              } else {
-                await widget.adminService.updateUnit(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId!,
-                  data: {
-                    'name': _nameController.text.trim(),
-                    'status': _status,
-                    'version': _version,
-                    'updatedBy': widget.userId,
-                    'iconData': iconDataMap,
-                  },
-                );
-              }
-              if (context.mounted) Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: Text(widget.unitId == null ? 'Erstellen' : 'Speichern'),
+                try {
+                  if (widget.unitId == null) {
+                    await widget.adminService.createUnit(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      name: _nameController.text.trim(),
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                      iconData: iconDataMap,
+                    );
+                  } else {
+                    await widget.adminService.updateUnit(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId!,
+                      data: {
+                        'name': _nameController.text.trim(),
+                        'status': _status,
+                        'version': _version,
+                        'updatedBy': widget.userId,
+                        'iconData': iconDataMap,
+                      },
+                    );
+                  }
+                  if (context.mounted) Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

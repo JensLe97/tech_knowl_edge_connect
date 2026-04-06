@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class ConfirmDeleteDialog extends StatelessWidget {
   final String title;
@@ -14,28 +15,43 @@ class ConfirmDeleteDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return AlertDialog(
-      title: Text(title),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 8),
-          Text(message),
-          const SizedBox(height: 8),
-        ],
-      ),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cs.errorContainer.withAlpha(76),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: cs.error.withAlpha(25),
+          ),
         ),
-        ElevatedButton(
-          onPressed: () async {
-            await onConfirm();
-            if (!context.mounted) return;
-            Navigator.pop(context);
-          },
-          child: const Text('Löschen'),
+        child: Icon(
+          Icons.delete_outline_rounded,
+          size: 32,
+          color: cs.error,
+        ),
+      ),
+      title: Text(title, textAlign: TextAlign.center),
+      content: Text(message, textAlign: TextAlign.center),
+      actions: [
+        Row(
+          children: [
+            DialogButton(
+              onTap: () => Navigator.pop(context),
+              text: 'Abbrechen',
+            ),
+            DialogButton(
+              onTap: () async {
+                await onConfirm();
+                if (!context.mounted) return;
+                Navigator.pop(context);
+              },
+              text: 'Löschen',
+              isDestructive: true,
+            ),
+          ],
         ),
       ],
     );

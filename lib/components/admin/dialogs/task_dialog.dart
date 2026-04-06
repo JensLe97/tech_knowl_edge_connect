@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
@@ -60,9 +61,29 @@ class _TaskDialogState extends State<TaskDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.taskId != null;
+    final cs = Theme.of(context).colorScheme;
+
     return AlertDialog(
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cs.primaryContainer.withAlpha(76),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: cs.primary.withAlpha(25),
+          ),
+        ),
+        child: Icon(
+          isEditing ? Icons.edit : Icons.add,
+          size: 32,
+          color: cs.primary,
+        ),
+      ),
       title: Text(
-          widget.taskId == null ? 'Aufgabe hinzufügen' : 'Aufgabe bearbeiten'),
+        isEditing ? 'Aufgabe bearbeiten' : 'Aufgabe hinzufügen',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -106,64 +127,69 @@ class _TaskDialogState extends State<TaskDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_questionController.text.trim().isEmpty) return;
-            try {
-              final answers = _answersController.text
-                  .split(',')
-                  .map((a) => a.trim())
-                  .where((a) => a.isNotEmpty)
-                  .toList();
+        Row(
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: 'Speichern',
+              onTap: () async {
+                if (_questionController.text.trim().isEmpty) return;
+                try {
+                  final answers = _answersController.text
+                      .split(',')
+                      .map((a) => a.trim())
+                      .where((a) => a.isNotEmpty)
+                      .toList();
 
-              if (widget.taskId == null) {
-                await widget.adminService.createTask(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  conceptId: widget.conceptId,
-                  learningBiteId: widget.learningBiteId,
-                  type: _type,
-                  question: _questionController.text.trim(),
-                  correctAnswer: _answerController.text.trim(),
-                  answers: answers,
-                );
-              } else {
-                await widget.adminService.updateTask(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  conceptId: widget.conceptId,
-                  learningBiteId: widget.learningBiteId,
-                  taskId: widget.taskId!,
-                  data: {
-                    'type': _type,
-                    'question': _questionController.text.trim(),
-                    'correctAnswer': _answerController.text.trim(),
-                    'answers': answers,
-                  },
-                );
-              }
-              if (widget.onAfterSave != null) {
-                await widget.onAfterSave!();
-              }
-              if (!context.mounted) return;
-              Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: const Text('Speichern'),
+                  if (widget.taskId == null) {
+                    await widget.adminService.createTask(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      conceptId: widget.conceptId,
+                      learningBiteId: widget.learningBiteId,
+                      type: _type,
+                      question: _questionController.text.trim(),
+                      correctAnswer: _answerController.text.trim(),
+                      answers: answers,
+                    );
+                  } else {
+                    await widget.adminService.updateTask(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      conceptId: widget.conceptId,
+                      learningBiteId: widget.learningBiteId,
+                      taskId: widget.taskId!,
+                      data: {
+                        'type': _type,
+                        'question': _questionController.text.trim(),
+                        'correctAnswer': _answerController.text.trim(),
+                        'answers': answers,
+                      },
+                    );
+                  }
+                  if (widget.onAfterSave != null) {
+                    await widget.onAfterSave!();
+                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

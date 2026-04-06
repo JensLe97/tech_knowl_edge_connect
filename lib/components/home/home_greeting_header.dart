@@ -48,7 +48,7 @@ class HomeGreetingHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Willkommen zurück,',
+                    'Willkommen zurück',
                     style: theme.textTheme.bodySmall?.copyWith(
                       color: colorScheme.onSurfaceVariant,
                     ),

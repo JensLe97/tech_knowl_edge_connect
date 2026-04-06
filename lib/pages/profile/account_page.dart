@@ -204,20 +204,40 @@ class _AccountPageState extends State<AccountPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) {
+          final cs = Theme.of(context).colorScheme;
           return AlertDialog(
-            title: Text(
-              title,
+            icon: Container(
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: cs.errorContainer.withAlpha(76),
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: cs.error.withAlpha(25),
+                ),
+              ),
+              child: Icon(
+                Icons.warning_amber_rounded,
+                size: 32,
+                color: cs.error,
+              ),
             ),
-            content: Text(
-              content,
-            ),
+            title: Text(title, textAlign: TextAlign.center),
+            content: Text(content, textAlign: TextAlign.center),
             actions: [
-              DialogButton(onTap: onConfirmTap, text: "Ja"),
-              DialogButton(
-                  onTap: () {
-                    Navigator.pop(context);
-                  },
-                  text: "Nein"),
+              Row(
+                children: [
+                  DialogButton(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      text: "Nein"),
+                  DialogButton(
+                    onTap: onConfirmTap,
+                    text: "Ja",
+                    isDestructive: true,
+                  ),
+                ],
+              )
             ],
           );
         });

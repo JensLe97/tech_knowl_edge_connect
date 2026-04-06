@@ -22,6 +22,7 @@ import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:tech_knowl_edge_connect/components/dialogs/completion_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/chat/typing_indicator.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class AiTechPage extends StatefulWidget {
   final String sessionId;
@@ -777,19 +778,48 @@ class _AiTechPageState extends State<AiTechPage> {
             onPressed: () async {
               final confirmed = await showDialog<bool>(
                 context: context,
-                builder: (c) => AlertDialog(
-                  title: const Text('Lernreise löschen'),
-                  content: const Text(
-                      'Möchtest du diese Lernreise und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),
-                  actions: [
-                    TextButton(
-                        onPressed: () => Navigator.of(c).pop(false),
-                        child: const Text('Abbrechen')),
-                    TextButton(
-                        onPressed: () => Navigator.of(c).pop(true),
-                        child: const Text('Löschen')),
-                  ],
-                ),
+                builder: (c) {
+                  final cs = Theme.of(context).colorScheme;
+                  return AlertDialog(
+                    icon: Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cs.errorContainer.withAlpha(76),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                          color: cs.error.withAlpha(25),
+                        ),
+                      ),
+                      child: Icon(
+                        Icons.delete_outline,
+                        size: 32,
+                        color: cs.error,
+                      ),
+                    ),
+                    title: const Text(
+                      'Lernreise löschen',
+                      textAlign: TextAlign.center,
+                    ),
+                    content: const Text(
+                        'Möchtest du diese Lernreise und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),
+                    actions: [
+                      Row(
+                        children: [
+                          DialogButton(
+                            text: 'Abbrechen',
+                            onTap: () => Navigator.of(c).pop(false),
+                          ),
+                          const SizedBox(width: 8),
+                          DialogButton(
+                            text: 'Löschen',
+                            isDestructive: true,
+                            onTap: () => Navigator.of(c).pop(true),
+                          ),
+                        ],
+                      ),
+                    ],
+                  );
+                },
               );
               if (confirmed == true && mounted) {
                 try {

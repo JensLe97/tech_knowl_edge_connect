@@ -3,27 +3,40 @@ import 'package:flutter/material.dart';
 class DialogButton extends StatelessWidget {
   final Function()? onTap;
   final String text;
+  final bool isDestructive;
 
-  const DialogButton({super.key, required this.onTap, required this.text});
+  const DialogButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    this.isDestructive = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      child: ElevatedButton(
-        onPressed: onTap,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
+    final cs = Theme.of(context).colorScheme;
+
+    return Expanded(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4.0),
+        child: FilledButton(
+          onPressed: onTap,
+          style: FilledButton.styleFrom(
+            backgroundColor: isDestructive ? cs.error : cs.secondaryContainer,
+            foregroundColor:
+                isDestructive ? cs.onError : cs.onSecondaryContainer,
+            elevation: 0,
+            padding: const EdgeInsets.symmetric(vertical: 16),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12),
+            ),
           ),
-        ),
-        child: Text(
-          text,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
         ),
       ),

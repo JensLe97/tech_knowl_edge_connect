@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/unit_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/category_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
@@ -34,23 +35,46 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
   }) async {
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Abbrechen'),
+      builder: (context) {
+        final cs = Theme.of(context).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: cs.error.withAlpha(25),
+              ),
+            ),
+            child: Icon(
+              Icons.delete_outline_rounded,
+              size: 32,
+              color: cs.error,
+            ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await onConfirm();
-            },
-            child: const Text('Löschen'),
-          ),
-        ],
-      ),
+          title: Text(title, textAlign: TextAlign.center),
+          content: Text(message, textAlign: TextAlign.center),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                  onTap: () => Navigator.pop(context),
+                  text: 'Abbrechen',
+                ),
+                DialogButton(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await onConfirm();
+                  },
+                  text: 'Löschen',
+                  isDestructive: true,
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -84,7 +108,8 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
             ),
             body: CustomScrollView(
               slivers: [
-                SliverAppBar.large(
+                SliverAppBar(
+              expandedHeight: 144,
                   elevation: 0,
                   shadowColor: Colors.transparent,
                   actions: [
@@ -211,54 +236,66 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                     children: [
                                       Text(
                                         category.name,
-                                        style: const TextStyle(fontSize: 24),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
                                       ),
-                                      Row(
-                                        children: [
-                                          if (canDeleteCategory)
-                                            IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              tooltip: 'Kategorie bearbeiten',
-                                              onPressed: () => showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    CategoryDialog(
-                                                  subjectId: currentSubject.id,
-                                                  category: category,
+                                      Container(
+                                        color: Colors.transparent,
+                                        child: Row(
+                                          children: [
+                                            if (canDeleteCategory)
+                                              InkWell(
+                                                borderRadius: BorderRadius.circular(8),
+                                                onTap: () => showDialog(
+                                                  context: context,
+                                                  builder: (context) => CategoryDialog(
+                                                    subjectId: currentSubject.id,
+                                                    category: category,
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.edit, size: 20, color: Theme.of(context).colorScheme.primary),
                                                 ),
                                               ),
-                                            ),
-                                          IconButton(
-                                            icon: const Icon(Icons.add),
-                                            onPressed: () => showDialog(
-                                              context: context,
-                                              builder: (context) => TopicDialog(
-                                                subjectId: currentSubject.id,
-                                                categoryId: category.id,
+                                            InkWell(
+                                              borderRadius: BorderRadius.circular(8),
+                                              onTap: () => showDialog(
+                                                context: context,
+                                                builder: (context) => TopicDialog(
+                                                  subjectId: currentSubject.id,
+                                                  categoryId: category.id,
+                                                ),
+                                              ),
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Icon(Icons.add, size: 20, color: Theme.of(context).colorScheme.primary),
                                               ),
                                             ),
-                                            tooltip: 'Neues Thema hinzufügen',
-                                          ),
-                                          if (canDeleteCategory)
-                                            IconButton(
-                                              icon: const Icon(
-                                                  Icons.delete_outline),
-                                              tooltip: 'Kategorie löschen',
-                                              onPressed: () => _confirmDelete(
-                                                title: 'Kategorie löschen?',
-                                                message:
-                                                    'Möchtest du diese Kategorie wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                                                onConfirm: () async {
-                                                  await _contentService
-                                                      .deleteCategory(
-                                                    subjectId:
-                                                        currentSubject.id,
-                                                    categoryId: category.id,
-                                                  );
-                                                },
+                                            if (canDeleteCategory)
+                                              InkWell(
+                                                borderRadius: BorderRadius.circular(8),
+                                                onTap: () => _confirmDelete(
+                                                  title: 'Kategorie löschen?',
+                                                  message:
+                                                      'Möchtest du diese Kategorie wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                                  onConfirm: () async {
+                                                    await _contentService.deleteCategory(
+                                                      subjectId: currentSubject.id,
+                                                      categoryId: category.id,
+                                                    );
+                                                  },
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.delete_outline, size: 20, color: Theme.of(context).colorScheme.error),
+                                                ),
                                               ),
-                                            ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -298,86 +335,76 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                 children: [
                                                   Text(
                                                     topic.name,
-                                                    style: const TextStyle(
-                                                        fontSize: 20),
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight: FontWeight.bold,
+                                                      color: Theme.of(context).colorScheme.onSurface,
+                                                    ),
                                                   ),
-                                                  Row(
-                                                    children: [
-                                                      if (canDeleteTopic)
-                                                        IconButton(
-                                                          icon: const Icon(
-                                                              Icons.edit),
-                                                          tooltip:
-                                                              'Thema bearbeiten',
-                                                          onPressed: () =>
-                                                              showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (context) =>
-                                                                    TopicDialog(
-                                                              subjectId:
-                                                                  currentSubject
-                                                                      .id,
-                                                              categoryId:
-                                                                  category.id,
-                                                              topic: topic,
+                                                  Container(
+                                                    color: Colors.transparent,
+                                                    child: Row(
+                                                      children: [
+                                                        if (canDeleteTopic)
+                                                          InkWell(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            onTap: () => showDialog(
+                                                              context: context,
+                                                              builder: (context) => TopicDialog(
+                                                                subjectId: currentSubject.id,
+                                                                categoryId: category.id,
+                                                                topic: topic,
+                                                              ),
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Icon(Icons.edit, size: 20, color: Theme.of(context).colorScheme.primary),
                                                             ),
                                                           ),
-                                                        ),
-                                                      IconButton(
-                                                        icon: const Icon(Icons
-                                                            .add_circle_outline),
-                                                        onPressed: () =>
-                                                            showDialog(
-                                                          context: context,
-                                                          builder: (context) =>
-                                                              UnitDialog(
-                                                            subjectId:
-                                                                currentSubject
-                                                                    .id,
-                                                            categoryId:
-                                                                category.id,
-                                                            topicId: topic.id,
+                                                        InkWell(
+                                                          borderRadius: BorderRadius.circular(8),
+                                                          onTap: () => showDialog(
+                                                            context: context,
+                                                            builder: (context) => UnitDialog(
+                                                              subjectId: currentSubject.id,
+                                                              categoryId: category.id,
+                                                              topicId: topic.id,
+                                                            ),
+                                                          ),
+                                                          child: Padding(
+                                                            padding: const EdgeInsets.all(8.0),
+                                                            child: Icon(Icons.add, size: 20, color: Theme.of(context).colorScheme.primary),
                                                           ),
                                                         ),
-                                                        tooltip:
-                                                            'Neue Einheit hinzufügen',
-                                                      ),
-                                                      if (canDeleteTopic)
-                                                        IconButton(
-                                                          icon: const Icon(Icons
-                                                              .delete_outline),
-                                                          tooltip:
-                                                              'Thema löschen',
-                                                          onPressed: () =>
-                                                              _confirmDelete(
-                                                            title:
-                                                                'Thema löschen?',
-                                                            message:
-                                                                'Möchtest du dieses Thema wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                                                            onConfirm:
-                                                                () async {
-                                                              await _contentService
-                                                                  .deleteTopic(
-                                                                subjectId:
-                                                                    currentSubject
-                                                                        .id,
-                                                                categoryId:
-                                                                    category.id,
-                                                                topicId:
-                                                                    topic.id,
-                                                              );
-                                                            },
+                                                        if (canDeleteTopic)
+                                                          InkWell(
+                                                            borderRadius: BorderRadius.circular(8),
+                                                            onTap: () => _confirmDelete(
+                                                              title: 'Thema löschen?',
+                                                              message:
+                                                                  'Möchtest du dieses Thema wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                                              onConfirm: () async {
+                                                                await _contentService.deleteTopic(
+                                                                  subjectId: currentSubject.id,
+                                                                  categoryId: category.id,
+                                                                  topicId: topic.id,
+                                                                );
+                                                              },
+                                                            ),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(8.0),
+                                                              child: Icon(Icons.delete_outline, size: 20, color: Theme.of(context).colorScheme.error),
+                                                            ),
                                                           ),
-                                                        ),
-                                                    ],
+                                                      ],
+                                                    ),
                                                   ),
                                                 ],
                                               ),
                                             ),
                                             const SizedBox(height: 4),
                                             SizedBox(
-                                              height: 145,
+                                              height: 180,
                                               child: StreamBuilder<List<Unit>>(
                                                 stream:
                                                     _contentService.getUnits(
@@ -411,9 +438,9 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                               unit.authorId ==
                                                                   currentUser
                                                                       .uid;
-                                                      return Row(
-                                                        children: [
-                                                          UnitTile(
+                                                      return SizedBox(
+                                                        width: 280,
+                                                        child: UnitTile(
                                                             unit: unit,
                                                             onTap: () =>
                                                                 navigateToUnitPage(
@@ -461,7 +488,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                                         )
                                                                     : null,
                                                           ),
-                                                        ],
                                                       );
                                                     },
                                                   );

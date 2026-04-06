@@ -18,56 +18,65 @@ class UnitTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 200,
+      width: 280,
+      height: 160,
       child: Card(
-        color: Theme.of(context).colorScheme.secondary,
-        margin: const EdgeInsets.all(8),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        color: Theme.of(context).colorScheme.secondaryContainer,
+        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+            side: BorderSide(
+              color: Theme.of(context).colorScheme.outlineVariant.withAlpha(76),
+            )),
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           child: Padding(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(16),
             child: Stack(
               children: [
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      flex: 5,
-                      child: Center(
-                        child: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Icon(unit.iconData, size: 30),
-                        ),
-                      ),
+                    Icon(
+                      unit.iconData,
+                      size: 32,
+                      color: Theme.of(context).colorScheme.primary,
                     ),
-                    Expanded(
-                      flex: 5,
-                      child: Text(
-                        unit.name,
-                        style: const TextStyle(fontSize: 20),
-                      ),
+                    const Spacer(),
+                    Text(
+                      unit.name,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
+                          ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ],
                 ),
                 if (onEdit != null)
                   Align(
-                    alignment: Alignment.topLeft,
+                    alignment: Alignment.topRight,
                     child: IconButton(
                       icon: const Icon(Icons.edit, size: 20),
                       tooltip: 'Einheit bearbeiten',
                       onPressed: onEdit,
                       color: Theme.of(context).colorScheme.primary,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
                     ),
                   ),
                 if (onDelete != null)
                   Align(
-                    alignment: Alignment.topRight,
+                    alignment: Alignment.bottomRight,
                     child: IconButton(
                       icon: const Icon(Icons.delete_outline, size: 20),
                       tooltip: 'Einheit löschen',
                       onPressed: onDelete,
                       color: Theme.of(context).colorScheme.primary,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
                     ),
                   ),
               ],

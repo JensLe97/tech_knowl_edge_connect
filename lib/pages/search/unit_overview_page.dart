@@ -210,66 +210,75 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                     children: [
                                       Text(
                                         concept.name,
-                                        style: const TextStyle(fontSize: 20),
+                                        style: TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                          color: Theme.of(context).colorScheme.onSurface,
+                                        ),
                                       ),
-                                      Row(
-                                        children: [
-                                          if (canDeleteConcept)
-                                            IconButton(
-                                              icon: const Icon(Icons.edit),
-                                              tooltip: 'Konzept bearbeiten',
-                                              onPressed: () => showDialog(
+                                      Container(
+                                        color: Colors.transparent,
+                                        child: Row(
+                                          children: [
+                                            if (canDeleteConcept)
+                                              InkWell(
+                                                borderRadius: BorderRadius.circular(8),
+                                                onTap: () => showDialog(
+                                                  context: context,
+                                                  builder: (context) => ConceptDialog(
+                                                    subjectId: widget.subjectId,
+                                                    categoryId: widget.categoryId,
+                                                    topicId: widget.topicId,
+                                                    unitId: widget.unit.id,
+                                                    concept: concept,
+                                                  ),
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.edit, size: 20, color: Theme.of(context).colorScheme.primary),
+                                                ),
+                                              ),
+                                            InkWell(
+                                              borderRadius: BorderRadius.circular(8),
+                                              onTap: () => showDialog(
                                                 context: context,
-                                                builder: (context) =>
-                                                    ConceptDialog(
+                                                builder: (context) => LearningBiteDialog(
                                                   subjectId: widget.subjectId,
                                                   categoryId: widget.categoryId,
                                                   topicId: widget.topicId,
                                                   unitId: widget.unit.id,
-                                                  concept: concept,
+                                                  conceptId: concept.id,
                                                 ),
                                               ),
-                                            ),
-                                          IconButton(
-                                            icon: const Icon(
-                                                Icons.add_circle_outline),
-                                            onPressed: () => showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  LearningBiteDialog(
-                                                subjectId: widget.subjectId,
-                                                categoryId: widget.categoryId,
-                                                topicId: widget.topicId,
-                                                unitId: widget.unit.id,
-                                                conceptId: concept.id,
+                                              child: Padding(
+                                                padding: const EdgeInsets.all(8.0),
+                                                child: Icon(Icons.add, size: 20, color: Theme.of(context).colorScheme.primary),
                                               ),
                                             ),
-                                            tooltip:
-                                                'Neues Learning Bite hinzufügen',
-                                          ),
-                                          if (canDeleteConcept)
-                                            IconButton(
-                                              icon: const Icon(
-                                                  Icons.delete_outline),
-                                              tooltip: 'Konzept löschen',
-                                              onPressed: () => _confirmDelete(
-                                                title: 'Konzept löschen?',
-                                                message:
-                                                    'Möchtest du dieses Konzept wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                                                onConfirm: () async {
-                                                  await _contentService
-                                                      .deleteConcept(
-                                                    subjectId: widget.subjectId,
-                                                    categoryId:
-                                                        widget.categoryId,
-                                                    topicId: widget.topicId,
-                                                    unitId: widget.unit.id,
-                                                    conceptId: concept.id,
-                                                  );
-                                                },
+                                            if (canDeleteConcept)
+                                              InkWell(
+                                                borderRadius: BorderRadius.circular(8),
+                                                onTap: () => _confirmDelete(
+                                                  title: 'Konzept löschen?',
+                                                  message:
+                                                      'Möchtest du dieses Konzept wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                                  onConfirm: () async {
+                                                    await _contentService.deleteConcept(
+                                                      subjectId: widget.subjectId,
+                                                      categoryId: widget.categoryId,
+                                                      topicId: widget.topicId,
+                                                      unitId: widget.unit.id,
+                                                      conceptId: concept.id,
+                                                    );
+                                                  },
+                                                ),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.delete_outline, size: 20, color: Theme.of(context).colorScheme.error),
+                                                ),
                                               ),
-                                            ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -308,7 +317,9 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                               learningBite.authorId ==
                                                   currentUser.uid;
 
-                                          return LearningBiteTile(
+                                          return SizedBox(
+                                            width: 280,
+                                            child: LearningBiteTile(
                                             learningBite: learningBite,
                                             onTap: () async {
                                               // Show loading
@@ -547,6 +558,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                   }
                                                 : null,
                                             completed: isCompleted,
+                                          ),
                                           );
                                         },
                                       );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class LearningBiteDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -61,9 +62,24 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.learningBiteId == null
-          ? 'Learning Bite hinzufügen'
-          : 'Learning Bite bearbeiten'),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.play_circle_outline,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      title: Text(
+        widget.learningBiteId == null
+            ? 'Learning Bite hinzufügen'
+            : 'Learning Bite bearbeiten',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -150,65 +166,72 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_titleController.text.trim().isEmpty) return;
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+              
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: 'Speichern',
+              onTap: () async {
+                if (_titleController.text.trim().isEmpty) return;
 
-            final iconDataMap = {
-              'codePoint': _selectedIcon.codePoint,
-              'fontFamily': _selectedIcon.fontFamily,
-              'fontPackage': _selectedIcon.fontPackage,
-            };
+                final iconDataMap = {
+                  'codePoint': _selectedIcon.codePoint,
+                  'fontFamily': _selectedIcon.fontFamily,
+                  'fontPackage': _selectedIcon.fontPackage,
+                };
 
-            try {
-              if (widget.learningBiteId == null) {
-                await widget.adminService.createLearningBite(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  conceptId: widget.conceptId,
-                  title: _titleController.text.trim(),
-                  content: [],
-                  type: _type,
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                  iconData: iconDataMap,
-                );
-              } else {
-                await widget.adminService.updateLearningBite(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  conceptId: widget.conceptId,
-                  learningBiteId: widget.learningBiteId!,
-                  data: {
-                    'title': _titleController.text.trim(),
-                    'type': _type,
-                    'status': _status,
-                    'version': _version,
-                    'updatedBy': widget.userId,
-                    'iconData': iconDataMap,
-                  },
-                );
-              }
-              if (!context.mounted) return;
-              Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: const Text('Speichern'),
+                try {
+                  if (widget.learningBiteId == null) {
+                    await widget.adminService.createLearningBite(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      conceptId: widget.conceptId,
+                      title: _titleController.text.trim(),
+                      content: [],
+                      type: _type,
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                      iconData: iconDataMap,
+                    );
+                  } else {
+                    await widget.adminService.updateLearningBite(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      conceptId: widget.conceptId,
+                      learningBiteId: widget.learningBiteId!,
+                      data: {
+                        'title': _titleController.text.trim(),
+                        'type': _type,
+                        'status': _status,
+                        'version': _version,
+                        'updatedBy': widget.userId,
+                        'iconData': iconDataMap,
+                      },
+                    );
+                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

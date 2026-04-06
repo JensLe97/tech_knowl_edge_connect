@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class TopicDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -47,8 +48,22 @@ class _TopicDialogState extends State<TopicDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.topic,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
       title: Text(
-          widget.topicId == null ? 'Topic hinzufügen' : 'Topic bearbeiten'),
+        widget.topicId == null ? 'Topic hinzufügen' : 'Topic bearbeiten',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -88,47 +103,54 @@ class _TopicDialogState extends State<TopicDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_nameController.text.trim().isEmpty) return;
-            try {
-              if (widget.topicId == null) {
-                await widget.adminService.createTopic(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  name: _nameController.text.trim(),
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                );
-              } else {
-                await widget.adminService.updateTopic(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId!,
-                  data: {
-                    'name': _nameController.text.trim(),
-                    'status': _status,
-                    'version': _version,
-                    'updatedBy': widget.userId,
-                  },
-                );
-              }
-              if (!context.mounted) return;
-              Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: const Text('Speichern'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+              
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: 'Speichern',
+              onTap: () async {
+                if (_nameController.text.trim().isEmpty) return;
+                try {
+                  if (widget.topicId == null) {
+                    await widget.adminService.createTopic(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      name: _nameController.text.trim(),
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                    );
+                  } else {
+                    await widget.adminService.updateTopic(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId!,
+                      data: {
+                        'name': _nameController.text.trim(),
+                        'status': _status,
+                        'version': _version,
+                        'updatedBy': widget.userId,
+                      },
+                    );
+                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

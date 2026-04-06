@@ -59,17 +59,43 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   Future<void> _confirmAndDeleteFolder() async {
     final confirmed = await showDialog<bool>(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Ordner und Inhalte löschen?'),
-        content: const Text(
-            'Möchtest du diesen Ordner und alle darin enthaltenen Lerninhalte unwiderruflich löschen?'),
-        actions: [
-          DialogButton(
-              onTap: () => Navigator.of(context).pop(false), text: 'Abbrechen'),
-          DialogButton(
-              onTap: () => Navigator.of(context).pop(true), text: 'Löschen'),
-        ],
-      ),
+      builder: (context) {
+        final cs = Theme.of(context).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: cs.error.withAlpha(25),
+              ),
+            ),
+            child: Icon(
+              Icons.delete_outline_rounded,
+              size: 32,
+              color: cs.error,
+            ),
+          ),
+          title: const Text('Ordner und Inhalte löschen?'),
+          content: const Text(
+              'Möchtest du diesen Ordner und alle darin enthaltenen Lerninhalte unwiderruflich löschen?',
+              textAlign: TextAlign.center),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                    onTap: () => Navigator.of(context).pop(false),
+                    text: 'Abbrechen'),
+                DialogButton(
+                    onTap: () => Navigator.of(context).pop(true),
+                    text: 'Löschen',
+                    isDestructive: true),
+              ],
+            )
+          ],
+        );
+      },
     );
     if (confirmed == true) {
       await _materialService.deleteFolderAndAllMaterials(

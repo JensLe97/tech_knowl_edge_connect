@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
 class ConceptDialog extends StatefulWidget {
   final ContentAdminService adminService;
@@ -51,9 +52,22 @@ class _ConceptDialogState extends State<ConceptDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(widget.conceptId == null
-          ? 'Konzept hinzufügen'
-          : 'Konzept bearbeiten'),
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primaryContainer,
+          shape: BoxShape.circle,
+        ),
+        child: Icon(
+          Icons.lightbulb_outline,
+          size: 32,
+          color: Theme.of(context).colorScheme.primary,
+        ),
+      ),
+      title: Text(
+        widget.conceptId == null ? 'Konzept hinzufügen' : 'Konzept bearbeiten',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -93,49 +107,56 @@ class _ConceptDialogState extends State<ConceptDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_nameController.text.trim().isEmpty) return;
-            try {
-              if (widget.conceptId == null) {
-                await widget.adminService.createConcept(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  name: _nameController.text.trim(),
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                );
-              } else {
-                await widget.adminService.updateConcept(
-                  subjectId: widget.subjectId,
-                  categoryId: widget.categoryId,
-                  topicId: widget.topicId,
-                  unitId: widget.unitId,
-                  conceptId: widget.conceptId!,
-                  data: {
-                    'name': _nameController.text.trim(),
-                    'status': _status,
-                    'version': _version,
-                  },
-                );
-              }
-              if (context.mounted) Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: Text(widget.conceptId == null ? 'Erstellen' : 'Speichern'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+              
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: widget.conceptId == null ? 'Erstellen' : 'Speichern',
+              onTap: () async {
+                if (_nameController.text.trim().isEmpty) return;
+                try {
+                  if (widget.conceptId == null) {
+                    await widget.adminService.createConcept(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      name: _nameController.text.trim(),
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                    );
+                  } else {
+                    await widget.adminService.updateConcept(
+                      subjectId: widget.subjectId,
+                      categoryId: widget.categoryId,
+                      topicId: widget.topicId,
+                      unitId: widget.unitId,
+                      conceptId: widget.conceptId!,
+                      data: {
+                        'name': _nameController.text.trim(),
+                        'status': _status,
+                        'version': _version,
+                      },
+                    );
+                  }
+                  if (context.mounted) Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 
@@ -57,9 +58,29 @@ class _SubjectDialogState extends State<SubjectDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final isEditing = widget.subjectId != null;
+    final cs = Theme.of(context).colorScheme;
+
     return AlertDialog(
+      icon: Container(
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: cs.primaryContainer.withAlpha(76),
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: cs.primary.withAlpha(25),
+          ),
+        ),
+        child: Icon(
+          isEditing ? Icons.edit : Icons.add,
+          size: 32,
+          color: cs.primary,
+        ),
+      ),
       title: Text(
-          widget.subjectId == null ? 'Fach hinzufügen' : 'Fach bearbeiten'),
+        isEditing ? 'Fach bearbeiten' : 'Fach hinzufügen',
+        textAlign: TextAlign.center,
+      ),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -159,54 +180,59 @@ class _SubjectDialogState extends State<SubjectDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text('Abbrechen'),
-        ),
-        ElevatedButton(
-          onPressed: () async {
-            if (_nameController.text.trim().isEmpty) return;
+        Row(
+          children: [
+            DialogButton(
+              text: 'Abbrechen',
+              onTap: () => Navigator.pop(context),
+            ),
+            const SizedBox(width: 8),
+            DialogButton(
+              text: 'Speichern',
+              onTap: () async {
+                if (_nameController.text.trim().isEmpty) return;
 
-            final iconDataMap = {
-              'codePoint': _selectedIcon.codePoint,
-              'fontFamily': _selectedIcon.fontFamily,
-              'fontPackage': _selectedIcon.fontPackage,
-            };
+                final iconDataMap = {
+                  'codePoint': _selectedIcon.codePoint,
+                  'fontFamily': _selectedIcon.fontFamily,
+                  'fontPackage': _selectedIcon.fontPackage,
+                };
 
-            try {
-              if (widget.subjectId == null) {
-                await widget.adminService.createSubject(
-                  name: _nameController.text.trim(),
-                  status: _status,
-                  version: _version,
-                  userId: widget.userId,
-                  color: _selectedColor.toARGB32(),
-                  iconData: iconDataMap,
-                );
-              } else {
-                await widget.adminService.updateSubject(
-                  subjectId: widget.subjectId!,
-                  data: {
-                    'name': _nameController.text.trim(),
-                    'status': _status,
-                    'version': _version,
-                    'color': _selectedColor.toARGB32(),
-                    'iconData': iconDataMap,
-                    'updatedBy': widget.userId,
-                  },
-                );
-              }
-              if (!context.mounted) return;
-              Navigator.pop(context);
-            } catch (e) {
-              if (context.mounted) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Fehler: $e')),
-                );
-              }
-            }
-          },
-          child: const Text('Speichern'),
+                try {
+                  if (widget.subjectId == null) {
+                    await widget.adminService.createSubject(
+                      name: _nameController.text.trim(),
+                      status: _status,
+                      version: _version,
+                      userId: widget.userId,
+                      color: _selectedColor.toARGB32(),
+                      iconData: iconDataMap,
+                    );
+                  } else {
+                    await widget.adminService.updateSubject(
+                      subjectId: widget.subjectId!,
+                      data: {
+                        'name': _nameController.text.trim(),
+                        'status': _status,
+                        'version': _version,
+                        'color': _selectedColor.toARGB32(),
+                        'iconData': iconDataMap,
+                        'updatedBy': widget.userId,
+                      },
+                    );
+                  }
+                  if (!context.mounted) return;
+                  Navigator.pop(context);
+                } catch (e) {
+                  if (context.mounted) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text('Fehler: $e')),
+                    );
+                  }
+                }
+              },
+            ),
+          ],
         ),
       ],
     );

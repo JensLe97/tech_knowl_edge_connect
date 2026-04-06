@@ -40,11 +40,30 @@ class ThemeConfig {
         surfaceTintColor: cs.surface,
         backgroundColor: cs.surface,
         foregroundColor: cs.onSurface,
-        elevation: 8,
+        elevation: 0,
         centerTitle: false,
         toolbarTextStyle: textTheme.bodyLarge?.copyWith(color: cs.onSurface),
         titleTextStyle: textTheme.titleLarge?.copyWith(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: cs.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(76),
+          ),
+        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w800,
+          color: cs.onSurface,
+          letterSpacing: -0.5,
+        ),
+        contentTextStyle: textTheme.bodyLarge?.copyWith(
+          color: cs.onSurfaceVariant,
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
       ),
       popupMenuTheme: PopupMenuThemeData(
         shape: RoundedRectangleBorder(
@@ -136,8 +155,13 @@ class ThemeConfig {
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
       cardTheme: CardThemeData(
-          color: cs.surfaceContainerLow.withAlpha(210),
-          clipBehavior: Clip.antiAlias),
+        color: cs.surfaceContainerLow.withAlpha(210),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
+        ),
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: cs.surface,
         selectedItemColor: cs.primary,
@@ -236,6 +260,25 @@ class ThemeConfig {
         titleTextStyle: textTheme.titleLarge?.copyWith(
             fontSize: 18, fontWeight: FontWeight.w600, color: cs.onSurface),
       ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: cs.surface,
+        elevation: 0,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: BorderSide(
+            color: cs.outlineVariant.withAlpha(76),
+          ),
+        ),
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w800,
+          color: cs.onSurface,
+          letterSpacing: -0.5,
+        ),
+        contentTextStyle: textTheme.bodyLarge?.copyWith(
+          color: cs.onSurfaceVariant,
+        ),
+        actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+      ),
       popupMenuTheme: PopupMenuThemeData(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12),
@@ -326,8 +369,13 @@ class ThemeConfig {
         labelStyle: TextStyle(color: cs.onSurface.withAlpha(204)),
       ),
       cardTheme: CardThemeData(
-          color: cs.secondaryContainer.withAlpha(90),
-          clipBehavior: Clip.antiAlias),
+        color: cs.secondaryContainer.withAlpha(90),
+        clipBehavior: Clip.antiAlias,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
+        ),
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: cs.surface,
         selectedItemColor: cs.primary,

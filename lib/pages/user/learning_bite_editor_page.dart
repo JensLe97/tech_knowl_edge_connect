@@ -5,6 +5,7 @@ import 'package:tech_knowl_edge_connect/components/admin/content_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/content_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/task_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/learning_bite_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
@@ -120,23 +121,46 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
   }) async {
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Abbrechen'),
+      builder: (context) {
+        final cs = Theme.of(context).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: cs.error.withAlpha(25),
+              ),
+            ),
+            child: Icon(
+              Icons.delete_outline_rounded,
+              size: 32,
+              color: cs.error,
+            ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await onConfirm();
-            },
-            child: const Text('Löschen'),
-          ),
-        ],
-      ),
+          title: Text(title, textAlign: TextAlign.center),
+          content: Text(message, textAlign: TextAlign.center),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                  onTap: () => Navigator.pop(context),
+                  text: 'Abbrechen',
+                ),
+                DialogButton(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await onConfirm();
+                  },
+                  text: 'Löschen',
+                  isDestructive: true,
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -186,7 +210,12 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
               children: [
                 Icon(learningBite.iconData, size: 20),
                 const SizedBox(width: 8),
-                Text(learningBite.name),
+                Flexible(
+                  child: Text(
+                    learningBite.name,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
               ],
             ),
             actions: [

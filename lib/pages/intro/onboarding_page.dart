@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/bottom_action_bar.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/intro_button.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/intro_page_1.dart';
 import 'package:tech_knowl_edge_connect/pages/intro/intro_page_2.dart';
@@ -21,82 +22,78 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+
     return Scaffold(
-      resizeToAvoidBottomInset: true,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              child: PageView(
-                physics: const NeverScrollableScrollPhysics(),
+      extendBodyBehindAppBar: true,
+      extendBody: true,
+      backgroundColor: cs.surface,
+      body: Stack(
+        children: [
+          // Background PageView
+          PageView(
+            controller: _controller,
+            onPageChanged: (index) {
+              setState(() {
+                onLastPage = (index == 2);
+              });
+            },
+            children: const [
+              IntroPage1(),
+              IntroPage2(),
+              IntroPage3(),
+            ],
+          ),
+
+          // Paginator positioned inside the glass panel area
+          Positioned(
+            bottom: 120 + 32, // Matches the padding inside the glass panel
+            left: 0,
+            right: 0,
+            child: Center(
+              child: SmoothPageIndicator(
                 controller: _controller,
-                onPageChanged: (index) {
-                  setState(() {
-                    onLastPage = (index == 2);
-                  });
-                },
-                children: const [
-                  SingleChildScrollView(
-                    child: IntroPage1(),
-                  ),
-                  SingleChildScrollView(
-                    child: IntroPage2(),
-                  ),
-                  SingleChildScrollView(
-                    child: IntroPage3(),
-                  ),
-                ],
+                count: 3,
+                effect: ExpandingDotsEffect(
+                  expansionFactor: 3,
+                  activeDotColor: cs.primary,
+                  dotColor: cs.outlineVariant,
+                  spacing: 6,
+                  dotHeight: 8,
+                  dotWidth: 8,
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                  left: 8.0, right: 8.0, top: 16.0, bottom: 24.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  onLastPage
-                      ? const SizedBox(
-                          height: 20,
-                          width: 130,
-                        )
-                      : IntroButton(
-                          key: const ValueKey('onboarding_skip'),
-                          text: "Überspringen",
-                          onTap: () {
-                            leaveOnBoarding();
-                          },
-                        ),
-                  SmoothPageIndicator(
-                    controller: _controller,
-                    count: 3,
-                    effect: ExpandingDotsEffect(
-                        expansionFactor: 2,
-                        activeDotColor: Theme.of(context).colorScheme.primary,
-                        dotColor: Theme.of(context).colorScheme.secondary,
-                        spacing: 10,
-                        dotHeight: 20,
-                        dotWidth: 20),
-                  ),
-                  onLastPage
-                      ? IntroButton(
-                          key: const ValueKey('onboarding_start'),
-                          text: "Loslegen!",
-                          onTap: () {
-                            leaveOnBoarding();
-                          },
-                        )
-                      : IntroButton(
-                          key: const ValueKey('onboarding_next'),
-                          text: "Weiter",
-                          onTap: () {
-                            _controller.nextPage(
-                                duration: const Duration(milliseconds: 300),
-                                curve: Curves.easeIn);
-                          },
-                        ),
-                ],
+          ),
+        ],
+      ),
+      bottomNavigationBar: BottomActionBar(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            if (onLastPage)
+              const SizedBox(width: 80) // Spacer
+            else
+              IntroButton(
+                key: const ValueKey('onboarding_skip'),
+                text: "Überspringen",
+                onTap: leaveOnBoarding,
               ),
+            IntroButton(
+              key: const ValueKey(
+                  'onboarding_next'), // Using same key as original 'Weiter'
+              text: onLastPage ? "Loslegen!" : "Weiter",
+              isPrimary: true,
+              onTap: () {
+                if (onLastPage) {
+                  leaveOnBoarding();
+                } else {
+                  _controller.nextPage(
+                    duration: const Duration(milliseconds: 400),
+                    curve: Curves.easeInOut,
+                  );
+                }
+              },
             ),
           ],
         ),

@@ -17,68 +17,98 @@ class UnitTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 280,
-      height: 160,
-      child: Card(
-        color: Theme.of(context).colorScheme.secondaryContainer,
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-            side: BorderSide(
-              color: Theme.of(context).colorScheme.outlineVariant.withAlpha(76),
-            )),
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      width: 240,
+      height: 140,
+      margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      decoration: BoxDecoration(
+        color: colorScheme.surfaceContainer,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: colorScheme.outlineVariant.withAlpha(51),
+        ),
+      ),
+      child: Material(
+        color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(12),
           child: Padding(
             padding: const EdgeInsets.all(16),
-            child: Stack(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Icon(
-                      unit.iconData,
-                      size: 32,
-                      color: Theme.of(context).colorScheme.primary,
+                    Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color: colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: colorScheme.outlineVariant.withAlpha(51),
+                        ),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          unit.iconData,
+                          size: 32,
+                          color: colorScheme.primary,
+                        ),
+                      ),
                     ),
-                    const Spacer(),
-                    Text(
-                      unit.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            fontWeight: FontWeight.bold,
+                    if (onEdit != null)
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: onEdit,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.edit,
+                            size: 20,
+                            color: colorScheme.primary,
                           ),
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
+                        ),
+                      ),
                   ],
                 ),
-                if (onEdit != null)
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.edit, size: 20),
-                      tooltip: 'Einheit bearbeiten',
-                      onPressed: onEdit,
-                      color: Theme.of(context).colorScheme.primary,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        unit.name,
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
-                  ),
-                if (onDelete != null)
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: IconButton(
-                      icon: const Icon(Icons.delete_outline, size: 20),
-                      tooltip: 'Einheit löschen',
-                      onPressed: onDelete,
-                      color: Theme.of(context).colorScheme.primary,
-                      padding: EdgeInsets.zero,
-                      constraints: const BoxConstraints(),
-                    ),
-                  ),
+                    if (onDelete != null) ...[
+                      const SizedBox(width: 8),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(8),
+                        onTap: onDelete,
+                        child: Padding(
+                          padding: const EdgeInsets.all(6.0),
+                          child: Icon(
+                            Icons.delete_outline,
+                            size: 20,
+                            color: colorScheme.error,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
               ],
             ),
           ),

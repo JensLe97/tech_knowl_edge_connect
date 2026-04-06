@@ -159,15 +159,39 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
               shadowColor: Colors.transparent,
               flexibleSpace: FlexibleSpaceBar(
                 titlePadding:
-                    const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                title: Text(widget.unit.name),
+                    const EdgeInsetsDirectional.only(top: 10, bottom: 20),
+                title: Text(
+                  widget.unit.name,
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
+                  textAlign: TextAlign.center,
+                ),
                 background: Stack(children: [
                   OverflowBox(
                     maxWidth: 800,
                     maxHeight: 800,
-                    child: Icon(
-                      widget.unit.iconData,
-                      size: 50,
+                    child: Container(
+                      width: 56,
+                      height: 56,
+                      decoration: BoxDecoration(
+                        color:
+                            Theme.of(context).colorScheme.primary.withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outlineVariant
+                              .withAlpha(51),
+                        ),
+                      ),
+                      child: Center(
+                        child: Icon(
+                          widget.unit.iconData,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 32,
+                        ),
+                      ),
                     ),
                   ),
                 ]),
@@ -213,7 +237,9 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context).colorScheme.onSurface,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .onSurface,
                                         ),
                                       ),
                                       Container(
@@ -222,27 +248,37 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                           children: [
                                             if (canDeleteConcept)
                                               InkWell(
-                                                borderRadius: BorderRadius.circular(8),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
                                                 onTap: () => showDialog(
                                                   context: context,
-                                                  builder: (context) => ConceptDialog(
+                                                  builder: (context) =>
+                                                      ConceptDialog(
                                                     subjectId: widget.subjectId,
-                                                    categoryId: widget.categoryId,
+                                                    categoryId:
+                                                        widget.categoryId,
                                                     topicId: widget.topicId,
                                                     unitId: widget.unit.id,
                                                     concept: concept,
                                                   ),
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.edit, size: 20, color: Theme.of(context).colorScheme.primary),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Icon(Icons.edit,
+                                                      size: 24,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurfaceVariant),
                                                 ),
                                               ),
                                             InkWell(
-                                              borderRadius: BorderRadius.circular(8),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                               onTap: () => showDialog(
                                                 context: context,
-                                                builder: (context) => LearningBiteDialog(
+                                                builder: (context) =>
+                                                    LearningBiteDialog(
                                                   subjectId: widget.subjectId,
                                                   categoryId: widget.categoryId,
                                                   topicId: widget.topicId,
@@ -250,22 +286,61 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                   conceptId: concept.id,
                                                 ),
                                               ),
-                                              child: Padding(
-                                                padding: const EdgeInsets.all(8.0),
-                                                child: Icon(Icons.add, size: 20, color: Theme.of(context).colorScheme.primary),
+                                              child: Container(
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                              .brightness ==
+                                                          Brightness.dark
+                                                      ? Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiaryContainer
+                                                          .withAlpha(51)
+                                                      : Theme.of(context)
+                                                          .colorScheme
+                                                          .tertiaryContainer,
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .tertiary
+                                                        .withAlpha(51),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    size: 24,
+                                                    color: Theme.of(context)
+                                                                .brightness ==
+                                                            Brightness.dark
+                                                        ? Theme.of(context)
+                                                            .colorScheme
+                                                            .tertiary
+                                                        : Theme.of(context)
+                                                            .colorScheme
+                                                            .onTertiaryContainer,
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             if (canDeleteConcept)
                                               InkWell(
-                                                borderRadius: BorderRadius.circular(8),
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
                                                 onTap: () => _confirmDelete(
                                                   title: 'Konzept löschen?',
                                                   message:
                                                       'Möchtest du dieses Konzept wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
                                                   onConfirm: () async {
-                                                    await _contentService.deleteConcept(
-                                                      subjectId: widget.subjectId,
-                                                      categoryId: widget.categoryId,
+                                                    await _contentService
+                                                        .deleteConcept(
+                                                      subjectId:
+                                                          widget.subjectId,
+                                                      categoryId:
+                                                          widget.categoryId,
                                                       topicId: widget.topicId,
                                                       unitId: widget.unit.id,
                                                       conceptId: concept.id,
@@ -273,8 +348,14 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                   },
                                                 ),
                                                 child: Padding(
-                                                  padding: const EdgeInsets.all(8.0),
-                                                  child: Icon(Icons.delete_outline, size: 20, color: Theme.of(context).colorScheme.error),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Icon(
+                                                      Icons.delete_outline,
+                                                      size: 24,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .onSurfaceVariant),
                                                 ),
                                               ),
                                           ],
@@ -284,30 +365,32 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                   ),
                                 ),
                                 const SizedBox(height: 4),
-                                SizedBox(
-                                  height: 145,
-                                  child: StreamBuilder<List<LearningBite>>(
-                                    stream: _contentService.getLearningBites(
-                                        widget.subjectId,
-                                        widget.categoryId,
-                                        widget.topicId,
-                                        widget.unit.id,
-                                        concept.id),
-                                    builder: (context, lbSnapshot) {
-                                      if (!lbSnapshot.hasData) {
-                                        return const SizedBox.shrink();
-                                      }
-                                      final learningBites = lbSnapshot.data!;
+                                StreamBuilder<List<LearningBite>>(
+                                  stream: _contentService.getLearningBites(
+                                      widget.subjectId,
+                                      widget.categoryId,
+                                      widget.topicId,
+                                      widget.unit.id,
+                                      concept.id),
+                                  builder: (context, lbSnapshot) {
+                                    if (!lbSnapshot.hasData) {
+                                      return const SizedBox.shrink();
+                                    }
+                                    final learningBites = lbSnapshot.data!;
 
-                                      return ListView.builder(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        scrollDirection: Axis.horizontal,
-                                        itemCount: learningBites.length,
-                                        itemBuilder: (BuildContext context,
-                                            int learningBiteIndex) {
-                                          final learningBite =
-                                              learningBites[learningBiteIndex];
+                                    return SingleChildScrollView(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: learningBites
+                                            .asMap()
+                                            .entries
+                                            .map((entry) {
+                                          final learningBiteIndex = entry.key;
+                                          final learningBite = entry.value;
                                           final isCompleted =
                                               completedLearningBiteIds
                                                   .contains(learningBite.id);
@@ -317,9 +400,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                               learningBite.authorId ==
                                                   currentUser.uid;
 
-                                          return SizedBox(
-                                            width: 280,
-                                            child: LearningBiteTile(
+                                          return LearningBiteTile(
                                             learningBite: learningBite,
                                             onTap: () async {
                                               // Show loading
@@ -449,7 +530,9 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                           widget.unit.id,
                                                           concept.id);
 
-                                                  if (!context.mounted) return;
+                                                  if (!context.mounted) {
+                                                    return;
+                                                  }
 
                                                   Navigator.pop(
                                                       context); // Hide loading
@@ -558,12 +641,11 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                   }
                                                 : null,
                                             completed: isCompleted,
-                                          ),
                                           );
-                                        },
-                                      );
-                                    },
-                                  ),
+                                        }).toList(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             );

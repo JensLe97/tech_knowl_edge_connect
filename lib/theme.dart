@@ -203,8 +203,8 @@ class ThemeConfig {
         behavior: SnackBarBehavior.floating,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: cs.secondary,
-        foregroundColor: cs.onSurface,
+        backgroundColor: cs.primary,
+        foregroundColor: cs.onPrimary,
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.all(cs.primary),
@@ -417,8 +417,8 @@ class ThemeConfig {
         behavior: SnackBarBehavior.floating,
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: cs.secondary,
-        foregroundColor: cs.onSurface,
+        backgroundColor: cs.primary,
+        foregroundColor: cs.onPrimary,
       ),
       checkboxTheme: CheckboxThemeData(
         fillColor: WidgetStateProperty.all(cs.primary),

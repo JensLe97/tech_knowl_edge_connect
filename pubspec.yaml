@@ -44,7 +44,7 @@ dependencies:
   font_awesome_flutter: 11.0.0
   flutter_native_splash: ^2.4.6
   shared_preferences: ^2.5.3
-  file_picker: ^10.3.2
+  file_picker: ^11.0.0
   flutter_launcher_icons: 0.14.4
   smooth_page_indicator: 2.0.1
   lottie: ^3.3.1

@@ -262,16 +262,21 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                     concept: concept,
                                                   ),
                                                 ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    border: Border.all(
+                                                      color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                    ),
+                                                  ),
                                                   child: Icon(Icons.edit,
                                                       size: 24,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurfaceVariant),
+                                                      color: Theme.of(context).colorScheme.primary),
                                                 ),
                                               ),
+                                            const SizedBox(width: 8),
                                             InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -287,46 +292,25 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                 ),
                                               ),
                                               child: Container(
-                                                width: 40,
-                                                height: 40,
-                                                decoration: BoxDecoration(
-                                                  color: Theme.of(context)
-                                                              .brightness ==
-                                                          Brightness.dark
-                                                      ? Theme.of(context)
-                                                          .colorScheme
-                                                          .tertiaryContainer
-                                                          .withAlpha(51)
-                                                      : Theme.of(context)
-                                                          .colorScheme
-                                                          .tertiaryContainer,
-                                                  borderRadius:
-                                                      BorderRadius.circular(8),
-                                                  border: Border.all(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .tertiary
-                                                        .withAlpha(51),
-                                                  ),
-                                                ),
-                                                child: Center(
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    size: 24,
-                                                    color: Theme.of(context)
-                                                                .brightness ==
-                                                            Brightness.dark
-                                                        ? Theme.of(context)
-                                                            .colorScheme
-                                                            .tertiary
-                                                        : Theme.of(context)
-                                                            .colorScheme
-                                                            .onTertiaryContainer,
-                                                  ),
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
+                                                borderRadius: BorderRadius.circular(8),
+                                                border: Border.all(
+                                                  color: Theme.of(context).colorScheme.primary.withAlpha(25),
                                                 ),
                                               ),
+                                              child: Center(
+                                                child: Icon(Icons.add,
+                                                    size: 24,
+                                                    color: Theme.of(context).colorScheme.primary),
+                                              ),
                                             ),
+                                            ),
+                                            const SizedBox(width: 8),
                                             if (canDeleteConcept)
+
                                               InkWell(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
@@ -347,15 +331,18 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                     );
                                                   },
                                                 ),
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Icon(
-                                                      Icons.delete_outline,
+                                                child: Container(
+                                                  padding: const EdgeInsets.all(8.0),
+                                                  decoration: BoxDecoration(
+                                                    color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
+                                                    borderRadius: BorderRadius.circular(8),
+                                                    border: Border.all(
+                                                      color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                    ),
+                                                  ),
+                                                  child: Icon(Icons.delete_outline,
                                                       size: 24,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurfaceVariant),
+                                                      color: Theme.of(context).colorScheme.primary),
                                                 ),
                                               ),
                                           ],

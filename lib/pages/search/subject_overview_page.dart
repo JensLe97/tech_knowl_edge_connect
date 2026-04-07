@@ -299,7 +299,8 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                 if (categoryIndex > 0)
                                   const SizedBox(height: 8),
                                 Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -473,7 +474,9 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.symmetric(horizontal: 10),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 10),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -549,7 +552,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                                       .primary),
                                                             ),
                                                           ),
-                                                        if (canDeleteCategory)
+                                                        if (canDeleteTopic)
                                                           const SizedBox(
                                                               width: 8),
                                                         InkWell(

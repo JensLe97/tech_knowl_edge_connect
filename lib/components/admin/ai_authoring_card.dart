@@ -356,9 +356,14 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
 
             return Container(
               decoration: BoxDecoration(
-                color: cs.surfaceContainer,
+                color: canTrigger
+                    ? cs.surfaceContainer
+                    : cs.surfaceContainerHighest.withAlpha(128),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: cs.primary.withAlpha(51)),
+                border: Border.all(
+                    color: canTrigger
+                        ? cs.primary.withAlpha(51)
+                        : cs.outlineVariant.withAlpha(128)),
               ),
               padding: const EdgeInsets.all(4),
               child: Material(
@@ -373,18 +378,25 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: cs.primary,
+                            color: canTrigger
+                                ? cs.primary
+                                : cs.onSurface.withAlpha(30),
                             borderRadius: BorderRadius.circular(8),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(25),
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              )
-                            ],
+                            boxShadow: canTrigger
+                                ? [
+                                    BoxShadow(
+                                      color: Colors.black.withAlpha(25),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    )
+                                  ]
+                                : null,
                           ),
                           child: Icon(Icons.auto_awesome,
-                              color: cs.onPrimary, size: 20),
+                              color: canTrigger
+                                  ? cs.onPrimary
+                                  : cs.onSurface.withAlpha(100),
+                              size: 20),
                         ),
                         const SizedBox(width: 12),
                         Text(
@@ -393,12 +405,19 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                               : 'KI-Inhalte erzeugen',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: cs.primary,
+                            color: canTrigger
+                                ? cs.primary
+                                : cs.onSurface.withAlpha(100),
                             fontSize: 16,
                           ),
                         ),
                         const Spacer(),
-                        Icon(Icons.chevron_right, color: cs.outline),
+                        Icon(
+                          Icons.chevron_right,
+                          color: canTrigger
+                              ? cs.outline
+                              : cs.outlineVariant.withAlpha(100),
+                        ),
                       ],
                     ),
                   ),
@@ -417,10 +436,9 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             children: [
               Text('Ausgewählte Dateien: ${_pickedFiles.length}'),
               const Spacer(),
-              TextButton.icon(
+              TextButton(
                 onPressed: () => setState(() => _pickedFiles = []),
-                icon: const Icon(Icons.clear, size: 16),
-                label: const Text('Alle entfernen'),
+                child: const Text('Alle entfernen'),
               ),
             ],
           ),
@@ -488,7 +506,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             children: [
               Text('Uploads: ${_uploadedResources.length}'),
               const Spacer(),
-              TextButton.icon(
+              TextButton(
                 onPressed: () {
                   setState(() => _uploadedResources = []);
                   if (widget.selectedSubjectId != null &&
@@ -508,8 +526,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                     );
                   }
                 },
-                icon: const Icon(Icons.clear, size: 16),
-                label: const Text('Alle entfernen'),
+                child: const Text('Alle entfernen'),
               ),
             ],
           ),
@@ -585,13 +602,8 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             ),
             const SizedBox(height: 12),
             TextField(
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Titel',
-                fillColor: cs.surfaceContainerLowest,
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide(color: cs.primary.withAlpha(76)),
-                ),
               ),
               style: const TextStyle(fontWeight: FontWeight.bold),
               onChanged: (value) => _aiTitle = value,

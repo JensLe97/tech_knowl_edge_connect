@@ -101,7 +101,7 @@ class ThemeConfig {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -115,22 +115,23 @@ class ThemeConfig {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: cs.primary,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: cs.primary,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -175,7 +176,7 @@ class ThemeConfig {
           color: cs.outlineVariant.withAlpha(51),
           width: 1,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         labelStyle: TextStyle(
           fontSize: 12,
           color: cs.onPrimaryContainer,
@@ -315,7 +316,7 @@ class ThemeConfig {
       ),
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
@@ -329,22 +330,23 @@ class ThemeConfig {
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           foregroundColor: cs.primary,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: cs.primary,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
@@ -389,7 +391,7 @@ class ThemeConfig {
           color: cs.outlineVariant.withAlpha(51),
           width: 1,
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         labelStyle: TextStyle(
           fontSize: 12,
           color: cs.onPrimaryContainer,

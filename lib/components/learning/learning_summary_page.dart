@@ -20,7 +20,8 @@ class LearningSummaryPage extends StatelessWidget {
       children: [
         Positioned.fill(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.only(left: 16, right: 16, top: 80, bottom: 120),
+            padding: const EdgeInsets.only(
+                left: 16, right: 16, top: 80, bottom: 120),
             child: Center(
               child: Builder(builder: (context) {
                 final double ratio = maxPoints > 0 ? points / maxPoints : 1.0;
@@ -65,10 +66,15 @@ class LearningSummaryPage extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(32),
                       decoration: BoxDecoration(
-                        color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                        color: Theme.of(context)
+                            .colorScheme
+                            .surfaceContainerLowest,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Theme.of(context).colorScheme.outlineVariant.withAlpha(50),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .outlineVariant
+                              .withAlpha(50),
                           width: 2,
                         ),
                         boxShadow: [
@@ -94,7 +100,8 @@ class LearningSummaryPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 16),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 24, vertical: 16),
                       decoration: BoxDecoration(
                         color: Theme.of(context).colorScheme.surfaceContainer,
                         borderRadius: BorderRadius.circular(16),
@@ -107,7 +114,9 @@ class LearningSummaryPage extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                               fontSize: 18,
                               fontWeight: FontWeight.w600,
-                              color: Theme.of(context).colorScheme.onSurfaceVariant,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant,
                             ),
                       ),
                     ),
@@ -130,4 +139,3 @@ class LearningSummaryPage extends StatelessWidget {
     );
   }
 }
-

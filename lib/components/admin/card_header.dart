@@ -12,18 +12,42 @@ class CardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20, // text-xl
+            color: cs.onSurface,
+          ),
         ),
-        IconButton(
-          icon: const Icon(Icons.add_circle_outline),
-          tooltip: 'Neu',
-          onPressed: onAdd,
-        ),
+        if (onAdd != null)
+          InkWell(
+            borderRadius: BorderRadius.circular(12),
+            onTap: onAdd,
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color:
+                    cs.primaryContainer.withAlpha(76), // 30% primaryContainer
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: cs.primary.withAlpha(25), // 10% primary
+                ),
+              ),
+              child: Center(
+                child: Icon(
+                  Icons.add,
+                  color: cs.primary,
+                  size: 24,
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }

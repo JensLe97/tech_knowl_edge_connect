@@ -87,16 +87,16 @@ class ThemeConfig {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: cs.secondary,
-          foregroundColor: cs.onSurface,
+          backgroundColor: cs.primary,
+          foregroundColor: cs.onPrimary,
           elevation: 0,
           shadowColor: Colors.transparent,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(
@@ -301,16 +301,16 @@ class ThemeConfig {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: cs.secondary,
-          foregroundColor: cs.onSurface,
+          backgroundColor: cs.primary,
+          foregroundColor: cs.onPrimary,
           elevation: 0,
           shadowColor: Colors.transparent,
-          minimumSize: const Size(0, 44),
+          minimumSize: const Size(0, 56),
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           textStyle: textTheme.labelLarge
-              ?.copyWith(fontWeight: FontWeight.bold, fontSize: 16),
+              ?.copyWith(fontWeight: FontWeight.w800, fontSize: 16),
         ),
       ),
       filledButtonTheme: FilledButtonThemeData(

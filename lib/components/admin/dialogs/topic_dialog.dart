@@ -109,7 +109,6 @@ class _TopicDialogState extends State<TopicDialog> {
             DialogButton(
               text: 'Abbrechen',
               onTap: () => Navigator.pop(context),
-              
             ),
             const SizedBox(width: 8),
             DialogButton(

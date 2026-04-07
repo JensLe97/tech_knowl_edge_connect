@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/admin/ai_authoring_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/content_card.dart';
+import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/content_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/task_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/admin/tasks_card.dart';
@@ -279,7 +280,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                         const Spacer(),
                         if (status == UserConstants.statusPrivate ||
                             status == UserConstants.statusRejected)
-                          ElevatedButton.icon(
+                          ElevatedButton(
                             onPressed: () async {
                               await _adminService.updateLearningBite(
                                 subjectId: widget.subjectId,
@@ -301,8 +302,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                                 );
                               }
                             },
-                            icon: const Icon(Icons.publish),
-                            label: const Text('Veröffentlichen'),
+                            child: const Text('Veröffentlichen'),
                           ),
                         if (status == UserConstants.statusPending ||
                             status == UserConstants.statusApproved)
@@ -350,6 +350,25 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                       ),
                     ],
                     const SizedBox(height: 16),
+                    const CardHeader(title: 'Datei-Upload & KI-Generierung'),
+                    const SizedBox(height: 12),
+                    AiAuthoringCard(
+                      userId: user.uid,
+                      adminService: _adminService,
+                      aiTechGenService: _aiTechGenService,
+                      selectedSubjectId: widget.subjectId,
+                      selectedCategoryId: widget.categoryId,
+                      selectedTopicId: widget.topicId,
+                      selectedUnitId: widget.unitId,
+                      selectedConceptId: widget.conceptId,
+                      selectedLearningBiteId: widget.learningBiteId,
+                      selectedLearningBiteData: data,
+                      onUpdate: () async {
+                        await _markNeedsPublish();
+                        if (mounted) setState(() {});
+                      },
+                    ),
+                    const SizedBox(height: 32),
                     if (isWide)
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -392,7 +411,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                               ),
                             ),
                           ),
-                          const SizedBox(width: 12),
+                          const SizedBox(width: 16),
                           Expanded(
                             child: TasksCard(
                               adminService: _adminService,
@@ -428,6 +447,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                       )
                     else
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ContentCard(
                             adminService: _adminService,
@@ -465,7 +485,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                               },
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 24),
                           TasksCard(
                             adminService: _adminService,
                             selectedSubjectId: widget.subjectId,
@@ -497,32 +517,6 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                           ),
                         ],
                       ),
-                    const SizedBox(height: 24),
-                    Text(
-                      'Datei-Upload & KI-Generierung',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.primary,
-                      ),
-                    ),
-                    const SizedBox(height: 12),
-                    AiAuthoringCard(
-                      userId: user.uid,
-                      adminService: _adminService,
-                      aiTechGenService: _aiTechGenService,
-                      selectedSubjectId: widget.subjectId,
-                      selectedCategoryId: widget.categoryId,
-                      selectedTopicId: widget.topicId,
-                      selectedUnitId: widget.unitId,
-                      selectedConceptId: widget.conceptId,
-                      selectedLearningBiteId: widget.learningBiteId,
-                      selectedLearningBiteData: data,
-                      onUpdate: () async {
-                        await _markNeedsPublish();
-                        if (mounted) setState(() {});
-                      },
-                    ),
                   ],
                 ),
               );

@@ -35,7 +35,7 @@ class ChatInputBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +122,8 @@ class ChatInputBar extends StatelessWidget {
                     disabledBorder: InputBorder.none,
                     filled: false,
                     isDense: true,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                    contentPadding:
+                        const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
                   ),
                 ),
               ),
@@ -130,21 +131,26 @@ class ChatInputBar extends StatelessWidget {
               ValueListenableBuilder<TextEditingValue>(
                 valueListenable: controller,
                 builder: (context, value, _) {
-                  final canSend = value.text.trim().isNotEmpty || pickedFiles.isNotEmpty;
+                  final canSend =
+                      value.text.trim().isNotEmpty || pickedFiles.isNotEmpty;
                   return AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: canSend ? colorScheme.primary : colorScheme.surfaceContainerHigh,
+                      color: canSend
+                          ? colorScheme.primary
+                          : colorScheme.surfaceContainerHigh,
                       borderRadius: BorderRadius.circular(12),
-                      boxShadow: canSend ? [
-                        BoxShadow(
-                          color: colorScheme.primary.withAlpha(76),
-                          blurRadius: 8,
-                          offset: const Offset(0, 2),
-                        )
-                      ] : null,
+                      boxShadow: canSend
+                          ? [
+                              BoxShadow(
+                                color: colorScheme.primary.withAlpha(76),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              )
+                            ]
+                          : null,
                     ),
                     child: Material(
                       color: Colors.transparent,
@@ -153,7 +159,9 @@ class ChatInputBar extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12),
                         child: Icon(
                           Icons.arrow_upward,
-                          color: canSend ? colorScheme.onPrimary : colorScheme.onSurfaceVariant.withAlpha(128),
+                          color: canSend
+                              ? colorScheme.onPrimary
+                              : colorScheme.onSurfaceVariant.withAlpha(128),
                         ),
                       ),
                     ),

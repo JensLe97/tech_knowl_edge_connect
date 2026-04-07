@@ -32,87 +32,133 @@ class TasksCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CardHeader(
-              title: 'Aufgaben',
-              onAdd: onAdd,
+    final canInteract = selectedSubjectId != null &&
+        selectedCategoryId != null &&
+        selectedTopicId != null &&
+        selectedUnitId != null &&
+        selectedConceptId != null &&
+        selectedLearningBiteId != null;
+    final cs = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CardHeader(
+          title: 'Aufgaben',
+          onAdd: canInteract ? onAdd : null,
+        ),
+        const SizedBox(height: 12),
+        if (!canInteract)
+          const Text('Bitte Lerninhalt auswählen.')
+        else
+          StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+            stream: adminService.streamTasks(
+              selectedSubjectId!,
+              selectedCategoryId!,
+              selectedTopicId!,
+              selectedUnitId!,
+              selectedConceptId!,
+              selectedLearningBiteId!,
             ),
-            const SizedBox(height: 8),
-            if (selectedSubjectId == null ||
-                selectedCategoryId == null ||
-                selectedTopicId == null ||
-                selectedUnitId == null ||
-                selectedConceptId == null ||
-                selectedLearningBiteId == null)
-              const Text('Bitte Lerninhalt auswählen.')
-            else
-              StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                stream: adminService.streamTasks(
-                  selectedSubjectId!,
-                  selectedCategoryId!,
-                  selectedTopicId!,
-                  selectedUnitId!,
-                  selectedConceptId!,
-                  selectedLearningBiteId!,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final docs = snapshot.data?.docs ?? [];
-                  if (docs.isEmpty) {
-                    return const Text('Keine Aufgaben vorhanden.');
-                  }
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: docs.length,
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemBuilder: (context, index) {
-                      final doc = docs[index];
-                      final data = doc.data();
-                      final answers = List<String>.from(data['answers'] ?? []);
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 4),
-                        title: Text(data['question'] ?? 'Keine Frage'),
-                        subtitle: Text(
-                          'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}${answers.isEmpty ? '' : '\nOptionen: ${answers.join(", ")}'}\nTyp: ${AdminConstants.taskTypeLabels[data['type']] ?? data['type'] ?? 'unbekannt'}',
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final docs = snapshot.data?.docs ?? [];
+              if (docs.isEmpty) {
+                return const Text('Keine Aufgaben vorhanden.');
+              }
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: docs.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final doc = docs[index];
+                  final data = doc.data();
+                  final answers = List<String>.from(data['answers'] ?? []);
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: cs.outlineVariant.withAlpha(40),
+                      ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.quiz,
+                              color: cs.primary,
+                              size: 24,
+                            ),
+                          ),
                         ),
-                        isThreeLine: true,
-                        trailing: Row(
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                data['question'] ?? 'Keine Frage',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                'Antwort: ${data['correctAnswer'] ?? 'Keine Antwort'}${answers.isEmpty ? '' : '\nOptionen: ${answers.join(", ")}'}\nTyp: ${AdminConstants.taskTypeLabels[data['type']] ?? data['type'] ?? 'unbekannt'}',
+                              ),
+                            ],
+                          ),
+                        ),
+                        Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit),
+                              icon:
+                                  Icon(Icons.edit, color: cs.onSurfaceVariant),
                               tooltip: 'Bearbeiten',
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () => onEdit(doc.id, data),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
                             ),
-                            const SizedBox(width: 4),
                             IconButton(
-                              icon: const Icon(Icons.delete_outline),
+                              icon: Icon(Icons.delete_outline,
+                                  color: cs.onSurfaceVariant),
                               tooltip: 'Löschen',
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () => onDelete(doc.id),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
                             ),
                           ],
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   );
                 },
-              ),
-          ],
-        ),
-      ),
+              );
+            },
+          ),
+      ],
     );
   }
 }

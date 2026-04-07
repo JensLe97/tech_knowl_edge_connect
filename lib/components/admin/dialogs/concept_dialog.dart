@@ -113,7 +113,6 @@ class _ConceptDialogState extends State<ConceptDialog> {
             DialogButton(
               text: 'Abbrechen',
               onTap: () => Navigator.pop(context),
-              
             ),
             const SizedBox(width: 8),
             DialogButton(

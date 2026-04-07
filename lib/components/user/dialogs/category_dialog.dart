@@ -147,9 +147,8 @@ class _CategoryDialogState extends State<CategoryDialog> {
             if (_currentStatus == UserConstants.statusPrivate)
               SizedBox(
                 width: double.infinity,
-                child: ElevatedButton.icon(
-                  icon: const Icon(Icons.publish),
-                  label: const Text("Veröffentlichen"),
+                child: ElevatedButton(
+                  child: const Text("Veröffentlichen"),
                   onPressed: () => _save(UserConstants.statusPending),
                 ),
               ),

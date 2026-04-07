@@ -311,243 +311,432 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
   @override
   Widget build(BuildContext context) {
     final canUseAi = widget.selectedLearningBiteId != null;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    final cs = Theme.of(context).colorScheme;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        // File selection & upload
+        Row(
           children: [
-            Text(
-              'Learning Bite: ${widget.selectedLearningBiteData?['title'] ?? 'Nicht ausgewählt'}',
-              style: const TextStyle(fontWeight: FontWeight.w600),
+            Expanded(
+              child: ElevatedButton.icon(
+                onPressed: canUseAi ? _pickFiles : null,
+                icon: const Icon(Icons.attach_file),
+                label: const Text('Dateien auswählen'),
+              ),
             ),
-            const SizedBox(height: 8),
-            Wrap(
-              spacing: 12,
-              runSpacing: 8,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: canUseAi ? _pickFiles : null,
-                  icon: const Icon(Icons.attach_file),
-                  label: const Text('Dateien auswählen'),
+            const SizedBox(width: 12),
+            Expanded(
+              child: ElevatedButton.icon(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: cs.primaryContainer,
+                  foregroundColor: cs.onPrimaryContainer,
+                  side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
                 ),
-                ElevatedButton.icon(
-                  onPressed: canUseAi && _pickedFiles.isNotEmpty && !_uploading
-                      ? _uploadFiles
-                      : null,
-                  icon: const Icon(Icons.cloud_upload),
-                  label: _uploading
-                      ? const Text('Upload läuft...')
-                      : const Text('Upload starten'),
-                ),
-                ValueListenableBuilder<TextEditingValue>(
-                  valueListenable: _manualSourceController,
-                  builder: (context, value, _) {
-                    final hasText = value.text.trim().isNotEmpty;
-                    return ElevatedButton.icon(
-                      onPressed:
-                          canUseAi && (_uploadedResources.isNotEmpty || hasText)
-                              ? _generateWithAi
-                              : null,
-                      icon: const Icon(Icons.auto_fix_high),
-                      label: _generating
-                          ? const Text('KI arbeitet...')
-                          : const Text('KI-Inhalte erzeugen'),
-                    );
-                  },
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Titel der hochgeladenen Datei (optional)',
-                border: OutlineInputBorder(),
+                onPressed: canUseAi && _pickedFiles.isNotEmpty && !_uploading
+                    ? _uploadFiles
+                    : null,
+                icon: const Icon(Icons.cloud_upload),
+                label: _uploading
+                    ? const Text('Upload läuft...')
+                    : const Text('Upload starten'),
               ),
-              onChanged: (value) => _uploadSource = value,
-            ),
-            const SizedBox(height: 12),
-            TextField(
-              maxLines: 2,
-              decoration: const InputDecoration(
-                labelText: 'Datei-Notizen/Metadaten (optional)',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) => _uploadNotes = value,
-            ),
-            const SizedBox(height: 12),
-            if (!canUseAi)
-              const Text(
-                  'Bitte wähle zuerst einen Learning Bite aus, um KI-Funktionen zu nutzen.'),
-            if (_pickedFiles.isNotEmpty) ...[
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  Text('Ausgewählte Dateien: ${_pickedFiles.length}'),
-                  const Spacer(),
-                  TextButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _pickedFiles = [];
-                      });
-                    },
-                    icon: const Icon(Icons.clear, size: 16),
-                    label: const Text('Alle entfernen'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                children: _pickedFiles
-                    .map((file) => Chip(
-                          label: Text(file.name),
-                          onDeleted: () {
-                            setState(() {
-                              _pickedFiles.removeWhere((f) => f == file);
-                            });
-                          },
-                        ))
-                    .toList(),
-              ),
-            ],
-            if (_uploadedResources.isNotEmpty) ...[
-              const SizedBox(height: 12),
-              Row(
-                children: [
-                  Text('Uploads: ${_uploadedResources.length}'),
-                  const Spacer(),
-                  TextButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        _uploadedResources = [];
-                      });
-                      if (widget.selectedSubjectId != null &&
-                          widget.selectedCategoryId != null &&
-                          widget.selectedTopicId != null &&
-                          widget.selectedUnitId != null &&
-                          widget.selectedConceptId != null &&
-                          widget.selectedLearningBiteId != null) {
-                        widget.adminService.updateLearningBite(
-                          subjectId: widget.selectedSubjectId!,
-                          categoryId: widget.selectedCategoryId!,
-                          topicId: widget.selectedTopicId!,
-                          unitId: widget.selectedUnitId!,
-                          conceptId: widget.selectedConceptId!,
-                          learningBiteId: widget.selectedLearningBiteId!,
-                          data: {
-                            'resources': [],
-                          },
-                        );
-                        // Updating resources list in DB happens here immediately
-                      }
-                    },
-                    icon: const Icon(Icons.clear, size: 16),
-                    label: const Text('Alle entfernen'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 6),
-              Wrap(
-                spacing: 8,
-                children: _uploadedResources
-                    .map((res) => Chip(
-                          label: Text(res['name'] ?? 'Datei'),
-                          onDeleted: () async {
-                            final newResources =
-                                List<Map<String, dynamic>>.from(
-                                    _uploadedResources);
-                            newResources.removeWhere((r) => r == res);
-                            setState(() {
-                              _uploadedResources = newResources;
-                            });
-                            if (widget.selectedSubjectId != null &&
-                                widget.selectedCategoryId != null &&
-                                widget.selectedTopicId != null &&
-                                widget.selectedUnitId != null &&
-                                widget.selectedConceptId != null &&
-                                widget.selectedLearningBiteId != null) {
-                              await widget.adminService.updateLearningBite(
-                                subjectId: widget.selectedSubjectId!,
-                                categoryId: widget.selectedCategoryId!,
-                                topicId: widget.selectedTopicId!,
-                                unitId: widget.selectedUnitId!,
-                                conceptId: widget.selectedConceptId!,
-                                learningBiteId: widget.selectedLearningBiteId!,
-                                data: {
-                                  'resources': newResources,
-                                },
-                              );
-                              widget.onUpdate?.call();
-                            }
-                          },
-                        ))
-                    .toList(),
-              ),
-            ],
-            const Divider(height: 24),
-            TextField(
-              maxLines: 4,
-              decoration: const InputDecoration(
-                labelText: 'Zusätzliche Textquelle (optional)',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) => _manualSourceText = value,
-              controller: _manualSourceController,
-            ),
-            const Divider(height: 24),
-            TextField(
-              decoration: const InputDecoration(
-                labelText: 'Titel (KI-Vorschlag)',
-                border: OutlineInputBorder(),
-              ),
-              onChanged: (value) => _aiTitle = value,
-              controller: _aiTitleController,
-            ),
-            const SizedBox(height: 12),
-            if (_aiContentParts.isNotEmpty) ...[
-              Text('Generierte Lernabschnitte: ${_aiContentParts.length}'),
-              const SizedBox(height: 6),
-              ..._aiContentParts.asMap().entries.map((entry) => Card(
-                    margin: const EdgeInsets.only(bottom: 8),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        'Teil ${entry.key + 1}:\n${entry.value}',
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ),
-                  )),
-            ],
-            const SizedBox(height: 12),
-            if (_aiTasks.isNotEmpty) ...[
-              Text('Generierte Aufgaben: ${_aiTasks.length}'),
-              const SizedBox(height: 6),
-              ..._aiTasks.map((task) => ListTile(
-                    isThreeLine: true,
-                    title: Text(task.question),
-                    subtitle: Text(
-                        '${task.type.name}\nAntwort: ${task.correctAnswer}'),
-                  )),
-            ],
-            const SizedBox(height: 12),
-            ElevatedButton.icon(
-              onPressed: canUseAi &&
-                      (_aiContentParts.isNotEmpty || _aiTasks.isNotEmpty)
-                  ? _applyAiToLearningBite
-                  : null,
-              icon: const Icon(Icons.save),
-              label: const Text('KI-Inhalte speichern'),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Hinweis: KI-Inhalte müssen vor Veröffentlichung geprüft werden.',
-              style:
-                  TextStyle(color: Theme.of(context).colorScheme.onSecondary),
             ),
           ],
         ),
-      ),
+        const SizedBox(height: 16),
+        // AI Generation Trigger
+        ValueListenableBuilder<TextEditingValue>(
+          valueListenable: _manualSourceController,
+          builder: (context, value, _) {
+            final hasText = value.text.trim().isNotEmpty;
+            final canTrigger =
+                canUseAi && (_uploadedResources.isNotEmpty || hasText);
+
+            return Container(
+              decoration: BoxDecoration(
+                color: cs.surfaceContainer,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: cs.primary.withAlpha(51)),
+              ),
+              padding: const EdgeInsets.all(4),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  borderRadius: BorderRadius.circular(8),
+                  onTap: canTrigger ? _generateWithAi : null,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(8),
+                          decoration: BoxDecoration(
+                            color: cs.primary,
+                            borderRadius: BorderRadius.circular(8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withAlpha(25),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              )
+                            ],
+                          ),
+                          child: Icon(Icons.auto_awesome,
+                              color: cs.onPrimary, size: 20),
+                        ),
+                        const SizedBox(width: 12),
+                        Text(
+                          _generating
+                              ? 'KI arbeitet...'
+                              : 'KI-Inhalte erzeugen',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: cs.primary,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(Icons.chevron_right, color: cs.outline),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            );
+          },
+        ),
+        const SizedBox(height: 24),
+        // Selected files overview
+        if (!canUseAi)
+          const Text(
+              'Bitte wähle zuerst einen Learning Bite aus, um KI-Funktionen zu nutzen.'),
+        if (_pickedFiles.isNotEmpty) ...[
+          Row(
+            children: [
+              Text('Ausgewählte Dateien: ${_pickedFiles.length}'),
+              const Spacer(),
+              TextButton.icon(
+                onPressed: () => setState(() => _pickedFiles = []),
+                icon: const Icon(Icons.clear, size: 16),
+                label: const Text('Alle entfernen'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: _pickedFiles
+                .map((file) => Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cs.surfaceContainer,
+                        borderRadius: BorderRadius.circular(24),
+                        border:
+                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: cs.primary.withAlpha(26),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                  color: cs.outlineVariant.withAlpha(51)),
+                            ),
+                            child: Center(
+                              child: Icon(Icons.insert_drive_file,
+                                  color: cs.primary, size: 24),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Text(
+                              file.name,
+                              style:
+                                  const TextStyle(fontWeight: FontWeight.bold),
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(Icons.delete_outline,
+                                color: cs.onSurfaceVariant),
+                            tooltip: 'Entfernen',
+                            style: IconButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            onPressed: () => setState(() {
+                              _pickedFiles.removeWhere((f) => f == file);
+                            }),
+                          ),
+                        ],
+                      ),
+                    ))
+                .toList(),
+          ),
+          const SizedBox(height: 16),
+        ],
+        if (_uploadedResources.isNotEmpty) ...[
+          Row(
+            children: [
+              Text('Uploads: ${_uploadedResources.length}'),
+              const Spacer(),
+              TextButton.icon(
+                onPressed: () {
+                  setState(() => _uploadedResources = []);
+                  if (widget.selectedSubjectId != null &&
+                      widget.selectedCategoryId != null &&
+                      widget.selectedTopicId != null &&
+                      widget.selectedUnitId != null &&
+                      widget.selectedConceptId != null &&
+                      widget.selectedLearningBiteId != null) {
+                    widget.adminService.updateLearningBite(
+                      subjectId: widget.selectedSubjectId!,
+                      categoryId: widget.selectedCategoryId!,
+                      topicId: widget.selectedTopicId!,
+                      unitId: widget.selectedUnitId!,
+                      conceptId: widget.selectedConceptId!,
+                      learningBiteId: widget.selectedLearningBiteId!,
+                      data: {'resources': []},
+                    );
+                  }
+                },
+                icon: const Icon(Icons.clear, size: 16),
+                label: const Text('Alle entfernen'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Wrap(
+            spacing: 8,
+            children: _uploadedResources
+                .map((res) => Chip(
+                      label: Text(res['name'] ?? 'Datei'),
+                      onDeleted: () async {
+                        final newResources =
+                            List<Map<String, dynamic>>.from(_uploadedResources);
+                        newResources.removeWhere((r) => r == res);
+                        setState(() => _uploadedResources = newResources);
+                        if (widget.selectedSubjectId != null &&
+                            widget.selectedCategoryId != null &&
+                            widget.selectedTopicId != null &&
+                            widget.selectedUnitId != null &&
+                            widget.selectedConceptId != null &&
+                            widget.selectedLearningBiteId != null) {
+                          await widget.adminService.updateLearningBite(
+                            subjectId: widget.selectedSubjectId!,
+                            categoryId: widget.selectedCategoryId!,
+                            topicId: widget.selectedTopicId!,
+                            unitId: widget.selectedUnitId!,
+                            conceptId: widget.selectedConceptId!,
+                            learningBiteId: widget.selectedLearningBiteId!,
+                            data: {'resources': newResources},
+                          );
+                          widget.onUpdate?.call();
+                        }
+                      },
+                    ))
+                .toList(),
+          ),
+          const SizedBox(height: 16),
+        ],
+        // Inputs
+        TextField(
+          decoration: const InputDecoration(
+            labelText: 'Titel der hochgeladenen Datei (optional)',
+          ),
+          onChanged: (value) => _uploadSource = value,
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          maxLines: 3,
+          decoration: const InputDecoration(
+            labelText: 'Datei-Notizen/Metadaten (optional)',
+          ),
+          onChanged: (value) => _uploadNotes = value,
+        ),
+        const SizedBox(height: 16),
+        TextField(
+          maxLines: 4,
+          decoration: const InputDecoration(
+            labelText: 'Zusätzliche Textquelle (optional)',
+          ),
+          onChanged: (value) => _manualSourceText = value,
+          controller: _manualSourceController,
+        ),
+        const SizedBox(height: 24),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              'KI-Vorschlag',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: cs.onSurface,
+              ),
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              decoration: InputDecoration(
+                labelText: 'Titel',
+                fillColor: cs.surfaceContainerLowest,
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide(color: cs.primary.withAlpha(76)),
+                ),
+              ),
+              style: const TextStyle(fontWeight: FontWeight.bold),
+              onChanged: (value) => _aiTitle = value,
+              controller: _aiTitleController,
+            ),
+            if (_aiContentParts.isNotEmpty || _aiTasks.isNotEmpty) ...[
+              const SizedBox(height: 16),
+              if (_aiContentParts.isNotEmpty) ...[
+                Text('Generierte Lernabschnitte: ${_aiContentParts.length}',
+                    style: TextStyle(
+                        color: cs.onSurfaceVariant,
+                        fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                ..._aiContentParts.asMap().entries.map((entry) => Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cs.surfaceContainer,
+                        borderRadius: BorderRadius.circular(24),
+                        border:
+                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: cs.primary.withAlpha(26),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: cs.outlineVariant.withAlpha(51),
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.description,
+                                color: cs.primary,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Teil ${entry.key + 1}',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  entry.value,
+                                  style: TextStyle(
+                                      fontSize: 14, color: cs.onSurface),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
+              if (_aiTasks.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text('Generierte Aufgaben: ${_aiTasks.length}',
+                    style: TextStyle(
+                        color: cs.onSurfaceVariant,
+                        fontWeight: FontWeight.w600)),
+                const SizedBox(height: 8),
+                ..._aiTasks.map((task) => Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cs.surfaceContainer,
+                        borderRadius: BorderRadius.circular(24),
+                        border:
+                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                      ),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: cs.primary.withAlpha(26),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: cs.outlineVariant.withAlpha(51),
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.quiz,
+                                color: cs.primary,
+                                size: 24,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  task.question,
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  '${task.type.name}\nAntwort: ${task.correctAnswer}',
+                                  style: TextStyle(
+                                      fontSize: 13, color: cs.onSurfaceVariant),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    )),
+              ],
+              const SizedBox(height: 16),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  onPressed: canUseAi ? _applyAiToLearningBite : null,
+                  icon: const Icon(Icons.save),
+                  label: const Text('KI-Inhalte speichern'),
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'Hinweis: KI-Inhalte müssen vor Veröffentlichung geprüft werden.',
+                style: TextStyle(color: cs.onSecondaryContainer, fontSize: 12),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ],
+        ),
+      ],
     );
   }
 }

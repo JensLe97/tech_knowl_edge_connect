@@ -149,7 +149,6 @@ class _UnitDialogState extends State<UnitDialog> {
             DialogButton(
               text: 'Abbrechen',
               onTap: () => Navigator.pop(context),
-              
             ),
             const SizedBox(width: 8),
             DialogButton(

@@ -37,93 +37,134 @@ class ContentCard extends StatelessWidget {
         selectedUnitId != null &&
         selectedConceptId != null &&
         selectedLearningBiteId != null;
+    final cs = Theme.of(context).colorScheme;
 
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CardHeader(
-              title: 'Inhalte',
-              onAdd: canInteract ? onAdd : null,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CardHeader(
+          title: 'Inhalte',
+          onAdd: canInteract ? onAdd : null,
+        ),
+        const SizedBox(height: 12),
+        if (!canInteract)
+          const Text('Bitte einen Learning Bite auswählen.')
+        else
+          StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: adminService.streamLearningBite(
+              selectedSubjectId!,
+              selectedCategoryId!,
+              selectedTopicId!,
+              selectedUnitId!,
+              selectedConceptId!,
+              selectedLearningBiteId!,
             ),
-            const SizedBox(height: 8),
-            if (!canInteract)
-              const Text('Bitte einen Learning Bite auswählen.')
-            else
-              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                stream: adminService.streamLearningBite(
-                  selectedSubjectId!,
-                  selectedCategoryId!,
-                  selectedTopicId!,
-                  selectedUnitId!,
-                  selectedConceptId!,
-                  selectedLearningBiteId!,
-                ),
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  final data = snapshot.data?.data();
-                  final contentList = List<String>.from(data?['content'] ?? []);
-                  if (contentList.isEmpty) {
-                    return const Text('Keine Inhalte vorhanden.');
-                  }
-                  return ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: contentList.length,
-                    separatorBuilder: (_, __) => const Divider(),
-                    itemBuilder: (context, index) {
-                      final content = contentList[index];
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 4),
-                        title: Text(
-                          'Teil ${index + 1}',
-                          style: const TextStyle(fontWeight: FontWeight.bold),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              final data = snapshot.data?.data();
+              final contentList = List<String>.from(data?['content'] ?? []);
+              if (contentList.isEmpty) {
+                return const Text('Keine Inhalte vorhanden.');
+              }
+              return ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: contentList.length,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (context, index) {
+                  final content = contentList[index];
+                  return Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: cs.outlineVariant.withAlpha(40),
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.description,
+                              color: cs.primary,
+                              size: 24,
+                            ),
+                          ),
                         ),
-                        subtitle: Text(
-                          content,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Teil ${index + 1}',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                content,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
                         ),
-                        trailing: Row(
+                        Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon: const Icon(Icons.edit),
+                              icon:
+                                  Icon(Icons.edit, color: cs.onSurfaceVariant),
                               tooltip: 'Bearbeiten',
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () => onEdit(
                                 index,
                                 content,
                                 contentList,
                               ),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
                             ),
-                            const SizedBox(width: 4),
                             IconButton(
-                              icon: const Icon(Icons.delete_outline),
+                              icon: Icon(Icons.delete_outline,
+                                  color: cs.onSurfaceVariant),
                               tooltip: 'Löschen',
+                              style: IconButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               onPressed: () => onDelete(
                                 index,
                                 contentList,
                               ),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
                             ),
                           ],
                         ),
-                      );
-                    },
+                      ],
+                    ),
                   );
                 },
-              ),
-          ],
-        ),
-      ),
+              );
+            },
+          ),
+      ],
     );
   }
 }

@@ -226,8 +226,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                               children: [
                                 const SizedBox(height: 10),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -276,7 +275,8 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                       color: Theme.of(context).colorScheme.primary),
                                                 ),
                                               ),
-                                            const SizedBox(width: 8),
+                                            
+                                            if (canDeleteConcept) const SizedBox(width: 8),
                                             InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -308,7 +308,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                               ),
                                             ),
                                             ),
-                                            const SizedBox(width: 8),
+                                            if (canDeleteConcept) const SizedBox(width: 8),
                                             if (canDeleteConcept)
 
                                               InkWell(

@@ -124,10 +124,16 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                         icon: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer
+                                .withAlpha(76),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withAlpha(25),
                             ),
                           ),
                           child: Icon(Icons.edit,
@@ -141,7 +147,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                           ),
                         ),
                       ),
-                      const SizedBox(width: 8),
                       IconButton(
                         style: IconButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -151,10 +156,16 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                         icon: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primaryContainer
+                                .withAlpha(76),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .primary
+                                  .withAlpha(25),
                             ),
                           ),
                           child: Icon(Icons.delete_outline,
@@ -288,8 +299,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                 if (categoryIndex > 0)
                                   const SizedBox(height: 8),
                                 Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 20, right: 20),
+                                  padding: const EdgeInsets.symmetric(horizontal: 10),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -322,20 +332,32 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                   ),
                                                 ),
                                                 child: Container(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   decoration: BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer
+                                                        .withAlpha(76),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                     border: Border.all(
-                                                      color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                          .withAlpha(25),
                                                     ),
                                                   ),
                                                   child: Icon(Icons.edit,
                                                       size: 24,
-                                                      color: Theme.of(context).colorScheme.primary),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary),
                                                 ),
                                               ),
-                                            const SizedBox(width: 8),
+                                            if (canDeleteCategory)
+                                              const SizedBox(width: 8),
                                             InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(8),
@@ -348,25 +370,34 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                 ),
                                               ),
                                               child: Container(
-                                              width: 40,
-                                              height: 40,
-                                              decoration: BoxDecoration(
-                                                color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                borderRadius: BorderRadius.circular(8),
-                                                border: Border.all(
-                                                  color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                width: 40,
+                                                height: 40,
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer
+                                                      .withAlpha(76),
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary
+                                                        .withAlpha(25),
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                  child: Icon(Icons.add,
+                                                      size: 24,
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary),
                                                 ),
                                               ),
-                                              child: Center(
-                                                child: Icon(Icons.add,
-                                                    size: 24,
-                                                    color: Theme.of(context).colorScheme.primary),
-                                              ),
                                             ),
-                                            ),
-                                            const SizedBox(width: 8),
                                             if (canDeleteCategory)
-
+                                              const SizedBox(width: 8),
+                                            if (canDeleteCategory)
                                               InkWell(
                                                 borderRadius:
                                                     BorderRadius.circular(8),
@@ -384,17 +415,29 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                   },
                                                 ),
                                                 child: Container(
-                                                  padding: const EdgeInsets.all(8.0),
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
                                                   decoration: BoxDecoration(
-                                                    color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                    borderRadius: BorderRadius.circular(8),
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primaryContainer
+                                                        .withAlpha(76),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
                                                     border: Border.all(
-                                                      color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary
+                                                          .withAlpha(25),
                                                     ),
                                                   ),
-                                                  child: Icon(Icons.delete_outline,
+                                                  child: Icon(
+                                                      Icons.delete_outline,
                                                       size: 24,
-                                                      color: Theme.of(context).colorScheme.primary),
+                                                      color: Theme.of(context)
+                                                          .colorScheme
+                                                          .primary),
                                                 ),
                                               ),
                                           ],
@@ -430,8 +473,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                               CrossAxisAlignment.start,
                                           children: [
                                             Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 20, right: 20),
+                                              padding: const EdgeInsets.symmetric(horizontal: 10),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -473,20 +515,43 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                               ),
                                                             ),
                                                             child: Container(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          decoration: BoxDecoration(
-                                                            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            border: Border.all(
-                                                              color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primaryContainer
+                                                                    .withAlpha(
+                                                                        76),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary
+                                                                      .withAlpha(
+                                                                          25),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                  Icons.edit,
+                                                                  size: 24,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary),
                                                             ),
                                                           ),
-                                                          child: Icon(Icons.edit,
-                                                              size: 24,
-                                                              color: Theme.of(context).colorScheme.primary),
-                                                        ),
-                                                          ),
-                                                        const SizedBox(width: 8),
+                                                        if (canDeleteCategory)
+                                                          const SizedBox(
+                                                              width: 8),
                                                         InkWell(
                                                           borderRadius:
                                                               BorderRadius
@@ -508,23 +573,43 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                           child: Container(
                                                             width: 40,
                                                             height: 40,
-                                                            decoration: BoxDecoration(
-                                                              color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                              borderRadius: BorderRadius.circular(8),
-                                                              border: Border.all(
-                                                                color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primaryContainer
+                                                                  .withAlpha(
+                                                                      76),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          8),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary
+                                                                    .withAlpha(
+                                                                        25),
                                                               ),
                                                             ),
                                                             child: Center(
                                                               child: Icon(
                                                                 Icons.add,
                                                                 size: 24,
-                                                                color: Theme.of(context).colorScheme.primary,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary,
                                                               ),
                                                             ),
                                                           ),
                                                         ),
-                                                        const SizedBox(width: 8),
+                                                        if (canDeleteTopic)
+                                                          const SizedBox(
+                                                              width: 8),
                                                         if (canDeleteTopic)
                                                           InkWell(
                                                             borderRadius:
@@ -553,18 +638,40 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                               },
                                                             ),
                                                             child: Container(
-                                                          padding: const EdgeInsets.all(8.0),
-                                                          decoration: BoxDecoration(
-                                                            color: Theme.of(context).colorScheme.primaryContainer.withAlpha(76),
-                                                            borderRadius: BorderRadius.circular(8),
-                                                            border: Border.all(
-                                                              color: Theme.of(context).colorScheme.primary.withAlpha(25),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primaryContainer
+                                                                    .withAlpha(
+                                                                        76),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            8),
+                                                                border:
+                                                                    Border.all(
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary
+                                                                      .withAlpha(
+                                                                          25),
+                                                                ),
+                                                              ),
+                                                              child: Icon(
+                                                                  Icons
+                                                                      .delete_outline,
+                                                                  size: 24,
+                                                                  color: Theme.of(
+                                                                          context)
+                                                                      .colorScheme
+                                                                      .primary),
                                                             ),
-                                                          ),
-                                                          child: Icon(Icons.delete_outline,
-                                                              size: 24,
-                                                              color: Theme.of(context).colorScheme.primary),
-                                                        ),
                                                           ),
                                                       ],
                                                     ),

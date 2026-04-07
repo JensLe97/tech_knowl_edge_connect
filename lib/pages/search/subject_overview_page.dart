@@ -115,73 +115,84 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                   actions: [
                     if (currentUser != null &&
                         currentSubject.authorId == currentUser.uid) ...[
-                      IconButton(
-                        style: IconButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        icon: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primaryContainer
-                                .withAlpha(76),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withAlpha(25),
+                      Padding(
+                        padding: const EdgeInsets.only(right: 15.0),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: () => showDialog(
+                                context: context,
+                                builder: (context) => SubjectDialog(
+                                  subject: currentSubject,
+                                ),
+                              ),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                      .withAlpha(76),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withAlpha(25),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.edit,
+                                      size: 24,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Icon(Icons.edit,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        tooltip: 'Fach bearbeiten',
-                        onPressed: () => showDialog(
-                          context: context,
-                          builder: (context) => SubjectDialog(
-                            subject: currentSubject,
-                          ),
-                        ),
-                      ),
-                      IconButton(
-                        style: IconButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                        icon: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .primaryContainer
-                                .withAlpha(76),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .primary
-                                  .withAlpha(25),
+                            const SizedBox(width: 8),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(8),
+                              onTap: () => _confirmDelete(
+                                title: 'Fach löschen?',
+                                message:
+                                    'Möchtest du dieses Fach wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                onConfirm: () async {
+                                  await _contentService.deleteSubject(
+                                    subjectId: currentSubject.id,
+                                  );
+                                  if (context.mounted) Navigator.pop(context);
+                                },
+                              ),
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .primaryContainer
+                                      .withAlpha(76),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .primary
+                                        .withAlpha(25),
+                                  ),
+                                ),
+                                child: Center(
+                                  child: Icon(Icons.delete_outline,
+                                      size: 24,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                ),
+                              ),
                             ),
-                          ),
-                          child: Icon(Icons.delete_outline,
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        tooltip: 'Fach löschen',
-                        onPressed: () => _confirmDelete(
-                          title: 'Fach löschen?',
-                          message:
-                              'Möchtest du dieses Fach wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                          onConfirm: () async {
-                            await _contentService.deleteSubject(
-                              subjectId: currentSubject.id,
-                            );
-                            if (context.mounted) Navigator.pop(context);
-                          },
+                          ],
                         ),
                       ),
                     ],
@@ -251,7 +262,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                             height: MediaQuery.of(context).size.height * 0.5,
                             child: Padding(
                               padding:
-                                  const EdgeInsets.symmetric(horizontal: 15),
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Center(
                                 child: Text(
                                   'Fehler beim Laden der Kategorien: $err',
@@ -270,7 +281,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                           return SizedBox(
                             height: MediaQuery.of(context).size.height * 0.5,
                             child: const Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 15),
+                              padding: EdgeInsets.symmetric(horizontal: 20),
                               child: Center(
                                 child: Text(
                                   "Zu diesem Fach gibt es noch keine Lerninhalte",
@@ -300,7 +311,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                   const SizedBox(height: 8),
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 10),
+                                      horizontal: 20),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
@@ -476,7 +487,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                             Padding(
                                               padding:
                                                   const EdgeInsets.symmetric(
-                                                      horizontal: 10),
+                                                      horizontal: 20),
                                               child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment
@@ -699,7 +710,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                 return SingleChildScrollView(
                                                   padding: const EdgeInsets
                                                       .symmetric(
-                                                      horizontal: 10),
+                                                      horizontal: 12),
                                                   scrollDirection:
                                                       Axis.horizontal,
                                                   child: Row(

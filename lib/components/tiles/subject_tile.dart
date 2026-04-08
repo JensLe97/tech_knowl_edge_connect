@@ -51,16 +51,19 @@ class SubjectTile extends StatelessWidget {
                   Row(
                     children: [
                       Container(
-                        width: 40,
-                        height: 40,
+                        width: 48,
+                        height: 48,
                         decoration: BoxDecoration(
                           color: subject.color.withAlpha(26),
-                          borderRadius: BorderRadius.circular(20),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(
+                            color: colorScheme.outlineVariant.withAlpha(51),
+                          ),
                         ),
                         child: Icon(
                           subject.iconData,
                           color: subject.color,
-                          size: 20,
+                          size: 24,
                         ),
                       ),
                       const SizedBox(width: 20),

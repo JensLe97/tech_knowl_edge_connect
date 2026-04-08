@@ -148,7 +148,7 @@ class _SearchPageState extends State<SearchPage> {
                                                 top: -20,
                                                 right: -20,
                                                 child: Icon(
-                                                  Icons.psychology,
+                                                  Icons.lightbulb,
                                                   size: 100,
                                                   color: colorScheme.primary
                                                       .withAlpha(15),
@@ -323,22 +323,28 @@ class _SearchPageState extends State<SearchPage> {
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 40,
-                                        height: 40,
+                                        width: 48,
+                                        height: 48,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary
                                               .withAlpha(26),
                                           borderRadius:
-                                              BorderRadius.circular(20),
+                                              BorderRadius.circular(12),
+                                          border: Border.all(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .outlineVariant
+                                                .withAlpha(51),
+                                          ),
                                         ),
                                         child: Icon(
                                           Icons.add_circle_outline,
                                           color: Theme.of(context)
                                               .colorScheme
                                               .primary,
-                                          size: 20,
+                                          size: 24,
                                         ),
                                       ),
                                       const SizedBox(width: 20),

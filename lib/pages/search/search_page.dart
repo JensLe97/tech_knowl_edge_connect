@@ -319,12 +319,12 @@ class _SearchPageState extends State<SearchPage> {
                               child: SizedBox(
                                 width: double.infinity,
                                 child: Padding(
-                                  padding: const EdgeInsets.all(16),
+                                  padding: const EdgeInsets.all(12),
                                   child: Row(
                                     children: [
                                       Container(
-                                        width: 48,
-                                        height: 48,
+                                        width: 40,
+                                        height: 40,
                                         decoration: BoxDecoration(
                                           color: Theme.of(context)
                                               .colorScheme

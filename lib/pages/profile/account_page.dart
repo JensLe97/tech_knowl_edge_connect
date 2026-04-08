@@ -126,6 +126,9 @@ class _AccountPageState extends State<AccountPage> {
                       ),
                       ListTile(
                         leading: const Icon(Icons.password),
+                        trailing: Icon(Icons.chevron_right,
+                            color:
+                                Theme.of(context).colorScheme.onSurfaceVariant),
                         title: const Text('Passwort ändern'),
                         onTap: () {
                           Navigator.of(context).push(
@@ -136,8 +139,12 @@ class _AccountPageState extends State<AccountPage> {
                         },
                       ),
                       ListTile(
-                        leading: const Icon(Icons.delete),
-                        title: const Text('Account löschen'),
+                        leading: Icon(Icons.delete,
+                            color: Theme.of(context).colorScheme.error),
+                        title: Text('Account löschen',
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.error,
+                                fontWeight: FontWeight.bold)),
                         onTap: confirmDeleteUser,
                       ),
                     ],

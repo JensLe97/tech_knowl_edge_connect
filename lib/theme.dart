@@ -74,7 +74,7 @@ class ThemeConfig {
           ),
         ),
         elevation: 0,
-        color: cs.surfaceContainerHighest.withAlpha(242), // 95% Light Mode
+        color: cs.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
@@ -186,8 +186,7 @@ class ThemeConfig {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         clipBehavior: Clip.antiAlias,
-        backgroundColor:
-            cs.surfaceContainerHighest.withAlpha(242), // 95% Light Mode
+        backgroundColor: cs.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -199,7 +198,7 @@ class ThemeConfig {
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: cs.surfaceContainerHighest,
+        backgroundColor: cs.surfaceContainerLow,
         contentTextStyle: TextStyle(color: cs.onSurface),
         behavior: SnackBarBehavior.floating,
       ),
@@ -289,7 +288,7 @@ class ThemeConfig {
           ),
         ),
         elevation: 0,
-        color: cs.surfaceContainerHighest.withAlpha(230), // 90% Dark Mode
+        color: cs.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
       ),
       dropdownMenuTheme: DropdownMenuThemeData(
@@ -401,8 +400,7 @@ class ThemeConfig {
       ),
       bottomSheetTheme: BottomSheetThemeData(
         clipBehavior: Clip.antiAlias,
-        backgroundColor:
-            cs.surfaceContainerHighest.withAlpha(230), // 90% Dark Mode
+        backgroundColor: cs.surfaceContainerLow,
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(
@@ -414,7 +412,7 @@ class ThemeConfig {
         ),
       ),
       snackBarTheme: SnackBarThemeData(
-        backgroundColor: cs.surfaceContainerHighest,
+        backgroundColor: cs.surfaceContainerLow,
         contentTextStyle: TextStyle(color: cs.onSurface),
         behavior: SnackBarBehavior.floating,
       ),

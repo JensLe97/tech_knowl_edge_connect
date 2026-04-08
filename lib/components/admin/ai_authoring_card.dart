@@ -320,15 +320,14 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
         Row(
           children: [
             Expanded(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 onPressed: canUseAi ? _pickFiles : null,
-                icon: const Icon(Icons.attach_file),
-                label: const Text('Dateien auswählen'),
+                child: const Text('Dateien auswählen'),
               ),
             ),
             const SizedBox(width: 12),
             Expanded(
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: cs.primaryContainer,
                   foregroundColor: cs.onPrimaryContainer,
@@ -337,8 +336,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                 onPressed: canUseAi && _pickedFiles.isNotEmpty && !_uploading
                     ? _uploadFiles
                     : null,
-                icon: const Icon(Icons.cloud_upload),
-                label: _uploading
+                child: _uploading
                     ? const Text('Upload läuft...')
                     : const Text('Upload starten'),
               ),
@@ -372,7 +370,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                   borderRadius: BorderRadius.circular(8),
                   onTap: canTrigger ? _generateWithAi : null,
                   child: Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(12),
                     child: Row(
                       children: [
                         Container(
@@ -410,13 +408,6 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                                 : cs.onSurface.withAlpha(100),
                             fontSize: 16,
                           ),
-                        ),
-                        const Spacer(),
-                        Icon(
-                          Icons.chevron_right,
-                          color: canTrigger
-                              ? cs.outline
-                              : cs.outlineVariant.withAlpha(100),
                         ),
                       ],
                     ),

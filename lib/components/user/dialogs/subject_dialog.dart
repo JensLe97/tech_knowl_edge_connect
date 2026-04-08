@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/user/status_pill.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
 import 'package:tech_knowl_edge_connect/models/content/subject.dart';
@@ -227,19 +228,12 @@ class _SubjectDialogState extends State<SubjectDialog> {
               ),
               const SizedBox(height: 16),
               if (isEditing) ...[
-                const Divider(),
                 Row(
                   children: [
-                    const Text("Status: "),
-                    Chip(
-                      label: Text(
-                        UserConstants.statusLabels[_currentStatus] ??
-                            _currentStatus,
-                      ),
-                      backgroundColor:
-                          UserConstants.getStatusColor(_currentStatus),
-                      labelStyle: const TextStyle(color: Colors.white),
-                    ),
+                    const Text("Status: ",
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    const SizedBox(width: 8),
+                    StatusPill(status: _currentStatus),
                   ],
                 ),
                 const SizedBox(height: 8),
@@ -255,9 +249,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
                     _currentStatus == UserConstants.statusApproved))
                   SizedBox(
                     width: double.infinity,
-                    child: OutlinedButton.icon(
-                      icon: const Icon(Icons.visibility_off),
-                      label: const Text("Auf privat setzen"),
+                    child: OutlinedButton(
+                      child: const Text("Auf privat setzen"),
                       onPressed: () => _save(UserConstants.statusPrivate),
                     ),
                   ),

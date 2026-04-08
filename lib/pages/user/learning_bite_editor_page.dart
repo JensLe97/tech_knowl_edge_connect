@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/user/status_pill.dart';
 import 'package:tech_knowl_edge_connect/components/admin/ai_authoring_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/content_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
@@ -111,55 +112,6 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
         unitId: widget.unitId,
         conceptId: widget.conceptId,
         learningBite: bite,
-      ),
-    );
-  }
-
-  Widget _buildStatusPill(BuildContext context, String status) {
-    final cs = Theme.of(context).colorScheme;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    Color bgColor;
-    Color textColor;
-    Color borderColor;
-
-    switch (status) {
-      case UserConstants.statusApproved:
-        bgColor = Colors.green.withAlpha(38); // 15% opacity
-        textColor = isDark ? Colors.green.shade300 : Colors.green.shade700;
-        borderColor = Colors.green.withAlpha(76); // 30% opacity
-        break;
-      case UserConstants.statusRejected:
-        bgColor = cs.errorContainer;
-        textColor = cs.onErrorContainer;
-        borderColor = cs.error.withAlpha(76);
-        break;
-      case UserConstants.statusPending:
-        bgColor = Colors.orange.withAlpha(38);
-        textColor = isDark ? Colors.orange.shade300 : Colors.orange.shade800;
-        borderColor = Colors.orange.withAlpha(76);
-        break;
-      default: // statusPrivate or draft
-        bgColor = cs.surfaceContainerHighest;
-        textColor = cs.onSurfaceVariant;
-        borderColor = cs.outlineVariant.withAlpha(128);
-        break;
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(100),
-        border: Border.all(color: borderColor),
-      ),
-      child: Text(
-        UserConstants.statusLabels[status] ?? status,
-        style: TextStyle(
-          color: textColor,
-          fontWeight: FontWeight.w600,
-          fontSize: 14,
-        ),
       ),
     );
   }
@@ -309,7 +261,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                   children: [
                     Row(
                       children: [
-                        _buildStatusPill(context, status),
+                        StatusPill(status: status),
                         const Spacer(),
                         if (status == UserConstants.statusPrivate ||
                             status == UserConstants.statusRejected)
@@ -339,7 +291,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                           ),
                         if (status == UserConstants.statusPending ||
                             status == UserConstants.statusApproved)
-                          TextButton(
+                          OutlinedButton(
                             onPressed: () async {
                               await _markNeedsPublish();
                               if (context.mounted) {

@@ -112,8 +112,6 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const CardHeader(title: 'Genehmigungen'),
-                    const SizedBox(height: 12),
                     PendingApprovalsCard(
                       adminService: _adminService,
                       onPreview: (doc) {

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/confirm_action_dialog.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 import 'package:tech_knowl_edge_connect/components/admin/hierarchy_breadcrumbs.dart';
@@ -16,124 +17,104 @@ class PendingApprovalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Card(
-      color: cs.surfaceContainerHighest.withValues(alpha: 0.3),
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Ausstehende Genehmigungen',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 20, // text-xl
-                color: Theme.of(context).colorScheme.onSurface,
-              ),
-            ),
-            const SizedBox(height: 12),
-            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: adminService.streamPendingLearningBites(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('Fehler: ${snapshot.error}');
-                }
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        const CardHeader(title: 'Ausstehende Genehmigungen'),
+        const SizedBox(height: 12),
+        StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+          stream: adminService.streamPendingLearningBites(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('Fehler: ${snapshot.error}');
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-                final docs = snapshot.data?.docs ?? [];
-                if (docs.isEmpty) {
-                  return const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text('Keine ausstehenden Genehmigungen.'),
-                  );
-                }
+            final docs = snapshot.data?.docs ?? [];
+            if (docs.isEmpty) {
+              return const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text('Keine ausstehenden Genehmigungen.'),
+              );
+            }
 
-                return ListView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: docs.length,
-                  itemBuilder: (context, index) {
-                    final doc = docs[index];
-                    final data = doc.data();
-                    final id = doc.id;
-                    final title = data['title'] ?? 'Ohne Titel';
-                    final authorId = data['authorId'] ?? 'Unbekannt';
+            return ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: docs.length,
+              itemBuilder: (context, index) {
+                final doc = docs[index];
+                final data = doc.data();
+                final id = doc.id;
+                final title = data['title'] ?? 'Ohne Titel';
+                final authorId = data['authorId'] ?? 'Unbekannt';
 
-                    final cs = Theme.of(context).colorScheme;
-                    return Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainer,
-                        borderRadius: BorderRadius.circular(24),
-                        border:
-                            Border.all(color: cs.outlineVariant.withAlpha(40)),
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          HierarchyBreadcrumbs(reference: doc.reference),
-                          ListTile(
-                            contentPadding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
-                            title: Text(title,
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
-                            subtitle: Text('ID: $id\nAuthor: $authorId'),
-                            isThreeLine: true,
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  style: IconButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  icon: Icon(Icons.visibility,
-                                      color: cs.onSurfaceVariant),
-                                  tooltip: 'Ansehen',
-                                  onPressed: () => onPreview(doc),
-                                ),
-                                const SizedBox(width: 4),
-                                IconButton(
-                                  style: IconButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  icon: const Icon(Icons.check_circle_outline,
-                                      color: Colors.green),
-                                  tooltip: 'Genehmigen',
-                                  onPressed: () =>
-                                      _approve(context, doc.reference),
-                                ),
-                                const SizedBox(width: 4),
-                                IconButton(
-                                  style: IconButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(12))),
-                                  icon: const Icon(Icons.highlight_off,
-                                      color: Colors.red),
-                                  tooltip: 'Ablehnen',
-                                  onPressed: () =>
-                                      _reject(context, doc.reference),
-                                ),
-                              ],
+                final cs = Theme.of(context).colorScheme;
+                return Container(
+                  margin: const EdgeInsets.only(bottom: 12),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: cs.surfaceContainer,
+                    borderRadius: BorderRadius.circular(24),
+                    border: Border.all(color: cs.outlineVariant.withAlpha(40)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      HierarchyBreadcrumbs(reference: doc.reference),
+                      ListTile(
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        title: Text(title,
+                            style:
+                                const TextStyle(fontWeight: FontWeight.bold)),
+                        subtitle: Text('ID: $id\nAuthor: $authorId'),
+                        isThreeLine: true,
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12))),
+                              icon: Icon(Icons.visibility,
+                                  color: cs.onSurfaceVariant),
+                              tooltip: 'Ansehen',
+                              onPressed: () => onPreview(doc),
                             ),
-                          ),
-                        ],
+                            const SizedBox(width: 4),
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12))),
+                              icon: const Icon(Icons.check_circle_outline,
+                                  color: Colors.green),
+                              tooltip: 'Genehmigen',
+                              onPressed: () => _approve(context, doc.reference),
+                            ),
+                            const SizedBox(width: 4),
+                            IconButton(
+                              style: IconButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12))),
+                              icon: const Icon(Icons.highlight_off,
+                                  color: Colors.red),
+                              tooltip: 'Ablehnen',
+                              onPressed: () => _reject(context, doc.reference),
+                            ),
+                          ],
+                        ),
                       ),
-                    );
-                  },
+                    ],
+                  ),
                 );
               },
-            ),
-          ],
+            );
+          },
         ),
-      ),
+      ],
     );
   }
 

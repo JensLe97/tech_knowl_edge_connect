@@ -91,7 +91,7 @@ class ConceptsCard extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(24)),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
+                            horizontal: 16, vertical: 8),
                         selected: isSelected,
                         leading: Container(
                           width: 48,

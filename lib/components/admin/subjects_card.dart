@@ -88,7 +88,7 @@ class SubjectsCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(24)),
                       selected: isSelected,
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
+                          horizontal: 16, vertical: 8),
                       leading: Container(
                         width: 48,
                         height: 48,

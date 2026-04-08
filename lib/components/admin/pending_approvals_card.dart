@@ -25,15 +25,13 @@ class PendingApprovalsCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Ausstehende Genehmigungen',
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-                Icon(Icons.rule, color: Theme.of(context).colorScheme.primary),
-              ],
+            Text(
+              'Ausstehende Genehmigungen',
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 20, // text-xl
+                color: Theme.of(context).colorScheme.onSurface,
+              ),
             ),
             const SizedBox(height: 12),
             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

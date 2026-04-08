@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class CardHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onAdd;
+  final Widget? trailing;
 
   const CardHeader({
     super.key,
     required this.title,
     this.onAdd,
+    this.trailing,
   });
 
   @override
@@ -24,7 +26,9 @@ class CardHeader extends StatelessWidget {
             color: cs.onSurface,
           ),
         ),
-        if (onAdd != null)
+        if (trailing != null)
+          trailing!
+        else if (onAdd != null)
           InkWell(
             borderRadius: BorderRadius.circular(12),
             onTap: onAdd,

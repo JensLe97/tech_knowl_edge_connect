@@ -68,45 +68,60 @@ class ConceptsCard extends StatelessWidget {
                   if (docs.isEmpty) {
                     return const Text('Keine Konzepte vorhanden.');
                   }
-                  return ListView.separated(
+                  return ListView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     itemCount: docs.length,
-                    separatorBuilder: (_, __) => const Divider(),
                     itemBuilder: (context, index) {
                       final doc = docs[index];
                       final data = doc.data();
                       final isSelected = doc.id == selectedConceptId;
-                      return ListTile(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 4),
-                        selected: isSelected,
-                        title: Text(data['name'] ?? 'Unbenannt'),
-                        subtitle: Text(
-                          'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
-                        ),
-                        onTap: () => onSelect(doc.id),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              icon: const Icon(Icons.edit),
-                              tooltip: 'Bearbeiten',
-                              onPressed: () => onEdit(doc.id, data),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
+                      final cs = Theme.of(context).colorScheme;
+                      return Container(
+                          margin: const EdgeInsets.only(bottom: 8),
+                          decoration: BoxDecoration(
+                            color: isSelected
+                                ? cs.primaryContainer.withAlpha(76)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(12),
+                            border: isSelected
+                                ? Border.all(color: cs.primary.withAlpha(38))
+                                : Border.all(
+                                    color: cs.outlineVariant.withAlpha(38)),
+                          ),
+                          clipBehavior: Clip.antiAlias,
+                          child: ListTile(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            contentPadding:
+                                const EdgeInsets.symmetric(horizontal: 4),
+                            selected: isSelected,
+                            title: Text(data['name'] ?? 'Unbenannt'),
+                            subtitle: Text(
+                              'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
                             ),
-                            const SizedBox(width: 4),
-                            IconButton(
-                              icon: const Icon(Icons.delete_outline),
-                              tooltip: 'Löschen',
-                              onPressed: () => onDelete(doc.id),
-                              padding: const EdgeInsets.all(8),
-                              constraints: const BoxConstraints(),
+                            onTap: () => onSelect(doc.id),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  icon: const Icon(Icons.edit),
+                                  tooltip: 'Bearbeiten',
+                                  onPressed: () => onEdit(doc.id, data),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(),
+                                ),
+                                const SizedBox(width: 4),
+                                IconButton(
+                                  icon: const Icon(Icons.delete_outline),
+                                  tooltip: 'Löschen',
+                                  onPressed: () => onDelete(doc.id),
+                                  padding: const EdgeInsets.all(8),
+                                  constraints: const BoxConstraints(),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      );
+                          ));
                     },
                   );
                 },

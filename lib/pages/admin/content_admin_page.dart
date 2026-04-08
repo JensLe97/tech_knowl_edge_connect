@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/components/admin/admin_management_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/ai_authoring_card.dart';
 import 'package:tech_knowl_edge_connect/components/admin/categories_card.dart';
@@ -111,7 +112,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildSectionTitle('Genehmigungen'),
+                    const CardHeader(title: 'Genehmigungen'),
                     const SizedBox(height: 12),
                     PendingApprovalsCard(
                       adminService: _adminService,
@@ -153,56 +154,55 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                       },
                     ),
                     const SizedBox(height: 24),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        _buildSectionTitle('Inhaltsverwaltung'),
-                        const SizedBox(width: 16),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerRight,
-                            child: ConstrainedBox(
-                              constraints: const BoxConstraints(maxWidth: 170),
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 8.0),
-                                child: InputDecorator(
-                                  decoration: const InputDecoration(
-                                    contentPadding: EdgeInsets.symmetric(
-                                        horizontal: 12, vertical: 6),
-                                    border: OutlineInputBorder(),
-                                  ),
-                                  child: DropdownButtonHideUnderline(
-                                    child: DropdownButton<String?>(
-                                      value: _statusFilter,
-                                      borderRadius: BorderRadius.circular(12),
-                                      isDense: true,
-                                      isExpanded: true,
-                                      hint: const Text('Alle Inhalte'),
-                                      items: [
-                                        const DropdownMenuItem(
-                                            value: null,
-                                            child: Text('Alle Inhalte')),
-                                        ...AdminConstants.statusLabels.entries
-                                            .map(
-                                          (entry) => DropdownMenuItem(
-                                            value: entry.key,
-                                            child: Text(entry.value),
-                                          ),
-                                        ),
-                                      ],
-                                      onChanged: (val) {
-                                        setState(() {
-                                          _statusFilter = val;
-                                        });
-                                      },
+                    CardHeader(
+                      title: 'Inhaltsverwaltung',
+                      trailing: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: 170),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 8.0),
+                          child: InputDecorator(
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .outlineVariant),
+                              ),
+                              fillColor: Theme.of(context)
+                                  .colorScheme
+                                  .surfaceContainer,
+                              filled: true,
+                            ),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton<String?>(
+                                value: _statusFilter,
+                                borderRadius: BorderRadius.circular(12),
+                                isDense: true,
+                                isExpanded: true,
+                                hint: const Text('Alle Inhalte'),
+                                items: [
+                                  const DropdownMenuItem(
+                                      value: null, child: Text('Alle Inhalte')),
+                                  ...AdminConstants.statusLabels.entries.map(
+                                    (entry) => DropdownMenuItem(
+                                      value: entry.key,
+                                      child: Text(entry.value),
                                     ),
                                   ),
-                                ),
+                                ],
+                                onChanged: (val) {
+                                  setState(() {
+                                    _statusFilter = val;
+                                  });
+                                },
                               ),
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
                     const SizedBox(height: 12),
 
@@ -978,7 +978,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                           ]),
 
                     const SizedBox(height: 24),
-                    _buildSectionTitle('Datei-Upload & KI-Generierung'),
+                    const CardHeader(title: 'Datei-Upload & KI-Generierung'),
                     const SizedBox(height: 12),
                     AiAuthoringCard(
                       userId: user.uid,
@@ -1018,7 +1018,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                       },
                     ),
                     const SizedBox(height: 24),
-                    _buildSectionTitle('Adminverwaltung'),
+                    const CardHeader(title: 'Adminverwaltung'),
                     const SizedBox(height: 12),
                     AdminManagementCard(
                       adminFunctions: _functionsService,
@@ -1033,20 +1033,6 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
           ),
         );
       },
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 4),
-      child: Text(
-        title,
-        style: TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          color: Theme.of(context).colorScheme.primary,
-        ),
-      ),
     );
   }
 

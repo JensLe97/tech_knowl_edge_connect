@@ -53,11 +53,10 @@ class SubjectsCard extends StatelessWidget {
                 if (docs.isEmpty) {
                   return const Text('Keine Fächer vorhanden.');
                 }
-                return ListView.separated(
+                return ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   itemCount: docs.length,
-                  separatorBuilder: (_, __) => const Divider(),
                   itemBuilder: (context, index) {
                     final doc = docs[index];
                     final data = doc.data();
@@ -74,43 +73,60 @@ class SubjectsCard extends StatelessWidget {
                       color = Color(data['color']);
                     }
 
-                    return ListTile(
-                      selected: isSelected,
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 4),
-                      leading: CircleAvatar(
-                        backgroundColor:
-                            color ?? Theme.of(context).primaryColor,
-                        child: Icon(
-                          icon ?? Icons.folder,
-                          color: Colors.white,
+                    final cs = Theme.of(context).colorScheme;
+                    return Container(
+                        margin: const EdgeInsets.only(bottom: 8),
+                        decoration: BoxDecoration(
+                          color: isSelected
+                              ? cs.primaryContainer.withAlpha(76)
+                              : Colors.transparent,
+                          borderRadius: BorderRadius.circular(12),
+                          border: isSelected
+                              ? Border.all(color: cs.primary.withAlpha(38))
+                              : Border.all(
+                                  color: cs.outlineVariant.withAlpha(38)),
                         ),
-                      ),
-                      title: Text(data['name'] ?? 'Unbenannt'),
-                      subtitle: Text(
-                        'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
-                      ),
-                      onTap: () => onSelect(doc.id),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            tooltip: 'Bearbeiten',
-                            onPressed: () => onEdit(doc.id, data),
-                            padding: const EdgeInsets.all(8),
-                            constraints: const BoxConstraints(),
+                        clipBehavior: Clip.antiAlias,
+                        child: ListTile(
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          selected: isSelected,
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 4),
+                          leading: CircleAvatar(
+                            backgroundColor:
+                                color ?? Theme.of(context).primaryColor,
+                            child: Icon(
+                              icon ?? Icons.folder,
+                              color: Colors.white,
+                            ),
                           ),
-                          const SizedBox(width: 4),
-                          IconButton(
-                            icon: const Icon(Icons.delete_outline),
-                            tooltip: 'Löschen',
-                            onPressed: () => onDelete(doc.id),
-                            padding: const EdgeInsets.all(8),
-                            constraints: const BoxConstraints(),
+                          title: Text(data['name'] ?? 'Unbenannt'),
+                          subtitle: Text(
+                            'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
                           ),
-                        ],
-                      ),
-                    );
+                          onTap: () => onSelect(doc.id),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                tooltip: 'Bearbeiten',
+                                onPressed: () => onEdit(doc.id, data),
+                                padding: const EdgeInsets.all(8),
+                                constraints: const BoxConstraints(),
+                              ),
+                              const SizedBox(width: 4),
+                              IconButton(
+                                icon: const Icon(Icons.delete_outline),
+                                tooltip: 'Löschen',
+                                onPressed: () => onDelete(doc.id),
+                                padding: const EdgeInsets.all(8),
+                                constraints: const BoxConstraints(),
+                              ),
+                            ],
+                          ),
+                        ));
                   },
                 );
               },

@@ -278,7 +278,7 @@ Formuliere 2–3 Sätze, direkt an den Content-Agenten gerichtet (Imperativ). Ke
     if (kDebugMode && !kUseRealAiInDebug) {
       return 'Beginne mit "Variablen und Datentypen" – erkläre Konzept und Syntax '
           'für Anfänger mit konkreten Python-Codebeispielen. '
-          'Baue jeden Bite auf dem vorherigen auf und steigere die Komplexität schrittweise.';
+          'Baue jedes Learning Bite auf dem vorherigen auf und steigere die Komplexität schrittweise.';
     }
     final prompt = _buildPrompt(userMessage, goal: goal, context: context);
     final responseText = await generateText(prompt);

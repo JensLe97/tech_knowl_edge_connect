@@ -48,7 +48,7 @@ class ContentCard extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         if (!canInteract)
-          const Text('Bitte einen Learning Bite auswählen.')
+          const Text('Bitte ein Learning Bite auswählen.')
         else
           StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             stream: adminService.streamLearningBite(

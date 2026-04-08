@@ -421,7 +421,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
         // Selected files overview
         if (!canUseAi)
           const Text(
-              'Bitte wähle zuerst einen Learning Bite aus, um KI-Funktionen zu nutzen.'),
+              'Bitte wähle zuerst ein Learning Bite aus, um KI-Funktionen zu nutzen.'),
         if (_pickedFiles.isNotEmpty) ...[
           Row(
             children: [

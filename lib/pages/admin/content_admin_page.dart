@@ -160,46 +160,31 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         constraints: const BoxConstraints(maxWidth: 170),
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8.0),
-                          child: InputDecorator(
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 6),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12),
-                                borderSide: BorderSide(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .outlineVariant),
-                              ),
-                              fillColor: Theme.of(context)
-                                  .colorScheme
-                                  .surfaceContainer,
-                              filled: true,
+                          child: DropdownButtonFormField<String?>(
+                            decoration: const InputDecoration(
+                              contentPadding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 12),
                             ),
-                            child: DropdownButtonHideUnderline(
-                              child: DropdownButton<String?>(
-                                value: _statusFilter,
-                                borderRadius: BorderRadius.circular(12),
-                                isDense: true,
-                                isExpanded: true,
-                                hint: const Text('Alle Inhalte'),
-                                items: [
-                                  const DropdownMenuItem(
-                                      value: null, child: Text('Alle Inhalte')),
-                                  ...AdminConstants.statusLabels.entries.map(
-                                    (entry) => DropdownMenuItem(
-                                      value: entry.key,
-                                      child: Text(entry.value),
-                                    ),
-                                  ),
-                                ],
-                                onChanged: (val) {
-                                  setState(() {
-                                    _statusFilter = val;
-                                  });
-                                },
+                            initialValue: _statusFilter,
+                            borderRadius: BorderRadius.circular(12),
+                            isDense: true,
+                            isExpanded: true,
+                            hint: const Text('Alle Inhalte'),
+                            items: [
+                              const DropdownMenuItem(
+                                  value: null, child: Text('Alle Inhalte')),
+                              ...AdminConstants.statusLabels.entries.map(
+                                (entry) => DropdownMenuItem(
+                                  value: entry.key,
+                                  child: Text(entry.value),
+                                ),
                               ),
-                            ),
+                            ],
+                            onChanged: (val) {
+                              setState(() {
+                                _statusFilter = val;
+                              });
+                            },
                           ),
                         ),
                       ),

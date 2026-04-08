@@ -93,12 +93,22 @@ class SubjectsCard extends StatelessWidget {
                           selected: isSelected,
                           contentPadding:
                               const EdgeInsets.symmetric(horizontal: 4),
-                          leading: CircleAvatar(
-                            backgroundColor:
-                                color ?? Theme.of(context).primaryColor,
-                            child: Icon(
-                              icon ?? Icons.folder,
-                              color: Colors.white,
+                          leading: Container(
+                            width: 48,
+                            height: 48,
+                            decoration: BoxDecoration(
+                              color: (color ?? cs.primary).withAlpha(26),
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: cs.outlineVariant.withAlpha(51),
+                              ),
+                            ),
+                            child: Center(
+                              child: Icon(
+                                icon ?? Icons.folder,
+                                color: color ?? cs.primary,
+                                size: 24,
+                              ),
                             ),
                           ),
                           title: Text(data['name'] ?? 'Unbenannt'),
@@ -110,19 +120,25 @@ class SubjectsCard extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: const Icon(Icons.edit),
+                                style: IconButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12))),
+                                icon: Icon(Icons.edit,
+                                    color: cs.onSurfaceVariant),
                                 tooltip: 'Bearbeiten',
                                 onPressed: () => onEdit(doc.id, data),
-                                padding: const EdgeInsets.all(8),
-                                constraints: const BoxConstraints(),
                               ),
                               const SizedBox(width: 4),
                               IconButton(
-                                icon: const Icon(Icons.delete_outline),
+                                style: IconButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12))),
+                                icon: Icon(Icons.delete_outline,
+                                    color: cs.onSurfaceVariant),
                                 tooltip: 'Löschen',
                                 onPressed: () => onDelete(doc.id),
-                                padding: const EdgeInsets.all(8),
-                                constraints: const BoxConstraints(),
                               ),
                             ],
                           ),

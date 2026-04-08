@@ -15,9 +15,9 @@ class PendingApprovalsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Card(
-      color: Theme.of(context)
-          .colorScheme
+      color: cs
           .surfaceContainerHighest
           .withValues(alpha: 0.3),
       child: Padding(
@@ -82,11 +82,20 @@ class PendingApprovalsCard extends StatelessWidget {
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   IconButton(
-                                    icon: const Icon(Icons.visibility),
+                                    style: IconButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12))),
+                                    icon: Icon(Icons.visibility,
+                                        color: cs.onSurfaceVariant),
                                     tooltip: 'Ansehen',
                                     onPressed: () => onPreview(doc),
                                   ),
                                   IconButton(
+                                    style: IconButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12))),
                                     icon:
                                         const Icon(Icons.check_circle_outline),
                                     color: Colors.green,
@@ -95,6 +104,10 @@ class PendingApprovalsCard extends StatelessWidget {
                                         _approve(context, doc.reference),
                                   ),
                                   IconButton(
+                                    style: IconButton.styleFrom(
+                                        shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(12))),
                                     icon: const Icon(Icons.highlight_off),
                                     color: Colors.red,
                                     tooltip: 'Ablehnen',

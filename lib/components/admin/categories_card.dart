@@ -86,6 +86,24 @@ class CategoriesCard extends StatelessWidget {
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 4),
                             selected: isSelected,
+                            leading: Container(
+                              width: 48,
+                              height: 48,
+                              decoration: BoxDecoration(
+                                color: cs.primary.withAlpha(26),
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: cs.outlineVariant.withAlpha(51),
+                                ),
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.category,
+                                  color: cs.primary,
+                                  size: 24,
+                                ),
+                              ),
+                            ),
                             title: Text(data['name'] ?? 'Unbenannt'),
                             subtitle: Text(
                               'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
@@ -95,19 +113,25 @@ class CategoriesCard extends StatelessWidget {
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  icon: const Icon(Icons.edit),
+                                  style: IconButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  icon: Icon(Icons.edit,
+                                      color: cs.onSurfaceVariant),
                                   tooltip: 'Bearbeiten',
                                   onPressed: () => onEdit(doc.id, data),
-                                  padding: const EdgeInsets.all(8),
-                                  constraints: const BoxConstraints(),
                                 ),
                                 const SizedBox(width: 4),
                                 IconButton(
-                                  icon: const Icon(Icons.delete_outline),
+                                  style: IconButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  icon: Icon(Icons.delete_outline,
+                                      color: cs.onSurfaceVariant),
                                   tooltip: 'Löschen',
                                   onPressed: () => onDelete(doc.id),
-                                  padding: const EdgeInsets.all(8),
-                                  constraints: const BoxConstraints(),
                                 ),
                               ],
                             ),

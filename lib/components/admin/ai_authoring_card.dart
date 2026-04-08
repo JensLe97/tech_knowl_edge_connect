@@ -417,11 +417,16 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             );
           },
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 16),
         // Selected files overview
         if (!canUseAi)
-          const Text(
-              'Bitte wähle zuerst ein Learning Bite aus, um KI-Funktionen zu nutzen.'),
+          const Column(
+            children: [
+              Text(
+                  'Bitte wähle zuerst ein Learning Bite aus, um KI-Funktionen zu nutzen.'),
+              SizedBox(height: 16),
+            ],
+          ),
         if (_pickedFiles.isNotEmpty) ...[
           Row(
             children: [

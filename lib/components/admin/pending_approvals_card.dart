@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/admin/dialogs/confirm_action_dialog.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 import 'package:tech_knowl_edge_connect/components/admin/hierarchy_breadcrumbs.dart';
 
@@ -76,7 +77,8 @@ class PendingApprovalsCard extends StatelessWidget {
                         children: [
                           HierarchyBreadcrumbs(reference: doc.reference),
                           ListTile(
-                            contentPadding: EdgeInsets.zero,
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12, vertical: 4),
                             title: Text(title,
                                 style: const TextStyle(
                                     fontWeight: FontWeight.bold)),
@@ -90,19 +92,31 @@ class PendingApprovalsCard extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12))),
-                                  icon: const Icon(Icons.check_circle_outline),
-                                  color: Colors.green,
-                                  tooltip: 'Genehmigen',
-                                  onPressed: () =>
-                                      _approve(context, doc.reference),
+                                  icon: Icon(Icons.visibility,
+                                      color: cs.onSurfaceVariant),
+                                  tooltip: 'Ansehen',
+                                  onPressed: () => onPreview(doc),
                                 ),
+                                const SizedBox(width: 4),
                                 IconButton(
                                   style: IconButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(12))),
-                                  icon: const Icon(Icons.highlight_off),
-                                  color: Colors.red,
+                                  icon: const Icon(Icons.check_circle_outline,
+                                      color: Colors.green),
+                                  tooltip: 'Genehmigen',
+                                  onPressed: () =>
+                                      _approve(context, doc.reference),
+                                ),
+                                const SizedBox(width: 4),
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  icon: const Icon(Icons.highlight_off,
+                                      color: Colors.red),
                                   tooltip: 'Ablehnen',
                                   onPressed: () =>
                                       _reject(context, doc.reference),
@@ -126,55 +140,41 @@ class PendingApprovalsCard extends StatelessWidget {
   void _approve(BuildContext context, DocumentReference ref) {
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Genehmigen?'),
-        content:
-            const Text('Möchtest du dieses Learning Bite wirklich genehmigen?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Abbrechen'),
-          ),
-          FilledButton(
-            onPressed: () {
-              adminService.approveLearningBite(ref);
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Learning Bite genehmigt.')),
-              );
-            },
-            child: const Text('Genehmigen'),
-          ),
-        ],
+      builder: (context) => ConfirmActionDialog(
+        title: 'Genehmigen?',
+        message: 'Möchtest du dieses Learning Bite wirklich genehmigen?',
+        icon: Icons.check_circle_outline,
+        actionColor: Colors.green,
+        actionContainerColor: Colors.green.withAlpha(100),
+        actionText: 'Genehmigen',
+        onConfirm: () {
+          adminService.approveLearningBite(ref);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Learning Bite genehmigt.')),
+          );
+        },
       ),
     );
   }
 
   void _reject(BuildContext context, DocumentReference ref) {
+    final cs = Theme.of(context).colorScheme;
     showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Ablehnen?'),
-        content:
-            const Text('Möchtest du dieses Learning Bite wirklich ablehnen?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Abbrechen'),
-          ),
-          FilledButton(
-            style: FilledButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.error),
-            onPressed: () {
-              adminService.rejectLearningBite(ref);
-              Navigator.of(context).pop();
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Learning Bite abgelehnt.')),
-              );
-            },
-            child: const Text('Ablehnen'),
-          ),
-        ],
+      builder: (context) => ConfirmActionDialog(
+        title: 'Ablehnen?',
+        message: 'Möchtest du dieses Learning Bite wirklich ablehnen?',
+        icon: Icons.highlight_off,
+        actionColor: cs.error,
+        actionContainerColor: cs.errorContainer,
+        actionText: 'Ablehnen',
+        isDestructive: true,
+        onConfirm: () {
+          adminService.rejectLearningBite(ref);
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Learning Bite abgelehnt.')),
+          );
+        },
       ),
     );
   }

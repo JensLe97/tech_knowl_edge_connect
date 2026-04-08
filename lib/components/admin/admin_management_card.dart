@@ -32,138 +32,138 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          TextField(
-            controller: _adminUidController,
-            decoration: InputDecoration(
-              labelText: 'UID des Benutzers',
-              border: const OutlineInputBorder(),
-              errorText: _uidErrorText,
-              helperText: ' ',
+      children: [
+        TextField(
+          controller: _adminUidController,
+          decoration: InputDecoration(
+            labelText: 'UID des Benutzers',
+            border: const OutlineInputBorder(),
+            errorText: _uidErrorText,
+            helperText: ' ',
+          ),
+          onChanged: (value) {
+            if (_uidErrorText != null) {
+              setState(() => _uidErrorText = null);
+            }
+          },
+        ),
+        const SizedBox(height: 12),
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          children: [
+            ElevatedButton(
+              onPressed: _grantingAdmin
+                  ? null
+                  : () async {
+                      final uid = _adminUidController.text.trim();
+                      if (uid.isEmpty) {
+                        setState(
+                            () => _uidErrorText = 'Bitte gib eine UID ein.');
+                        return;
+                      }
+                      setState(() {
+                        _uidErrorText = null;
+                        _grantingAdmin = true;
+                      });
+                      try {
+                        final ok = await widget.onEnsureAuthenticated();
+                        if (!ok) return;
+                        await widget.adminFunctions.setAdmin(uid: uid);
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Admin-Rechte vergeben.'),
+                          ),
+                        );
+                        _adminUidController.clear();
+                      } on FirebaseFunctionsException catch (e) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Fehler: ${e.message ?? e.code}',
+                            ),
+                          ),
+                        );
+                      } catch (_) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Fehler beim Setzen der Admin-Rechte.'),
+                          ),
+                        );
+                      } finally {
+                        if (context.mounted) {
+                          setState(() => _grantingAdmin = false);
+                        }
+                      }
+                    },
+              child: Text(_grantingAdmin
+                  ? 'Bitte warten...'
+                  : 'Als Admin freischalten'),
             ),
-            onChanged: (value) {
-              if (_uidErrorText != null) {
-                setState(() => _uidErrorText = null);
-              }
-            },
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 12,
-            runSpacing: 8,
-            children: [
-              ElevatedButton(
-                onPressed: _grantingAdmin
-                    ? null
-                    : () async {
-                        final uid = _adminUidController.text.trim();
-                        if (uid.isEmpty) {
-                          setState(
-                              () => _uidErrorText = 'Bitte gib eine UID ein.');
-                          return;
+            OutlinedButton(
+              onPressed: _revokingAdmin
+                  ? null
+                  : () async {
+                      final uid = _adminUidController.text.trim();
+                      if (uid.isEmpty) {
+                        setState(
+                            () => _uidErrorText = 'Bitte gib eine UID ein.');
+                        return;
+                      }
+                      setState(() {
+                        _uidErrorText = null;
+                        _revokingAdmin = true;
+                      });
+                      try {
+                        final ok = await widget.onEnsureAuthenticated();
+                        if (!ok) return;
+                        await widget.adminFunctions.revokeAdmin(uid: uid);
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Admin-Rechte entzogen.'),
+                          ),
+                        );
+                        _adminUidController.clear();
+                      } on FirebaseFunctionsException catch (e) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              'Fehler: ${e.message ?? e.code}',
+                            ),
+                          ),
+                        );
+                      } catch (_) {
+                        if (!context.mounted) return;
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text('Fehler beim Entziehen der Admin-Rechte.'),
+                          ),
+                        );
+                      } finally {
+                        if (context.mounted) {
+                          setState(() => _revokingAdmin = false);
                         }
-                        setState(() {
-                          _uidErrorText = null;
-                          _grantingAdmin = true;
-                        });
-                        try {
-                          final ok = await widget.onEnsureAuthenticated();
-                          if (!ok) return;
-                          await widget.adminFunctions.setAdmin(uid: uid);
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Admin-Rechte vergeben.'),
-                            ),
-                          );
-                          _adminUidController.clear();
-                        } on FirebaseFunctionsException catch (e) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Fehler: ${e.message ?? e.code}',
-                              ),
-                            ),
-                          );
-                        } catch (_) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content:
-                                  Text('Fehler beim Setzen der Admin-Rechte.'),
-                            ),
-                          );
-                        } finally {
-                          if (context.mounted) {
-                            setState(() => _grantingAdmin = false);
-                          }
-                        }
-                      },
-                child: Text(_grantingAdmin
-                    ? 'Bitte warten...'
-                    : 'Als Admin freischalten'),
-              ),
-              OutlinedButton(
-                onPressed: _revokingAdmin
-                    ? null
-                    : () async {
-                        final uid = _adminUidController.text.trim();
-                        if (uid.isEmpty) {
-                          setState(
-                              () => _uidErrorText = 'Bitte gib eine UID ein.');
-                          return;
-                        }
-                        setState(() {
-                          _uidErrorText = null;
-                          _revokingAdmin = true;
-                        });
-                        try {
-                          final ok = await widget.onEnsureAuthenticated();
-                          if (!ok) return;
-                          await widget.adminFunctions.revokeAdmin(uid: uid);
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Admin-Rechte entzogen.'),
-                            ),
-                          );
-                          _adminUidController.clear();
-                        } on FirebaseFunctionsException catch (e) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Fehler: ${e.message ?? e.code}',
-                              ),
-                            ),
-                          );
-                        } catch (_) {
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text(
-                                  'Fehler beim Entziehen der Admin-Rechte.'),
-                            ),
-                          );
-                        } finally {
-                          if (context.mounted) {
-                            setState(() => _revokingAdmin = false);
-                          }
-                        }
-                      },
-                child: Text(
-                    _revokingAdmin ? 'Bitte warten...' : 'Admin entziehen'),
-              ),
-            ],
-          ),
-          const SizedBox(height: 6),
-          Text(
-            'Hinweis: Der Benutzer muss sich ab- und wieder anmelden, um die Rolle zu sehen.',
-            style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurfaceVariant),
-          ),
-        ],
+                      }
+                    },
+              child:
+                  Text(_revokingAdmin ? 'Bitte warten...' : 'Admin entziehen'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 6),
+        Text(
+          'Hinweis: Der Benutzer muss sich ab- und wieder anmelden, um die Rolle zu sehen.',
+          style:
+              TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+        ),
+      ],
     );
   }
 }

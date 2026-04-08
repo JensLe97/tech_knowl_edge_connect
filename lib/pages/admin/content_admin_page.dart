@@ -161,10 +161,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: DropdownButtonFormField<String?>(
-                            decoration: const InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 12),
-                            ),
+                            decoration:
+                                const InputDecoration(labelText: "Status"),
                             initialValue: _statusFilter,
                             borderRadius: BorderRadius.circular(12),
                             isDense: true,

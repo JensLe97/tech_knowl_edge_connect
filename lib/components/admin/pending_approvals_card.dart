@@ -17,9 +17,7 @@ class PendingApprovalsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
     return Card(
-      color: cs
-          .surfaceContainerHighest
-          .withValues(alpha: 0.3),
+      color: cs.surfaceContainerHighest.withValues(alpha: 0.3),
       child: Padding(
         padding: const EdgeInsets.all(12),
         child: Column(
@@ -63,62 +61,56 @@ class PendingApprovalsCard extends StatelessWidget {
                     final title = data['title'] ?? 'Ohne Titel';
                     final authorId = data['authorId'] ?? 'Unbekannt';
 
-                    return Card(
-                      margin: const EdgeInsets.only(bottom: 8),
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            HierarchyBreadcrumbs(reference: doc.reference),
-                            ListTile(
-                              contentPadding: EdgeInsets.zero,
-                              title: Text(title,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold)),
-                              subtitle: Text('ID: $id\nAuthor: $authorId'),
-                              isThreeLine: true,
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12))),
-                                    icon: Icon(Icons.visibility,
-                                        color: cs.onSurfaceVariant),
-                                    tooltip: 'Ansehen',
-                                    onPressed: () => onPreview(doc),
-                                  ),
-                                  IconButton(
-                                    style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12))),
-                                    icon:
-                                        const Icon(Icons.check_circle_outline),
-                                    color: Colors.green,
-                                    tooltip: 'Genehmigen',
-                                    onPressed: () =>
-                                        _approve(context, doc.reference),
-                                  ),
-                                  IconButton(
-                                    style: IconButton.styleFrom(
-                                        shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(12))),
-                                    icon: const Icon(Icons.highlight_off),
-                                    color: Colors.red,
-                                    tooltip: 'Ablehnen',
-                                    onPressed: () =>
-                                        _reject(context, doc.reference),
-                                  ),
-                                ],
-                              ),
+                    final cs = Theme.of(context).colorScheme;
+                    return Container(
+                      margin: const EdgeInsets.only(bottom: 12),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: cs.surfaceContainer,
+                        borderRadius: BorderRadius.circular(24),
+                        border:
+                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          HierarchyBreadcrumbs(reference: doc.reference),
+                          ListTile(
+                            contentPadding: EdgeInsets.zero,
+                            title: Text(title,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            subtitle: Text('ID: $id\nAuthor: $authorId'),
+                            isThreeLine: true,
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  icon: const Icon(Icons.check_circle_outline),
+                                  color: Colors.green,
+                                  tooltip: 'Genehmigen',
+                                  onPressed: () =>
+                                      _approve(context, doc.reference),
+                                ),
+                                IconButton(
+                                  style: IconButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(12))),
+                                  icon: const Icon(Icons.highlight_off),
+                                  color: Colors.red,
+                                  tooltip: 'Ablehnen',
+                                  onPressed: () =>
+                                      _reject(context, doc.reference),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },

@@ -30,16 +30,8 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
 
   @override
   Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    return Container(
-      decoration: BoxDecoration(
-        color: cs.surfaceContainer,
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: cs.outlineVariant.withAlpha(40)),
-      ),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           TextField(
             controller: _adminUidController,
@@ -172,7 +164,6 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                 color: Theme.of(context).colorScheme.onSurfaceVariant),
           ),
         ],
-      ),
     );
   }
 }

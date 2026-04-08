@@ -28,11 +28,8 @@ class CategoriesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             CardHeader(
               title: 'Kategorien',
@@ -68,21 +65,21 @@ class CategoriesCard extends StatelessWidget {
                       final isSelected = doc.id == selectedCategoryId;
                       final cs = Theme.of(context).colorScheme;
                       return Container(
-                          margin: const EdgeInsets.only(bottom: 8),
+                          margin: const EdgeInsets.only(bottom: 12),
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? cs.primaryContainer.withAlpha(76)
-                                : Colors.transparent,
-                            borderRadius: BorderRadius.circular(12),
+                                : cs.surfaceContainer,
+                            borderRadius: BorderRadius.circular(24),
                             border: isSelected
                                 ? Border.all(color: cs.primary.withAlpha(38))
                                 : Border.all(
-                                    color: cs.outlineVariant.withAlpha(38)),
+                                    color: cs.outlineVariant.withAlpha(40)),
                           ),
                           clipBehavior: Clip.antiAlias,
                           child: ListTile(
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                                borderRadius: BorderRadius.circular(24)),
                             contentPadding:
                                 const EdgeInsets.symmetric(horizontal: 4),
                             selected: isSelected,
@@ -141,8 +138,6 @@ class CategoriesCard extends StatelessWidget {
                 },
               ),
           ],
-        ),
-      ),
     );
   }
 }

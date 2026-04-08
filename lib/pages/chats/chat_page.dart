@@ -280,7 +280,10 @@ class _ChatPageState extends State<ChatPage> {
           ListView messageList = ListView(
               reverse: true,
               cacheExtent: 1500,
-              padding: const EdgeInsets.only(top: 16, bottom: 120),
+              padding: EdgeInsets.only(
+                top: 8,
+                bottom: MediaQuery.of(context).padding.bottom + 80,
+              ),
               children: messageWidgets.reversed.toList());
           return TextFieldTapRegion(child: messageList);
         } else {

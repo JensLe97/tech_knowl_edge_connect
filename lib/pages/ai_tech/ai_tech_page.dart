@@ -493,7 +493,10 @@ class _AiTechPageState extends State<AiTechPage> {
           ListView messageList = ListView(
               reverse: true,
               cacheExtent: 1500,
-              padding: const EdgeInsets.only(top: 16, bottom: 120),
+              padding: EdgeInsets.only(
+                top: 8,
+                bottom: MediaQuery.of(context).padding.bottom + 80,
+              ),
               children: [
                 if (_isAiThinking) const TypingIndicator(),
                 ...messageWidgets.reversed,

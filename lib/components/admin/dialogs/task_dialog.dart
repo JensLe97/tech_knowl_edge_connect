@@ -83,6 +83,10 @@ class _TaskDialogState extends State<TaskDialog> {
       title: Text(
         isEditing ? 'Aufgabe bearbeiten' : 'Aufgabe hinzufügen',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

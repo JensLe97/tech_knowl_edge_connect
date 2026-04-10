@@ -141,7 +141,14 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
               color: cs.error,
             ),
           ),
-          title: Text(title, textAlign: TextAlign.center),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: Text(message, textAlign: TextAlign.center),
           actions: [
             Row(
@@ -501,6 +508,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                           ),
                         ],
                       ),
+                    const SizedBox(height: 32),
                   ],
                 ),
               );

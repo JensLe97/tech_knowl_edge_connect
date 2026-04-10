@@ -63,6 +63,10 @@ class _TopicDialogState extends State<TopicDialog> {
       title: Text(
         widget.topicId == null ? 'Thema hinzufügen' : 'Thema bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

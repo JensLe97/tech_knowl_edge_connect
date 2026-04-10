@@ -67,6 +67,10 @@ class _ConceptDialogState extends State<ConceptDialog> {
       title: Text(
         widget.conceptId == null ? 'Konzept hinzufügen' : 'Konzept bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

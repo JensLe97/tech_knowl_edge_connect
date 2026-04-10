@@ -121,6 +121,10 @@ class _TopicDialogState extends State<TopicDialog> {
       title: Text(
         isEditing ? "Thema bearbeiten" : "Neues Thema erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

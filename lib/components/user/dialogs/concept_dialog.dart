@@ -129,6 +129,10 @@ class _ConceptDialogState extends State<ConceptDialog> {
       title: Text(
         isEditing ? "Konzept bearbeiten" : "Neues Konzept erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

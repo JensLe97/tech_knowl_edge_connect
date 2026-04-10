@@ -129,6 +129,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
       title: Text(
         isEditing ? "Fach bearbeiten" : "Neues Fach erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SizedBox(
         width: double.maxFinite,

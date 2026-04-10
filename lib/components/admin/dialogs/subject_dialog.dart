@@ -80,6 +80,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
       title: Text(
         isEditing ? 'Fach bearbeiten' : 'Fach hinzufügen',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

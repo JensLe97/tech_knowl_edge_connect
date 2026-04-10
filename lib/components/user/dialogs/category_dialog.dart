@@ -114,6 +114,10 @@ class _CategoryDialogState extends State<CategoryDialog> {
       title: Text(
         isEditing ? "Kategorie bearbeiten" : "Neue Kategorie erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,

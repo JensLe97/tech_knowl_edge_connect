@@ -70,6 +70,10 @@ class _ContentDialogState extends State<ContentDialog> {
             ? 'Inhaltsteil hinzufügen'
             : 'Inhaltsteil bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

@@ -71,6 +71,10 @@ class _UnitDialogState extends State<UnitDialog> {
       title: Text(
         widget.unitId == null ? 'Einheit hinzufügen' : 'Einheit bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

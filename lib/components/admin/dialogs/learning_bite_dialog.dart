@@ -79,6 +79,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
             ? 'Learning Bite hinzufügen'
             : 'Learning Bite bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

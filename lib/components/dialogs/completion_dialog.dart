@@ -1,15 +1,15 @@
 import 'package:confetti/confetti.dart';
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 
 /// Confetti completion dialog shown when a user finishes all learning bites
 /// of a concept or a journey.
 ///
-/// Set [isJourney] to `true` for journey completions (uses "Lernreise" wording),
-/// or `false` (default) for concept/topic completions.
+/// Set [isJourney] to `true` for journey completions (uses "Lernreise"
+/// wording), or `false` (default) for concept/topic completions.
 class CompletionDialog extends StatefulWidget {
   final String conceptName;
   final bool isJourney;
-
   const CompletionDialog({
     super.key,
     required this.conceptName,
@@ -39,35 +39,88 @@ class _CompletionDialogState extends State<CompletionDialog> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+    final cs = Theme.of(context).colorScheme;
+    final titleText = widget.isJourney
+        ? 'Du hast alle Lektionen der Lernreise "${widget.conceptName}" abgeschlossen!'
+        : 'Du hast alle Lektionen zum Thema "${widget.conceptName}" abgeschlossen!';
+    return Stack(
+      alignment: Alignment.center,
       children: [
-        Container(
-          alignment: Alignment.topCenter,
-          child: ConfettiWidget(
-            confettiController: _confettiController,
-            blastDirectionality: BlastDirectionality.explosive,
-            emissionFrequency: 0.05,
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ConfettiWidget(
+              confettiController: _confettiController,
+              blastDirectionality: BlastDirectionality.explosive,
+              blastDirection: math.pi / 2,
+              emissionFrequency: 0.06,
+              numberOfParticles: 28,
+              gravity: 0.36,
+              colors: [
+                cs.primary,
+                cs.secondary,
+                cs.tertiary,
+                cs.primary.withValues(alpha: 0.9),
+              ],
+              createParticlePath: (Size size) {
+                final path = Path();
+                final rrect = RRect.fromRectAndRadius(
+                    Rect.fromLTWH(0, 0, size.width, size.height),
+                    Radius.circular(size.height * 0.4));
+                path.addRRect(rrect);
+                return path;
+              },
+              particleDrag: 0.08,
+              minimumSize: const Size(12, 6),
+              maximumSize: const Size(26, 12),
+              strokeWidth: 0,
+              strokeColor: cs.surface,
+            ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(top: 300),
+        Center(
           child: AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            title: Padding(
+            scrollable: false,
+            icon: Container(
               padding: const EdgeInsets.all(12),
-              child: Center(
-                child: Text(
-                  widget.isJourney
-                      ? 'Du hast alle Lektionen der Lernreise "${widget.conceptName}" abgeschlossen!'
-                      : 'Du hast alle Lektionen zum Thema "${widget.conceptName}" abgeschlossen!',
-                ),
+              decoration: BoxDecoration(
+                color: cs.primaryContainer,
+                shape: BoxShape.circle,
+              ),
+              child: Icon(
+                Icons.celebration,
+                size: 36,
+                color: cs.onPrimaryContainer,
               ),
             ),
+            title: Text(
+              titleText,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: cs.onSurface,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            backgroundColor: cs.surface,
+            actionsAlignment: MainAxisAlignment.center,
+            actionsPadding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
             actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('OK'),
+              ConstrainedBox(
+                constraints: const BoxConstraints(minWidth: 240, maxWidth: 360),
+                child: FilledButton(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(48),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                  },
+                  child: const Text('Zurück zur Übersicht'),
+                ),
               ),
             ],
           ),

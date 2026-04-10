@@ -1,9 +1,10 @@
-import 'package:confetti/confetti.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/learning_bite_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/concept_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/learning_bite_dialog.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/completion_dialog.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/models/content/concept.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
@@ -32,66 +33,6 @@ class UnitOverviewPage extends StatefulWidget {
   State<UnitOverviewPage> createState() => _UnitOverviewPageState();
 }
 
-class _CompletionDialog extends StatefulWidget {
-  final String conceptName;
-
-  const _CompletionDialog({
-    required this.conceptName,
-  });
-
-  @override
-  State<_CompletionDialog> createState() => _CompletionDialogState();
-}
-
-class _CompletionDialogState extends State<_CompletionDialog> {
-  late final ConfettiController _confettiController;
-
-  @override
-  void initState() {
-    super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 2));
-    _confettiController.play();
-  }
-
-  @override
-  void dispose() {
-    _confettiController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          alignment: Alignment.topCenter,
-          child: ConfettiWidget(
-            confettiController: _confettiController,
-            blastDirectionality: BlastDirectionality.explosive,
-            emissionFrequency: 0.05,
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 300),
-          child: AlertDialog(
-            backgroundColor: Theme.of(context).colorScheme.primary,
-            title: Padding(
-              padding: const EdgeInsets.all(12),
-              child: Center(
-                child: Text(
-                  'Du hast alle Lektionen zum Thema "${widget.conceptName}" abgeschlossen!',
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
 class _UnitOverviewPageState extends State<UnitOverviewPage> {
   final ContentService _contentService = ContentService();
   final UserService _userService = UserService();
@@ -103,23 +44,51 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
   }) async {
     await showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        title: Text(title),
-        content: Text(message),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Abbrechen'),
+      builder: (context) {
+        final cs = Theme.of(context).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: cs.error.withAlpha(25),
+              ),
+            ),
+            child: Icon(
+              Icons.delete_outline_rounded,
+              size: 32,
+              color: cs.error,
+            ),
           ),
-          ElevatedButton(
-            onPressed: () async {
-              Navigator.pop(context);
-              await onConfirm();
-            },
-            child: const Text('Löschen'),
-          ),
-        ],
-      ),
+          title: Text(title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              )),
+          content: Text(message, textAlign: TextAlign.center),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                  onTap: () => Navigator.pop(context),
+                  text: 'Abbrechen',
+                ),
+                DialogButton(
+                  onTap: () async {
+                    Navigator.pop(context);
+                    await onConfirm();
+                  },
+                  text: 'Löschen',
+                  isDestructive: true,
+                ),
+              ],
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -475,61 +444,103 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                         context); // Hide loading
                                                     await showDialog(
                                                       context: context,
-                                                      builder: (context) =>
-                                                          AlertDialog(
-                                                        title: const Text(
-                                                            'Keine Inhalte verfügbar'),
-                                                        content: const Text(
-                                                            'Dieser Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst ihn über den Bearbeiten-Button ergänzen.'),
-                                                        actions: [
-                                                          TextButton(
-                                                            onPressed: () =>
-                                                                Navigator.pop(
-                                                                    context),
-                                                            child: const Text(
-                                                                'Schließen'),
-                                                          ),
-                                                          if (canEdit)
-                                                            ElevatedButton(
-                                                              onPressed: () {
-                                                                Navigator.pop(
-                                                                    context);
-                                                                Navigator.push(
-                                                                  context,
-                                                                  MaterialPageRoute(
-                                                                    builder:
-                                                                        (context) =>
-                                                                            LearningBiteEditorPage(
-                                                                      subjectId:
-                                                                          widget
-                                                                              .subjectId,
-                                                                      categoryId:
-                                                                          widget
-                                                                              .categoryId,
-                                                                      topicId:
-                                                                          widget
-                                                                              .topicId,
-                                                                      unitId: widget
-                                                                          .unit
-                                                                          .id,
-                                                                      conceptId:
-                                                                          concept
-                                                                              .id,
-                                                                      learningBiteId:
-                                                                          learningBite
-                                                                              .id,
-                                                                      learningBiteTitle:
-                                                                          learningBite
-                                                                              .name,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              child: const Text(
-                                                                  'Bearbeiten'),
+                                                      builder: (dialogCtx) {
+                                                        final cs =
+                                                            Theme.of(dialogCtx)
+                                                                .colorScheme;
+                                                        return AlertDialog(
+                                                          icon: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(16),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: cs
+                                                                  .secondaryContainer
+                                                                  .withAlpha(
+                                                                      76),
+                                                              shape: BoxShape
+                                                                  .circle,
+                                                              border:
+                                                                  Border.all(
+                                                                color: cs
+                                                                    .secondary
+                                                                    .withAlpha(
+                                                                        25),
+                                                              ),
                                                             ),
-                                                        ],
-                                                      ),
+                                                            child: Icon(
+                                                              Icons
+                                                                  .info_outline,
+                                                              size: 32,
+                                                              color:
+                                                                  cs.secondary,
+                                                            ),
+                                                          ),
+                                                          title: const Text(
+                                                            'Keine Inhalte verfügbar',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          content: const Text(
+                                                            'Dieser Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst ihn über den Bearbeiten-Button ergänzen.',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                          actions: [
+                                                            Row(
+                                                              children: [
+                                                                DialogButton(
+                                                                  onTap: () =>
+                                                                      Navigator.pop(
+                                                                          dialogCtx),
+                                                                  text:
+                                                                      'Schließen',
+                                                                ),
+                                                                if (canEdit)
+                                                                  DialogButton(
+                                                                    onTap:
+                                                                        () async {
+                                                                      Navigator.pop(
+                                                                          dialogCtx);
+                                                                      Navigator
+                                                                          .push(
+                                                                        dialogCtx,
+                                                                        MaterialPageRoute(
+                                                                          builder: (context) =>
+                                                                              LearningBiteEditorPage(
+                                                                            subjectId:
+                                                                                widget.subjectId,
+                                                                            categoryId:
+                                                                                widget.categoryId,
+                                                                            topicId:
+                                                                                widget.topicId,
+                                                                            unitId:
+                                                                                widget.unit.id,
+                                                                            conceptId:
+                                                                                concept.id,
+                                                                            learningBiteId:
+                                                                                learningBite.id,
+                                                                            learningBiteTitle:
+                                                                                learningBite.name,
+                                                                          ),
+                                                                        ),
+                                                                      );
+                                                                    },
+                                                                    text:
+                                                                        'Bearbeiten',
+                                                                  ),
+                                                              ],
+                                                            ),
+                                                          ],
+                                                        );
+                                                      },
                                                     );
                                                   }
                                                   return;
@@ -635,8 +646,9 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                           !allCompletedBefore) {
                                                         showDialog(
                                                           context: context,
-                                                          builder: (context) =>
-                                                              _CompletionDialog(
+                                                          builder:
+                                                              (dialogContext) =>
+                                                                  CompletionDialog(
                                                             conceptName:
                                                                 concept.name,
                                                           ),

@@ -135,6 +135,10 @@ class _UnitDialogState extends State<UnitDialog> {
       title: Text(
         isEditing ? "Einheit bearbeiten" : "Neue Einheit erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SizedBox(
         width: double.maxFinite,

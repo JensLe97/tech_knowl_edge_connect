@@ -148,6 +148,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
             ? "Learning Bite bearbeiten"
             : "Neues Learning Bite erstellen",
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SizedBox(
         width: double.maxFinite,
@@ -235,7 +239,8 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                     ),
                   ),
               ] else ...[
-                Text("Hinweis: Nach dem Erstellen ist das Learning Bite noch leer.",
+                Text(
+                    "Hinweis: Nach dem Erstellen ist das Learning Bite noch leer.",
                     style: TextStyle(
                         fontSize: 12,
                         color: Theme.of(context).colorScheme.onSecondary)),

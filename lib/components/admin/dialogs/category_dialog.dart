@@ -63,6 +63,10 @@ class _CategoryDialogState extends State<CategoryDialog> {
             ? 'Kategorie hinzufügen'
             : 'Kategorie bearbeiten',
         textAlign: TextAlign.center,
+        style: const TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+        ),
       ),
       content: SingleChildScrollView(
         child: Column(

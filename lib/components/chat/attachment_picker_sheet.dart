@@ -66,7 +66,7 @@ class _AttachmentPickerSheet extends StatelessWidget {
 
   Future<void> _pickFile(BuildContext context) async {
     Navigator.pop(context);
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       allowMultiple: true,
       withData: true,
       type: FileType.custom,

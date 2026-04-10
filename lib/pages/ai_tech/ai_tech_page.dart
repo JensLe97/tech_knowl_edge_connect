@@ -495,7 +495,7 @@ class _AiTechPageState extends State<AiTechPage> {
               cacheExtent: 1500,
               padding: EdgeInsets.only(
                 top: 8,
-                bottom: MediaQuery.of(context).padding.bottom + 80,
+                bottom: MediaQuery.of(context).padding.bottom + 85,
               ),
               children: [
                 if (_isAiThinking) const TypingIndicator(),

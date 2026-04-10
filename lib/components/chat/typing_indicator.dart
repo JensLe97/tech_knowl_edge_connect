@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 
 /// Animated three-dot typing indicator shown while the AI is thinking.
 class TypingIndicator extends StatefulWidget {
-  const TypingIndicator({super.key});
+  final bool isMe;
+
+  const TypingIndicator({super.key, this.isMe = false});
 
   @override
   State<TypingIndicator> createState() => _TypingIndicatorState();
@@ -54,14 +56,37 @@ class _TypingIndicatorState extends State<TypingIndicator>
 
   @override
   Widget build(BuildContext context) {
-    return Align(
-      alignment: Alignment.centerLeft,
+    final isMe = widget.isMe;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: isMe ? 40 : 0,
+        right: isMe ? 0 : 40,
+      ),
       child: Container(
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          borderRadius: BorderRadius.circular(16),
+          color: isMe
+              ? Theme.of(context).colorScheme.secondary.withAlpha(120)
+              : Theme.of(context).brightness == Brightness.light
+                  ? Theme.of(context).colorScheme.surfaceContainerLowest
+                  : Theme.of(context).colorScheme.primary.withAlpha(20),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withAlpha(isMe ? 5 : 12),
+              blurRadius: 4,
+              offset: const Offset(0, 2),
+            ),
+          ],
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(isMe ? 16 : 2),
+            topRight: Radius.circular(isMe ? 2 : 16),
+            bottomLeft: const Radius.circular(16),
+            bottomRight: const Radius.circular(16),
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,

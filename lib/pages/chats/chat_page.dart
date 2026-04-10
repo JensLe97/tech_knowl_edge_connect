@@ -282,7 +282,7 @@ class _ChatPageState extends State<ChatPage> {
               cacheExtent: 1500,
               padding: EdgeInsets.only(
                 top: 8,
-                bottom: MediaQuery.of(context).padding.bottom + 80,
+                bottom: MediaQuery.of(context).padding.bottom + 85,
               ),
               children: messageWidgets.reversed.toList());
           return TextFieldTapRegion(child: messageList);

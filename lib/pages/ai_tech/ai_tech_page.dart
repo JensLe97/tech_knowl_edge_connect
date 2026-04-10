@@ -802,6 +802,10 @@ class _AiTechPageState extends State<AiTechPage> {
                     title: const Text(
                       'Lernreise löschen',
                       textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     content: const Text(
                         'Möchtest du diese Lernreise und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),

@@ -77,7 +77,13 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
               color: cs.error,
             ),
           ),
-          title: const Text('Ordner und Inhalte löschen?'),
+          title: const Text(
+            'Ordner und Inhalte löschen?',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
           content: const Text(
               'Möchtest du diesen Ordner und alle darin enthaltenen Lerninhalte unwiderruflich löschen?',
               textAlign: TextAlign.center),

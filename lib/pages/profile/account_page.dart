@@ -228,7 +228,14 @@ class _AccountPageState extends State<AccountPage> {
                 color: cs.error,
               ),
             ),
-            title: Text(title, textAlign: TextAlign.center),
+            title: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             content: Text(content, textAlign: TextAlign.center),
             actions: [
               Row(

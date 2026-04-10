@@ -137,7 +137,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   Future<void> _pickAndUploadFile() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       type: FileType.custom,
       allowedExtensions: LearningMaterialType.supportedTypes,
     );

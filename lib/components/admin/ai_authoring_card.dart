@@ -102,7 +102,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
   }
 
   Future<void> _pickFiles() async {
-    final result = await FilePicker.platform.pickFiles(
+    final result = await FilePicker.pickFiles(
       allowMultiple: true,
       withData: true,
       type: FileType.custom,

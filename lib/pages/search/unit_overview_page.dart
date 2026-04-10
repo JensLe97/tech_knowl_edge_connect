@@ -215,6 +215,22 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                       }
                       final concepts = conceptSnapshot.data!;
 
+                      if (concepts.isEmpty) {
+                        return SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.5,
+                          child: const Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 20),
+                            child: Center(
+                              child: Text(
+                                "Zu dieser Einheit gibt es noch keine Konzepte",
+                                style: TextStyle(fontSize: 20),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          ),
+                        );
+                      }
+
                       return ListView.builder(
                           padding: EdgeInsets.zero,
                           physics: const ClampingScrollPhysics(),

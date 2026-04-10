@@ -3,6 +3,7 @@ import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dar
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tech_knowl_edge_connect/components/library/markdown_support.dart';
+import 'package:tech_knowl_edge_connect/components/buttons/bottom_action_bar.dart';
 
 class SummaryPage extends StatelessWidget {
   final String name;
@@ -76,18 +77,45 @@ class _SummaryStreamAccumulatorState extends State<_SummaryStreamAccumulator> {
     } else if (!snapshot.hasData && _buffer.isEmpty) {
       return const Center(child: Text('Keine Zusammenfassung verfügbar.'));
     } else {
-      return SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: MarkdownBody(
-            data: _buffer.isEmpty
-                ? 'Keine Antwort erhalten.'
-                : _buffer.toString(),
-            styleSheet: createMarkdownStyleSheet(context),
-            extensionSet: getMarkdownExtensionSet(),
-            builders: getMarkdownColorBuilders(),
+      return Stack(
+        children: [
+          Positioned.fill(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.only(
+                  left: 16, right: 16, top: 10, bottom: 120),
+              child: Container(
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: Theme.of(context)
+                        .colorScheme
+                        .outlineVariant
+                        .withAlpha(50),
+                  ),
+                ),
+                child: MarkdownBody(
+                  data: _buffer.isEmpty
+                      ? 'Keine Antwort erhalten.'
+                      : _buffer.toString(),
+                  styleSheet: createMarkdownStyleSheet(context),
+                  extensionSet: getMarkdownExtensionSet(),
+                  builders: getMarkdownColorBuilders(),
+                ),
+              ),
+            ),
           ),
-        ),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: BottomActionBar(
+              text: 'Fertig',
+              onPressed: () => Navigator.pop(context),
+            ),
+          ),
+        ],
       );
     }
   }

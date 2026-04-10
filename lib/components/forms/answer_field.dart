@@ -7,8 +7,6 @@ class AnswerField extends StatefulWidget {
   final void Function()? setAllCorrect;
   final TextInputAction textInputAction;
   final bool autofocus;
-  final FocusNode? focusNode;
-  final ValueChanged<bool>? onFocusChanged;
 
   const AnswerField(
       {super.key,
@@ -17,9 +15,7 @@ class AnswerField extends StatefulWidget {
       required this.setAllCorrect,
       required this.controller,
       this.textInputAction = TextInputAction.done,
-      this.autofocus = false,
-      this.focusNode,
-      this.onFocusChanged});
+      this.autofocus = false});
 
   @override
   State<AnswerField> createState() => _AnswerFieldState();
@@ -29,34 +25,20 @@ class _AnswerFieldState extends State<AnswerField> {
   String currentValue = "";
   bool answered = false;
   final _formKey = GlobalKey<FormState>();
-  FocusNode? _internalFocusNode;
-
-  FocusNode get _focusNode => widget.focusNode ?? _internalFocusNode!;
+  late FocusNode focusNode;
 
   @override
   void initState() {
     super.initState();
-    if (widget.focusNode == null) {
-      _internalFocusNode = FocusNode();
-    }
-    _focusNode.addListener(_handleFocusChange);
+    focusNode = FocusNode();
     if (widget.autofocus) {
-      _focusNode.requestFocus();
-    }
-  }
-
-  void _handleFocusChange() {
-    if (widget.onFocusChanged != null) {
-      widget.onFocusChanged!(_focusNode.hasFocus);
+      focusNode.requestFocus();
     }
   }
 
   @override
   void dispose() {
-    _focusNode.removeListener(_handleFocusChange);
-    if (widget.focusNode == null) {
-      _internalFocusNode?.dispose();
-    }
+    focusNode.dispose();
     super.dispose();
   }
 
@@ -143,28 +125,21 @@ class _AnswerFieldState extends State<AnswerField> {
               }
               return null;
             },
-            focusNode: _focusNode,
+            focusNode: focusNode,
             onFieldSubmitted: (value) {
-              final isCorrect =
-                  value.toLowerCase() == widget.answer.toLowerCase();
-              if (isCorrect) {
-                // apply canonical answer text first
-                widget.controller.text = widget.answer;
-                currentValue = widget.answer;
-                // move focus to the next focusable before disabling this field
-                FocusScope.of(context).nextFocus();
-                setState(() {
-                  answered = true;
-                });
-              } else {
-                setState(() {
-                  answered = true;
+              setState(() {
+                answered = true;
+                if (value.toLowerCase() == widget.answer.toLowerCase()) {
+                  currentValue = widget.answer;
+                  widget.controller.text = widget.answer;
+                } else {
                   currentValue = value;
-                  // keep focus so the user can correct the input
-                  _focusNode.requestFocus();
-                });
-              }
-              if (widget.setAllCorrect != null) widget.setAllCorrect!();
+                  focusNode.requestFocus();
+                }
+                if (widget.setAllCorrect != null) {
+                  widget.setAllCorrect!();
+                }
+              });
               setState(() {
                 _formKey.currentState!.validate();
               });

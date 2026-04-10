@@ -101,7 +101,7 @@ class _LearningBitePageState extends State<LearningBitePage>
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         elevation: 0,
-        toolbarHeight: 70,
+        toolbarHeight: 80,
         titleSpacing: 0,
         title: Column(
           children: [

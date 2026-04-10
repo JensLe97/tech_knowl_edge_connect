@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:markdown/markdown.dart' as md;
+import 'package:google_fonts/google_fonts.dart';
 
 class ColorSyntax extends md.InlineSyntax {
   // Matches <color>text</color>
@@ -23,7 +24,7 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
   final baseStyle = theme.textTheme.bodyLarge!;
 
   MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
-    p: baseStyle,
+  p: baseStyle,
     horizontalRuleDecoration: BoxDecoration(
       border: Border(
         top: BorderSide(
@@ -33,14 +34,15 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
       ),
       borderRadius: BorderRadius.circular(4),
     ),
-    code: TextStyle(
-      fontFamily: 'monospace',
-      fontFamilyFallback: const ['Courier New', 'Courier'],
-      fontSize: baseStyle.fontSize! * 0.9,
-      color: baseStyle.color,
-      fontWeight: FontWeight.normal,
-      fontStyle: FontStyle.normal,
-      backgroundColor: theme.colorScheme.surfaceContainerHighest,
+    code: GoogleFonts.robotoMono(
+      textStyle: TextStyle(
+        fontFamilyFallback: const ['Courier New', 'Courier'],
+        fontSize: baseStyle.fontSize! * 0.9,
+        color: baseStyle.color,
+        fontWeight: FontWeight.normal,
+        fontStyle: FontStyle.normal,
+        backgroundColor: theme.colorScheme.surfaceContainerHighest,
+      ),
     ),
     codeblockDecoration: BoxDecoration(
       color: theme.colorScheme.surfaceContainerHighest,
@@ -77,13 +79,14 @@ class PreBuilder extends MarkdownElementBuilder {
   ) {
     final theme = Theme.of(context);
 
-    final textStyle = (preferredStyle ?? theme.textTheme.bodyMedium!).copyWith(
-      fontFamily: 'monospace',
-      fontFamilyFallback: const ['Courier New', 'Courier'],
-      fontSize: theme.textTheme.bodyLarge!.fontSize! * 0.9,
-      color: theme.colorScheme.onSurface,
-      // Clear any inherited background color from the inline code style
-      backgroundColor: Colors.transparent,
+    final textStyle = GoogleFonts.robotoMono(
+      textStyle: (preferredStyle ?? theme.textTheme.bodyMedium!).copyWith(
+        fontFamilyFallback: const ['Courier New', 'Courier'],
+        fontSize: theme.textTheme.bodyLarge!.fontSize! * 0.9,
+        color: theme.colorScheme.onSurface,
+        // Clear any inherited background color from the inline code style
+        backgroundColor: Colors.transparent,
+      ),
     );
 
     return Container(
@@ -113,13 +116,14 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
     final theme = Theme.of(context);
     final baseStyle =
         (preferredStyle ?? theme.textTheme.bodyMedium!).merge(parentStyle);
-    final codeStyle = baseStyle.copyWith(
-      fontFamily: 'monospace',
-      fontFamilyFallback: const ['Courier New', 'Courier'],
-      fontSize:
-          (baseStyle.fontSize ?? theme.textTheme.bodyLarge!.fontSize!) * 0.9,
-      color: theme.colorScheme.onSurface,
-      backgroundColor: Colors.transparent,
+    final codeStyle = GoogleFonts.robotoMono(
+      textStyle: baseStyle.copyWith(
+        fontFamilyFallback: const ['Courier New', 'Courier'],
+        fontSize:
+            (baseStyle.fontSize ?? theme.textTheme.bodyLarge!.fontSize!) * 0.9,
+        color: theme.colorScheme.onSurface,
+        backgroundColor: Colors.transparent,
+      ),
     );
 
     return Text.rich(

@@ -10,6 +10,7 @@ import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dar
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:video_player/video_player.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LearningMaterialPreviewPage extends StatefulWidget {
   final String url;
@@ -243,9 +244,8 @@ class _TextPreviewState extends State<_TextPreview> {
                   padding: const EdgeInsets.all(16),
                   child: SelectableText(
                     _content!,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          fontFamily: 'monospace',
-                          height: 1.5,
+                    style: GoogleFonts.robotoMono(
+                          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.5),
                         ),
                   ),
                 ),

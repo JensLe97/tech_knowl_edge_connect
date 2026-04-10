@@ -69,7 +69,7 @@ class _UnitDialogState extends State<UnitDialog> {
         ),
       ),
       title: Text(
-        widget.unitId == null ? 'Unit hinzufügen' : 'Unit bearbeiten',
+        widget.unitId == null ? 'Einheit hinzufügen' : 'Einheit bearbeiten',
         textAlign: TextAlign.center,
       ),
       content: SingleChildScrollView(

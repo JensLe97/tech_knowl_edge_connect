@@ -34,7 +34,7 @@ class TopicsCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         CardHeader(
-          title: 'Topics',
+          title: 'Themen',
           onAdd: onAdd,
         ),
         const SizedBox(height: 8),
@@ -56,7 +56,7 @@ class TopicsCard extends StatelessWidget {
               }
 
               if (docs.isEmpty) {
-                return const Text('Keine Topics vorhanden.');
+                return const Text('Keine Themen vorhanden.');
               }
               return ListView.builder(
                 shrinkWrap: true,

@@ -136,7 +136,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                   ? VideoPlayerWidget(url: material.url)
                   : Center(
                       child: FractionallySizedBox(
-                        heightFactor: 0.50,
+                        heightFactor: 0.40,
                         widthFactor: 1.0,
                         child: Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),

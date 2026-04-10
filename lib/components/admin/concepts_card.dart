@@ -46,7 +46,7 @@ class ConceptsCard extends StatelessWidget {
             selectedCategoryId == null ||
             selectedTopicId == null ||
             selectedUnitId == null)
-          const Text('Bitte zuerst eine Unit auswählen.')
+          const Text('Bitte zuerst eine Einheit auswählen.')
         else
           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: adminService.streamConcepts(selectedSubjectId!,

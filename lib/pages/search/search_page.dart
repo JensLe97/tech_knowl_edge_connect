@@ -5,6 +5,7 @@ import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
+import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
 import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -389,177 +390,19 @@ class _SearchPageState extends State<SearchPage> {
               bottom: 0,
               child: Padding(
                 padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 8.0, top: 8.0),
+                    left: 10.0, right: 10.0, bottom: 8.0, top: 8.0),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AnimatedSize(
-                      duration: const Duration(milliseconds: 200),
-                      alignment: Alignment.bottomCenter,
-                      child: _pickedFiles.isEmpty
-                          ? const SizedBox(width: double.infinity, height: 0)
-                          : SizedBox(
-                              height: 46,
-                              child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                padding: const EdgeInsets.fromLTRB(4, 4, 4, 12),
-                                itemCount: _pickedFiles.length,
-                                itemBuilder: (context, index) {
-                                  final file = _pickedFiles[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.only(right: 6),
-                                    child: InputChip(
-                                      label: Text(
-                                        file.name,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                      deleteIcon: const Icon(Icons.close),
-                                      onDeleted: () => setState(
-                                          () => _pickedFiles.remove(file)),
-                                    ),
-                                  );
-                                },
-                              ),
-                            ),
-                    ),
-                    Stack(
-                      children: [
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withAlpha(25),
-                                blurRadius: 24,
-                                offset: const Offset(0, 8),
-                              ),
-                            ],
-                          ),
-                        ),
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(16),
-                          child: BackdropFilter(
-                            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                            child: Container(
-                              padding: const EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .surfaceContainerHigh
-                                    .withAlpha(242), // ~95%
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .outlineVariant
-                                      .withAlpha(76), // ~30%
-                                ),
-                              ),
-                              child: Row(
-                                children: [
-                                  Icon(
-                                    Icons.search,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                  ),
-                                  const SizedBox(width: 16),
-                                  Expanded(
-                                    child: TextField(
-                                      controller: _messageController,
-                                      decoration: InputDecoration(
-                                        hintText: 'Was möchtest du lernen?',
-                                        hintStyle: TextStyle(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurfaceVariant,
-                                          fontWeight: FontWeight.w600,
-                                        ),
-                                        border: InputBorder.none,
-                                        enabledBorder: InputBorder.none,
-                                        focusedBorder: InputBorder.none,
-                                        errorBorder: InputBorder.none,
-                                        disabledBorder: InputBorder.none,
-                                        filled: false,
-                                        isDense: true,
-                                        contentPadding: EdgeInsets.zero,
-                                      ),
-                                      style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onSurface,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                      onSubmitted: (_) =>
-                                          _startSessionFromMessage(),
-                                    ),
-                                  ),
-                                  ValueListenableBuilder<TextEditingValue>(
-                                    valueListenable: _messageController,
-                                    builder: (context, value, _) {
-                                      final hasText = value.text.isNotEmpty;
-                                      return Row(
-                                        mainAxisSize: MainAxisSize.min,
-                                        children: [
-                                          Material(
-                                            color: Theme.of(context)
-                                                .colorScheme
-                                                .primaryContainer,
-                                            borderRadius:
-                                                BorderRadius.circular(12),
-                                            clipBehavior: Clip.antiAlias,
-                                            child: InkWell(
-                                              onTap: _pickFiles,
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8),
-                                                child: Icon(
-                                                  Icons.attach_file,
-                                                  color: Theme.of(context)
-                                                      .colorScheme
-                                                      .onPrimaryContainer,
-                                                  size: 20,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          if (hasText ||
-                                              _pickedFiles.isNotEmpty) ...[
-                                            const SizedBox(width: 8),
-                                            Material(
-                                              color: Theme.of(context)
-                                                  .colorScheme
-                                                  .primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(12),
-                                              clipBehavior: Clip.antiAlias,
-                                              child: InkWell(
-                                                onTap: _startSessionFromMessage,
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8),
-                                                  child: Icon(
-                                                    Icons.arrow_upward,
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .onPrimary,
-                                                    size: 20,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ]
-                                        ],
-                                      );
-                                    },
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                    ChatInputBar(
+                      controller: _messageController,
+                      hintText: 'Was möchtest du lernen?',
+                      onSend: _startSessionFromMessage,
+                      onAttachmentTap: _pickFiles,
+                      pickedFiles: _pickedFiles,
+                      onRemoveFile: (file) =>
+                          setState(() => _pickedFiles.remove(file)),
                     ),
                   ],
                 ),

@@ -366,7 +366,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
 
                     const SizedBox(height: 12),
 
-                    // Level 3 & 4: Topics & Units
+                    // Level 3 & 4: Themen & Einheiten
                     isWide
                         ? Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -399,9 +399,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                   _selectedLearningBiteData = null;
                                 }),
                                 onDelete: (id) => _confirmDelete(
-                                    title: 'Topic löschen?',
+                                    title: 'Thema löschen?',
                                     message:
-                                        'Möchtest du dieses Topic wirklich löschen?',
+                                        'Möchtest du dieses Thema wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteTopic(
                                           subjectId: _selectedSubjectId!,
@@ -450,9 +450,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                   _selectedLearningBiteData = null;
                                 }),
                                 onDelete: (id) => _confirmDelete(
-                                    title: 'Unit löschen?',
+                                    title: 'Einheit löschen?',
                                     message:
-                                        'Möchtest du diese Unit wirklich löschen?',
+                                        'Möchtest du diese Einheit wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteUnit(
                                           subjectId: _selectedSubjectId!,
@@ -499,9 +499,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 _selectedLearningBiteData = null;
                               }),
                               onDelete: (id) => _confirmDelete(
-                                  title: 'Topic löschen?',
+                                  title: 'Thema löschen?',
                                   message:
-                                      'Möchtest du dieses Topic wirklich löschen?',
+                                      'Möchtest du dieses Thema wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteTopic(
                                         subjectId: _selectedSubjectId!,
@@ -549,9 +549,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 _selectedLearningBiteData = null;
                               }),
                               onDelete: (id) => _confirmDelete(
-                                  title: 'Unit löschen?',
+                                  title: 'Einheit löschen?',
                                   message:
-                                      'Möchtest du diese Unit wirklich löschen?',
+                                      'Möchtest du diese Einheit wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteUnit(
                                         subjectId: _selectedSubjectId!,

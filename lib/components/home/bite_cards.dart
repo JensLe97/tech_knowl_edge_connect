@@ -99,8 +99,8 @@ class NewBiteCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  Icons.lock_outline,
-                  color: colorScheme.outline,
+                  Icons.radio_button_unchecked,
+                  color: colorScheme.primary,
                   size: 24,
                 ),
                 const SizedBox(height: 8),

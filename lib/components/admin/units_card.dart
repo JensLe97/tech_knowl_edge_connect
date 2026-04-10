@@ -36,14 +36,14 @@ class UnitsCard extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         CardHeader(
-          title: 'Units',
+          title: 'Einheiten',
           onAdd: onAdd,
         ),
         const SizedBox(height: 8),
         if (selectedSubjectId == null ||
             selectedCategoryId == null ||
             selectedTopicId == null)
-          const Text('Bitte zuerst ein Topic auswählen.')
+          const Text('Bitte zuerst ein Thema auswählen.')
         else
           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: adminService.streamUnits(
@@ -60,7 +60,7 @@ class UnitsCard extends StatelessWidget {
               }
 
               if (docs.isEmpty) {
-                return const Text('Keine Units vorhanden.');
+                return const Text('Keine Einheiten vorhanden.');
               }
               return ListView.builder(
                 shrinkWrap: true,

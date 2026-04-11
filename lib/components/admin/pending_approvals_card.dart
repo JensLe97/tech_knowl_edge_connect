@@ -119,8 +119,7 @@ class PendingApprovalsCard extends StatelessWidget {
                               style: IconButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12))),
-                              icon: const Icon(Icons.highlight_off,
-                                  color: Colors.red),
+                              icon: Icon(Icons.highlight_off, color: cs.error),
                               tooltip: 'Ablehnen',
                               onPressed: () => _reject(context, doc.reference),
                             ),

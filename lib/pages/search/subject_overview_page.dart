@@ -271,8 +271,10 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                               child: Center(
                                 child: Text(
                                   'Fehler beim Laden der Kategorien: $err',
-                                  style: const TextStyle(
-                                      fontSize: 16, color: Colors.red),
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color:
+                                          Theme.of(context).colorScheme.error),
                                   textAlign: TextAlign.center,
                                 ),
                               ),

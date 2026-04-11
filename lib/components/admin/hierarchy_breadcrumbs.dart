@@ -191,8 +191,8 @@ class _HierarchyBreadcrumbsState extends State<HierarchyBreadcrumbs> {
 
     if (_error != null) {
       return Text('Fehler beim Laden der Hierarchie',
-          style: (widget.style ?? const TextStyle())
-              .copyWith(color: Colors.red, fontSize: 10));
+          style: (widget.style ?? const TextStyle()).copyWith(
+              color: Theme.of(context).colorScheme.error, fontSize: 10));
     }
 
     if (_items.isEmpty) {

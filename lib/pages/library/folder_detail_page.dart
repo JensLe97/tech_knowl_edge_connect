@@ -378,13 +378,14 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
-              const PopupMenuItem<String>(
+              PopupMenuItem<String>(
                 value: 'delete',
                 child: ListTile(
-                  leading:
-                      FaIcon(FontAwesomeIcons.folderMinus, color: Colors.red),
+                  leading: FaIcon(FontAwesomeIcons.folderMinus,
+                      color: Theme.of(context).colorScheme.error),
                   title: Text('Ordner löschen',
-                      style: TextStyle(color: Colors.red)),
+                      style: TextStyle(
+                          color: Theme.of(context).colorScheme.error)),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),

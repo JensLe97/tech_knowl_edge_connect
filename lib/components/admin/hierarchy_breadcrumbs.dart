@@ -167,7 +167,7 @@ class _HierarchyBreadcrumbsState extends State<HierarchyBreadcrumbs> {
               decoration: BoxDecoration(
                 color: statusColor.withValues(alpha: 0.2),
                 border: Border.all(color: statusColor.withValues(alpha: 0.5)),
-                borderRadius: BorderRadius.circular(4),
+                borderRadius: BorderRadius.circular(6),
               ),
               child: Text(
                 item['name']!,

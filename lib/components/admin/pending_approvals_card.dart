@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:tech_knowl_edge_connect/components/admin/admin_constants.dart';
 import 'package:tech_knowl_edge_connect/components/admin/card_header.dart';
 import 'package:tech_knowl_edge_connect/components/admin/dialogs/confirm_action_dialog.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
@@ -47,9 +48,13 @@ class PendingApprovalsCard extends StatelessWidget {
               itemBuilder: (context, index) {
                 final doc = docs[index];
                 final data = doc.data();
-                final id = doc.id;
                 final title = data['title'] ?? 'Ohne Titel';
                 final authorId = data['authorId'] ?? 'Unbekannt';
+                IconData? icon;
+                if (data['iconData'] != null) {
+                  icon = AdminConstants.getIconFromData(
+                      data['iconData'] as Map<String, dynamic>);
+                }
 
                 final cs = Theme.of(context).colorScheme;
                 return Container(
@@ -66,12 +71,29 @@ class PendingApprovalsCard extends StatelessWidget {
                       HierarchyBreadcrumbs(reference: doc.reference),
                       ListTile(
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
+                            horizontal: 4, vertical: 8),
                         title: Text(title,
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text('ID: $id\nAuthor: $authorId'),
-                        isThreeLine: true,
+                        subtitle: Text('Autor: $authorId'),
+                        leading: Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              icon ?? Icons.folder,
+                              color: cs.primary,
+                              size: 24,
+                            ),
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

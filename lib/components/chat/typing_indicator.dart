@@ -70,7 +70,7 @@ class _TypingIndicatorState extends State<TypingIndicator>
               ? Theme.of(context).colorScheme.secondary.withAlpha(120)
               : Theme.of(context).brightness == Brightness.light
                   ? Theme.of(context).colorScheme.surfaceContainerLowest
-                  : Theme.of(context).colorScheme.primary.withAlpha(20),
+                  : Theme.of(context).colorScheme.secondary.withAlpha(40),
           border: Border.all(
             color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
           ),

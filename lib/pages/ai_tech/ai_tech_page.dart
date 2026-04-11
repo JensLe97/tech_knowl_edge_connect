@@ -549,7 +549,7 @@ class _AiTechPageState extends State<AiTechPage> {
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.light
                   ? Theme.of(context).colorScheme.surfaceContainerLowest
-                  : Theme.of(context).colorScheme.primary.withAlpha(20),
+                  : Theme.of(context).colorScheme.secondary.withAlpha(40),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
                 color:
@@ -822,7 +822,7 @@ class _AiTechPageState extends State<AiTechPage> {
         actions: [
           IconButton(
             icon: const Icon(Icons.delete_outline),
-            tooltip: 'Lernreise löschen',
+            tooltip: 'Session löschen',
             onPressed: () async {
               final confirmed = await showDialog<bool>(
                 context: context,
@@ -845,7 +845,7 @@ class _AiTechPageState extends State<AiTechPage> {
                       ),
                     ),
                     title: const Text(
-                      'Lernreise löschen',
+                      'Session löschen',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 18,
@@ -853,7 +853,7 @@ class _AiTechPageState extends State<AiTechPage> {
                       ),
                     ),
                     content: const Text(
-                        'Möchtest du diese Lernreise und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),
+                        'Möchtest du diese Session und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),
                     actions: [
                       Row(
                         children: [

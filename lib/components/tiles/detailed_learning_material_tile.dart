@@ -91,7 +91,7 @@ class DetailedLearningMaterialTile extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).brightness == Brightness.light
               ? Theme.of(context).colorScheme.surfaceContainerLowest
-              : Theme.of(context).colorScheme.primary.withAlpha(20),
+              : Theme.of(context).colorScheme.secondary.withAlpha(40),
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(

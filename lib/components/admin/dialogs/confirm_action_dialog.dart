@@ -53,6 +53,8 @@ class ConfirmActionDialog extends StatelessWidget {
             DialogButton(
               onTap: () {
                 onConfirm();
+                if (!context.mounted) return;
+                Navigator.pop(context);
               },
               text: actionText,
               isDestructive: isDestructive,

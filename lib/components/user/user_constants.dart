@@ -59,11 +59,34 @@ class UserConstants {
     statusRejected,
   ];
 
-  static Color getStatusColor(String status) {
-    if (status == statusApproved) return Colors.green;
-    if (status == statusRejected) return Colors.red;
-    if (status == statusPending) return Colors.orange;
-    return Colors.grey;
+  static StatusColors getStatusColors(
+      String status, ColorScheme cs, bool isDark) {
+    if (status == statusApproved) {
+      return StatusColors(
+        background: Colors.green.withAlpha(38),
+        text: isDark ? Colors.green.shade300 : Colors.green.shade700,
+        border: Colors.green.withAlpha(76),
+      );
+    }
+    if (status == statusRejected) {
+      return StatusColors(
+        background: cs.errorContainer,
+        text: cs.onErrorContainer,
+        border: cs.error.withAlpha(76),
+      );
+    }
+    if (status == statusPending) {
+      return StatusColors(
+        background: Colors.orange.withAlpha(38),
+        text: isDark ? Colors.orange.shade300 : Colors.orange.shade800,
+        border: Colors.orange.withAlpha(76),
+      );
+    }
+    return StatusColors(
+      background: cs.surfaceContainerHighest,
+      text: cs.onSurfaceVariant,
+      border: cs.outlineVariant.withAlpha(128),
+    );
   }
 
   static const Map<String, Color> availableColors = {
@@ -148,4 +171,16 @@ class UserConstants {
       return null;
     }
   }
+}
+
+class StatusColors {
+  final Color background;
+  final Color text;
+  final Color border;
+
+  const StatusColors({
+    required this.background,
+    required this.text,
+    required this.border,
+  });
 }

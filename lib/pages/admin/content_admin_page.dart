@@ -151,7 +151,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         }
                       },
                     ),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 8),
                     CardHeader(
                       title: 'Inhaltsverwaltung',
                       trailing: ConstrainedBox(

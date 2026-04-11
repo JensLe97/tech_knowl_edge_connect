@@ -49,7 +49,6 @@ class PendingApprovalsCard extends StatelessWidget {
                 final doc = docs[index];
                 final data = doc.data();
                 final title = data['title'] ?? 'Ohne Titel';
-                final authorId = data['authorId'] ?? 'Unbekannt';
                 IconData? icon;
                 if (data['iconData'] != null) {
                   icon = AdminConstants.getIconFromData(
@@ -75,7 +74,6 @@ class PendingApprovalsCard extends StatelessWidget {
                         title: Text(title,
                             style:
                                 const TextStyle(fontWeight: FontWeight.bold)),
-                        subtitle: Text('Autor: $authorId'),
                         leading: Container(
                           width: 48,
                           height: 48,

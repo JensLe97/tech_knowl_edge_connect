@@ -144,6 +144,7 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
                     controller: _scrollController,
                     scrollDirection: Axis.horizontal,
                     clipBehavior: Clip.none,
+                    padding: const EdgeInsets.only(left: 20.0, right: 8.0),
                     itemCount: bitesList.length,
                     itemBuilder: (context, j) {
                       final lb = bitesList[j];

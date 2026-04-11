@@ -141,14 +141,16 @@ class _TaskDialogState extends State<TaskDialog> {
             DialogButton(
               text: 'Speichern',
               onTap: () async {
-                if (_questionController.text.trim().isEmpty) return;
-                try {
-                  final answers = _answersController.text
-                      .split(',')
-                      .map((a) => a.trim())
-                      .where((a) => a.isNotEmpty)
-                      .toList();
+                final question = _questionController.text.trim();
+                if (question.isEmpty) return;
+                final correctAnswer = _answerController.text.trim();
+                final answers = _answersController.text
+                    .split(',')
+                    .map((a) => a.trim())
+                    .where((a) => a.isNotEmpty)
+                    .toList();
 
+                try {
                   if (widget.taskId == null) {
                     await widget.adminService.createTask(
                       subjectId: widget.subjectId,
@@ -158,8 +160,8 @@ class _TaskDialogState extends State<TaskDialog> {
                       conceptId: widget.conceptId,
                       learningBiteId: widget.learningBiteId,
                       type: _type,
-                      question: _questionController.text.trim(),
-                      correctAnswer: _answerController.text.trim(),
+                      question: question,
+                      correctAnswer: correctAnswer,
                       answers: answers,
                     );
                   } else {
@@ -173,8 +175,8 @@ class _TaskDialogState extends State<TaskDialog> {
                       taskId: widget.taskId!,
                       data: {
                         'type': _type,
-                        'question': _questionController.text.trim(),
-                        'correctAnswer': _answerController.text.trim(),
+                        'question': question,
+                        'correctAnswer': correctAnswer,
                         'answers': answers,
                       },
                     );

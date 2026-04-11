@@ -105,7 +105,8 @@ class _ContentDialogState extends State<ContentDialog> {
             DialogButton(
               text: 'Speichern',
               onTap: () async {
-                if (_contentController.text.trim().isEmpty) return;
+                final contentText = _contentController.text.trim();
+                if (contentText.isEmpty) return;
 
                 try {
                   // If creating new, we need to fetch current list if not provided
@@ -130,12 +131,11 @@ class _ContentDialogState extends State<ContentDialog> {
 
                   if (widget.index == null) {
                     // Add new
-                    currentContent.add(_contentController.text.trim());
+                    currentContent.add(contentText);
                   } else {
                     // Update existing
                     if (widget.index! < currentContent.length) {
-                      currentContent[widget.index!] =
-                          _contentController.text.trim();
+                      currentContent[widget.index!] = contentText;
                     }
                   }
 

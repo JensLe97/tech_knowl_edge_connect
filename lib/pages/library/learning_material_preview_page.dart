@@ -245,8 +245,11 @@ class _TextPreviewState extends State<_TextPreview> {
                   child: SelectableText(
                     _content!,
                     style: GoogleFonts.robotoMono(
-                          textStyle: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.5),
-                        ),
+                      textStyle: Theme.of(context)
+                          .textTheme
+                          .bodyMedium
+                          ?.copyWith(height: 1.5),
+                    ),
                   ),
                 ),
     );
@@ -309,6 +312,34 @@ class _VideoPreviewState extends State<_VideoPreview> {
     Future.delayed(const Duration(seconds: 2), _hideOverlayCallback);
   }
 
+  Widget _buildPlayPauseButton(BuildContext context) {
+    const textColor = Colors.white;
+    final bgColor = Colors.black.withAlpha(80);
+    final outlineColor = Colors.white.withAlpha(40);
+
+    return Material(
+      color: bgColor,
+      shape: const CircleBorder(),
+      clipBehavior: Clip.hardEdge,
+      child: InkWell(
+        onTap: _togglePlayPause,
+        customBorder: const CircleBorder(),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            border: Border.all(color: outlineColor),
+          ),
+          child: Icon(
+            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            color: textColor,
+            size: 28,
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -346,25 +377,20 @@ class _VideoPreviewState extends State<_VideoPreview> {
                       aspectRatio: _controller.value.aspectRatio,
                       child: IgnorePointer(child: VideoPlayer(_controller)),
                     ),
-                    if (_showPlayPause)
-                      AnimatedOpacity(
+                    IgnorePointer(
+                      ignoring: !_showPlayPause,
+                      child: AnimatedOpacity(
                         opacity: _showPlayPause ? 1.0 : 0.0,
-                        duration: const Duration(milliseconds: 200),
-                        child: Container(
-                          decoration: const BoxDecoration(
-                            color: Colors.black54,
-                            shape: BoxShape.circle,
-                          ),
-                          padding: const EdgeInsets.all(24),
-                          child: Icon(
-                            _controller.value.isPlaying
-                                ? Icons.pause
-                                : Icons.play_arrow,
-                            color: Colors.white,
-                            size: 56,
-                          ),
+                        duration: const Duration(milliseconds: 500),
+                        curve: Curves.easeInOut,
+                        child: AnimatedScale(
+                          scale: _showPlayPause ? 1.4 : 1.2,
+                          duration: const Duration(milliseconds: 500),
+                          curve: Curves.easeOutBack,
+                          child: _buildPlayPauseButton(context),
                         ),
                       ),
+                    ),
                   ],
                 ),
               )

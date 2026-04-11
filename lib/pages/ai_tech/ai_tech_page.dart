@@ -544,131 +544,176 @@ class _AiTechPageState extends State<AiTechPage> {
               ? snapshot.data![1] as QuerySnapshot
               : null;
           final bitesDocs = bitesSnapshot?.docs ?? <QueryDocumentSnapshot>[];
-          return Card(
-            color: Theme.of(context).brightness == Brightness.light
-                ? Theme.of(context).colorScheme.surfaceContainerLowest
-                : Theme.of(context).colorScheme.primary.withAlpha(20),
+          return Container(
             margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
-            child: Column(
-              children: [
-                ListTile(
-                  title: Text(journeyData['goal'] ??
-                      journeyData['context'] ??
-                      'Lernreise'),
-                  trailing: StreamBuilder<QuerySnapshot>(
-                    stream: _biteStreams.putIfAbsent(journeyId,
-                        () => _service.streamLearningBites(journeyId)),
-                    initialData: bitesSnapshot,
-                    builder: (context, biteCountSnapshot) {
-                      final countDocs =
-                          biteCountSnapshot.data?.docs ?? bitesDocs;
-                      final completedIds = _completedBiteIds.toList();
-                      final int totalBites = countDocs.length;
-                      final int completedBites = countDocs
-                          .where((d) => completedIds.contains(d.id))
-                          .length;
-                      final bool journeyCompleted =
-                          totalBites > 0 && completedBites == totalBites;
-                      return Padding(
-                        padding: const EdgeInsets.only(right: 14.0),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            if (totalBites > 0) ...[
-                              Text(
-                                '$completedBites/$totalBites',
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withAlpha(191),
-                                ),
-                              ),
-                              const SizedBox(width: 8),
-                            ],
-                            Icon(
-                              journeyCompleted
-                                  ? Icons.check_circle
-                                  : Icons.radio_button_unchecked,
-                              color: journeyCompleted
-                                  ? Theme.of(context).colorScheme.primary
-                                  : Theme.of(context)
-                                      .colorScheme
-                                      .onSurface
-                                      .withAlpha(191),
-                              size: 26,
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                  child: StreamBuilder<QuerySnapshot>(
-                    stream: _biteStreams.putIfAbsent(journeyId,
-                        () => _service.streamLearningBites(journeyId)),
-                    // reuse the QuerySnapshot we already fetched in the
-                    // enclosing FutureBuilder so the UI renders immediately
-                    initialData: bitesSnapshot,
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting &&
-                          snapshot.data == null) {
-                        return const Padding(
-                          padding: EdgeInsets.all(12.0),
-                          child: SizedBox(
-                              width: 24,
-                              height: 24,
-                              child: CircularProgressIndicator(strokeWidth: 2)),
-                        );
-                      }
-                      if (!snapshot.hasData || snapshot.data == null) {
-                        return const Text('Keine Lernbites gefunden.');
-                      }
-                      final bitesSnapshotLocal = snapshot.data!;
-                      final bites = bitesSnapshotLocal.docs;
-                      if (bites.isEmpty) {
-                        return const Text('Keine Lernbites gefunden.');
-                      }
-                      return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: bites.map((doc) {
-                          final biteData = doc.data() as Map<String, dynamic>;
-                          final docId = doc.id;
-                          // determine completion from locally-cached set
-                          final bool biteCompleted =
-                              _completedBiteIds.contains(docId);
-                          return Card(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .surface
-                                .withAlpha(230),
-                            child: ListTile(
-                              title: Text(biteData['title'] ?? 'Lernbite'),
-                              subtitle: Text(biteData['description'] ?? ''),
-                              trailing: Icon(
-                                biteCompleted
-                                    ? Icons.check_circle
-                                    : Icons.radio_button_unchecked,
-                                color: biteCompleted
-                                    ? Theme.of(context).colorScheme.primary
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .onSurface
-                                        .withAlpha(191),
-                              ),
-                              onTap: () => _startLearningBite(journeyId, docId),
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    },
-                  ),
+            decoration: BoxDecoration(
+              color: Theme.of(context).brightness == Brightness.light
+                  ? Theme.of(context).colorScheme.surfaceContainerLowest
+                  : Theme.of(context).colorScheme.primary.withAlpha(20),
+              borderRadius: BorderRadius.circular(12),
+              border: Border.all(
+                color:
+                    Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withAlpha(12),
+                  blurRadius: 4,
+                  offset: const Offset(0, 2),
                 ),
               ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Material(
+                color: Colors.transparent,
+                child: Column(
+                  children: [
+                    ListTile(
+                      title: Text(journeyData['goal'] ??
+                          journeyData['context'] ??
+                          'Lernreise'),
+                      trailing: StreamBuilder<QuerySnapshot>(
+                        stream: _biteStreams.putIfAbsent(journeyId,
+                            () => _service.streamLearningBites(journeyId)),
+                        initialData: bitesSnapshot,
+                        builder: (context, biteCountSnapshot) {
+                          final countDocs =
+                              biteCountSnapshot.data?.docs ?? bitesDocs;
+                          final completedIds = _completedBiteIds.toList();
+                          final int totalBites = countDocs.length;
+                          final int completedBites = countDocs
+                              .where((d) => completedIds.contains(d.id))
+                              .length;
+                          final bool journeyCompleted =
+                              totalBites > 0 && completedBites == totalBites;
+                          return Padding(
+                            padding: const EdgeInsets.only(right: 14.0),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                if (totalBites > 0) ...[
+                                  Text(
+                                    '$completedBites/$totalBites',
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withAlpha(191),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                ],
+                                Icon(
+                                  journeyCompleted
+                                      ? Icons.check_circle
+                                      : Icons.radio_button_unchecked,
+                                  color: journeyCompleted
+                                      ? Theme.of(context).colorScheme.primary
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .onSurface
+                                          .withAlpha(191),
+                                  size: 26,
+                                ),
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 12, vertical: 4),
+                      child: StreamBuilder<QuerySnapshot>(
+                        stream: _biteStreams.putIfAbsent(journeyId,
+                            () => _service.streamLearningBites(journeyId)),
+                        // reuse the QuerySnapshot we already fetched in the
+                        // enclosing FutureBuilder so the UI renders immediately
+                        initialData: bitesSnapshot,
+                        builder: (context, snapshot) {
+                          if (snapshot.connectionState ==
+                                  ConnectionState.waiting &&
+                              snapshot.data == null) {
+                            return const Padding(
+                              padding: EdgeInsets.all(12.0),
+                              child: SizedBox(
+                                  width: 24,
+                                  height: 24,
+                                  child: CircularProgressIndicator(
+                                      strokeWidth: 2)),
+                            );
+                          }
+                          if (!snapshot.hasData || snapshot.data == null) {
+                            return const Text('Keine Lernbites gefunden.');
+                          }
+                          final bitesSnapshotLocal = snapshot.data!;
+                          final bites = bitesSnapshotLocal.docs;
+                          if (bites.isEmpty) {
+                            return const Text('Keine Lernbites gefunden.');
+                          }
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: bites.map((doc) {
+                              final biteData =
+                                  doc.data() as Map<String, dynamic>;
+                              final docId = doc.id;
+                              // determine completion from locally-cached set
+                              final bool biteCompleted =
+                                  _completedBiteIds.contains(docId);
+                              return Container(
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                decoration: BoxDecoration(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .surface
+                                      .withAlpha(230),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .outlineVariant
+                                        .withAlpha(51),
+                                  ),
+                                ),
+                                child: Material(
+                                  color: Colors.transparent,
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    onTap: () =>
+                                        _startLearningBite(journeyId, docId),
+                                    child: ListTile(
+                                      title:
+                                          Text(biteData['title'] ?? 'Lernbite'),
+                                      subtitle:
+                                          Text(biteData['description'] ?? ''),
+                                      trailing: Icon(
+                                        biteCompleted
+                                            ? Icons.check_circle
+                                            : Icons.radio_button_unchecked,
+                                        color: biteCompleted
+                                            ? Theme.of(context)
+                                                .colorScheme
+                                                .primary
+                                            : Theme.of(context)
+                                                .colorScheme
+                                                .onSurface
+                                                .withAlpha(191),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
             ),
           );
         } else {

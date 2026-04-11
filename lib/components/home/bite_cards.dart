@@ -24,7 +24,7 @@ class UnitBiteCard extends StatelessWidget {
     return Container(
       width: 160,
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
+        color: colorScheme.surface.withAlpha(230),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: colorScheme.outlineVariant.withAlpha(51),
@@ -81,7 +81,7 @@ class NewBiteCard extends StatelessWidget {
     return Container(
       width: 160,
       decoration: BoxDecoration(
-        color: colorScheme.surfaceContainer,
+        color: colorScheme.surface.withAlpha(230),
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
           color: colorScheme.outlineVariant.withAlpha(51),

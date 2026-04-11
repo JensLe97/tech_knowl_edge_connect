@@ -24,7 +24,7 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
   final baseStyle = theme.textTheme.bodyLarge!;
 
   MarkdownStyleSheet styleSheet = MarkdownStyleSheet.fromTheme(theme).copyWith(
-  p: baseStyle,
+    p: baseStyle,
     horizontalRuleDecoration: BoxDecoration(
       border: Border(
         top: BorderSide(
@@ -132,8 +132,8 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-              margin: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+              margin: const EdgeInsets.symmetric(horizontal: 1, vertical: 2),
               decoration: BoxDecoration(
                 color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(6),

@@ -331,7 +331,7 @@ class _VideoPreviewState extends State<_VideoPreview> {
             border: Border.all(color: outlineColor),
           ),
           child: Icon(
-            _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+            _controller.value.isPlaying ? Icons.play_arrow : Icons.pause,
             color: textColor,
             size: 28,
           ),

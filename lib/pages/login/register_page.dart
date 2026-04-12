@@ -22,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   bool _obscureText = true;
+  bool _obscureConfirmText = true;
 
   @override
   void dispose() {
@@ -131,10 +132,23 @@ class _RegisterPageState extends State<RegisterPage> {
               LoginTextField(
                 controller: confirmPasswordController,
                 hintText: 'Passwort wiederholen',
-                obscureText: _obscureText,
+                obscureText: _obscureConfirmText,
                 textInputAction: TextInputAction.done,
                 prefixIcon:
                     Icon(Icons.lock_reset_outlined, color: cs.onSurfaceVariant),
+                suffixIcon: IconButton(
+                  icon: Icon(
+                    _obscureConfirmText
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                    color: cs.onSurfaceVariant,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _obscureConfirmText = !_obscureConfirmText;
+                    });
+                  },
+                ),
               ),
               const SizedBox(height: 32),
 

@@ -489,7 +489,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                                             ),
                                                           ),
                                                           content: const Text(
-                                                            'Dieses Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst ihn über den Bearbeiten-Button ergänzen.',
+                                                            'Dieses Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst sie über den Bearbeiten-Button hinzufügen.',
                                                             textAlign: TextAlign
                                                                 .center,
                                                           ),

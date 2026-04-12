@@ -232,7 +232,7 @@ class _HierarchyBreadcrumbsState extends State<HierarchyBreadcrumbs> {
             ),
             if (!isLast)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.symmetric(horizontal: 2),
                 child: Icon(
                   Icons.chevron_right,
                   size: 14,

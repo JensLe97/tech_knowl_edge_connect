@@ -72,7 +72,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
               ),
             ),
             child: Icon(
-              Icons.delete_outline_rounded,
+              Icons.delete_outline,
               size: 32,
               color: cs.error,
             ),
@@ -549,12 +549,12 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                 top: 4,
                                 right: 4,
                                 child: IconButton(
-                                  icon: FaIcon(
-                                    FontAwesomeIcons.trash,
-                                    size: 16,
+                                  icon: Icon(
+                                    Icons.delete_outline,
+                                    size: 28,
                                     color: colorScheme.onSurfaceVariant,
                                   ),
-                                  tooltip: 'Löschen',
+                                  tooltip: 'Löschen',
                                   onPressed: () async {
                                     await _materialService
                                         .deleteLearningMaterial(

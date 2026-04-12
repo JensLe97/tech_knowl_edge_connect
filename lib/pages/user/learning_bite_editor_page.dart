@@ -136,7 +136,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
               ),
             ),
             child: Icon(
-              Icons.delete_outline_rounded,
+              Icons.delete_outline,
               size: 32,
               color: cs.error,
             ),
@@ -234,7 +234,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                 onPressed: () => _openMetadataDialog(learningBite),
               ),
               IconButton(
-                icon: const Icon(Icons.delete),
+                icon: const Icon(Icons.delete_outline),
                 tooltip: 'Learning Bite löschen',
                 onPressed: () => _confirmDelete(
                   title: 'Learning Bite löschen?',

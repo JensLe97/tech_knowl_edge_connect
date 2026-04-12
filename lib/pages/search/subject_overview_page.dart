@@ -48,7 +48,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
               ),
             ),
             child: Icon(
-              Icons.delete_outline_rounded,
+              Icons.delete_outline,
               size: 32,
               color: cs.error,
             ),

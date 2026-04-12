@@ -139,7 +139,7 @@ class _AccountPageState extends State<AccountPage> {
                         },
                       ),
                       ListTile(
-                        leading: Icon(Icons.delete,
+                        leading: Icon(Icons.delete_outline,
                             color: Theme.of(context).colorScheme.error),
                         title: Text('Account löschen',
                             style: TextStyle(

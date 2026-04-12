@@ -102,7 +102,7 @@ class UnitTile extends StatelessWidget {
                           child: Icon(
                             Icons.delete_outline,
                             size: 20,
-                            color: colorScheme.error,
+                            color: colorScheme.primary,
                           ),
                         ),
                       ),

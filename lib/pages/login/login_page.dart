@@ -115,8 +115,8 @@ class _LoginPageState extends State<LoginPage> {
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText
-                        ? Icons.visibility_off_outlined
-                        : Icons.visibility_outlined,
+                        ? Icons.visibility_outlined
+                        : Icons.visibility_off_outlined,
                     color: cs.onSurfaceVariant,
                   ),
                   onPressed: () {

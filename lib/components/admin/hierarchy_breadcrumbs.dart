@@ -199,6 +199,8 @@ class _HierarchyBreadcrumbsState extends State<HierarchyBreadcrumbs> {
       return const SizedBox.shrink();
     }
 
+    final maxWidth = MediaQuery.of(context).size.width - 32;
+
     return Wrap(
       crossAxisAlignment: WrapCrossAlignment.center,
       runSpacing: 4,
@@ -211,35 +213,44 @@ class _HierarchyBreadcrumbsState extends State<HierarchyBreadcrumbs> {
         final sc = UserConstants.getStatusColors(
             item['status'] ?? UserConstants.statusPrivate, cs, isDark);
 
-        return Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-              decoration: BoxDecoration(
-                color: sc.background,
-                borderRadius: BorderRadius.circular(100),
-                border: Border.all(color: sc.border),
-              ),
-              child: Text(
-                item['name']!,
-                style: (widget.style ?? Theme.of(context).textTheme.bodyMedium)
-                    ?.copyWith(
-                        fontSize: 12,
-                        color: sc.text,
-                        fontWeight: FontWeight.w600),
-              ),
-            ),
-            if (!isLast)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 2),
-                child: Icon(
-                  Icons.chevron_right,
-                  size: 14,
-                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+        return ConstrainedBox(
+          constraints: BoxConstraints(maxWidth: maxWidth),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Flexible(
+                child: Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: sc.background,
+                    borderRadius: BorderRadius.circular(100),
+                    border: Border.all(color: sc.border),
+                  ),
+                  child: Text(
+                    item['name']!,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style:
+                        (widget.style ?? Theme.of(context).textTheme.bodyMedium)
+                            ?.copyWith(
+                                fontSize: 12,
+                                color: sc.text,
+                                fontWeight: FontWeight.w600),
+                  ),
                 ),
               ),
-          ],
+              if (!isLast)
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 2),
+                  child: Icon(
+                    Icons.chevron_right,
+                    size: 14,
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+            ],
+          ),
         );
       }).toList(),
     );

@@ -63,17 +63,21 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
           actions: [
             Row(
               children: [
-                DialogButton(
-                  onTap: () => Navigator.pop(context),
-                  text: 'Abbrechen',
+                Expanded(
+                  child: DialogButton(
+                    onTap: () => Navigator.pop(context),
+                    text: 'Abbrechen',
+                  ),
                 ),
-                DialogButton(
-                  onTap: () async {
-                    Navigator.pop(context);
-                    await onConfirm();
-                  },
-                  text: 'Löschen',
-                  isDestructive: true,
+                Expanded(
+                  child: DialogButton(
+                    onTap: () async {
+                      Navigator.pop(context);
+                      await onConfirm();
+                    },
+                    text: 'Löschen',
+                    isDestructive: true,
+                  ),
                 ),
               ],
             ),
@@ -205,14 +209,17 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding:
                         const EdgeInsetsDirectional.only(top: 10, bottom: 15),
-                    title: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Text(
-                        currentSubject.name,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                    title: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          currentSubject.name,
+                          style:
+                              Theme.of(context).textTheme.titleMedium?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
                       ),
                     ),
                     background: Stack(children: [
@@ -323,119 +330,44 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        category.name,
-                                        style: TextStyle(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
+                                      Expanded(
+                                        child: Text(
+                                          category.name,
+                                          style: TextStyle(
+                                            fontSize: 22,
+                                            fontWeight: FontWeight.bold,
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .onSurface,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      Container(
-                                        color: Colors.transparent,
-                                        child: Row(
-                                          children: [
-                                            if (canDeleteCategory)
-                                              InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                onTap: () => _confirmDelete(
-                                                  title: 'Kategorie löschen?',
-                                                  message:
-                                                      'Möchtest du diese Kategorie wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                                                  onConfirm: () async {
-                                                    await _contentService
-                                                        .deleteCategory(
-                                                      subjectId:
-                                                          currentSubject.id,
-                                                      categoryId: category.id,
-                                                    );
-                                                  },
-                                                ),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primaryContainer
-                                                        .withAlpha(76),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                          .withAlpha(25),
-                                                    ),
-                                                  ),
-                                                  child: Icon(
-                                                      Icons.delete_outline,
-                                                      size: 24,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary),
-                                                ),
-                                              ),
-                                            if (canDeleteCategory)
-                                              const SizedBox(width: 8),
-                                            if (canDeleteCategory)
-                                              InkWell(
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                                onTap: () => showDialog(
-                                                  context: context,
-                                                  builder: (context) =>
-                                                      CategoryDialog(
-                                                    subjectId:
-                                                        currentSubject.id,
-                                                    category: category,
-                                                  ),
-                                                ),
-                                                child: Container(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  decoration: BoxDecoration(
-                                                    color: Theme.of(context)
-                                                        .colorScheme
-                                                        .primaryContainer
-                                                        .withAlpha(76),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            12),
-                                                    border: Border.all(
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary
-                                                          .withAlpha(25),
-                                                    ),
-                                                  ),
-                                                  child: Icon(Icons.edit,
-                                                      size: 24,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary),
-                                                ),
-                                              ),
-                                            if (canDeleteCategory)
-                                              const SizedBox(width: 8),
+                                      const SizedBox(width: 8),
+                                      Row(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          if (canDeleteCategory)
                                             InkWell(
                                               borderRadius:
                                                   BorderRadius.circular(12),
-                                              onTap: () => showDialog(
-                                                context: context,
-                                                builder: (context) =>
-                                                    TopicDialog(
-                                                  subjectId: currentSubject.id,
-                                                  categoryId: category.id,
-                                                ),
+                                              onTap: () => _confirmDelete(
+                                                title: 'Kategorie löschen?',
+                                                message:
+                                                    'Möchtest du diese Kategorie wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                                onConfirm: () async {
+                                                  await _contentService
+                                                      .deleteCategory(
+                                                    subjectId:
+                                                        currentSubject.id,
+                                                    categoryId: category.id,
+                                                  );
+                                                },
                                               ),
                                               child: Container(
-                                                width: 40,
-                                                height: 40,
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
                                                 decoration: BoxDecoration(
                                                   color: Theme.of(context)
                                                       .colorScheme
@@ -450,17 +382,91 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                         .withAlpha(25),
                                                   ),
                                                 ),
-                                                child: Center(
-                                                  child: Icon(Icons.add,
-                                                      size: 24,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .primary),
-                                                ),
+                                                child: Icon(
+                                                    Icons.delete_outline,
+                                                    size: 24,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary),
                                               ),
                                             ),
-                                          ],
-                                        ),
+                                          if (canDeleteCategory)
+                                            const SizedBox(width: 8),
+                                          if (canDeleteCategory)
+                                            InkWell(
+                                              borderRadius:
+                                                  BorderRadius.circular(12),
+                                              onTap: () => showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    CategoryDialog(
+                                                  subjectId: currentSubject.id,
+                                                  category: category,
+                                                ),
+                                              ),
+                                              child: Container(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                decoration: BoxDecoration(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primaryContainer
+                                                      .withAlpha(76),
+                                                  borderRadius:
+                                                      BorderRadius.circular(12),
+                                                  border: Border.all(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary
+                                                        .withAlpha(25),
+                                                  ),
+                                                ),
+                                                child: Icon(Icons.edit,
+                                                    size: 24,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary),
+                                              ),
+                                            ),
+                                          if (canDeleteCategory)
+                                            const SizedBox(width: 8),
+                                          InkWell(
+                                            borderRadius:
+                                                BorderRadius.circular(12),
+                                            onTap: () => showDialog(
+                                              context: context,
+                                              builder: (context) => TopicDialog(
+                                                subjectId: currentSubject.id,
+                                                categoryId: category.id,
+                                              ),
+                                            ),
+                                            child: Container(
+                                              width: 40,
+                                              height: 40,
+                                              decoration: BoxDecoration(
+                                                color: Theme.of(context)
+                                                    .colorScheme
+                                                    .primaryContainer
+                                                    .withAlpha(76),
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                                border: Border.all(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .primary
+                                                      .withAlpha(25),
+                                                ),
+                                              ),
+                                              child: Center(
+                                                child: Icon(Icons.add,
+                                                    size: 24,
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ],
                                   ),
@@ -500,166 +506,56 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                     MainAxisAlignment
                                                         .spaceBetween,
                                                 children: [
-                                                  Text(
-                                                    topic.name,
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Theme.of(context)
-                                                          .colorScheme
-                                                          .onSurface,
+                                                  Expanded(
+                                                    child: Text(
+                                                      topic.name,
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Theme.of(context)
+                                                            .colorScheme
+                                                            .onSurface,
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
                                                     ),
                                                   ),
-                                                  Container(
-                                                    color: Colors.transparent,
-                                                    child: Row(
-                                                      children: [
-                                                        if (canDeleteTopic)
-                                                          InkWell(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12),
-                                                            onTap: () =>
-                                                                _confirmDelete(
-                                                              title:
-                                                                  'Thema löschen?',
-                                                              message:
-                                                                  'Möchtest du dieses Thema wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
-                                                              onConfirm:
-                                                                  () async {
-                                                                await _contentService
-                                                                    .deleteTopic(
-                                                                  subjectId:
-                                                                      currentSubject
-                                                                          .id,
-                                                                  categoryId:
-                                                                      category
-                                                                          .id,
-                                                                  topicId:
-                                                                      topic.id,
-                                                                );
-                                                              },
-                                                            ),
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primaryContainer
-                                                                    .withAlpha(
-                                                                        76),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                                border:
-                                                                    Border.all(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary
-                                                                      .withAlpha(
-                                                                          25),
-                                                                ),
-                                                              ),
-                                                              child: Icon(
-                                                                  Icons
-                                                                      .delete_outline,
-                                                                  size: 24,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary),
-                                                            ),
-                                                          ),
-                                                        if (canDeleteTopic)
-                                                          const SizedBox(
-                                                              width: 8),
-                                                        if (canDeleteTopic)
-                                                          InkWell(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        12),
-                                                            onTap: () =>
-                                                                showDialog(
-                                                              context: context,
-                                                              builder:
-                                                                  (context) =>
-                                                                      TopicDialog(
-                                                                subjectId:
-                                                                    currentSubject
-                                                                        .id,
-                                                                categoryId:
-                                                                    category.id,
-                                                                topic: topic,
-                                                              ),
-                                                            ),
-                                                            child: Container(
-                                                              padding:
-                                                                  const EdgeInsets
-                                                                      .all(8.0),
-                                                              decoration:
-                                                                  BoxDecoration(
-                                                                color: Theme.of(
-                                                                        context)
-                                                                    .colorScheme
-                                                                    .primaryContainer
-                                                                    .withAlpha(
-                                                                        76),
-                                                                borderRadius:
-                                                                    BorderRadius
-                                                                        .circular(
-                                                                            12),
-                                                                border:
-                                                                    Border.all(
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary
-                                                                      .withAlpha(
-                                                                          25),
-                                                                ),
-                                                              ),
-                                                              child: Icon(
-                                                                  Icons.edit,
-                                                                  size: 24,
-                                                                  color: Theme.of(
-                                                                          context)
-                                                                      .colorScheme
-                                                                      .primary),
-                                                            ),
-                                                          ),
-                                                        if (canDeleteTopic)
-                                                          const SizedBox(
-                                                              width: 8),
+                                                  const SizedBox(width: 8),
+                                                  Row(
+                                                    mainAxisSize:
+                                                        MainAxisSize.min,
+                                                    children: [
+                                                      if (canDeleteTopic)
                                                         InkWell(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(12),
                                                           onTap: () =>
-                                                              showDialog(
-                                                            context: context,
-                                                            builder:
-                                                                (context) =>
-                                                                    UnitDialog(
-                                                              subjectId:
-                                                                  currentSubject
-                                                                      .id,
-                                                              categoryId:
-                                                                  category.id,
-                                                              topicId: topic.id,
-                                                            ),
+                                                              _confirmDelete(
+                                                            title:
+                                                                'Thema löschen?',
+                                                            message:
+                                                                'Möchtest du dieses Thema wirklich löschen? Alle Inhalte darunter werden ebenfalls gelöscht.',
+                                                            onConfirm:
+                                                                () async {
+                                                              await _contentService
+                                                                  .deleteTopic(
+                                                                subjectId:
+                                                                    currentSubject
+                                                                        .id,
+                                                                categoryId:
+                                                                    category.id,
+                                                                topicId:
+                                                                    topic.id,
+                                                              );
+                                                            },
                                                           ),
                                                           child: Container(
-                                                            width: 40,
-                                                            height: 40,
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
                                                             decoration:
                                                                 BoxDecoration(
                                                               color: Theme.of(
@@ -682,25 +578,132 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                                         25),
                                                               ),
                                                             ),
-                                                            child: Center(
-                                                              child: Icon(
+                                                            child: Icon(
+                                                                Icons
+                                                                    .delete_outline,
+                                                                size: 24,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary),
+                                                          ),
+                                                        ),
+                                                      if (canDeleteTopic)
+                                                        const SizedBox(
+                                                            width: 8),
+                                                      if (canDeleteTopic)
+                                                        InkWell(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(12),
+                                                          onTap: () =>
+                                                              showDialog(
+                                                            context: context,
+                                                            builder:
+                                                                (context) =>
+                                                                    TopicDialog(
+                                                              subjectId:
+                                                                  currentSubject
+                                                                      .id,
+                                                              categoryId:
+                                                                  category.id,
+                                                              topic: topic,
+                                                            ),
+                                                          ),
+                                                          child: Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                    .all(8.0),
+                                                            decoration:
+                                                                BoxDecoration(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primaryContainer
+                                                                  .withAlpha(
+                                                                      76),
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          12),
+                                                              border:
+                                                                  Border.all(
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary
+                                                                    .withAlpha(
+                                                                        25),
+                                                              ),
+                                                            ),
+                                                            child: Icon(
+                                                                Icons.edit,
+                                                                size: 24,
+                                                                color: Theme.of(
+                                                                        context)
+                                                                    .colorScheme
+                                                                    .primary),
+                                                          ),
+                                                        ),
+                                                      if (canDeleteTopic)
+                                                        const SizedBox(
+                                                            width: 8),
+                                                      InkWell(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(12),
+                                                        onTap: () => showDialog(
+                                                          context: context,
+                                                          builder: (context) =>
+                                                              UnitDialog(
+                                                            subjectId:
+                                                                currentSubject
+                                                                    .id,
+                                                            categoryId:
+                                                                category.id,
+                                                            topicId: topic.id,
+                                                          ),
+                                                        ),
+                                                        child: Container(
+                                                          width: 40,
+                                                          height: 40,
+                                                          decoration:
+                                                              BoxDecoration(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .colorScheme
+                                                                .primaryContainer
+                                                                .withAlpha(76),
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        12),
+                                                            border: Border.all(
+                                                              color: Theme.of(
+                                                                      context)
+                                                                  .colorScheme
+                                                                  .primary
+                                                                  .withAlpha(
+                                                                      25),
+                                                            ),
+                                                          ),
+                                                          child: Center(
+                                                            child: Icon(
                                                                 Icons.add,
                                                                 size: 24,
                                                                 color: Theme.of(
                                                                         context)
                                                                     .colorScheme
-                                                                    .primary,
-                                                              ),
-                                                            ),
+                                                                    .primary),
                                                           ),
                                                         ),
-                                                      ],
-                                                    ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(height: 4),
+                                            const SizedBox(height: 8),
                                             StreamBuilder<List<Unit>>(
                                               stream: _contentService.getUnits(
                                                   currentSubject.id,

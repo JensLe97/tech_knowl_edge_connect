@@ -70,6 +70,7 @@ class _AccountPageState extends State<AccountPage> {
                                       .displayLarge!
                                       .color),
                             ),
+                            const SizedBox(width: 8),
                             Flexible(
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,
@@ -103,6 +104,7 @@ class _AccountPageState extends State<AccountPage> {
                                       .displayLarge!
                                       .color),
                             ),
+                            const SizedBox(width: 8),
                             Flexible(
                               child: FittedBox(
                                 fit: BoxFit.scaleDown,

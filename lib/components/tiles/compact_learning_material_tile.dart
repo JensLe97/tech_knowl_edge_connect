@@ -113,7 +113,7 @@ class CompactLearningMaterialTile extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              '@${material.userName}',
+                              material.userName,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
                               style: TextStyle(

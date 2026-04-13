@@ -236,31 +236,32 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                                       ),
                                     ),
                                     const SizedBox(width: 10),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            Text(
-                                              material.userName,
-                                              style: TextStyle(
-                                                color: secondaryTextColor,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 13,
-                                              ),
+                                    Flexible(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            material.userName,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              color: secondaryTextColor,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 13,
                                             ),
-                                          ],
-                                        ),
-                                        Text(
-                                          _formatTimeAgo(
-                                              material.createdAt.toDate()),
-                                          style: TextStyle(
-                                            color: secondaryTextColor,
-                                            fontSize: 11,
                                           ),
-                                        ),
-                                      ],
+                                          Text(
+                                            _formatTimeAgo(
+                                                material.createdAt.toDate()),
+                                            style: TextStyle(
+                                              color: secondaryTextColor,
+                                              fontSize: 11,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -271,6 +272,8 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                         const SizedBox(height: 12),
                         Text(
                           material.name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: textColor,
                             fontSize: 20,

@@ -103,6 +103,8 @@ class UnitProgressCard extends StatelessWidget {
                   children: [
                     Text(
                       displayTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.bold,
                         color: colorScheme.onSurface,
@@ -111,6 +113,8 @@ class UnitProgressCard extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),

@@ -108,70 +108,74 @@ class _ProfilePageState extends State<ProfilePage> {
                           : parts[0].toUpperCase();
 
               return SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    children: [
-                      const SizedBox(height: 50),
-                      Container(
-                        width: 120,
-                        height: 120,
-                        decoration: BoxDecoration(
-                          color:
-                              Theme.of(context).colorScheme.secondaryContainer,
-                          borderRadius: BorderRadius.circular(24),
-                        ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          initials,
-                          style: TextStyle(
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 50),
+                        Container(
+                          width: 120,
+                          height: 120,
+                          decoration: BoxDecoration(
                             color: Theme.of(context)
                                 .colorScheme
-                                .onSecondaryContainer,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 48,
+                                .secondaryContainer,
+                            borderRadius: BorderRadius.circular(24),
                           ),
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(
-                          user['username'],
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      FittedBox(
-                        fit: BoxFit.scaleDown,
-                        child: Text(user['email'],
+                          alignment: Alignment.center,
+                          child: Text(
+                            initials,
                             style: TextStyle(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .inversePrimary,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.center),
-                      ),
-                      if (_isAdmin) ...[
-                        const SizedBox(height: 25),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 15, vertical: 8),
-                          decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.onPrimary,
-                              borderRadius: BorderRadius.circular(15)),
-                          child: const Text(
-                            "Admin",
-                            style: TextStyle(
-                              fontSize: 18,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSecondaryContainer,
                               fontWeight: FontWeight.bold,
+                              fontSize: 48,
                             ),
                           ),
                         ),
+                        const SizedBox(height: 25),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            user['username'],
+                            style: const TextStyle(
+                                fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(user['email'],
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .colorScheme
+                                      .inversePrimary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.center),
+                        ),
+                        if (_isAdmin) ...[
+                          const SizedBox(height: 25),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15, vertical: 8),
+                            decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                borderRadius: BorderRadius.circular(15)),
+                            child: const Text(
+                              "Admin",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                        const SizedBox(height: 25),
                       ],
-                      const SizedBox(height: 25),
-                    ],
+                    ),
                   ),
                 ),
               );

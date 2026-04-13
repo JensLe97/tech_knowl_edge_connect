@@ -109,59 +109,67 @@ class DetailedLearningMaterialTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                GestureDetector(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => PostProfilePage(
-                        username: material.userName,
-                        uid: material.userId,
-                      ),
-                    ));
-                  },
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: cs.secondaryContainer,
-                          shape: BoxShape.circle,
+                Expanded(
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => PostProfilePage(
+                          username: material.userName,
+                          uid: material.userId,
                         ),
-                        alignment: Alignment.center,
-                        child: Text(
-                          initials,
-                          style: TextStyle(
-                            color: cs.onSecondaryContainer,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
+                      ));
+                    },
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: cs.secondaryContainer,
+                            shape: BoxShape.circle,
                           ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            material.userName,
+                          alignment: Alignment.center,
+                          child: Text(
+                            initials,
                             style: TextStyle(
-                              color: cs.onSurface,
+                              color: cs.onSecondaryContainer,
                               fontWeight: FontWeight.bold,
                               fontSize: 14,
                             ),
                           ),
-                          Text(
-                            _formatTimeAgo(material.createdAt.toDate()),
-                            style: TextStyle(
-                              color: cs.onSurfaceVariant,
-                              fontSize: 12,
-                            ),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                material.userName,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  color: cs.onSurface,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              Text(
+                                _formatTimeAgo(material.createdAt.toDate()),
+                                style: TextStyle(
+                                  color: cs.onSurfaceVariant,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
+                const SizedBox(width: 8),
                 Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
@@ -246,6 +254,8 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                                 vertical: 20, horizontal: 16),
                             child: Text(
                               material.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,
@@ -270,6 +280,8 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                             const SizedBox(height: 16),
                             Text(
                               material.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 18,

@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:tech_knowl_edge_connect/components/dialogs/menu_bottom_sheet.dart';
 import 'package:tech_knowl_edge_connect/services/auth/admin_claims_service.dart';
-// import 'package:tech_knowl_edge_connect/components/buttons/text_icon_button.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,16 +14,16 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  User? currentUser = FirebaseAuth.instance.currentUser;
   bool _isAdmin = false;
   final AdminClaimsService _claimsService = AdminClaimsService();
   StreamSubscription<User?>? _idTokenSub;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
-    return await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(currentUser!.uid)
-        .get();
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw StateError('Nicht eingeloggt');
+    }
+    return FirebaseFirestore.instance.collection('Users').doc(user.uid).get();
   }
 
   @override
@@ -56,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    final firebaseUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -81,108 +81,112 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 icon: const Icon(Icons.more_horiz)),
           ]),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          future: getUserDetails(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
-            } else if (snapshot.hasData) {
-              Map<String, dynamic>? user = snapshot.data!.data();
-              if (user == null) {
-                return const Center(
-                  child: Text("Profil wird eingerichtet..."),
-                );
-              }
-              String username = user['username'];
-              final parts = username.trim().split(RegExp(r'\s+'));
-              String initials = parts.isEmpty || parts[0].isEmpty
-                  ? '?'
-                  : parts.length > 1
-                      ? (parts[0][0] + parts.last[0]).toUpperCase()
-                      : parts[0].length > 1
-                          ? parts[0].substring(0, 2).toUpperCase()
-                          : parts[0].toUpperCase();
+      body: firebaseUser == null
+          ? const Center(child: Text('Nicht eingeloggt.'))
+          : FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              future: getUserDetails(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  Map<String, dynamic>? user = snapshot.data!.data();
+                  if (user == null) {
+                    return const Center(
+                      child: Text("Profil wird eingerichtet..."),
+                    );
+                  }
+                  String username = user['username'];
+                  final parts = username.trim().split(RegExp(r'\s+'));
+                  String initials = parts.isEmpty || parts[0].isEmpty
+                      ? '?'
+                      : parts.length > 1
+                          ? (parts[0][0] + parts.last[0]).toUpperCase()
+                          : parts[0].length > 1
+                              ? parts[0].substring(0, 2).toUpperCase()
+                              : parts[0].toUpperCase();
 
-              return SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Center(
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 50),
-                        Container(
-                          width: 120,
-                          height: 120,
-                          decoration: BoxDecoration(
-                            color: Theme.of(context)
-                                .colorScheme
-                                .secondaryContainer,
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            initials,
-                            style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSecondaryContainer,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 48,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(
-                            user['username'],
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: Text(user['email'],
-                              style: TextStyle(
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Center(
+                        child: Column(
+                          children: [
+                            const SizedBox(height: 50),
+                            Container(
+                              width: 120,
+                              height: 120,
+                              decoration: BoxDecoration(
+                                color: Theme.of(context)
+                                    .colorScheme
+                                    .secondaryContainer,
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              alignment: Alignment.center,
+                              child: Text(
+                                initials,
+                                style: TextStyle(
                                   color: Theme.of(context)
                                       .colorScheme
-                                      .inversePrimary,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold),
-                              textAlign: TextAlign.center),
-                        ),
-                        if (_isAdmin) ...[
-                          const SizedBox(height: 25),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 15, vertical: 8),
-                            decoration: BoxDecoration(
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: const Text(
-                              "Admin",
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                      .onSecondaryContainer,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 48,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                        const SizedBox(height: 25),
-                      ],
+                            const SizedBox(height: 25),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(
+                                user['username'],
+                                style: const TextStyle(
+                                    fontSize: 24, fontWeight: FontWeight.bold),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            FittedBox(
+                              fit: BoxFit.scaleDown,
+                              child: Text(user['email'],
+                                  style: TextStyle(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .inversePrimary,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center),
+                            ),
+                            if (_isAdmin) ...[
+                              const SizedBox(height: 25),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 15, vertical: 8),
+                                decoration: BoxDecoration(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                    borderRadius: BorderRadius.circular(15)),
+                                child: const Text(
+                                  "Admin",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                            const SizedBox(height: 25),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              );
-            } else {
-              return const Text("Keine Daten für diesen Benutzer vorhanden.");
-            }
-          }),
+                  );
+                } else {
+                  return const Text(
+                      "Keine Daten für diesen Benutzer vorhanden.");
+                }
+              }),
     );
   }
 }

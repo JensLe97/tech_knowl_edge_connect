@@ -14,13 +14,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  User? currentUser = FirebaseAuth.instance.currentUser;
-
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
-    return await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(currentUser!.uid)
-        .get();
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String uid) {
+    return FirebaseFirestore.instance.collection('Users').doc(uid).get();
   }
 
   @override
@@ -36,121 +31,148 @@ class _AccountPageState extends State<AccountPage> {
         title: const Text('Account'),
         centerTitle: true,
       ),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          future: getUserDetails(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
-            } else if (snapshot.hasData) {
-              Map<String, dynamic>? user = snapshot.data!.data();
-              return SingleChildScrollView(
-                child: Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      ListTile(
-                        enabled: false,
-                        leading: FaIcon(FontAwesomeIcons.solidUser,
-                            color: Theme.of(context)
-                                .textTheme
-                                .displayLarge!
-                                .color),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Benutzername',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge!
-                                      .color),
-                            ),
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  user!['username'],
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                ),
+      body: StreamBuilder<User?>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, authSnapshot) {
+          if (authSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          final firebaseUser = authSnapshot.data;
+          if (firebaseUser == null) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.person_outline,
+                      size: 64, color: Theme.of(context).colorScheme.onSurface),
+                  const SizedBox(height: 12),
+                  const Text('Nicht eingeloggt.'),
+                ],
+              ),
+            );
+          }
+
+          return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            future: getUserDetails(firebaseUser.uid),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.hasError) {
+                return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
+              } else if (snapshot.hasData) {
+                final userData = snapshot.data!.data();
+                return SingleChildScrollView(
+                  child: Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        ListTile(
+                          enabled: false,
+                          leading: FaIcon(FontAwesomeIcons.solidUser,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Benutzername',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color),
                               ),
-                            )
-                          ],
-                        ),
-                      ),
-                      ListTile(
-                        enabled: false,
-                        leading: Icon(Icons.email,
-                            color: Theme.of(context)
-                                .textTheme
-                                .displayLarge!
-                                .color),
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'Email',
-                              style: TextStyle(
-                                  color: Theme.of(context)
-                                      .textTheme
-                                      .displayLarge!
-                                      .color),
-                            ),
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: FittedBox(
-                                fit: BoxFit.scaleDown,
-                                child: Text(
-                                  user['email'],
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    userData?['username'] ?? '',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
+                                  ),
                                 ),
-                              ),
-                            )
-                          ],
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.password),
-                        trailing: Icon(Icons.chevron_right,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant),
-                        title: const Text('Passwort ändern'),
-                        onTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const ChangePasswordPage(),
-                            ),
-                          );
-                        },
-                      ),
-                      ListTile(
-                        leading: Icon(Icons.delete_outline,
-                            color: Theme.of(context).colorScheme.error),
-                        title: Text('Account löschen',
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.error,
-                                fontWeight: FontWeight.bold)),
-                        onTap: confirmDeleteUser,
-                      ),
-                    ],
+                        ListTile(
+                          enabled: false,
+                          leading: Icon(Icons.email,
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .displayLarge!
+                                  .color),
+                          title: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                'Email',
+                                style: TextStyle(
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .displayLarge!
+                                        .color),
+                              ),
+                              const SizedBox(width: 8),
+                              Flexible(
+                                child: FittedBox(
+                                  fit: BoxFit.scaleDown,
+                                  child: Text(
+                                    userData?['email'] ?? '',
+                                    style: TextStyle(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .primary),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        ListTile(
+                          leading: const Icon(Icons.password),
+                          trailing: Icon(Icons.chevron_right,
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .onSurfaceVariant),
+                          title: const Text('Passwort ändern'),
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    const ChangePasswordPage(),
+                              ),
+                            );
+                          },
+                        ),
+                        ListTile(
+                          leading: Icon(Icons.delete_outline,
+                              color: Theme.of(context).colorScheme.error),
+                          title: Text('Account löschen',
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.error,
+                                  fontWeight: FontWeight.bold)),
+                          onTap: confirmDeleteUser,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            } else {
-              return const Text("Keine Daten für diesen Benutzer vorhanden.");
-            }
-          }),
+                );
+              } else {
+                return const Text("Keine Daten für diesen Benutzer vorhanden.");
+              }
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -162,8 +184,11 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Future deleteUser() async {
+    if (!mounted) return;
+
     showDialog(
       context: context,
+      barrierDismissible: false,
       builder: (context) {
         return const Center(
           child: CircularProgressIndicator(),
@@ -172,29 +197,37 @@ class _AccountPageState extends State<AccountPage> {
     );
 
     try {
-      await FirebaseFirestore.instance
-          .collection("Users")
-          .doc(currentUser!.uid)
-          .delete();
-      await currentUser!.delete();
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        if (mounted) Navigator.of(context).pop();
+        if (mounted) showErrorMessage(context, 'Nicht eingeloggt.');
+        return;
+      }
 
-      if (mounted) Navigator.of(context).pop();
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(user.uid)
+          .delete();
+      await user.delete();
+
+      if (!mounted) return; // avoid using context if widget was disposed
+
+      Navigator.of(context).pop();
+
+      if (!mounted) return;
 
       showSuccessMessage(
           'Dein Account und deine Daten wurden erfolgreich gelöscht.');
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
+      if (!mounted) return;
       if (e.code == 'requires-recent-login') {
-        if (mounted) {
-          showErrorMessage(context,
-              'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
-        }
+        showErrorMessage(context,
+            'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
       } else if (e.code == 'invalid-email') {
-        if (mounted) showErrorMessage(context, 'E-Mail Adresse ungültig!');
+        showErrorMessage(context, 'E-Mail Adresse ungültig!');
       } else if (e.code == 'user-not-found') {
-        if (mounted) {
-          showErrorMessage(context, 'E-Mail Adresse nicht gefunden!');
-        }
+        showErrorMessage(context, 'E-Mail Adresse nicht gefunden!');
       }
     }
   }
@@ -206,8 +239,8 @@ class _AccountPageState extends State<AccountPage> {
   ) {
     showDialog(
         context: context,
-        builder: (BuildContext context) {
-          final cs = Theme.of(context).colorScheme;
+        builder: (BuildContext dialogContext) {
+          final cs = Theme.of(dialogContext).colorScheme;
           return AlertDialog(
             icon: Container(
               padding: const EdgeInsets.all(16),
@@ -238,11 +271,14 @@ class _AccountPageState extends State<AccountPage> {
                 children: [
                   DialogButton(
                       onTap: () {
-                        Navigator.pop(context);
+                        Navigator.pop(dialogContext);
                       },
                       text: "Nein"),
                   DialogButton(
-                    onTap: onConfirmTap,
+                    onTap: () {
+                      Navigator.pop(dialogContext);
+                      Future.microtask(() => onConfirmTap());
+                    },
                     text: "Ja",
                     isDestructive: true,
                   ),
@@ -254,15 +290,16 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void showSuccessMessage(String message) {
+    if (!mounted) return;
     showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (BuildContext context) {
+      builder: (BuildContext dialogContext) {
         Future.delayed(const Duration(seconds: 3), () {
-          if (context.mounted) Navigator.of(context).pop();
-          if (context.mounted) Navigator.of(context).pop();
-          if (context.mounted) Navigator.of(context).pop();
-          if (context.mounted) Navigator.of(context).pop();
+          if (context.mounted) Navigator.of(dialogContext).pop();
+          if (context.mounted) Navigator.of(dialogContext).pop();
+          if (context.mounted) Navigator.of(dialogContext).pop();
+          if (context.mounted) Navigator.of(dialogContext).pop();
         });
         return AlertDialog(
           title: Center(

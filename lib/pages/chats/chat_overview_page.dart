@@ -95,28 +95,31 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 .toList();
 
             if (chats.every((element) => element is SizedBox)) {
-              return Center(
+              return SizedBox(
+                height: MediaQuery.of(context).size.height * 0.5,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 40.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Du hast noch keine Chats.",
-                          style: TextStyle(fontSize: 16),
-                          textAlign: TextAlign.center),
-                      const SizedBox(height: 8),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Nutze das ",
-                              style: TextStyle(fontSize: 16)),
-                          Icon(Icons.add,
-                              color: Theme.of(context).colorScheme.primary),
-                          const Text("-Symbol oben rechts.",
-                              style: TextStyle(fontSize: 16)),
-                        ],
-                      ),
-                    ],
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("Du hast noch keine Chats.",
+                            style: TextStyle(fontSize: 16),
+                            textAlign: TextAlign.center),
+                        const SizedBox(height: 8),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text("Nutze das ",
+                                style: TextStyle(fontSize: 16)),
+                            Icon(Icons.add,
+                                color: Theme.of(context).colorScheme.primary),
+                            const Text("-Symbol oben rechts.",
+                                style: TextStyle(fontSize: 16)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               );

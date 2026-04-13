@@ -57,10 +57,8 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                 return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Fehler: ${snapshot.error}');
-              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return const SizedBox.shrink();
               }
-              final folders = snapshot.data!;
+              final folders = snapshot.data ?? [];
               return GridView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

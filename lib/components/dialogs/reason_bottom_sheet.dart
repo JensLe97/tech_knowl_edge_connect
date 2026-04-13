@@ -26,7 +26,7 @@ class ReportReasonBottomSheet extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
           child: Text(
-            "Wir informieren das Konto nicht darüber, wer es gemeldet hat.",
+            "Wir informieren den Benutzer nicht darüber, wer ihn gemeldet hat.",
             style: TextStyle(
                 fontSize: 16,
                 color: Theme.of(context)

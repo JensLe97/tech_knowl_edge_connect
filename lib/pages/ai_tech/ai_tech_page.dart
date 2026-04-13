@@ -812,12 +812,8 @@ class _AiTechPageState extends State<AiTechPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(_sessionTitle.isNotEmpty ? _sessionTitle : 'Lernreise'),
-          ],
+        title: Text(
+          _sessionTitle.isNotEmpty ? _sessionTitle : 'Lernsession',
         ),
         centerTitle: true,
         actions: [

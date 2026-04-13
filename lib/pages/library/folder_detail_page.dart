@@ -277,6 +277,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(widget.folder.name),
+        centerTitle: true,
         actions: [
           PopupMenuButton<String>(
             icon: const Icon(Icons.add),
@@ -418,61 +419,64 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Ideensammlung",
-                                style: TextStyle(
-                                  color: colorScheme.onSurfaceVariant,
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                children: [
-                                  Text(
-                                    "${materials.length} ${materials.length == 1 ? 'Datei' : 'Dateien'}",
-                                    style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.bold,
-                                      color: colorScheme.onSurface,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
-                                    decoration: BoxDecoration(
-                                      color: colorScheme.secondaryContainer,
-                                      borderRadius: BorderRadius.circular(6),
-                                    ),
-                                    child: Text(
-                                      _isPublic ? 'Öffentlich' : 'Privat',
-                                      style: TextStyle(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.bold,
-                                        color: colorScheme.onSecondaryContainer,
-                                        letterSpacing: 1.2,
-                                      ),
-                                      maxLines: 1,
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (widget.folder.description.isNotEmpty) ...[
-                                const SizedBox(height: 8),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
                                 Text(
-                                  widget.folder.description,
+                                  "Ideensammlung",
                                   style: TextStyle(
-                                    fontSize: 14,
                                     color: colorScheme.onSurfaceVariant,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                              ]
-                            ],
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    Text(
+                                      "${materials.length} ${materials.length == 1 ? 'Datei' : 'Dateien'}",
+                                      style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.bold,
+                                        color: colorScheme.onSurface,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8, vertical: 4),
+                                      decoration: BoxDecoration(
+                                        color: colorScheme.secondaryContainer,
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: Text(
+                                        _isPublic ? 'Öffentlich' : 'Privat',
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              colorScheme.onSecondaryContainer,
+                                          letterSpacing: 1.2,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                if (widget.folder.description.isNotEmpty) ...[
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    widget.folder.description,
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ]
+                              ],
+                            ),
                           ),
                         ],
                       ),

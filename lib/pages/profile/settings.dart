@@ -40,13 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Einstellungen'),
-          ],
-        ),
+        title: const Text('Einstellungen'),
         centerTitle: true,
       ),
       body: Column(
@@ -56,7 +50,7 @@ class _SettingsPageState extends State<SettingsPage> {
             leading: const Icon(Icons.account_circle),
             trailing: Icon(Icons.chevron_right,
                 color: Theme.of(context).colorScheme.onSurfaceVariant),
-            title: const Text('Konto'),
+            title: const Text('Account'),
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(

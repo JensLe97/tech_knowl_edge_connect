@@ -33,13 +33,7 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-        title: const Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text('Konto'),
-          ],
-        ),
+        title: const Text('Account'),
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(

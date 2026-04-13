@@ -48,34 +48,40 @@ class SubjectTile extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: subject.color.withAlpha(26),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: colorScheme.outlineVariant.withAlpha(51),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 40,
+                          height: 40,
+                          decoration: BoxDecoration(
+                            color: subject.color.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: colorScheme.outlineVariant.withAlpha(51),
+                            ),
+                          ),
+                          child: Icon(
+                            subject.iconData,
+                            color: subject.color,
+                            size: 24,
                           ),
                         ),
-                        child: Icon(
-                          subject.iconData,
-                          color: subject.color,
-                          size: 24,
+                        const SizedBox(width: 20),
+                        Expanded(
+                          child: Text(
+                            subject.name,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: colorScheme.onSurface,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 20),
-                      Text(
-                        subject.name,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: colorScheme.onSurface,
-                        ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                   Icon(
                     Icons.chevron_right,

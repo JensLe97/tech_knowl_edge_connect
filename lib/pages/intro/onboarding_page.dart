@@ -80,8 +80,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 onTap: leaveOnBoarding,
               ),
             IntroButton(
-              key: const ValueKey(
-                  'onboarding_next'), // Using same key as original 'Weiter'
+              key: const ValueKey('onboarding_next'),
               text: onLastPage ? "Loslegen!" : "Weiter",
               isPrimary: true,
               onTap: () {

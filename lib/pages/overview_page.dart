@@ -34,11 +34,13 @@ class _OverviewPageState extends State<OverviewPage> {
       {required int index,
       required IconData icon,
       required IconData activeIcon,
-      required String label}) {
+      required String label,
+      Key? itemKey}) {
     final isSelected = _currentIndex == index;
     final colorScheme = Theme.of(context).colorScheme;
 
     return AnimatedContainer(
+        key: itemKey,
         duration: const Duration(milliseconds: 150),
         decoration: BoxDecoration(
           color: isSelected
@@ -124,27 +126,32 @@ class _OverviewPageState extends State<OverviewPage> {
                       index: 0,
                       icon: Icons.home_outlined,
                       activeIcon: Icons.home,
-                      label: 'Home'),
+                      label: 'Home',
+                      itemKey: const ValueKey('tab_home')),
                   _buildNavItem(context,
                       index: 1,
                       icon: Icons.search_outlined,
                       activeIcon: Icons.search,
-                      label: 'Suche'),
+                      label: 'Suche',
+                      itemKey: const ValueKey('tab_search')),
                   _buildNavItem(context,
                       index: 2,
                       icon: Icons.dynamic_feed_outlined,
                       activeIcon: Icons.dynamic_feed,
-                      label: 'Feed'),
+                      label: 'Feed',
+                      itemKey: const ValueKey('tab_feed')),
                   _buildNavItem(context,
                       index: 3,
                       icon: Icons.chat_bubble_outline,
                       activeIcon: Icons.chat,
-                      label: 'Chats'),
+                      label: 'Chats',
+                      itemKey: const ValueKey('tab_chats')),
                   _buildNavItem(context,
                       index: 4,
                       icon: Icons.person_outline,
                       activeIcon: Icons.person,
-                      label: 'Profil'),
+                      label: 'Profil',
+                      itemKey: const ValueKey('tab_profile')),
                 ],
               ),
             ),

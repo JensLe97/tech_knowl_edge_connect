@@ -1,8 +1,11 @@
 import 'dart:io';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:tech_knowl_edge_connect/firebase_options.dart';
 
 import 'package:tech_knowl_edge_connect/main.dart' as app;
 
@@ -10,6 +13,21 @@ void main() {
   final binding = IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Capture App Screenshots', (WidgetTester tester) async {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+
+    try {
+      if (FirebaseAuth.instance.currentUser != null) {
+        await FirebaseAuth.instance.signOut();
+        debugPrint('Signed out successfully before starting the app.');
+      } else {
+        debugPrint('No user was signed in before starting the app.');
+      }
+    } catch (e) {
+      debugPrint('Sign out error: $e');
+    }
+
     app.main();
     // Track whether we've converted the Android Flutter surface already.
     bool androidSurfaceConverted = false;
@@ -110,10 +128,9 @@ void main() {
     if (onboardingFinder.evaluate().isNotEmpty) {
       await captureScreen('onboarding', settle: false, preDelaySeconds: 1);
 
-      // Prefer actions in this order: skip, start, next. Try up to N attempts.
+      // Prefer actions in this order: skip, next. Try up to N attempts.
       final actionKeys = <Finder>[
         find.byKey(const ValueKey('onboarding_skip')),
-        find.byKey(const ValueKey('onboarding_start')),
         find.byKey(const ValueKey('onboarding_next')),
       ];
 
@@ -195,7 +212,7 @@ void main() {
     final hasOverview = overviewFinder.evaluate().isNotEmpty;
     if (hasOverview) {
       await tester.pumpAndSettle();
-      await captureScreen('home_screen', settle: true, preDelaySeconds: 0);
+      await captureScreen('home_screen', settle: true, preDelaySeconds: 2);
     }
 
     // Navigate tabs and capture screens if overview is present
@@ -384,7 +401,7 @@ void main() {
               await tester.pumpAndSettle();
 
               await captureScreen('free_text_cloze_screen',
-                  settle: true, preDelaySeconds: 0);
+                  settle: true, preDelaySeconds: 2);
             }
           }
         }

@@ -99,9 +99,6 @@ class _ChatPageState extends State<ChatPage> {
     final FirebaseStorage firebaseStorage = FirebaseStorage.instance;
 
     ImagePicker imagePicker = ImagePicker();
-    // await Permission.photos.request();
-
-    // var permissionStatus = await Permission.photos.status;
 
     if (true) {
       XFile? image = await imagePicker.pickImage(source: imageSource);
@@ -170,41 +167,45 @@ class _ChatPageState extends State<ChatPage> {
                   },
                   icon: const Icon(Icons.more_horiz)),
             ]),
-        body: Stack(
-          children: [
-            // --- Chat Section ---
-            Positioned.fill(child: _buildMessageList()),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.bottomCenter,
-                    end: Alignment.topCenter,
-                    colors: [
-                      Theme.of(context).colorScheme.surface,
-                      Theme.of(context).colorScheme.surface.withAlpha(230),
-                      Theme.of(context).colorScheme.surface.withAlpha(0),
-                    ],
+        body: SafeArea(
+          bottom: false,
+          child: SizedBox.expand(
+            child: Stack(
+              children: [
+                Positioned.fill(child: _buildMessageList()),
+                Positioned(
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        end: Alignment.topCenter,
+                        colors: [
+                          Theme.of(context).colorScheme.surface,
+                          Theme.of(context).colorScheme.surface.withAlpha(230),
+                          Theme.of(context).colorScheme.surface.withAlpha(0),
+                        ],
+                      ),
+                    ),
+                    padding: EdgeInsets.fromLTRB(
+                      10,
+                      24,
+                      10,
+                      MediaQuery.of(context).padding.bottom + 16,
+                    ),
+                    child: blockedUsers.contains(widget.receiverUid)
+                        ? BlockedField(
+                            toggleBlockUser: toggleBlockUser,
+                            isBlocked: true,
+                          )
+                        : _buildMessageInput(),
                   ),
                 ),
-                padding: EdgeInsets.fromLTRB(
-                  10,
-                  24,
-                  10,
-                  MediaQuery.of(context).padding.bottom + 16,
-                ),
-                child: blockedUsers.contains(widget.receiverUid)
-                    ? BlockedField(
-                        toggleBlockUser: toggleBlockUser,
-                        isBlocked: true,
-                      )
-                    : _buildMessageInput(),
-              ),
+              ],
             ),
-          ],
+          ),
         ));
   }
 

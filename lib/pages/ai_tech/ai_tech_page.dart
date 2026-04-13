@@ -545,7 +545,7 @@ class _AiTechPageState extends State<AiTechPage> {
               : null;
           final bitesDocs = bitesSnapshot?.docs ?? <QueryDocumentSnapshot>[];
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 0),
+            margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
             decoration: BoxDecoration(
               color: Theme.of(context).brightness == Brightness.light
                   ? Theme.of(context).colorScheme.surfaceContainerLowest
@@ -625,7 +625,7 @@ class _AiTechPageState extends State<AiTechPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
+                          horizontal: 12.0, vertical: 4.0),
                       child: StreamBuilder<QuerySnapshot>(
                         stream: _biteStreams.putIfAbsent(journeyId,
                             () => _service.streamLearningBites(journeyId)),
@@ -743,7 +743,7 @@ class _AiTechPageState extends State<AiTechPage> {
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -797,9 +797,10 @@ class _AiTechPageState extends State<AiTechPage> {
       controller: _controller,
       hintText: 'Was möchtest du lernen?',
       onSend: () {
+        final text = _controller.text;
         final files = List<PlatformFile>.of(_pickedFiles);
         setState(() => _pickedFiles = []);
-        _sendMessage(_controller.text, files: files);
+        _sendMessage(text, files: files);
       },
       onAttachmentTap: _pickFiles,
       pickedFiles: _pickedFiles,
@@ -891,36 +892,41 @@ class _AiTechPageState extends State<AiTechPage> {
           ),
         ],
       ),
-      body: Stack(
-        children: [
-          // --- Chat Section ---
-          Positioned.fill(child: _buildMessageList()),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.bottomCenter,
-                  end: Alignment.topCenter,
-                  colors: [
-                    Theme.of(context).colorScheme.surface,
-                    Theme.of(context).colorScheme.surface.withAlpha(230),
-                    Theme.of(context).colorScheme.surface.withAlpha(0),
-                  ],
+      body: SafeArea(
+        bottom: false,
+        child: SizedBox.expand(
+          child: Stack(
+            children: [
+              // --- Chat Section ---
+              Positioned.fill(child: _buildMessageList()),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Theme.of(context).colorScheme.surface,
+                        Theme.of(context).colorScheme.surface.withAlpha(230),
+                        Theme.of(context).colorScheme.surface.withAlpha(0),
+                      ],
+                    ),
+                  ),
+                  padding: EdgeInsets.fromLTRB(
+                    10,
+                    24,
+                    10,
+                    MediaQuery.of(context).padding.bottom + 16,
+                  ),
+                  child: _buildMessageInput(),
                 ),
               ),
-              padding: EdgeInsets.fromLTRB(
-                10,
-                24,
-                10,
-                MediaQuery.of(context).padding.bottom + 16,
-              ),
-              child: _buildMessageInput(),
-            ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

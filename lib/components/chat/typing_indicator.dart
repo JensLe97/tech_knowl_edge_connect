@@ -59,44 +59,44 @@ class _TypingIndicatorState extends State<TypingIndicator>
     final isMe = widget.isMe;
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: isMe ? 40 : 0,
-        right: isMe ? 0 : 40,
-      ),
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          color: isMe
-              ? Theme.of(context).colorScheme.secondary.withAlpha(120)
-              : Theme.of(context).brightness == Brightness.light
-                  ? Theme.of(context).colorScheme.surfaceContainerLowest
-                  : Theme.of(context).colorScheme.secondary.withAlpha(40),
-          border: Border.all(
-            color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withAlpha(isMe ? 5 : 12),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
+      child: Align(
+        alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          decoration: BoxDecoration(
+            color: isMe
+                ? Theme.of(context).colorScheme.secondary.withAlpha(120)
+                : Theme.of(context).brightness == Brightness.light
+                    ? Theme.of(context).colorScheme.surfaceContainerLowest
+                    : Theme.of(context).colorScheme.secondary.withAlpha(40),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
             ),
-          ],
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(isMe ? 16 : 2),
-            topRight: Radius.circular(isMe ? 2 : 16),
-            bottomLeft: const Radius.circular(16),
-            bottomRight: const Radius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withAlpha(isMe ? 5 : 12),
+                blurRadius: 4,
+                offset: const Offset(0, 2),
+              ),
+            ],
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(isMe ? 16 : 2),
+              topRight: Radius.circular(isMe ? 2 : 16),
+              bottomLeft: const Radius.circular(16),
+              bottomRight: const Radius.circular(16),
+            ),
           ),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            _dot(0.0),
-            const SizedBox(width: 5),
-            _dot(0.2),
-            const SizedBox(width: 5),
-            _dot(0.4),
-          ],
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _dot(0.0),
+              const SizedBox(width: 5),
+              _dot(0.2),
+              const SizedBox(width: 5),
+              _dot(0.4),
+            ],
+          ),
         ),
       ),
     );

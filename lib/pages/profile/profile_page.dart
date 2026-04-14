@@ -18,12 +18,15 @@ class _ProfilePageState extends State<ProfilePage> {
   final AdminClaimsService _claimsService = AdminClaimsService();
   StreamSubscription<User?>? _idTokenSub;
 
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() {
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       throw StateError('Nicht eingeloggt');
     }
-    return FirebaseFirestore.instance.collection('Users').doc(user.uid).get();
+    return FirebaseFirestore.instance
+        .collection('Users')
+        .doc(user.uid)
+        .snapshots();
   }
 
   @override
@@ -83,8 +86,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ]),
       body: firebaseUser == null
           ? const Center(child: Text('Nicht eingeloggt.'))
-          : FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-              future: getUserDetails(),
+          : StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+              stream: getUserDetails(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(

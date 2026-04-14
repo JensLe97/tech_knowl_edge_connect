@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
-  signInWithGoogle() async {
-    final GoogleSignInAccount? gUser;
+  Future<UserCredential?> signInWithGoogle() async {
+    GoogleSignInAccount? gUser;
     try {
       gUser = await GoogleSignIn().signIn();
     } catch (e) {
@@ -21,27 +21,27 @@ class AuthService {
     final credential = GoogleAuthProvider.credential(
         accessToken: gAuth.accessToken, idToken: gAuth.idToken);
 
-    UserCredential userCredential =
+    final UserCredential userCredential =
         await FirebaseAuth.instance.signInWithCredential(credential);
 
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(userCredential.user!.uid)
-        .get()
-        .then((data) {
-      if (!data.exists) {
-        createUserDocument(gUser, userCredential.user!.uid);
+    try {
+      final docRef = FirebaseFirestore.instance
+          .collection('Users')
+          .doc(userCredential.user!.uid);
+      final snapshot = await docRef.get();
+      if (!snapshot.exists) {
+        await createUserDocument(gUser, userCredential.user!.uid);
       }
-    });
+    } catch (_) {}
 
     return userCredential;
   }
 
-  signInWithApple() async {
+  Future<UserCredential?> signInWithApple() async {
     final appleProvider = AppleAuthProvider()
       ..addScope('email')
       ..addScope('name');
-    final UserCredential userCredential;
+    UserCredential userCredential;
     try {
       if (kIsWeb) {
         userCredential =
@@ -54,18 +54,16 @@ class AuthService {
       return null;
     }
 
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(userCredential.user!.uid)
-        .get()
-        .then((data) {
-      if (!data.exists) {
-        createAppleUserDocument(
-            userCredential.user!.email!,
-            userCredential.user!.displayName ?? "Anonymer User",
-            userCredential.user!.uid);
+    try {
+      final uid = userCredential.user!.uid;
+      final docRef = FirebaseFirestore.instance.collection('Users').doc(uid);
+      final snapshot = await docRef.get();
+      if (!snapshot.exists) {
+        final email = userCredential.user?.email ?? '';
+        final displayName = userCredential.user?.displayName ?? 'Anonymer User';
+        await createAppleUserDocument(email, displayName, uid);
       }
-    });
+    } catch (_) {}
 
     return userCredential;
   }

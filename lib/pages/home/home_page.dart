@@ -39,6 +39,7 @@ class _HomePageState extends State<HomePage> {
   Map<String, dynamic>? _userData;
   StreamSubscription<List<UnitProgress>>? _unitsSub;
   StreamSubscription<List<Subject>>? _subjectsSub;
+  StreamSubscription<DocumentSnapshot<Map<String, dynamic>>>? _userDocSub;
   List<UnitProgress> _units = [];
   bool _isLoadingUnits = true;
   final Map<String, Color> _subjectColors = {};
@@ -78,11 +79,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _loadUserData(String uid) async {
-    try {
-      final doc =
-          await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+    _userDocSub?.cancel();
+    _userDocSub = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .snapshots()
+        .listen((doc) {
       _safeSetState(() => _userData = doc.data());
-    } catch (_) {}
+    }, onError: (_) {
+      _safeSetState(() => _userData = null);
+    });
   }
 
   void _subscribeUnits() {
@@ -110,6 +116,7 @@ class _HomePageState extends State<HomePage> {
   void dispose() {
     _unitsSub?.cancel();
     _subjectsSub?.cancel();
+    _userDocSub?.cancel();
     _isDisposed = true;
     super.dispose();
   }

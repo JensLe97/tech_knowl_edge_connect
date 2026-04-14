@@ -703,7 +703,6 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                 ],
                                               ),
                                             ),
-                                            const SizedBox(height: 8),
                                             StreamBuilder<List<Unit>>(
                                               stream: _contentService.getUnits(
                                                   currentSubject.id,
@@ -794,6 +793,7 @@ class _SubjectOverviewPageState extends State<SubjectOverviewPage> {
                                                 );
                                               },
                                             ),
+                                            const SizedBox(height: 8),
                                           ],
                                         );
                                       },

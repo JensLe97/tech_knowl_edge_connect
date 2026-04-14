@@ -114,7 +114,7 @@ class _AccountPageState extends State<AccountPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Email',
+                                'E-Mail',
                                 style: TextStyle(
                                     color: Theme.of(context)
                                         .textTheme

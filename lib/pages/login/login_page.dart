@@ -38,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
       backgroundColor: cs.surface,
       body: AuthBackground(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

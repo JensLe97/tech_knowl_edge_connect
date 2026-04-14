@@ -28,58 +28,63 @@ class _CreateFolderPageState extends State<CreateFolderPage> {
         title: const Text('Neuen Ordner erstellen'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(25),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              FolderTextField(
-                controller: _nameController,
-                hintText: 'Titel',
-                validator: (value) => value == null || value.isEmpty
-                    ? 'Bitte Titel des Ordners eingeben'
-                    : null,
-              ),
-              const SizedBox(height: 10),
-              FolderTextField(
-                controller: _descController,
-                hintText: 'Beschreibung',
-              ),
-              const SizedBox(height: 10),
-              Row(
-                children: [
-                  const Text('Öffentlich', style: TextStyle(fontSize: 16)),
-                  const Spacer(),
-                  Switch(
-                    value: _isPublic,
-                    onChanged: (val) => setState(() => _isPublic = val),
-                  ),
-                ],
-              ),
-              const Spacer(),
-              SubmitButton(
-                text: 'Erstellen',
-                onTap: () {
-                  if (_formKey.currentState!.validate()) {
-                    final now = DateTime.now();
-                    final folder = IdeaFolder(
-                      id: now.millisecondsSinceEpoch.toString(),
-                      name: _nameController.text,
-                      description: _descController.text,
-                      ideaPostIds: [],
-                      timestamp: Timestamp.fromDate(now),
-                      userId: userId!,
-                      isPublic: _isPublic,
-                    );
-                    widget.onCreate(folder);
-                    Navigator.of(context).pop();
-                  }
-                },
-              ),
-              const SizedBox(height: 20),
-            ],
+      body: SafeArea(
+        bottom: false,
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FolderTextField(
+                  controller: _nameController,
+                  hintText: 'Titel',
+                  validator: (value) => value == null || value.isEmpty
+                      ? 'Bitte Titel des Ordners eingeben'
+                      : null,
+                ),
+                const SizedBox(height: 10),
+                FolderTextField(
+                  controller: _descController,
+                  hintText: 'Beschreibung',
+                ),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    const Text('Öffentlich',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w900)),
+                    const Spacer(),
+                    Switch(
+                      value: _isPublic,
+                      onChanged: (val) => setState(() => _isPublic = val),
+                    ),
+                  ],
+                ),
+                const Spacer(),
+                SubmitButton(
+                  text: 'Erstellen',
+                  onTap: () {
+                    if (_formKey.currentState!.validate()) {
+                      final now = DateTime.now();
+                      final folder = IdeaFolder(
+                        id: now.millisecondsSinceEpoch.toString(),
+                        name: _nameController.text,
+                        description: _descController.text,
+                        ideaPostIds: [],
+                        timestamp: Timestamp.fromDate(now),
+                        userId: userId!,
+                        isPublic: _isPublic,
+                      );
+                      widget.onCreate(folder);
+                      Navigator.of(context).pop();
+                    }
+                  },
+                ),
+                const SizedBox(height: 20),
+              ],
+            ),
           ),
         ),
       ),

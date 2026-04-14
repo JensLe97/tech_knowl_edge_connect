@@ -38,6 +38,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       ),
       body: AuthBackground(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

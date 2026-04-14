@@ -16,8 +16,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   final oldPasswordController = TextEditingController();
   final newPasswordController = TextEditingController();
   final confirmNewPasswordController = TextEditingController();
+  bool _obscureOld = true;
+  bool _obscureNew = true;
+  bool _obscureConfirm = true;
 
   User? currentUser = FirebaseAuth.instance.currentUser;
+  late Future<DocumentSnapshot<Map<String, dynamic>>> _userDetailsFuture;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
     return await FirebaseFirestore.instance
@@ -29,6 +33,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   void initState() {
     super.initState();
+    _userDetailsFuture = getUserDetails();
   }
 
   @override
@@ -41,6 +46,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
@@ -48,7 +54,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         centerTitle: true,
       ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          future: getUserDetails(),
+          future: _userDetailsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -60,6 +66,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
               Map<String, dynamic>? user = snapshot.data!.data();
               return SafeArea(
                 child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Center(
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -68,19 +75,67 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                         LoginTextField(
                           controller: oldPasswordController,
                           hintText: 'Altes Passwort',
-                          obscureText: true,
+                          obscureText: _obscureOld,
+                          textInputAction: TextInputAction.next,
+                          prefixIcon: Icon(Icons.lock_outline,
+                              color: cs.onSurfaceVariant),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureOld
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: cs.onSurfaceVariant,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureOld = !_obscureOld;
+                              });
+                            },
+                          ),
                         ),
                         const SizedBox(height: 25),
                         LoginTextField(
                           controller: newPasswordController,
                           hintText: 'Neues Passwort',
-                          obscureText: true,
+                          obscureText: _obscureNew,
+                          textInputAction: TextInputAction.next,
+                          prefixIcon: Icon(Icons.lock_outline,
+                              color: cs.onSurfaceVariant),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureNew
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: cs.onSurfaceVariant,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureNew = !_obscureNew;
+                              });
+                            },
+                          ),
                         ),
                         const SizedBox(height: 10),
                         LoginTextField(
                           controller: confirmNewPasswordController,
                           hintText: 'Neues Passwort wiederholen',
-                          obscureText: true,
+                          obscureText: _obscureConfirm,
+                          textInputAction: TextInputAction.done,
+                          prefixIcon: Icon(Icons.lock_reset_outlined,
+                              color: cs.onSurfaceVariant),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureConfirm
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                              color: cs.onSurfaceVariant,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureConfirm = !_obscureConfirm;
+                              });
+                            },
+                          ),
                         ),
                         const SizedBox(height: 25),
                         SubmitButton(

@@ -130,9 +130,13 @@ class _ProfilePageState extends State<PostProfilePage> {
                           textAlign: TextAlign.center),
                       const SizedBox(height: 25),
                       blockedUsers.contains(widget.uid)
-                          ? BlockedField(
-                              toggleBlockUser: toggleBlockUser,
-                              isBlocked: true,
+                          ? Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
+                              child: BlockedField(
+                                toggleBlockUser: toggleBlockUser,
+                                isBlocked: true,
+                              ),
                             )
                           : const SizedBox(),
                     ],

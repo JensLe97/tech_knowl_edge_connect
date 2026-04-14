@@ -42,6 +42,7 @@ class _RegisterPageState extends State<RegisterPage> {
       backgroundColor: cs.surface,
       body: AuthBackground(
         child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

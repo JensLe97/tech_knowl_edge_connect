@@ -196,9 +196,13 @@ class _ChatPageState extends State<ChatPage> {
                       MediaQuery.of(context).padding.bottom + 16,
                     ),
                     child: blockedUsers.contains(widget.receiverUid)
-                        ? BlockedField(
-                            toggleBlockUser: toggleBlockUser,
-                            isBlocked: true,
+                        ? Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: BlockedField(
+                              toggleBlockUser: toggleBlockUser,
+                              isBlocked: true,
+                            ),
                           )
                         : _buildMessageInput(),
                   ),

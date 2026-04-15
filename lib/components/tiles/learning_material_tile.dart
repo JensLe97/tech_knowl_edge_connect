@@ -18,40 +18,32 @@ class LearningMaterialTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Material(
-      color: Colors.transparent,
+    return Card(
+      margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
+      elevation: 0,
+      color: colorScheme.surfaceContainerLow,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+        side: BorderSide(
+          color: colorScheme.outlineVariant.withAlpha(153),
+          width: 1,
+        ),
+      ),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(12),
-        child: Container(
-          decoration: BoxDecoration(
-            color: colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(
-              color: colorScheme.outlineVariant.withAlpha(153),
-              width: 1,
-            ),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withAlpha(10),
-                blurRadius: 4,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
+        child: SizedBox.expand(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Media Preview or Icon Area
               Expanded(
-                child: Container(
+                child: Ink(
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHigh,
                     borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(11)),
+                        const BorderRadius.vertical(top: Radius.circular(12)),
                   ),
-                  clipBehavior: Clip.antiAlias,
                   child: Center(
                     child: FaIcon(
                       LearningMaterialType.getIconForType(material.type),
@@ -62,7 +54,7 @@ class LearningMaterialTile extends StatelessWidget {
                 ),
               ),
               // Meta Area
-              Container(
+              Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
                 child: Column(

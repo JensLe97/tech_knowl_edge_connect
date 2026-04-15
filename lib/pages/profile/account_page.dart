@@ -5,6 +5,11 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 import 'package:tech_knowl_edge_connect/pages/profile/change_password_page.dart';
 import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_info_message.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({Key? key}) : super(key: key);
@@ -14,8 +19,8 @@ class AccountPage extends StatefulWidget {
 }
 
 class _AccountPageState extends State<AccountPage> {
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String uid) {
-    return FirebaseFirestore.instance.collection('Users').doc(uid).get();
+  Stream<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(String uid) {
+    return FirebaseFirestore.instance.collection('Users').doc(uid).snapshots();
   }
 
   @override
@@ -53,8 +58,8 @@ class _AccountPageState extends State<AccountPage> {
             );
           }
 
-          return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            future: getUserDetails(firebaseUser.uid),
+          return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+            stream: getUserDetails(firebaseUser.uid),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
@@ -64,6 +69,10 @@ class _AccountPageState extends State<AccountPage> {
                 return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
               } else if (snapshot.hasData) {
                 final userData = snapshot.data!.data();
+                final displayName =
+                    userData?['username'] ?? firebaseUser.displayName ?? '';
+                final emailText =
+                    userData?['email'] ?? firebaseUser.email ?? '';
                 return SingleChildScrollView(
                   child: Center(
                     child: Column(
@@ -92,7 +101,7 @@ class _AccountPageState extends State<AccountPage> {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Text(
-                                    userData?['username'] ?? '',
+                                    displayName,
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -126,7 +135,7 @@ class _AccountPageState extends State<AccountPage> {
                                 child: FittedBox(
                                   fit: BoxFit.scaleDown,
                                   child: Text(
-                                    userData?['email'] ?? '',
+                                    emailText,
                                     style: TextStyle(
                                         color: Theme.of(context)
                                             .colorScheme
@@ -204,13 +213,17 @@ class _AccountPageState extends State<AccountPage> {
         return;
       }
 
-      await FirebaseFirestore.instance
-          .collection('Users')
-          .doc(user.uid)
-          .delete();
+      // Delete Firestore user doc if present (safe even if missing)
+      try {
+        await FirebaseFirestore.instance
+            .collection('Users')
+            .doc(user.uid)
+            .delete();
+      } catch (_) {}
+
       await user.delete();
 
-      if (!mounted) return; // avoid using context if widget was disposed
+      if (!mounted) return;
 
       Navigator.of(context).pop();
 
@@ -222,14 +235,293 @@ class _AccountPageState extends State<AccountPage> {
       if (mounted) Navigator.of(context).pop();
       if (!mounted) return;
       if (e.code == 'requires-recent-login') {
-        showErrorMessage(context,
-            'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+        // Try to reauthenticate and then retry deletion
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          showErrorMessage(context, 'Nicht eingeloggt.');
+          return;
+        }
+
+        final reauthOk = await _attemptReauthentication(user);
+        if (reauthOk) {
+          if (!mounted) return;
+          showDialog(
+            context: context,
+            barrierDismissible: false,
+            builder: (context) =>
+                const Center(child: CircularProgressIndicator()),
+          );
+          try {
+            await FirebaseFirestore.instance
+                .collection('Users')
+                .doc(user.uid)
+                .delete();
+          } catch (_) {}
+          try {
+            await FirebaseAuth.instance.currentUser!.delete();
+            if (mounted) Navigator.of(context).pop();
+            showSuccessMessage(
+                'Dein Account und deine Daten wurden erfolgreich gelöscht.');
+            return;
+          } on FirebaseAuthException catch (e2) {
+            if (mounted) Navigator.of(context).pop();
+            if (!mounted) return;
+            showErrorMessage(
+                context, 'Fehler beim Löschen des Accounts: ${e2.message}');
+            return;
+          }
+        } else {
+          if (mounted) {
+            showErrorMessage(context,
+                'Re-Authentifizierung fehlgeschlagen. Bitte melde dich erneut an und versuche es noch einmal.');
+          }
+          return;
+        }
       } else if (e.code == 'invalid-email') {
         showErrorMessage(context, 'E-Mail Adresse ungültig!');
       } else if (e.code == 'user-not-found') {
         showErrorMessage(context, 'E-Mail Adresse nicht gefunden!');
       }
     }
+  }
+
+  Future<bool> _attemptReauthentication(User user) async {
+    // Prefer password re-auth if available, otherwise attempt Google reauth when possible.
+    final providerIds = user.providerData.map((p) => p.providerId).toList();
+
+    if (providerIds.contains('password') && (user.email?.isNotEmpty ?? false)) {
+      final password = await _promptForPassword();
+      if (password == null) return false;
+      try {
+        final cred = EmailAuthProvider.credential(
+            email: user.email!, password: password);
+        await user.reauthenticateWithCredential(cred);
+        return true;
+      } catch (e) {
+        if (mounted) {
+          showErrorMessage(context, 'Re-Authentifizierung fehlgeschlagen.');
+        }
+        return false;
+      }
+    }
+
+    if (providerIds.contains('google.com')) {
+      try {
+        final gUser = await GoogleSignIn().signIn();
+        if (gUser == null) return false;
+        final gAuth = await gUser.authentication;
+        final credential = GoogleAuthProvider.credential(
+            accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+        await user.reauthenticateWithCredential(credential);
+        return true;
+      } catch (e) {
+        if (mounted) {
+          showErrorMessage(
+              context, 'Google Re-Authentifizierung fehlgeschlagen.');
+        }
+        return false;
+      }
+    }
+
+    if (providerIds.contains('apple.com')) {
+      try {
+        final appleCredential = await SignInWithApple.getAppleIDCredential(
+          scopes: [
+            AppleIDAuthorizationScopes.email,
+            AppleIDAuthorizationScopes.fullName,
+          ],
+        );
+
+        final oauthCredential = OAuthProvider('apple.com').credential(
+          idToken: appleCredential.identityToken,
+          accessToken: appleCredential.authorizationCode,
+        );
+
+        await user.reauthenticateWithCredential(oauthCredential);
+        return true;
+      } catch (e) {
+        if (mounted) {
+          showErrorMessage(
+              context, 'Apple Re-Authentifizierung fehlgeschlagen.');
+        }
+        return false;
+      }
+    }
+
+    // No automatic reauth available for this provider; ask user to sign in again.
+    final ok = await showDialog<bool>(
+          context: context,
+          builder: (ctx) {
+            final cs = Theme.of(ctx).colorScheme;
+            final textTheme = Theme.of(ctx).textTheme;
+            return AlertDialog(
+              backgroundColor: cs.surface,
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+                side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
+              ),
+              titlePadding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
+              contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+              actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+              title: Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.primaryContainer.withAlpha(76),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: cs.primary.withAlpha(25)),
+                    ),
+                    child: Icon(
+                      Icons.login_rounded,
+                      size: 32,
+                      color: cs.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Erneute Anmeldung erforderlich',
+                    style: textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w800,
+                      color: cs.onSurface,
+                      letterSpacing: -0.5,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+              content: const Text(
+                'Dieser Vorgang erfordert, dass du dich erneut anmeldest. Bitte melde dich ab und erneut an.',
+                textAlign: TextAlign.center,
+              ),
+              actions: [
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: () => Navigator.of(ctx).pop(true),
+                    style: FilledButton.styleFrom(
+                      backgroundColor: cs.primary,
+                      foregroundColor: cs.onPrimary,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                      elevation: 0,
+                    ),
+                    child: const Text('Zum Login',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16)),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () => Navigator.of(ctx).pop(false),
+                    child: const Text('Abbrechen'),
+                  ),
+                ),
+              ],
+            );
+          },
+        ) ??
+        false;
+
+    if (ok && mounted) {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => const AuthPage()),
+          (route) => false);
+    }
+    return false;
+  }
+
+  Future<String?> _promptForPassword() async {
+    final controller = TextEditingController();
+    final result = await showDialog<String?>(
+      context: context,
+      builder: (ctx) {
+        final cs = Theme.of(ctx).colorScheme;
+        final textTheme = Theme.of(ctx).textTheme;
+        return AlertDialog(
+          backgroundColor: cs.surface,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+            side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
+          ),
+          titlePadding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
+          contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
+          actionsPadding: const EdgeInsets.fromLTRB(24, 0, 24, 24),
+          title: Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: cs.primaryContainer.withAlpha(76),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: cs.primary.withAlpha(25)),
+                ),
+                child: Icon(
+                  Icons.lock_outline,
+                  size: 32,
+                  color: cs.primary,
+                ),
+              ),
+              const SizedBox(height: 16),
+              Text(
+                'Passwort eingeben',
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  color: cs.onSurface,
+                  letterSpacing: -0.5,
+                ),
+              ),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: controller,
+                obscureText: true,
+                decoration: const InputDecoration(hintText: 'Passwort'),
+              ),
+            ],
+          ),
+          actions: [
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton(
+                onPressed: () => Navigator.of(ctx).pop(controller.text),
+                style: FilledButton.styleFrom(
+                  backgroundColor: cs.primary,
+                  foregroundColor: cs.onPrimary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  elevation: 0,
+                ),
+                child: const Text('OK',
+                    style:
+                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              ),
+            ),
+            const SizedBox(height: 8),
+            SizedBox(
+              width: double.infinity,
+              child: TextButton(
+                onPressed: () => Navigator.of(ctx).pop(null),
+                child: const Text('Abbrechen'),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    controller.dispose();
+    return result;
   }
 
   void showConfirmMessage(
@@ -291,24 +583,35 @@ class _AccountPageState extends State<AccountPage> {
 
   void showSuccessMessage(String message) {
     if (!mounted) return;
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext dialogContext) {
-        Future.delayed(const Duration(seconds: 3), () {
-          if (context.mounted) Navigator.of(dialogContext).pop();
-          if (context.mounted) Navigator.of(dialogContext).pop();
-          if (context.mounted) Navigator.of(dialogContext).pop();
-          if (context.mounted) Navigator.of(dialogContext).pop();
-        });
-        return AlertDialog(
-          title: Center(
-            child: Text(
-              message,
-            ),
-          ),
-        );
-      },
-    );
+
+    final rootNav = Navigator.of(context, rootNavigator: true);
+
+    // Persist pending message so AuthPage can show it if auth-state changes.
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setString('pending_success_message', message);
+    });
+
+    // Try to show the info dialog immediately; afterwards navigate to AuthPage.
+    // If the dialog cannot be shown for any reason, still navigate to AuthPage.
+    try {
+      showInfoMessage(rootNav.context, message).then((_) {
+        if (!mounted) return;
+        rootNav.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (_) => AuthPage(successMessage: message)),
+            (route) => false);
+      }).catchError((_) {
+        if (!mounted) return;
+        rootNav.pushAndRemoveUntil(
+            MaterialPageRoute(
+                builder: (_) => AuthPage(successMessage: message)),
+            (route) => false);
+      });
+    } catch (_) {
+      if (!mounted) return;
+      rootNav.pushAndRemoveUntil(
+          MaterialPageRoute(builder: (_) => AuthPage(successMessage: message)),
+          (route) => false);
+    }
   }
 }

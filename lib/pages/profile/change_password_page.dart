@@ -1,9 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/forms/login_textfield.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
 import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/show_info_message.dart';
 
 class ChangePasswordPage extends StatefulWidget {
   const ChangePasswordPage({super.key});
@@ -19,21 +19,12 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   bool _obscureOld = true;
   bool _obscureNew = true;
   bool _obscureConfirm = true;
-
-  User? currentUser = FirebaseAuth.instance.currentUser;
-  late Future<DocumentSnapshot<Map<String, dynamic>>> _userDetailsFuture;
-
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
-    return await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(currentUser!.uid)
-        .get();
-  }
+  late final Stream<User?> _authStream;
 
   @override
   void initState() {
     super.initState();
-    _userDetailsFuture = getUserDetails();
+    _authStream = FirebaseAuth.instance.authStateChanges();
   }
 
   @override
@@ -53,103 +44,123 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         title: const Text('Passwort ändern'),
         centerTitle: true,
       ),
-      body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          future: _userDetailsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
+      body: StreamBuilder<User?>(
+          stream: _authStream,
+          builder: (context, authSnapshot) {
+            if (authSnapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (snapshot.hasError) {
-              return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
-            } else if (snapshot.hasData) {
-              Map<String, dynamic>? user = snapshot.data!.data();
-              return SafeArea(
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(height: 25),
-                        LoginTextField(
-                          controller: oldPasswordController,
-                          hintText: 'Altes Passwort',
-                          obscureText: _obscureOld,
-                          textInputAction: TextInputAction.next,
-                          prefixIcon: Icon(Icons.lock_outline,
-                              color: cs.onSurfaceVariant),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureOld
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: cs.onSurfaceVariant,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureOld = !_obscureOld;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        LoginTextField(
-                          controller: newPasswordController,
-                          hintText: 'Neues Passwort',
-                          obscureText: _obscureNew,
-                          textInputAction: TextInputAction.next,
-                          prefixIcon: Icon(Icons.lock_outline,
-                              color: cs.onSurfaceVariant),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureNew
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: cs.onSurfaceVariant,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureNew = !_obscureNew;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        LoginTextField(
-                          controller: confirmNewPasswordController,
-                          hintText: 'Neues Passwort wiederholen',
-                          obscureText: _obscureConfirm,
-                          textInputAction: TextInputAction.done,
-                          prefixIcon: Icon(Icons.lock_reset_outlined,
-                              color: cs.onSurfaceVariant),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureConfirm
-                                  ? Icons.visibility_outlined
-                                  : Icons.visibility_off_outlined,
-                              color: cs.onSurfaceVariant,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureConfirm = !_obscureConfirm;
-                              });
-                            },
-                          ),
-                        ),
-                        const SizedBox(height: 25),
-                        SubmitButton(
-                          onTap: () => changeUserPassword(user!['email']),
-                          text: "Passwort ändern",
-                        ),
-                      ],
-                    ),
-                  ),
+            }
+
+            final firebaseUser = authSnapshot.data;
+            if (firebaseUser == null) {
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.person_outline,
+                        size: 64,
+                        color: Theme.of(context).colorScheme.onSurface),
+                    const SizedBox(height: 12),
+                    const Text('Nicht eingeloggt.'),
+                  ],
                 ),
               );
-            } else {
-              return const Text("Keine Daten für diesen Benutzer vorhanden.");
             }
+
+            final email = firebaseUser.email ?? '';
+
+            return SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 25),
+                      LoginTextField(
+                        controller: oldPasswordController,
+                        hintText: 'Altes Passwort',
+                        obscureText: _obscureOld,
+                        textInputAction: TextInputAction.next,
+                        prefixIcon: Icon(Icons.lock_outline,
+                            color: cs.onSurfaceVariant),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureOld
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: cs.onSurfaceVariant,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureOld = !_obscureOld;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      LoginTextField(
+                        controller: newPasswordController,
+                        hintText: 'Neues Passwort',
+                        obscureText: _obscureNew,
+                        textInputAction: TextInputAction.next,
+                        prefixIcon: Icon(Icons.lock_outline,
+                            color: cs.onSurfaceVariant),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureNew
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: cs.onSurfaceVariant,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureNew = !_obscureNew;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+                      LoginTextField(
+                        controller: confirmNewPasswordController,
+                        hintText: 'Neues Passwort wiederholen',
+                        obscureText: _obscureConfirm,
+                        textInputAction: TextInputAction.done,
+                        prefixIcon: Icon(Icons.lock_reset_outlined,
+                            color: cs.onSurfaceVariant),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureConfirm
+                                ? Icons.visibility_outlined
+                                : Icons.visibility_off_outlined,
+                            color: cs.onSurfaceVariant,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureConfirm = !_obscureConfirm;
+                            });
+                          },
+                        ),
+                      ),
+                      const SizedBox(height: 25),
+                      SubmitButton(
+                        onTap: () {
+                          if (email.isEmpty) {
+                            showErrorMessage(
+                                context, 'Benutzer E-Mail Adresse ungültig!');
+                            return;
+                          }
+                          changeUserPassword(email);
+                        },
+                        text: "Passwort ändern",
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
           }),
     );
   }
@@ -162,6 +173,8 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
       return;
     }
 
+    final navigator = Navigator.of(context);
+
     showDialog(
       context: context,
       builder: (context) {
@@ -173,26 +186,47 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
     try {
       if (newPasswordController.text != confirmNewPasswordController.text) {
-        if (mounted) Navigator.of(context).pop();
-        if (mounted) {
+        if (mounted) navigator.pop();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
           showErrorMessage(context, 'Neue Passwörter nicht identisch!');
-        }
+        });
       } else if (oldPasswordController.text == newPasswordController.text) {
-        if (mounted) Navigator.of(context).pop();
-        if (mounted) {
+        if (mounted) navigator.pop();
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
           showErrorMessage(context, 'Altes und neues Passwort identisch!');
-        }
+        });
       } else {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: oldPasswordController.text,
         );
 
-        await currentUser!.updatePassword(newPasswordController.text);
+        final user = FirebaseAuth.instance.currentUser;
+        if (user == null) {
+          if (mounted) {
+            navigator.pop();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (!mounted) return;
+              showErrorMessage(context, 'Benutzer nicht gefunden.');
+            });
+          }
+          return;
+        }
 
-        if (mounted) Navigator.of(context).pop();
+        await user.updatePassword(newPasswordController.text);
 
-        showSuccessMessage('Passwort wurde erfolgreich geändert.');
+        if (mounted) navigator.pop();
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          showInfoMessage(context, 'Passwort wurde erfolgreich geändert.')
+              .then((_) {
+            if (!mounted) return;
+            navigator.pop();
+          });
+        });
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
@@ -228,25 +262,5 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
         }
       }
     }
-  }
-
-  void showSuccessMessage(String message) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (BuildContext context) {
-        Future.delayed(const Duration(seconds: 3), () {
-          if (context.mounted) Navigator.of(context).pop();
-          if (context.mounted) Navigator.of(context).pop();
-        });
-        return AlertDialog(
-          title: Center(
-            child: Text(
-              message,
-            ),
-          ),
-        );
-      },
-    );
   }
 }

@@ -38,41 +38,38 @@ class TermsAndConditions extends StatelessWidget {
       fontWeight: FontWeight.bold,
     );
 
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-      child: Text.rich(
-        TextSpan(
-          style: textStyle,
-          children: [
-            const TextSpan(
-              text: "Mit dem Benutzen der App bestätigst du, dass du unsere",
+    return Text.rich(
+      TextSpan(
+        style: textStyle,
+        children: [
+          const TextSpan(
+            text: "Mit dem Benutzen der App bestätigst du, dass du unsere",
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: TextButton(
+              onPressed: () => openUrl(termsAndConditions),
+              style: buttonStyle,
+              child: Text("AGB", style: linkStyle),
             ),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: TextButton(
-                onPressed: () => openUrl(termsAndConditions),
-                style: buttonStyle,
-                child: Text("AGB", style: linkStyle),
-              ),
+          ),
+          const TextSpan(
+            text: "und",
+          ),
+          WidgetSpan(
+            alignment: PlaceholderAlignment.middle,
+            child: TextButton(
+              onPressed: () => openUrl(privacyPolicy),
+              style: buttonStyle,
+              child: Text("Datenschutzbestimmungen", style: linkStyle),
             ),
-            const TextSpan(
-              text: "und",
-            ),
-            WidgetSpan(
-              alignment: PlaceholderAlignment.middle,
-              child: TextButton(
-                onPressed: () => openUrl(privacyPolicy),
-                style: buttonStyle,
-                child: Text("Datenschutzbestimmungen", style: linkStyle),
-              ),
-            ),
-            const TextSpan(
-              text: "gelesen und akzeptiert hast.",
-            ),
-          ],
-        ),
-        textAlign: TextAlign.center,
+          ),
+          const TextSpan(
+            text: "gelesen und akzeptiert hast.",
+          ),
+        ],
       ),
+      textAlign: TextAlign.center,
     );
   }
 }

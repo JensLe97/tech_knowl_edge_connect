@@ -130,28 +130,25 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 12),
 
               // Forgot Password
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Align(
-                  alignment: Alignment.centerRight,
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) {
-                        return const ForgotPasswordPage();
-                      }));
-                    },
-                    style: TextButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                      minimumSize: Size.zero,
-                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    ),
-                    child: Text(
-                      'Passwort vergessen?',
-                      style: TextStyle(
-                        color: cs.primary,
-                        fontWeight: FontWeight.bold,
-                      ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) {
+                      return const ForgotPasswordPage();
+                    }));
+                  },
+                  style: TextButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                    minimumSize: Size.zero,
+                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                  ),
+                  child: Text(
+                    'Passwort vergessen?',
+                    style: TextStyle(
+                      color: cs.primary,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -167,64 +164,58 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 24),
 
               // Divider
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: cs.outlineVariant.withAlpha(153),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: cs.outlineVariant.withAlpha(153),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    child: Text(
+                      'ODER WEITER MIT',
+                      style: TextStyle(
+                        color: cs.onSurfaceVariant,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.0,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: Text(
-                        'ODER WEITER MIT',
-                        style: TextStyle(
-                          color: cs.onSurfaceVariant,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 1.0,
-                        ),
-                      ),
+                  ),
+                  Expanded(
+                    child: Container(
+                      height: 1,
+                      color: cs.outlineVariant.withAlpha(153),
                     ),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: cs.outlineVariant.withAlpha(153),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 24),
 
               // Social Buttons
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: SocialLoginButton(
-                        key: const ValueKey('social_google'),
-                        imagePath: 'images/google.png',
-                        text: 'Google',
-                        onTap: () => AuthService().signInWithGoogle(),
-                      ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: SocialLoginButton(
+                      key: const ValueKey('social_google'),
+                      imagePath: 'images/google.png',
+                      text: 'Google',
+                      onTap: () => AuthService().signInWithGoogle(),
                     ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: SocialLoginButton(
-                        key: const ValueKey('social_apple'),
-                        imagePath: 'images/apple.png',
-                        text: 'Apple',
-                        onTap: () => AuthService().signInWithApple(),
-                      ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: SocialLoginButton(
+                      key: const ValueKey('social_apple'),
+                      imagePath: 'images/apple.png',
+                      text: 'Apple',
+                      onTap: () => AuthService().signInWithApple(),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
               const SizedBox(height: 32),
 

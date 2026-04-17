@@ -120,7 +120,7 @@ class _SearchPageState extends State<SearchPage> {
                                     margin: EdgeInsets.zero,
                                     clipBehavior: Clip.antiAlias,
                                     elevation: 0,
-                                    color: colorScheme.surfaceContainerHigh,
+                                    color: colorScheme.surfaceContainer,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16),
                                       side: BorderSide(

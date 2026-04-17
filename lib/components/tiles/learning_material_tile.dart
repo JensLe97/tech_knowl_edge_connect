@@ -22,11 +22,11 @@ class LearningMaterialTile extends StatelessWidget {
       margin: EdgeInsets.zero,
       clipBehavior: Clip.antiAlias,
       elevation: 0,
-      color: colorScheme.surfaceContainerLow,
+      color: colorScheme.surfaceContainer,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         side: BorderSide(
-          color: colorScheme.outlineVariant.withAlpha(153),
+          color: colorScheme.outlineVariant.withAlpha(51),
           width: 1,
         ),
       ),

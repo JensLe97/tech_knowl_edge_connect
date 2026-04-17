@@ -56,6 +56,69 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     }
   }
 
+  Future<void> _confirmAndDeleteMaterial(LearningMaterial material) async {
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) {
+        final cs = Theme.of(context).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: cs.error.withAlpha(25),
+              ),
+            ),
+            child: Icon(
+              Icons.delete_outline,
+              size: 32,
+              color: cs.error,
+            ),
+          ),
+          title: const Text(
+            'Lerninhalt löschen?',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Möchtest du diesen Lerninhalt unwiderruflich löschen?',
+            textAlign: TextAlign.center,
+          ),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                    onTap: () => Navigator.of(context).pop(false),
+                    text: 'Abbrechen'),
+                DialogButton(
+                    onTap: () => Navigator.of(context).pop(true),
+                    text: 'Löschen',
+                    isDestructive: true),
+              ],
+            )
+          ],
+        );
+      },
+    );
+    if (confirmed == true) {
+      await _materialService.deleteLearningMaterial(
+        materialId: material.id,
+        fileUrl: material.url,
+      );
+      if (!mounted) return;
+      setState(() {
+        _materialsFuture = _materialService.getLearningMaterials(
+          userId: userId!,
+          folderId: widget.folder.id,
+        );
+      });
+    }
+  }
+
   Future<void> _confirmAndDeleteFolder() async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -560,19 +623,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                   ),
                                   tooltip: 'Löschen',
                                   onPressed: () async {
-                                    await _materialService
-                                        .deleteLearningMaterial(
-                                      materialId: material.id,
-                                      fileUrl: material.url,
-                                    );
-                                    if (!mounted) return;
-                                    setState(() {
-                                      _materialsFuture =
-                                          _materialService.getLearningMaterials(
-                                        userId: userId!,
-                                        folderId: widget.folder.id,
-                                      );
-                                    });
+                                    await _confirmAndDeleteMaterial(material);
                                   },
                                 ),
                               ),

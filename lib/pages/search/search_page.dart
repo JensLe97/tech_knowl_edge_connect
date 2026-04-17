@@ -152,8 +152,8 @@ class _SearchPageState extends State<SearchPage> {
                                               child: Icon(
                                                 Icons.lightbulb,
                                                 size: 100,
-                                                color: colorScheme.primary
-                                                    .withAlpha(15),
+                                                color: colorScheme.onSurface
+                                                    .withValues(alpha: 0.05),
                                               ),
                                             ),
                                             Padding(

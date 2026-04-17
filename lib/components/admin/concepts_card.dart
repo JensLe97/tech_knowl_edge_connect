@@ -52,8 +52,8 @@ class ConceptsCard extends StatelessWidget {
             stream: adminService.streamConcepts(selectedSubjectId!,
                 selectedCategoryId!, selectedTopicId!, selectedUnitId!),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
               }
               var docs = snapshot.data?.docs ?? [];
               if (statusFilter != null) {

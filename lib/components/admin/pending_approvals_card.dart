@@ -29,8 +29,8 @@ class PendingApprovalsCard extends StatelessWidget {
             if (snapshot.hasError) {
               return Text('Fehler: ${snapshot.error}');
             }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+            if (!snapshot.hasData) {
+              return const SizedBox.shrink();
             }
 
             final docs = snapshot.data?.docs ?? [];

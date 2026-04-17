@@ -61,8 +61,8 @@ class TasksCard extends StatelessWidget {
               selectedLearningBiteId!,
             ),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
               }
               final docs = snapshot.data?.docs ?? [];
               if (docs.isEmpty) {

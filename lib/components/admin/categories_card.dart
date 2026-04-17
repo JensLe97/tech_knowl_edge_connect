@@ -42,8 +42,8 @@ class CategoriesCard extends StatelessWidget {
           StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
             stream: adminService.streamCategories(selectedSubjectId!),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
               }
               var docs = snapshot.data?.docs ?? [];
               if (statusFilter != null) {

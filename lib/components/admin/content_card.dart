@@ -60,8 +60,8 @@ class ContentCard extends StatelessWidget {
               selectedLearningBiteId!,
             ),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(child: CircularProgressIndicator());
+              if (!snapshot.hasData) {
+                return const SizedBox.shrink();
               }
               final data = snapshot.data?.data();
               final contentList = List<String>.from(data?['content'] ?? []);

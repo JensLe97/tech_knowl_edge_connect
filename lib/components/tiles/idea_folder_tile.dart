@@ -44,6 +44,9 @@ class IdeaFolderTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: color.withAlpha(26),
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withAlpha(51),
+                    ),
                   ),
                   alignment: Alignment.center,
                   child: Icon(

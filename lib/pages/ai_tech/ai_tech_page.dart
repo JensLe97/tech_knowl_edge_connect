@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/rendering.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/chat/chat_bubble.dart';
@@ -492,7 +493,7 @@ class _AiTechPageState extends State<AiTechPage> {
 
           ListView messageList = ListView(
               reverse: true,
-              cacheExtent: 1500,
+              scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
               padding: EdgeInsets.only(
                 top: 8,
                 bottom: MediaQuery.of(context).padding.bottom + 85,

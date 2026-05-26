@@ -3,6 +3,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
@@ -283,8 +284,7 @@ class _ChatPageState extends State<ChatPage> {
           }
 
           ListView messageList = ListView(
-              reverse: true,
-              cacheExtent: 1500,
+              scrollCacheExtent: const ScrollCacheExtent.pixels(1500), reverse: true,
               padding: EdgeInsets.only(
                 top: 8,
                 bottom: MediaQuery.of(context).padding.bottom + 85,

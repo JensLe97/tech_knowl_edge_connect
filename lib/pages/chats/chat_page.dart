@@ -284,7 +284,8 @@ class _ChatPageState extends State<ChatPage> {
           }
 
           ListView messageList = ListView(
-              scrollCacheExtent: const ScrollCacheExtent.pixels(1500), reverse: true,
+              scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
+              reverse: true,
               padding: EdgeInsets.only(
                 top: 8,
                 bottom: MediaQuery.of(context).padding.bottom + 85,

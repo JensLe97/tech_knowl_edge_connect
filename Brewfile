@@ -10,7 +10,7 @@
 brew "git"
 
 # IDEs & Tools (Casks)
-cask "flutter"        # Installs the Flutter SDK and configures the environment
+cask "flutter"
 cask "visual-studio-code"
 cask "android-studio"
 cask "google-chrome"
@@ -30,5 +30,5 @@ vscode "vscode-icons-team.vscode-icons"
 
 # flutter doctor
 
-# git config --global user.email "mail@lemkejens.de"
-# git config --global user.name "JensLe97"
+# git config --global user.email "<User Email>"
+# git config --global user.name "<User Name>"

@@ -65,7 +65,7 @@ dependencies:
   firebase_ai: ^3.8.0
   flutter_markdown: ^0.7.7+1
   firebase_app_check: ^0.4.1+4
-  cloud_functions: ^6.0.0
+  cloud_functions: ^7.0.0
   markdown: ^7.3.0
   google_fonts: ^8.0.1
   timeago: ^3.7.1

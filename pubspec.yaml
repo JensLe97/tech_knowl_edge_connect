@@ -53,7 +53,7 @@ dependencies:
   intl: ^0.20.2
   image_picker: ^1.2.0
   permission_handler: ^13.0.0
-  firebase_storage: ^13.0.6
+  firebase_storage: ^14.0.0
   uuid: ^4.5.1
   easy_image_viewer: ^1.5.1
   cached_network_image: ^4.0.0

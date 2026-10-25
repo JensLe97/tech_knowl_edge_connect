@@ -16,7 +16,4 @@ flutter precache --ios
 # Install Flutter dependencies.
 flutter pub get
 
-# Remove WASM modules.
-dart run pdfrx:remove_wasm_modules
-
 exit 0

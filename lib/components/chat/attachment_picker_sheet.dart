@@ -1,5 +1,4 @@
 import 'package:file_picker/file_picker.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
@@ -9,10 +8,10 @@ import 'package:tech_knowl_edge_connect/components/library/learning_material_typ
 ///
 /// After the user makes a selection the sheet is dismissed, the file is picked
 /// using the appropriate platform API, and [onFilesAdded] is invoked with the
-/// resulting [PlatformFile]s.
+/// resulting [XFile]s.
 Future<void> showAttachmentPickerSheet(
   BuildContext context, {
-  required void Function(List<PlatformFile> files) onFilesAdded,
+  required void Function(List<XFile> files) onFilesAdded,
 }) {
   return showModalBottomSheet(
     context: context,
@@ -20,19 +19,21 @@ Future<void> showAttachmentPickerSheet(
     useRootNavigator: true,
     useSafeArea: true,
     enableDrag: true,
-    builder: (_) => SafeArea(
-      child: _AttachmentPickerSheet(onFilesAdded: onFilesAdded),
-    ),
+    builder: (_) =>
+        SafeArea(child: _AttachmentPickerSheet(onFilesAdded: onFilesAdded)),
   );
 }
 
 class _AttachmentPickerSheet extends StatelessWidget {
-  final void Function(List<PlatformFile> files) onFilesAdded;
+  final void Function(List<XFile> files) onFilesAdded;
 
   const _AttachmentPickerSheet({required this.onFilesAdded});
 
   Future<void> _pickImageOrVideo(
-      BuildContext context, ImageSource source, bool isVideo) async {
+    BuildContext context,
+    ImageSource source,
+    bool isVideo,
+  ) async {
     Navigator.pop(context);
     final picker = ImagePicker();
     final XFile? picked = isVideo
@@ -53,27 +54,16 @@ class _AttachmentPickerSheet extends StatelessWidget {
       return;
     }
 
-    final bytes = await picked.readAsBytes();
-    onFilesAdded([
-      PlatformFile(
-        name: picked.name,
-        size: bytes.length,
-        bytes: bytes,
-        path: kIsWeb ? null : picked.path,
-      ),
-    ]);
+    onFilesAdded([picked]);
   }
 
   Future<void> _pickFile(BuildContext context) async {
     Navigator.pop(context);
     final result = await FilePicker.pickFiles(
-      allowMultiple: true,
-      withData: true,
       type: FileType.custom,
       allowedExtensions: LearningMaterialType.supportedTypes,
     );
-    if (result == null) return;
-    onFilesAdded(result.files);
+    onFilesAdded(result.map((file) => file.xFile).toList());
   }
 
   @override

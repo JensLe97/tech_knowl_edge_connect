@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/library/personal_library.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 import 'package:tech_knowl_edge_connect/components/user/dialogs/subject_dialog.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
 import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
 import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_page.dart';
@@ -28,7 +28,7 @@ class _SearchPageState extends State<SearchPage> {
   final ContentService _contentService = ContentService();
   final AiTechService _aiTechService = AiTechService();
   final TextEditingController _messageController = TextEditingController();
-  List<PlatformFile> _pickedFiles = [];
+  List<XFile> _pickedFiles = [];
 
   Future<void> _pickFiles() async {
     await showAttachmentPickerSheet(
@@ -41,20 +41,18 @@ class _SearchPageState extends State<SearchPage> {
 
   void navigateToSubjectPage(Subject subject) {
     Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SubjectOverviewPage(subject: subject),
-        )).then((value) => {subjectController.clear()});
+      context,
+      MaterialPageRoute(
+        builder: (context) => SubjectOverviewPage(subject: subject),
+      ),
+    ).then((value) => {subjectController.clear()});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: const Text("Suche"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Suche"), centerTitle: true),
       body: SafeArea(
         bottom: false,
         child: SizedBox.expand(
@@ -68,7 +66,8 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                       stream: _aiTechService.streamSessions(
-                          FirebaseAuth.instance.currentUser?.uid ?? ''),
+                        FirebaseAuth.instance.currentUser?.uid ?? '',
+                      ),
                       builder: (context, snap) {
                         if (snap.connectionState == ConnectionState.waiting) {
                           return const SizedBox.shrink();
@@ -81,17 +80,21 @@ class _SearchPageState extends State<SearchPage> {
                           children: [
                             const Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text('Meine Lernreisen',
-                                  style: TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900)),
+                              child: Text(
+                                'Meine Lernreisen',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
                             ),
                             const SizedBox(height: 12),
                             SizedBox(
                               height: 150,
                               child: ListView.separated(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
+                                  horizontal: 16.0,
+                                ),
                                 scrollDirection: Axis.horizontal,
                                 itemCount: docs.length,
                                 separatorBuilder: (context, index) =>
@@ -102,19 +105,22 @@ class _SearchPageState extends State<SearchPage> {
                                   final sessionId = doc.id;
                                   final ts =
                                       data['lastTimestamp'] as Timestamp?;
-                                  final last =
-                                      ts != null ? ts.toDate() : DateTime.now();
+                                  final last = ts != null
+                                      ? ts.toDate()
+                                      : DateTime.now();
                                   final fmt =
                                       DateTime.now().difference(last).inDays >=
-                                              1
-                                          ? DateFormat('dd.MM.yyyy')
-                                          : DateFormat('HH:mm');
+                                          1
+                                      ? DateFormat('dd.MM.yyyy')
+                                      : DateFormat('HH:mm');
                                   final lastStr = fmt.format(last);
                                   final unit = (data['unit'] as String?) ?? '';
-                                  final sessionTitle =
-                                      unit.isNotEmpty ? unit : 'Session';
-                                  final colorScheme =
-                                      Theme.of(context).colorScheme;
+                                  final sessionTitle = unit.isNotEmpty
+                                      ? unit
+                                      : 'Session';
+                                  final colorScheme = Theme.of(
+                                    context,
+                                  ).colorScheme;
 
                                   return Card(
                                     margin: EdgeInsets.zero,
@@ -157,8 +163,9 @@ class _SearchPageState extends State<SearchPage> {
                                               ),
                                             ),
                                             Padding(
-                                              padding:
-                                                  const EdgeInsets.all(16.0),
+                                              padding: const EdgeInsets.all(
+                                                16.0,
+                                              ),
                                               child: Column(
                                                 crossAxisAlignment:
                                                     CrossAxisAlignment.start,
@@ -166,16 +173,18 @@ class _SearchPageState extends State<SearchPage> {
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Container(
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2),
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                          horizontal: 6,
+                                                          vertical: 2,
+                                                        ),
                                                     decoration: BoxDecoration(
                                                       color: colorScheme
                                                           .primaryContainer,
                                                       borderRadius:
                                                           BorderRadius.circular(
-                                                              4),
+                                                            4,
+                                                          ),
                                                     ),
                                                     child: Text(
                                                       lastStr,
@@ -255,7 +264,9 @@ class _SearchPageState extends State<SearchPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 15, vertical: 5),
+                        horizontal: 15,
+                        vertical: 5,
+                      ),
                       child: Column(
                         children: [
                           StreamBuilder<List<Subject>>(
@@ -264,14 +275,16 @@ class _SearchPageState extends State<SearchPage> {
                               if (snapshot.connectionState ==
                                   ConnectionState.waiting) {
                                 return const Center(
-                                    child: CircularProgressIndicator());
+                                  child: CircularProgressIndicator(),
+                                );
                               }
                               if (snapshot.hasError) {
                                 return Center(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Text("Fehler: ${snapshot.error}"),
-                                ));
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text("Fehler: ${snapshot.error}"),
+                                  ),
+                                );
                               }
                               final subjects = snapshot.data ?? [];
                               if (subjects.isEmpty) {
@@ -284,12 +297,13 @@ class _SearchPageState extends State<SearchPage> {
                                 itemCount: subjects.length,
                                 itemBuilder:
                                     (BuildContext context, int subjectIndex) {
-                                  final subject = subjects[subjectIndex];
-                                  return SubjectTile(
-                                    onTap: () => navigateToSubjectPage(subject),
-                                    subject: subject,
-                                  );
-                                },
+                                      final subject = subjects[subjectIndex];
+                                      return SubjectTile(
+                                        onTap: () =>
+                                            navigateToSubjectPage(subject),
+                                        subject: subject,
+                                      );
+                                    },
                               );
                             },
                           ),
@@ -297,15 +311,15 @@ class _SearchPageState extends State<SearchPage> {
                             margin: const EdgeInsets.symmetric(vertical: 6),
                             clipBehavior: Clip.antiAlias,
                             elevation: 0,
-                            color:
-                                Theme.of(context).colorScheme.surfaceContainer,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16),
                               side: BorderSide(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .outlineVariant
-                                    .withAlpha(51),
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.outlineVariant.withAlpha(51),
                                 width: 1,
                               ),
                             ),
@@ -326,12 +340,12 @@ class _SearchPageState extends State<SearchPage> {
                                         width: 40,
                                         height: 40,
                                         decoration: BoxDecoration(
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary
-                                              .withAlpha(26),
-                                          borderRadius:
-                                              BorderRadius.circular(12),
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary.withAlpha(26),
+                                          borderRadius: BorderRadius.circular(
+                                            12,
+                                          ),
                                           border: Border.all(
                                             color: Theme.of(context)
                                                 .colorScheme
@@ -341,9 +355,9 @@ class _SearchPageState extends State<SearchPage> {
                                         ),
                                         child: Icon(
                                           Icons.add_circle_outline,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .primary,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.primary,
                                           size: 24,
                                         ),
                                       ),
@@ -353,9 +367,9 @@ class _SearchPageState extends State<SearchPage> {
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .onSurface,
+                                          color: Theme.of(
+                                            context,
+                                          ).colorScheme.onSurface,
                                         ),
                                       ),
                                     ],
@@ -388,7 +402,11 @@ class _SearchPageState extends State<SearchPage> {
                 bottom: 0,
                 child: Padding(
                   padding: const EdgeInsets.only(
-                      left: 10.0, right: 10.0, bottom: 8.0, top: 8.0),
+                    left: 10.0,
+                    right: 10.0,
+                    bottom: 8.0,
+                    top: 8.0,
+                  ),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -418,9 +436,11 @@ class _SearchPageState extends State<SearchPage> {
     if (text.isEmpty && _pickedFiles.isEmpty) return;
     try {
       final sid = await _aiTechService.startSession(
-          type: SessionType.study, concept: text);
+        type: SessionType.study,
+        concept: text,
+      );
 
-      final passedFiles = List<PlatformFile>.from(_pickedFiles);
+      final passedFiles = List<XFile>.from(_pickedFiles);
       _messageController.clear();
       setState(() {
         _pickedFiles = [];
@@ -435,18 +455,21 @@ class _SearchPageState extends State<SearchPage> {
         sessionTitle = await _aiTechService.fetchSessionTitle(sid);
       } catch (_) {}
 
-      navigator.push(MaterialPageRoute(
-        builder: (_) => AiTechPage(
-          sessionId: sid,
-          initialUserMessage: text,
-          initialPickedFiles: passedFiles,
-          sessionTitle: sessionTitle,
+      navigator.push(
+        MaterialPageRoute(
+          builder: (_) => AiTechPage(
+            sessionId: sid,
+            initialUserMessage: text,
+            initialPickedFiles: passedFiles,
+            sessionTitle: sessionTitle,
+          ),
         ),
-      ));
+      );
     } catch (e) {
       if (!mounted) return;
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Fehler beim Starten: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler beim Starten: $e')));
     }
   }
 

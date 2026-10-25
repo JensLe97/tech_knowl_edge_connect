@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/components/user/user_constants.dart';
-import 'package:file_picker/file_picker.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ContentAdminService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -50,9 +50,7 @@ class ContentAdminService {
     });
   }
 
-  Future<void> deleteSubject({
-    required String subjectId,
-  }) async {
+  Future<void> deleteSubject({required String subjectId}) async {
     // Delete subcollections recursively (categories)
     final categories = await _firestore
         .collection('content_subjects')
@@ -70,7 +68,8 @@ class ContentAdminService {
   // --- Categories ---
 
   Stream<QuerySnapshot<Map<String, dynamic>>> streamCategories(
-      String subjectId) {
+    String subjectId,
+  ) {
     return _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -113,10 +112,7 @@ class ContentAdminService {
         .doc(subjectId)
         .collection('categories')
         .doc(categoryId)
-        .update({
-      ...data,
-      'updatedAt': Timestamp.now(),
-    });
+        .update({...data, 'updatedAt': Timestamp.now()});
   }
 
   Future<void> deleteCategory({
@@ -133,7 +129,10 @@ class ContentAdminService {
 
     for (final topic in topics.docs) {
       await deleteTopic(
-          subjectId: subjectId, categoryId: categoryId, topicId: topic.id);
+        subjectId: subjectId,
+        categoryId: categoryId,
+        topicId: topic.id,
+      );
     }
 
     await _firestore
@@ -200,10 +199,7 @@ class ContentAdminService {
         .doc(categoryId)
         .collection('topics')
         .doc(topicId)
-        .update({
-      ...data,
-      'updatedAt': Timestamp.now(),
-    });
+        .update({...data, 'updatedAt': Timestamp.now()});
   }
 
   Future<void> deleteTopic({
@@ -223,10 +219,11 @@ class ContentAdminService {
 
     for (final unit in units.docs) {
       await deleteUnit(
-          subjectId: subjectId,
-          categoryId: categoryId,
-          topicId: topicId,
-          unitId: unit.id);
+        subjectId: subjectId,
+        categoryId: categoryId,
+        topicId: topicId,
+        unitId: unit.id,
+      );
     }
 
     await _firestore
@@ -306,10 +303,7 @@ class ContentAdminService {
         .doc(topicId)
         .collection('units')
         .doc(unitId)
-        .update({
-      ...data,
-      'updatedAt': Timestamp.now(),
-    });
+        .update({...data, 'updatedAt': Timestamp.now()});
   }
 
   Future<void> deleteUnit({
@@ -332,11 +326,12 @@ class ContentAdminService {
 
     for (final concept in concepts.docs) {
       await deleteConcept(
-          subjectId: subjectId,
-          categoryId: categoryId,
-          topicId: topicId,
-          unitId: unitId,
-          conceptId: concept.id);
+        subjectId: subjectId,
+        categoryId: categoryId,
+        topicId: topicId,
+        unitId: unitId,
+        conceptId: concept.id,
+      );
     }
 
     await _firestore
@@ -425,10 +420,7 @@ class ContentAdminService {
         .doc(unitId)
         .collection('concepts')
         .doc(conceptId)
-        .update({
-      ...data,
-      'updatedAt': Timestamp.now(),
-    });
+        .update({...data, 'updatedAt': Timestamp.now()});
   }
 
   Future<void> deleteConcept({
@@ -574,8 +566,9 @@ class ContentAdminService {
         final usersSnap = await _firestore.collection('Users').get();
         final batch = _firestore.batch();
         for (final userDoc in usersSnap.docs) {
-          final resumeDocRef =
-              userDoc.reference.collection('resumeProgress').doc(unitId);
+          final resumeDocRef = userDoc.reference
+              .collection('resumeProgress')
+              .doc(unitId);
           final resumeSnap = await resumeDocRef.get();
           if (resumeSnap.exists) {
             final data = resumeSnap.data();
@@ -584,16 +577,18 @@ class ContentAdminService {
                   (data['expectedBiteCount'] as num?)?.toInt() ?? 0;
               final updated = currentExpected + 1;
               final bites = Map<String, dynamic>.from(
-                  data['bites'] as Map<String, dynamic>? ?? {});
+                data['bites'] as Map<String, dynamic>? ?? {},
+              );
               final biteValues = bites.values
-                  .map((e) =>
-                      (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                  .map(
+                    (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                  )
                   .toList();
               final agg = biteValues.isEmpty
                   ? 0
                   : (biteValues.reduce((a, b) => a + b) /
-                          (updated > 0 ? updated : biteValues.length))
-                      .round();
+                            (updated > 0 ? updated : biteValues.length))
+                        .round();
               batch.update(resumeDocRef, {
                 'expectedBiteCount': updated,
                 'progress': agg >= 100 ? 100 : agg,
@@ -636,13 +631,10 @@ class ContentAdminService {
     final docSnap = await docRef.get();
     final oldStatus = docSnap.data()?['status'];
     final newStatus = data['status'] ?? oldStatus;
-    final authorId =
-        docSnap.data()?['authorId']; // Only present for user-created bites
+    final authorId = docSnap
+        .data()?['authorId']; // Only present for user-created bites
 
-    await docRef.update({
-      ...data,
-      'updatedAt': Timestamp.now(),
-    });
+    await docRef.update({...data, 'updatedAt': Timestamp.now()});
 
     if (oldStatus != newStatus) {
       if (newStatus == UserConstants.statusApproved) {
@@ -655,8 +647,9 @@ class ContentAdminService {
             // Admin creators didn't see it when it was pending, so don't skip them.
             if (authorId != null && userDoc.id == authorId) continue;
 
-            final resumeDocRef =
-                userDoc.reference.collection('resumeProgress').doc(unitId);
+            final resumeDocRef = userDoc.reference
+                .collection('resumeProgress')
+                .doc(unitId);
             final resumeSnap = await resumeDocRef.get();
             if (resumeSnap.exists) {
               final resumeData = resumeSnap.data();
@@ -665,16 +658,19 @@ class ContentAdminService {
                     (resumeData['expectedBiteCount'] as num?)?.toInt() ?? 0;
                 final updated = currentExpected + 1;
                 final bites = Map<String, dynamic>.from(
-                    resumeData['bites'] as Map<String, dynamic>? ?? {});
+                  resumeData['bites'] as Map<String, dynamic>? ?? {},
+                );
                 final biteValues = bites.values
-                    .map((e) =>
-                        (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                    .map(
+                      (e) =>
+                          (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                    )
                     .toList();
                 final agg = biteValues.isEmpty
                     ? 0
                     : (biteValues.reduce((a, b) => a + b) /
-                            (updated > 0 ? updated : biteValues.length))
-                        .round();
+                              (updated > 0 ? updated : biteValues.length))
+                          .round();
                 batch.update(resumeDocRef, {
                   'expectedBiteCount': updated,
                   'progress': agg >= 100 ? 100 : agg,
@@ -695,14 +691,16 @@ class ContentAdminService {
             // The original user author can still see it, so skip subtracting for them.
             if (authorId != null && userDoc.id == authorId) continue;
 
-            final resumeDocRef =
-                userDoc.reference.collection('resumeProgress').doc(unitId);
+            final resumeDocRef = userDoc.reference
+                .collection('resumeProgress')
+                .doc(unitId);
             final resumeSnap = await resumeDocRef.get();
             if (resumeSnap.exists) {
               final resumeData = resumeSnap.data();
               if (resumeData != null) {
                 final bites = Map<String, dynamic>.from(
-                    resumeData['bites'] as Map<String, dynamic>? ?? {});
+                  resumeData['bites'] as Map<String, dynamic>? ?? {},
+                );
                 final bool hasBite = bites.containsKey(learningBiteId);
                 if (hasBite) {
                   bites.remove(learningBiteId);
@@ -711,16 +709,21 @@ class ContentAdminService {
                   batch.delete(resumeDocRef);
                 } else {
                   final biteValues = bites.values
-                      .map((e) =>
-                          (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                      .map(
+                        (e) =>
+                            (e as Map<String, dynamic>)['progress'] as num? ??
+                            0,
+                      )
                       .toList();
                   final currentExpected =
                       (resumeData['expectedBiteCount'] as num?)?.toInt() ??
-                          (biteValues.length + (hasBite ? 1 : 0));
-                  final expectedAfter =
-                      (currentExpected - 1) < 0 ? 0 : (currentExpected - 1);
-                  final denom =
-                      expectedAfter > 0 ? expectedAfter : biteValues.length;
+                      (biteValues.length + (hasBite ? 1 : 0));
+                  final expectedAfter = (currentExpected - 1) < 0
+                      ? 0
+                      : (currentExpected - 1);
+                  final denom = expectedAfter > 0
+                      ? expectedAfter
+                      : biteValues.length;
                   final agg = biteValues.isEmpty
                       ? 0
                       : (biteValues.reduce((a, b) => a + b) / denom).round();
@@ -735,8 +738,9 @@ class ContentAdminService {
               }
             }
             batch.update(userDoc.reference, {
-              'completedLearningBiteIds':
-                  FieldValue.arrayRemove([learningBiteId]),
+              'completedLearningBiteIds': FieldValue.arrayRemove([
+                learningBiteId,
+              ]),
             });
           }
           await batch.commit();
@@ -795,14 +799,16 @@ class ContentAdminService {
           }
         }
 
-        final resumeDocRef =
-            userDoc.reference.collection('resumeProgress').doc(unitId);
+        final resumeDocRef = userDoc.reference
+            .collection('resumeProgress')
+            .doc(unitId);
         final resumeSnap = await resumeDocRef.get();
         if (resumeSnap.exists) {
           final data = resumeSnap.data();
           if (data != null) {
             final bites = Map<String, dynamic>.from(
-                data['bites'] as Map<String, dynamic>? ?? {});
+              data['bites'] as Map<String, dynamic>? ?? {},
+            );
             final bool hasBite = bites.containsKey(learningBiteId);
             if (hasBite) {
               bites.remove(learningBiteId);
@@ -811,16 +817,19 @@ class ContentAdminService {
               batch.delete(resumeDocRef);
             } else {
               final biteValues = bites.values
-                  .map((e) =>
-                      (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                  .map(
+                    (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                  )
                   .toList();
               final currentExpected =
                   (data['expectedBiteCount'] as num?)?.toInt() ??
-                      (biteValues.length + (hasBite ? 1 : 0));
-              final expectedAfter =
-                  (currentExpected - 1) < 0 ? 0 : (currentExpected - 1);
-              final denom =
-                  expectedAfter > 0 ? expectedAfter : biteValues.length;
+                  (biteValues.length + (hasBite ? 1 : 0));
+              final expectedAfter = (currentExpected - 1) < 0
+                  ? 0
+                  : (currentExpected - 1);
+              final denom = expectedAfter > 0
+                  ? expectedAfter
+                  : biteValues.length;
               final agg = biteValues.isEmpty
                   ? 0
                   : (biteValues.reduce((a, b) => a + b) / denom).round();
@@ -967,20 +976,20 @@ class ContentAdminService {
 
   Future<List<Map<String, dynamic>>> uploadFiles({
     required String userId,
-    required List<PlatformFile> files,
+    required List<XFile> files,
     Map<String, dynamic>? metadata,
   }) async {
     final List<Map<String, dynamic>> resources = [];
     for (final file in files) {
-      final extension = file.extension ?? '';
+      final dot = file.name.lastIndexOf('.');
+      final extension = dot == -1
+          ? ''
+          : file.name.substring(dot + 1).toLowerCase();
       final mimeType = LearningMaterialType.getMimeType(extension);
       final storagePath =
           'admin_uploads/$userId/${DateTime.now().millisecondsSinceEpoch}_${file.name}';
       final ref = _storage.ref().child(storagePath);
-      final bytes = file.bytes;
-      if (bytes == null) {
-        continue;
-      }
+      final bytes = await file.readAsBytes();
       final uploadTask = await ref.putData(
         bytes,
         SettableMetadata(contentType: mimeType),
@@ -990,7 +999,7 @@ class ContentAdminService {
         'name': file.name,
         'url': url,
         'mimeType': mimeType,
-        'size': file.size,
+        'size': bytes.length,
         'createdAt': Timestamp.now(),
         if (metadata != null) ...metadata,
       });

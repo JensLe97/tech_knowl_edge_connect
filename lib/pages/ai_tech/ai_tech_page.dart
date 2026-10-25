@@ -1,10 +1,11 @@
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/rendering.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/chat/chat_bubble.dart';
@@ -29,14 +30,14 @@ class AiTechPage extends StatefulWidget {
   final String sessionId;
   final String? initialUserMessage;
   final String? sessionTitle;
-  final List<PlatformFile> initialPickedFiles;
-  const AiTechPage(
-      {Key? key,
-      required this.sessionId,
-      this.initialUserMessage,
-      this.sessionTitle,
-      this.initialPickedFiles = const []})
-      : super(key: key);
+  final List<XFile> initialPickedFiles;
+  const AiTechPage({
+    Key? key,
+    required this.sessionId,
+    this.initialUserMessage,
+    this.sessionTitle,
+    this.initialPickedFiles = const [],
+  }) : super(key: key);
 
   @override
   State<AiTechPage> createState() => _AiTechPageState();
@@ -45,7 +46,7 @@ class AiTechPage extends StatefulWidget {
 class _AiTechPageState extends State<AiTechPage> {
   // --- State ---
   final TextEditingController _controller = TextEditingController();
-  late List<PlatformFile> _pickedFiles;
+  late List<XFile> _pickedFiles;
 
   /// Displayed session title – starts empty and is replaced
   /// with an AI-generated title on the first message when the title is empty.
@@ -84,9 +85,11 @@ class _AiTechPageState extends State<AiTechPage> {
     super.initState();
     _orchestrator = AiTechOrchestrator(_service);
     _sessionTitle = widget.sessionTitle ?? '';
-    _pickedFiles = List<PlatformFile>.of(widget.initialPickedFiles);
+    _pickedFiles = List<XFile>.of(widget.initialPickedFiles);
     _messagesStream = _service.streamMessages(
-        widget.sessionId, _firebaseAuth.currentUser!.uid);
+      widget.sessionId,
+      _firebaseAuth.currentUser!.uid,
+    );
     // Subscribe to authoritative session title updates so the UI reflects
     // the generated title (replaces the initial user input once available).
     _sessionTitleStream = _service.streamSessionTitle(widget.sessionId);
@@ -125,7 +128,8 @@ class _AiTechPageState extends State<AiTechPage> {
           .collection('Users')
           .doc(userId)
           .get();
-      final ids = (doc.data()?['completedLearningBiteIds'] as List<dynamic>?)
+      final ids =
+          (doc.data()?['completedLearningBiteIds'] as List<dynamic>?)
               ?.cast<String>() ??
           <String>[];
       if (mounted) setState(() => _completedBiteIds.addAll(ids));
@@ -142,14 +146,20 @@ class _AiTechPageState extends State<AiTechPage> {
   }
 
   Future<void> _startLearningBite(
-      String journeyId, String learningBiteId) async {
+    String journeyId,
+    String learningBiteId,
+  ) async {
     if (journeyId.isEmpty || learningBiteId.isEmpty) return;
-    final learningBiteSnapshot =
-        await _service.streamLearningBite(journeyId, learningBiteId).first;
-    final tasksSnapshot =
-        await _service.streamTasks(journeyId, learningBiteId).first;
-    final learningBite =
-        LearningBite.fromMap(learningBiteSnapshot.data() ?? {}, learningBiteId);
+    final learningBiteSnapshot = await _service
+        .streamLearningBite(journeyId, learningBiteId)
+        .first;
+    final tasksSnapshot = await _service
+        .streamTasks(journeyId, learningBiteId)
+        .first;
+    final learningBite = LearningBite.fromMap(
+      learningBiteSnapshot.data() ?? {},
+      learningBiteId,
+    );
     final tasks = tasksSnapshot.docs
         .map((doc) => tk.Task.fromMap(doc.data(), doc.id))
         .toList();
@@ -159,21 +169,24 @@ class _AiTechPageState extends State<AiTechPage> {
         // Attach to the session-level unit so the resume document groups
         // all journeys of this session under one `unitId`. Include the
         // `journeyId` so UI can group bites by journey without extra queries.
-        await _progressService.startOrAttachBite(userId,
-            biteId: learningBiteId,
-            unitId: widget.sessionId,
-            subjectId: null,
-            journeyId: journeyId,
-            initialProgress: 0);
+        await _progressService.startOrAttachBite(
+          userId,
+          biteId: learningBiteId,
+          unitId: widget.sessionId,
+          subjectId: null,
+          journeyId: journeyId,
+          initialProgress: 0,
+        );
       }
     } catch (_) {}
 
     if (!mounted) return;
-    final result =
-        await Navigator.of(context).push<LearningBiteResult>(MaterialPageRoute(
-      builder: (context) =>
-          LearningBitePage(learningBite: learningBite, tasks: tasks),
-    ));
+    final result = await Navigator.of(context).push<LearningBiteResult>(
+      MaterialPageRoute(
+        builder: (context) =>
+            LearningBitePage(learningBite: learningBite, tasks: tasks),
+      ),
+    );
 
     final bool completed = result?.completed == true;
     final int earnedPoints = result?.points ?? 0;
@@ -193,9 +206,9 @@ class _AiTechPageState extends State<AiTechPage> {
               .get();
           beforeCompleted =
               (userDoc.data()?['completedLearningBiteIds'] as List<dynamic>?)
-                      ?.map((e) => e.toString())
-                      .toList() ??
-                  <String>[];
+                  ?.map((e) => e.toString())
+                  .toList() ??
+              <String>[];
         }
       } catch (_) {}
 
@@ -209,13 +222,15 @@ class _AiTechPageState extends State<AiTechPage> {
       // Save score after marking complete (single write, preserves all fields).
       try {
         if (userId != null && (earnedPoints > 0 || totalPoints > 0)) {
-          await _progressService.updateBiteProgress(userId,
-              unitId: widget.sessionId,
-              biteId: learningBiteId,
-              progress: 100,
-              status: 'completed',
-              points: earnedPoints,
-              maxPoints: totalPoints);
+          await _progressService.updateBiteProgress(
+            userId,
+            unitId: widget.sessionId,
+            biteId: learningBiteId,
+            progress: 100,
+            status: 'completed',
+            points: earnedPoints,
+            maxPoints: totalPoints,
+          );
         }
       } catch (_) {}
 
@@ -234,12 +249,14 @@ class _AiTechPageState extends State<AiTechPage> {
           if (idx < docs.length - 1) {
             final nextId = docs[idx + 1].id;
             try {
-              await _progressService.startOrAttachBite(userId,
-                  biteId: nextId,
-                  unitId: widget.sessionId,
-                  subjectId: null,
-                  journeyId: journeyId,
-                  initialProgress: 0);
+              await _progressService.startOrAttachBite(
+                userId,
+                biteId: nextId,
+                unitId: widget.sessionId,
+                subjectId: null,
+                journeyId: journeyId,
+                initialProgress: 0,
+              );
             } catch (_) {}
           } else {
             try {
@@ -253,7 +270,9 @@ class _AiTechPageState extends State<AiTechPage> {
         if (_firebaseAuth.currentUser != null) {
           // unit documents are session-scoped (unit == sessionId)
           final updated = await _progressService.getUnitProgress(
-              _firebaseAuth.currentUser!.uid, widget.sessionId);
+            _firebaseAuth.currentUser!.uid,
+            widget.sessionId,
+          );
           _unitProgressCache[widget.sessionId] = updated;
           if (mounted) setState(() {});
         }
@@ -269,14 +288,17 @@ class _AiTechPageState extends State<AiTechPage> {
               .collection('learning_bites')
               .get();
 
-          final allCompletedBefore = snap.docs.isNotEmpty &&
+          final allCompletedBefore =
+              snap.docs.isNotEmpty &&
               snap.docs.every((d) => beforeCompleted.contains(d.id));
 
           // Treat the current bite as completed even if the server write
           // hasn't propagated yet (same pattern as HomePage).
-          final allCompleted = snap.docs.isNotEmpty &&
-              snap.docs.every((d) =>
-                  d.id == learningBiteId || beforeCompleted.contains(d.id));
+          final allCompleted =
+              snap.docs.isNotEmpty &&
+              snap.docs.every(
+                (d) => d.id == learningBiteId || beforeCompleted.contains(d.id),
+              );
 
           if (allCompleted && !allCompletedBefore) {
             String journeyName = 'Lernreise';
@@ -286,8 +308,9 @@ class _AiTechPageState extends State<AiTechPage> {
                   .doc(journeyId)
                   .get();
               if (jdoc.exists) {
-                final ctx = (jdoc.data()?['goal'] ?? jdoc.data()?['context'])
-                    as String?;
+                final ctx =
+                    (jdoc.data()?['goal'] ?? jdoc.data()?['context'])
+                        as String?;
                 if (ctx != null && ctx.isNotEmpty) {
                   journeyName = ctx;
                 }
@@ -324,37 +347,41 @@ class _AiTechPageState extends State<AiTechPage> {
   ///
   /// On the first message with an empty title, also generates and persists
   /// an AI-derived session title from the user's message.
-  Future<void> _sendMessage(String text,
-      {List<PlatformFile> files = const []}) async {
+  Future<void> _sendMessage(String text, {List<XFile> files = const []}) async {
     if (text.trim().isEmpty && files.isEmpty) return;
 
+    final fileBytes = <XFile, Uint8List>{};
+    for (final file in files) {
+      fileBytes[file] = await file.readAsBytes();
+    }
+
     // Convert picked files to inline parts for the AI model.
-    final fileParts = files.where((f) => f.bytes != null).map((f) {
-      final ext = (f.extension ?? '').toLowerCase();
+    final fileParts = files.map((f) {
+      final ext = _extensionOf(f.name);
       final mime = LearningMaterialType.getMimeType(ext);
-      return InlineDataPart(mime, f.bytes!);
+      return InlineDataPart(mime, fileBytes[f]!);
     }).toList();
 
     // Upload files to Firebase Storage and collect download URLs for display.
     final uid = _firebaseAuth.currentUser?.uid ?? 'anonymous';
     final fileAttachments = <Map<String, dynamic>>[];
     for (final f in files) {
-      final ext = (f.extension ?? '').toLowerCase();
+      final ext = _extensionOf(f.name);
       String? url;
-      if (f.bytes != null) {
-        try {
-          final uniqueName = '${const Uuid().v4()}_${f.name}';
-          final ref = FirebaseStorage.instance
-              .ref('ai_tech_attachments/$uid/${widget.sessionId}/$uniqueName');
-          final mime = LearningMaterialType.getMimeType(ext);
-          await ref.putData(
-              f.bytes!,
-              SettableMetadata(
-                  contentType:
-                      mime.isEmpty ? 'application/octet-stream' : mime));
-          url = await ref.getDownloadURL();
-        } catch (_) {}
-      }
+      try {
+        final uniqueName = '${const Uuid().v4()}_${f.name}';
+        final ref = FirebaseStorage.instance.ref(
+          'ai_tech_attachments/$uid/${widget.sessionId}/$uniqueName',
+        );
+        final mime = LearningMaterialType.getMimeType(ext);
+        await ref.putData(
+          fileBytes[f]!,
+          SettableMetadata(
+            contentType: mime.isEmpty ? 'application/octet-stream' : mime,
+          ),
+        );
+        url = await ref.getDownloadURL();
+      } catch (_) {}
       // Replace generic image_picker names with readable timestamp names.
       final isImagePicker = f.name.startsWith('image_picker');
       final isVideo = LearningMaterialType.videoTypes.contains(ext);
@@ -377,21 +404,23 @@ class _AiTechPageState extends State<AiTechPage> {
         (_sessionTitle.isEmpty || _sessionTitle == text)) {
       _titleGenerationFuture ??= _orchestrator
           .generateSessionTitle(
-              text.isNotEmpty
-                  ? text
-                  : fileAttachments.map((a) => a['name']).join(', '),
-              fallback: text.isNotEmpty ? text : 'Dateien')
+            text.isNotEmpty
+                ? text
+                : fileAttachments.map((a) => a['name']).join(', '),
+            fallback: text.isNotEmpty ? text : 'Dateien',
+          )
           .then((title) {
-        _service.updateSessionUnit(widget.sessionId, title);
-        if (mounted) {
-          setState(() {
-            _sessionTitle = title;
-            _sessionTitleGenerated = true;
+            _service.updateSessionUnit(widget.sessionId, title);
+            if (mounted) {
+              setState(() {
+                _sessionTitle = title;
+                _sessionTitleGenerated = true;
+              });
+            }
+          })
+          .catchError((_) {
+            _titleGenerationFuture = null;
           });
-        }
-      }).catchError((_) {
-        _titleGenerationFuture = null;
-      });
       await _titleGenerationFuture;
     }
 
@@ -459,9 +488,10 @@ class _AiTechPageState extends State<AiTechPage> {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: SizedBox(
-                width: 24,
-                height: 24,
-                child: CircularProgressIndicator(strokeWidth: 2)),
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
           );
         } else if (snapshot.hasError) {
           return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
@@ -474,8 +504,11 @@ class _AiTechPageState extends State<AiTechPage> {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
             Timestamp timestamp = data['ts'];
             DateTime messageDate = timestamp.toDate();
-            DateTime messageDayOnly =
-                DateTime(messageDate.year, messageDate.month, messageDate.day);
+            DateTime messageDayOnly = DateTime(
+              messageDate.year,
+              messageDate.month,
+              messageDate.day,
+            );
 
             if (lastDate == null || lastDate != messageDayOnly) {
               messageWidgets.add(_buildDateSeparator(messageDate));
@@ -492,16 +525,17 @@ class _AiTechPageState extends State<AiTechPage> {
           }
 
           ListView messageList = ListView(
-              reverse: true,
-              scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
-              padding: EdgeInsets.only(
-                top: 8,
-                bottom: MediaQuery.of(context).padding.bottom + 85,
-              ),
-              children: [
-                if (_isAiThinking) const TypingIndicator(),
-                ...messageWidgets.reversed,
-              ]);
+            reverse: true,
+            scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: MediaQuery.of(context).padding.bottom + 85,
+            ),
+            children: [
+              if (_isAiThinking) const TypingIndicator(),
+              ...messageWidgets.reversed,
+            ],
+          );
           return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");
@@ -553,8 +587,9 @@ class _AiTechPageState extends State<AiTechPage> {
                   : Theme.of(context).colorScheme.secondary.withAlpha(40),
               borderRadius: BorderRadius.circular(12),
               border: Border.all(
-                color:
-                    Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withAlpha(26),
               ),
               boxShadow: [
                 BoxShadow(
@@ -571,12 +606,16 @@ class _AiTechPageState extends State<AiTechPage> {
                 child: Column(
                   children: [
                     ListTile(
-                      title: Text(journeyData['goal'] ??
-                          journeyData['context'] ??
-                          'Lernreise'),
+                      title: Text(
+                        journeyData['goal'] ??
+                            journeyData['context'] ??
+                            'Lernreise',
+                      ),
                       trailing: StreamBuilder<QuerySnapshot>(
-                        stream: _biteStreams.putIfAbsent(journeyId,
-                            () => _service.streamLearningBites(journeyId)),
+                        stream: _biteStreams.putIfAbsent(
+                          journeyId,
+                          () => _service.streamLearningBites(journeyId),
+                        ),
                         initialData: bitesSnapshot,
                         builder: (context, biteCountSnapshot) {
                           final countDocs =
@@ -598,10 +637,9 @@ class _AiTechPageState extends State<AiTechPage> {
                                     '$completedBites/$totalBites',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withAlpha(191),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.onSurface.withAlpha(191),
                                     ),
                                   ),
                                   const SizedBox(width: 8),
@@ -612,10 +650,9 @@ class _AiTechPageState extends State<AiTechPage> {
                                       : Icons.radio_button_unchecked,
                                   color: journeyCompleted
                                       ? Theme.of(context).colorScheme.primary
-                                      : Theme.of(context)
-                                          .colorScheme
-                                          .onSurface
-                                          .withAlpha(191),
+                                      : Theme.of(
+                                          context,
+                                        ).colorScheme.onSurface.withAlpha(191),
                                   size: 26,
                                 ),
                               ],
@@ -626,10 +663,14 @@ class _AiTechPageState extends State<AiTechPage> {
                     ),
                     Padding(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 4.0),
+                        horizontal: 12.0,
+                        vertical: 4.0,
+                      ),
                       child: StreamBuilder<QuerySnapshot>(
-                        stream: _biteStreams.putIfAbsent(journeyId,
-                            () => _service.streamLearningBites(journeyId)),
+                        stream: _biteStreams.putIfAbsent(
+                          journeyId,
+                          () => _service.streamLearningBites(journeyId),
+                        ),
                         // reuse the QuerySnapshot we already fetched in the
                         // enclosing FutureBuilder so the UI renders immediately
                         initialData: bitesSnapshot,
@@ -640,10 +681,12 @@ class _AiTechPageState extends State<AiTechPage> {
                             return const Padding(
                               padding: EdgeInsets.all(12.0),
                               child: SizedBox(
-                                  width: 24,
-                                  height: 24,
-                                  child: CircularProgressIndicator(
-                                      strokeWidth: 2)),
+                                width: 24,
+                                height: 24,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              ),
                             );
                           }
                           if (!snapshot.hasData || snapshot.data == null) {
@@ -661,22 +704,21 @@ class _AiTechPageState extends State<AiTechPage> {
                                   doc.data() as Map<String, dynamic>;
                               final docId = doc.id;
                               // determine completion from locally-cached set
-                              final bool biteCompleted =
-                                  _completedBiteIds.contains(docId);
+                              final bool biteCompleted = _completedBiteIds
+                                  .contains(docId);
                               return Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 6.0),
+                                margin: const EdgeInsets.symmetric(
+                                  vertical: 6.0,
+                                ),
                                 decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .surface
-                                      .withAlpha(230),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.surface.withAlpha(230),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
-                                    color: Theme.of(context)
-                                        .colorScheme
-                                        .outlineVariant
-                                        .withAlpha(51),
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outlineVariant.withAlpha(51),
                                   ),
                                 ),
                                 child: Material(
@@ -686,22 +728,24 @@ class _AiTechPageState extends State<AiTechPage> {
                                     onTap: () =>
                                         _startLearningBite(journeyId, docId),
                                     child: ListTile(
-                                      title:
-                                          Text(biteData['title'] ?? 'Lernbite'),
-                                      subtitle:
-                                          Text(biteData['description'] ?? ''),
+                                      title: Text(
+                                        biteData['title'] ?? 'Lernbite',
+                                      ),
+                                      subtitle: Text(
+                                        biteData['description'] ?? '',
+                                      ),
                                       trailing: Icon(
                                         biteCompleted
                                             ? Icons.check_circle
                                             : Icons.radio_button_unchecked,
                                         color: biteCompleted
-                                            ? Theme.of(context)
-                                                .colorScheme
-                                                .primary
+                                            ? Theme.of(
+                                                context,
+                                              ).colorScheme.primary
                                             : Theme.of(context)
-                                                .colorScheme
-                                                .onSurface
-                                                .withAlpha(191),
+                                                  .colorScheme
+                                                  .onSurface
+                                                  .withAlpha(191),
                                       ),
                                     ),
                                   ),
@@ -733,13 +777,19 @@ class _AiTechPageState extends State<AiTechPage> {
     );
   }
 
+  String _extensionOf(String name) {
+    final dot = name.lastIndexOf('.');
+    return dot == -1 ? '' : name.substring(dot + 1).toLowerCase();
+  }
+
   Widget _buildMessageItem(DocumentSnapshot document) {
     Map<String, dynamic> data = document.data() as Map<String, dynamic>;
 
     final isUser = data['role'] == 'user';
     final text = (data['text'] as String?) ?? '';
-    final attachments = ((data['meta'] as Map<String, dynamic>?)?['attachments']
-        as List<dynamic>?);
+    final attachments =
+        ((data['meta'] as Map<String, dynamic>?)?['attachments']
+            as List<dynamic>?);
 
     return Align(
       alignment: isUser ? Alignment.centerRight : Alignment.centerLeft,
@@ -752,8 +802,9 @@ class _AiTechPageState extends State<AiTechPage> {
             // Use Flexible so text doesn't overflow
             Flexible(
               child: Column(
-                crossAxisAlignment:
-                    isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                crossAxisAlignment: isUser
+                    ? CrossAxisAlignment.end
+                    : CrossAxisAlignment.start,
                 children: [
                   if (text.isNotEmpty)
                     ChatBubble(
@@ -799,7 +850,7 @@ class _AiTechPageState extends State<AiTechPage> {
       hintText: 'Was möchtest du lernen?',
       onSend: () {
         final text = _controller.text;
-        final files = List<PlatformFile>.of(_pickedFiles);
+        final files = List<XFile>.of(_pickedFiles);
         setState(() => _pickedFiles = []);
         _sendMessage(text, files: files);
       },
@@ -813,9 +864,7 @@ class _AiTechPageState extends State<AiTechPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          _sessionTitle.isNotEmpty ? _sessionTitle : 'Lernsession',
-        ),
+        title: Text(_sessionTitle.isNotEmpty ? _sessionTitle : 'Lernsession'),
         centerTitle: true,
         actions: [
           IconButton(
@@ -832,9 +881,7 @@ class _AiTechPageState extends State<AiTechPage> {
                       decoration: BoxDecoration(
                         color: cs.errorContainer.withAlpha(76),
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: cs.error.withAlpha(25),
-                        ),
+                        border: Border.all(color: cs.error.withAlpha(25)),
                       ),
                       child: Icon(
                         Icons.delete_outline,
@@ -851,7 +898,8 @@ class _AiTechPageState extends State<AiTechPage> {
                       ),
                     ),
                     content: const Text(
-                        'Möchtest du diese Session und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.'),
+                      'Möchtest du diese Session und alle zugehörigen Daten wirklich löschen? Dies kann nicht rückgängig gemacht werden.',
+                    ),
                     actions: [
                       Row(
                         children: [
@@ -881,7 +929,8 @@ class _AiTechPageState extends State<AiTechPage> {
                 } catch (e) {
                   if (context.mounted) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text('Fehler beim Löschen: $e')));
+                      SnackBar(content: Text('Fehler beim Löschen: $e')),
+                    );
                   }
                 }
               }

@@ -35,7 +35,10 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     if (userId == null) return;
     try {
       await _folderService.toggleFolderPublic(
-          userId: userId!, folderId: widget.folder.id, isPublic: !_isPublic);
+        userId: userId!,
+        folderId: widget.folder.id,
+        isPublic: !_isPublic,
+      );
       if (!mounted) return;
       setState(() {
         _isPublic = !_isPublic;
@@ -43,9 +46,11 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(_isPublic
-                ? 'Ordner ist jetzt öffentlich sichtbar'
-                : 'Ordner ist jetzt privat'),
+            content: Text(
+              _isPublic
+                  ? 'Ordner ist jetzt öffentlich sichtbar'
+                  : 'Ordner ist jetzt privat',
+            ),
           ),
         );
       }
@@ -67,22 +72,13 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             decoration: BoxDecoration(
               color: cs.errorContainer.withAlpha(76),
               shape: BoxShape.circle,
-              border: Border.all(
-                color: cs.error.withAlpha(25),
-              ),
+              border: Border.all(color: cs.error.withAlpha(25)),
             ),
-            child: Icon(
-              Icons.delete_outline,
-              size: 32,
-              color: cs.error,
-            ),
+            child: Icon(Icons.delete_outline, size: 32, color: cs.error),
           ),
           title: const Text(
             'Lerninhalt löschen?',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           content: const Text(
             'Möchtest du diesen Lerninhalt unwiderruflich löschen?',
@@ -92,14 +88,16 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             Row(
               children: [
                 DialogButton(
-                    onTap: () => Navigator.of(context).pop(false),
-                    text: 'Abbrechen'),
+                  onTap: () => Navigator.of(context).pop(false),
+                  text: 'Abbrechen',
+                ),
                 DialogButton(
-                    onTap: () => Navigator.of(context).pop(true),
-                    text: 'Löschen',
-                    isDestructive: true),
+                  onTap: () => Navigator.of(context).pop(true),
+                  text: 'Löschen',
+                  isDestructive: true,
+                ),
               ],
-            )
+            ),
           ],
         );
       },
@@ -130,38 +128,32 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
             decoration: BoxDecoration(
               color: cs.errorContainer.withAlpha(76),
               shape: BoxShape.circle,
-              border: Border.all(
-                color: cs.error.withAlpha(25),
-              ),
+              border: Border.all(color: cs.error.withAlpha(25)),
             ),
-            child: Icon(
-              Icons.delete_outline,
-              size: 32,
-              color: cs.error,
-            ),
+            child: Icon(Icons.delete_outline, size: 32, color: cs.error),
           ),
           title: const Text(
             'Ordner und Inhalte löschen?',
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           content: const Text(
-              'Möchtest du diesen Ordner und alle darin enthaltenen Lerninhalte unwiderruflich löschen?',
-              textAlign: TextAlign.center),
+            'Möchtest du diesen Ordner und alle darin enthaltenen Lerninhalte unwiderruflich löschen?',
+            textAlign: TextAlign.center,
+          ),
           actions: [
             Row(
               children: [
                 DialogButton(
-                    onTap: () => Navigator.of(context).pop(false),
-                    text: 'Abbrechen'),
+                  onTap: () => Navigator.of(context).pop(false),
+                  text: 'Abbrechen',
+                ),
                 DialogButton(
-                    onTap: () => Navigator.of(context).pop(true),
-                    text: 'Löschen',
-                    isDestructive: true),
+                  onTap: () => Navigator.of(context).pop(true),
+                  text: 'Löschen',
+                  isDestructive: true,
+                ),
               ],
-            )
+            ),
           ],
         );
       },
@@ -178,7 +170,9 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   Future<void> _pickAndUploadImageOrVideo(
-      ImageSource imageSource, String type) async {
+    ImageSource imageSource,
+    String type,
+  ) async {
     ImagePicker imagePicker = ImagePicker();
     XFile? postContent;
     if (type == "video") {
@@ -200,14 +194,13 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   }
 
   Future<void> _pickAndUploadFile() async {
-    final result = await FilePicker.pickFiles(
+    final result = await FilePicker.pickFile(
       type: FileType.custom,
       allowedExtensions: LearningMaterialType.supportedTypes,
     );
-    if (result != null && result.files.single.path != null) {
-      final file = XFile(result.files.single.path!);
-      final fullName = result.files.single.name;
-      _uploadFile(file, fullName);
+    if (result != null) {
+      final file = result.xFile;
+      _uploadFile(file, file.name);
     }
   }
 
@@ -221,9 +214,17 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     try {
       final url = kIsWeb
           ? await _materialService.uploadData(
-              file, userId!, widget.folder.id, '$id.$ext')
+              file,
+              userId!,
+              widget.folder.id,
+              '$id.$ext',
+            )
           : await _materialService.uploadFile(
-              File(file.path), userId!, widget.folder.id, '$id.$ext');
+              File(file.path),
+              userId!,
+              widget.folder.id,
+              '$id.$ext',
+            );
       final material = LearningMaterial(
         id: id,
         name: fileNameWithoutExt,
@@ -266,7 +267,8 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
         final data = await FirebaseStorage.instance.refFromURL(m.url).getData();
         if (data != null) {
           fileParts.add(
-              InlineDataPart(LearningMaterialType.getMimeType(m.type), data));
+            InlineDataPart(LearningMaterialType.getMimeType(m.type), data),
+          );
         }
       } catch (_) {}
     }
@@ -287,8 +289,10 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
   Future<void> _generateLearningBite() async {
     final materials = await _materialsFuture;
     if (materials.isEmpty && mounted) {
-      showErrorMessage(context,
-          'Keine Lerninhalte zum Erstellen eines Learning Bites vorhanden.');
+      showErrorMessage(
+        context,
+        'Keine Lerninhalte zum Erstellen eines Learning Bites vorhanden.',
+      );
       return;
     }
     final List<Part> fileParts = [];
@@ -297,7 +301,8 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
         final data = await FirebaseStorage.instance.refFromURL(m.url).getData();
         if (data != null) {
           fileParts.add(
-              InlineDataPart(LearningMaterialType.getMimeType(m.type), data));
+            InlineDataPart(LearningMaterialType.getMimeType(m.type), data),
+          );
         }
       } catch (_) {}
     }
@@ -422,7 +427,8 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                 child: ListTile(
                   leading: Icon(_isPublic ? Icons.lock : Icons.public),
                   title: Text(
-                      _isPublic ? 'Auf Privat stellen' : 'Veröffentlichen'),
+                    _isPublic ? 'Auf Privat stellen' : 'Veröffentlichen',
+                  ),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -445,11 +451,16 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
               PopupMenuItem<String>(
                 value: 'delete',
                 child: ListTile(
-                  leading: FaIcon(FontAwesomeIcons.folderMinus,
-                      color: Theme.of(context).colorScheme.error),
-                  title: Text('Ordner löschen',
-                      style: TextStyle(
-                          color: Theme.of(context).colorScheme.error)),
+                  leading: FaIcon(
+                    FontAwesomeIcons.folderMinus,
+                    color: Theme.of(context).colorScheme.error,
+                  ),
+                  title: Text(
+                    'Ordner löschen',
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),
@@ -474,7 +485,9 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
               slivers: [
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 12.0),
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   sliver: SliverToBoxAdapter(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 24.0),
@@ -508,7 +521,9 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                     const SizedBox(width: 12),
                                     Container(
                                       padding: const EdgeInsets.symmetric(
-                                          horizontal: 8, vertical: 4),
+                                        horizontal: 8,
+                                        vertical: 4,
+                                      ),
                                       decoration: BoxDecoration(
                                         color: colorScheme.secondaryContainer,
                                         borderRadius: BorderRadius.circular(6),
@@ -537,7 +552,7 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                                       color: colorScheme.onSurfaceVariant,
                                     ),
                                   ),
-                                ]
+                                ],
                               ],
                             ),
                           ),
@@ -552,28 +567,42 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(Icons.folder_open,
-                              size: 64, color: colorScheme.outlineVariant),
+                          Icon(
+                            Icons.folder_open,
+                            size: 64,
+                            color: colorScheme.outlineVariant,
+                          ),
                           const SizedBox(height: 16),
                           const Text(
                             "Erstelle einen neuen Lerninhalt",
                             style: TextStyle(
-                                fontSize: 18, fontWeight: FontWeight.w600),
+                              fontSize: 18,
+                              fontWeight: FontWeight.w600,
+                            ),
                           ),
                           const SizedBox(height: 8),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text("über das ",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: colorScheme.onSurfaceVariant)),
-                              Icon(Icons.add,
-                                  size: 18, color: colorScheme.primary),
-                              Text(" oben rechts.",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: colorScheme.onSurfaceVariant)),
+                              Text(
+                                "über das ",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
+                              Icon(
+                                Icons.add,
+                                size: 18,
+                                color: colorScheme.primary,
+                              ),
+                              Text(
+                                " oben rechts.",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                              ),
                             ],
                           ),
                         ],
@@ -583,55 +612,54 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                 else
                   SliverPadding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 12.0),
+                      horizontal: 16.0,
+                      vertical: 12.0,
+                    ),
                     sliver: SliverGrid(
                       gridDelegate:
                           const SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: 200,
-                        mainAxisSpacing: 16,
-                        crossAxisSpacing: 16,
-                        childAspectRatio: 200 / 175,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) {
-                          final material = materials[index];
-                          return Stack(
-                            children: [
-                              LearningMaterialTile(
-                                material: material,
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          LearningMaterialPreviewPage(
-                                        url: material.url,
-                                        type: material.type,
-                                        name: material.name,
-                                      ),
-                                    ),
-                                  );
+                            maxCrossAxisExtent: 200,
+                            mainAxisSpacing: 16,
+                            crossAxisSpacing: 16,
+                            childAspectRatio: 200 / 175,
+                          ),
+                      delegate: SliverChildBuilderDelegate((context, index) {
+                        final material = materials[index];
+                        return Stack(
+                          children: [
+                            LearningMaterialTile(
+                              material: material,
+                              onTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        LearningMaterialPreviewPage(
+                                          url: material.url,
+                                          type: material.type,
+                                          name: material.name,
+                                        ),
+                                  ),
+                                );
+                              },
+                            ),
+                            Positioned(
+                              top: 4,
+                              right: 4,
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.delete_outline,
+                                  size: 28,
+                                  color: colorScheme.onSurfaceVariant,
+                                ),
+                                tooltip: 'Löschen',
+                                onPressed: () async {
+                                  await _confirmAndDeleteMaterial(material);
                                 },
                               ),
-                              Positioned(
-                                top: 4,
-                                right: 4,
-                                child: IconButton(
-                                  icon: Icon(
-                                    Icons.delete_outline,
-                                    size: 28,
-                                    color: colorScheme.onSurfaceVariant,
-                                  ),
-                                  tooltip: 'Löschen',
-                                  onPressed: () async {
-                                    await _confirmAndDeleteMaterial(material);
-                                  },
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                        childCount: materials.length,
-                      ),
+                            ),
+                          ],
+                        );
+                      }, childCount: materials.length),
                     ),
                   ),
               ],

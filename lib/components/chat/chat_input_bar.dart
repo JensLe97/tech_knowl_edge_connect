@@ -1,5 +1,5 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 /// A unified bottom input bar used in all chat/AI/search pages.
 ///
@@ -19,8 +19,8 @@ class ChatInputBar extends StatelessWidget {
   final String hintText;
   final VoidCallback onSend;
   final VoidCallback? onAttachmentTap;
-  final List<PlatformFile> pickedFiles;
-  final void Function(PlatformFile)? onRemoveFile;
+  final List<XFile> pickedFiles;
+  final void Function(XFile)? onRemoveFile;
 
   const ChatInputBar({
     super.key,
@@ -77,9 +77,7 @@ class ChatInputBar extends StatelessWidget {
           decoration: BoxDecoration(
             color: colorScheme.surfaceContainerLowest, // or bright surface
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(
-              color: colorScheme.outlineVariant.withAlpha(51),
-            ),
+            border: Border.all(color: colorScheme.outlineVariant.withAlpha(51)),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withAlpha(12),
@@ -122,8 +120,10 @@ class ChatInputBar extends StatelessWidget {
                     disabledBorder: InputBorder.none,
                     filled: false,
                     isDense: true,
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 10,
+                      horizontal: 4,
+                    ),
                   ),
                 ),
               ),
@@ -148,7 +148,7 @@ class ChatInputBar extends StatelessWidget {
                                 color: colorScheme.primary.withAlpha(76),
                                 blurRadius: 8,
                                 offset: const Offset(0, 2),
-                              )
+                              ),
                             ]
                           : null,
                     ),

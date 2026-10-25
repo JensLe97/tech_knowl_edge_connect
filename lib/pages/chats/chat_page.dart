@@ -1,5 +1,6 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +22,11 @@ import 'package:uuid/uuid.dart';
 class ChatPage extends StatefulWidget {
   final String receiverUsername;
   final String receiverUid;
-  const ChatPage(
-      {super.key, required this.receiverUsername, required this.receiverUid});
+  const ChatPage({
+    super.key,
+    required this.receiverUsername,
+    required this.receiverUid,
+  });
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -39,7 +43,9 @@ class _ChatPageState extends State<ChatPage> {
   void initState() {
     super.initState();
     _messagesStream = _chatService.getMessages(
-        _firebaseAuth.currentUser!.uid, widget.receiverUid);
+      _firebaseAuth.currentUser!.uid,
+      widget.receiverUid,
+    );
   }
 
   @override
@@ -51,32 +57,39 @@ class _ChatPageState extends State<ChatPage> {
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
       await _chatService.sendMessage(
-          widget.receiverUid, _messageController.text);
+        widget.receiverUid,
+        _messageController.text,
+      );
       _messageController.clear();
     }
   }
 
-  Future<void> _sendFiles(List<PlatformFile> files) async {
+  Future<void> _sendFiles(List<XFile> files) async {
     for (final file in files) {
-      if (file.bytes == null) {
+      final ext = _extensionOf(file.name);
+      final storageFileName = '${const Uuid().v4()}.$ext';
+      final ref = FirebaseStorage.instance
+          .ref('chat_files')
+          .child(storageFileName);
+      final mime = LearningMaterialType.getMimeType(ext);
+      late final Uint8List bytes;
+      try {
+        bytes = await file.readAsBytes();
+      } catch (_) {
         if (mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-                content:
-                    Text('Datei ${file.name} konnte nicht gelesen werden.')),
+              content: Text('Datei ${file.name} konnte nicht gelesen werden.'),
+            ),
           );
         }
         continue;
       }
-      final ext = (file.extension ?? '').toLowerCase();
-      final storageFileName = '${const Uuid().v4()}.$ext';
-      final ref =
-          FirebaseStorage.instance.ref('chat_files').child(storageFileName);
-      final mime = LearningMaterialType.getMimeType(ext);
       final task = await ref.putData(
-        file.bytes!,
+        bytes,
         SettableMetadata(
-            contentType: mime.isEmpty ? 'application/octet-stream' : mime),
+          contentType: mime.isEmpty ? 'application/octet-stream' : mime,
+        ),
       );
       final url = await task.ref.getDownloadURL();
       String type = 'file';
@@ -91,9 +104,18 @@ class _ChatPageState extends State<ChatPage> {
           ? '${type == 'video' ? 'Video' : 'Foto'}_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$ext'
           : file.name;
 
-      await _chatService.sendMessage(widget.receiverUid, url,
-          type: type, fileName: displayName);
+      await _chatService.sendMessage(
+        widget.receiverUid,
+        url,
+        type: type,
+        fileName: displayName,
+      );
     }
+  }
+
+  String _extensionOf(String name) {
+    final dot = name.lastIndexOf('.');
+    return dot == -1 ? '' : name.substring(dot + 1).toLowerCase();
   }
 
   void sendImage(ImageSource imageSource) async {
@@ -108,8 +130,10 @@ class _ChatPageState extends State<ChatPage> {
         String extension = image.name.split(".").last;
         String fileName = const Uuid().v4();
 
-        Reference upload =
-            firebaseStorage.ref().child('images').child("$fileName.$extension");
+        Reference upload = firebaseStorage
+            .ref()
+            .child('images')
+            .child("$fileName.$extension");
         extension = extension == "jpg" ? "jpeg" : extension;
         TaskSnapshot taskSnapshot = await upload.putData(
           await image.readAsBytes(),
@@ -120,8 +144,12 @@ class _ChatPageState extends State<ChatPage> {
 
         final displayName =
             'Foto_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$extension';
-        await _chatService.sendMessage(widget.receiverUid, imageUrl,
-            type: "image", fileName: displayName);
+        await _chatService.sendMessage(
+          widget.receiverUid,
+          imageUrl,
+          type: "image",
+          fileName: displayName,
+        );
       }
     }
   }
@@ -145,73 +173,75 @@ class _ChatPageState extends State<ChatPage> {
     final blockedUsers = userState?.blockedUsers ?? [];
 
     return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        appBar: AppBar(
-            title: Text(widget.receiverUsername),
-            centerTitle: true,
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useRootNavigator: true,
-                      enableDrag: true,
-                      builder: (BuildContext context) => SafeArea(
-                        child: UserBottomSheet(
-                            toggleBlockUser: toggleBlockUser,
-                            report: reportUser,
-                            isBlocked:
-                                blockedUsers.contains(widget.receiverUid)),
-                      ),
-                    );
-                  },
-                  icon: const Icon(Icons.more_horiz)),
-            ]),
-        body: SafeArea(
-          bottom: false,
-          child: SizedBox.expand(
-            child: Stack(
-              children: [
-                Positioned.fill(child: _buildMessageList()),
-                Positioned(
-                  left: 0,
-                  right: 0,
-                  bottom: 0,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.bottomCenter,
-                        end: Alignment.topCenter,
-                        colors: [
-                          Theme.of(context).colorScheme.surface,
-                          Theme.of(context).colorScheme.surface.withAlpha(230),
-                          Theme.of(context).colorScheme.surface.withAlpha(0),
-                        ],
-                      ),
-                    ),
-                    padding: EdgeInsets.fromLTRB(
-                      10,
-                      24,
-                      10,
-                      MediaQuery.of(context).padding.bottom + 16,
-                    ),
-                    child: blockedUsers.contains(widget.receiverUid)
-                        ? Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: BlockedField(
-                              toggleBlockUser: toggleBlockUser,
-                              isBlocked: true,
-                            ),
-                          )
-                        : _buildMessageInput(),
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      appBar: AppBar(
+        title: Text(widget.receiverUsername),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                useRootNavigator: true,
+                enableDrag: true,
+                builder: (BuildContext context) => SafeArea(
+                  child: UserBottomSheet(
+                    toggleBlockUser: toggleBlockUser,
+                    report: reportUser,
+                    isBlocked: blockedUsers.contains(widget.receiverUid),
                   ),
                 ),
-              ],
-            ),
+              );
+            },
+            icon: const Icon(Icons.more_horiz),
           ),
-        ));
+        ],
+      ),
+      body: SafeArea(
+        bottom: false,
+        child: SizedBox.expand(
+          child: Stack(
+            children: [
+              Positioned.fill(child: _buildMessageList()),
+              Positioned(
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                      colors: [
+                        Theme.of(context).colorScheme.surface,
+                        Theme.of(context).colorScheme.surface.withAlpha(230),
+                        Theme.of(context).colorScheme.surface.withAlpha(0),
+                      ],
+                    ),
+                  ),
+                  padding: EdgeInsets.fromLTRB(
+                    10,
+                    24,
+                    10,
+                    MediaQuery.of(context).padding.bottom + 16,
+                  ),
+                  child: blockedUsers.contains(widget.receiverUid)
+                      ? Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: BlockedField(
+                            toggleBlockUser: toggleBlockUser,
+                            isBlocked: true,
+                          ),
+                        )
+                      : _buildMessageInput(),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   String _formatDateHeader(DateTime date) {
@@ -258,9 +288,7 @@ class _ChatPageState extends State<ChatPage> {
       stream: _messagesStream,
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return const Center(child: CircularProgressIndicator());
         } else if (snapshot.hasError) {
           return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
         } else if (snapshot.hasData) {
@@ -272,8 +300,11 @@ class _ChatPageState extends State<ChatPage> {
             Map<String, dynamic> data = document.data() as Map<String, dynamic>;
             Timestamp timestamp = data['timestamp'];
             DateTime messageDate = timestamp.toDate();
-            DateTime messageDayOnly =
-                DateTime(messageDate.year, messageDate.month, messageDate.day);
+            DateTime messageDayOnly = DateTime(
+              messageDate.year,
+              messageDate.month,
+              messageDate.day,
+            );
 
             if (lastDate == null || lastDate != messageDayOnly) {
               messageWidgets.add(_buildDateSeparator(messageDate));
@@ -284,13 +315,14 @@ class _ChatPageState extends State<ChatPage> {
           }
 
           ListView messageList = ListView(
-              scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
-              reverse: true,
-              padding: EdgeInsets.only(
-                top: 8,
-                bottom: MediaQuery.of(context).padding.bottom + 85,
-              ),
-              children: messageWidgets.reversed.toList());
+            scrollCacheExtent: const ScrollCacheExtent.pixels(1500),
+            reverse: true,
+            padding: EdgeInsets.only(
+              top: 8,
+              bottom: MediaQuery.of(context).padding.bottom + 85,
+            ),
+            children: messageWidgets.reversed.toList(),
+          );
           return TextFieldTapRegion(child: messageList);
         } else {
           return const Text("Noch keine Nachrichten vorhanden.");
@@ -327,10 +359,8 @@ class _ChatPageState extends State<ChatPage> {
       controller: _messageController,
       hintText: 'Nachricht schreiben...',
       onSend: sendMessage,
-      onAttachmentTap: () => showAttachmentPickerSheet(
-        context,
-        onFilesAdded: _sendFiles,
-      ),
+      onAttachmentTap: () =>
+          showAttachmentPickerSheet(context, onFilesAdded: _sendFiles),
     );
   }
 }

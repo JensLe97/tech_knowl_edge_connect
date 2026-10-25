@@ -8,6 +8,7 @@ import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dar
 import 'package:tech_knowl_edge_connect/services/content/content_admin_service.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
 
 class AiAuthoringCard extends StatefulWidget {
   final String userId;
@@ -45,7 +46,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
   final TextEditingController _manualSourceController = TextEditingController();
   final TextEditingController _aiTitleController = TextEditingController();
 
-  List<PlatformFile> _pickedFiles = [];
+  List<XFile> _pickedFiles = [];
   List<Map<String, dynamic>> _uploadedResources = [];
   bool _uploading = false;
   String _uploadSource = '';
@@ -76,7 +77,8 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
       _aiTitle = widget.selectedLearningBiteData!['title'] ?? '';
       _aiTitleController.text = _aiTitle;
       _uploadedResources = List<Map<String, dynamic>>.from(
-          widget.selectedLearningBiteData!['resources'] ?? []);
+        widget.selectedLearningBiteData!['resources'] ?? [],
+      );
     } else {
       _aiTitle = '';
       _aiTitleController.text = '';
@@ -103,14 +105,12 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
 
   Future<void> _pickFiles() async {
     final result = await FilePicker.pickFiles(
-      allowMultiple: true,
-      withData: true,
       type: FileType.custom,
       allowedExtensions: LearningMaterialType.supportedTypes,
     );
-    if (result == null) return;
+    final files = result.map((file) => file.xFile).toList();
     setState(() {
-      _pickedFiles = [..._pickedFiles, ...result.files];
+      _pickedFiles = [..._pickedFiles, ...files];
     });
   }
 
@@ -146,9 +146,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
           unitId: widget.selectedUnitId!,
           conceptId: widget.selectedConceptId!,
           learningBiteId: widget.selectedLearningBiteId!,
-          data: {
-            'resources': merged,
-          },
+          data: {'resources': merged},
         );
         widget.onUpdate?.call();
       }
@@ -166,7 +164,8 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
     if (!hasFiles && !hasText) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
-            content: Text('Bitte Dateien hochladen oder Textquelle angeben.')),
+          content: Text('Bitte Dateien hochladen oder Textquelle angeben.'),
+        ),
       );
       return;
     }
@@ -193,8 +192,9 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
     final List<Part> fileParts = [];
     for (int i = 0; i < urls.length; i++) {
       try {
-        final data =
-            await FirebaseStorage.instance.refFromURL(urls[i]).getData();
+        final data = await FirebaseStorage.instance
+            .refFromURL(urls[i])
+            .getData();
         if (data != null) fileParts.add(InlineDataPart(mimeTypes[i], data));
       } catch (_) {}
     }
@@ -268,9 +268,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
         unitId: widget.selectedUnitId!,
         conceptId: widget.selectedConceptId!,
         learningBiteId: widget.selectedLearningBiteId!,
-        data: {
-          'content': FieldValue.arrayUnion(_aiContentParts),
-        },
+        data: {'content': FieldValue.arrayUnion(_aiContentParts)},
       );
 
       // Add tasks
@@ -301,9 +299,9 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
       widget.onUpdate?.call();
     } catch (e) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Fehler beim Speichern: $e')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Fehler beim Speichern: $e')));
       }
     }
   }
@@ -359,9 +357,10 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                     : cs.surfaceContainerHighest.withAlpha(128),
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
-                    color: canTrigger
-                        ? cs.primary.withAlpha(51)
-                        : cs.outlineVariant.withAlpha(128)),
+                  color: canTrigger
+                      ? cs.primary.withAlpha(51)
+                      : cs.outlineVariant.withAlpha(128),
+                ),
               ),
               padding: const EdgeInsets.all(4),
               child: Material(
@@ -386,15 +385,17 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
                                       color: Colors.black.withAlpha(25),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
-                                    )
+                                    ),
                                   ]
                                 : null,
                           ),
-                          child: Icon(Icons.auto_awesome,
-                              color: canTrigger
-                                  ? cs.onPrimary
-                                  : cs.onSurface.withAlpha(100),
-                              size: 20),
+                          child: Icon(
+                            Icons.auto_awesome,
+                            color: canTrigger
+                                ? cs.onPrimary
+                                : cs.onSurface.withAlpha(100),
+                            size: 20,
+                          ),
                         ),
                         const SizedBox(width: 12),
                         Text(
@@ -423,7 +424,8 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
           const Column(
             children: [
               Text(
-                  'Bitte wähle zuerst ein Learning Bite aus, um KI-Funktionen zu nutzen.'),
+                'Bitte wähle zuerst ein Learning Bite aus, um KI-Funktionen zu nutzen.',
+              ),
               SizedBox(height: 16),
             ],
           ),
@@ -442,57 +444,65 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: _pickedFiles
-                .map((file) => Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainer,
-                        borderRadius: BorderRadius.circular(24),
-                        border:
-                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                .map(
+                  (file) => Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: cs.outlineVariant.withAlpha(40),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: cs.primary.withAlpha(26),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.insert_drive_file,
+                              color: cs.primary,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                            file.name,
+                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(
+                            Icons.delete_outline,
+                            color: cs.onSurfaceVariant,
+                          ),
+                          tooltip: 'Entfernen',
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                  color: cs.outlineVariant.withAlpha(51)),
-                            ),
-                            child: Center(
-                              child: Icon(Icons.insert_drive_file,
-                                  color: cs.primary, size: 24),
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Text(
-                              file.name,
-                              style:
-                                  const TextStyle(fontWeight: FontWeight.bold),
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete_outline,
-                                color: cs.onSurfaceVariant),
-                            tooltip: 'Entfernen',
-                            style: IconButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            onPressed: () => setState(() {
-                              _pickedFiles.removeWhere((f) => f == file);
-                            }),
-                          ),
-                        ],
-                      ),
-                    ))
+                          onPressed: () => setState(() {
+                            _pickedFiles.removeWhere((f) => f == file);
+                          }),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: 16),
@@ -530,32 +540,35 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
           Wrap(
             spacing: 8,
             children: _uploadedResources
-                .map((res) => Chip(
-                      label: Text(res['name'] ?? 'Datei'),
-                      onDeleted: () async {
-                        final newResources =
-                            List<Map<String, dynamic>>.from(_uploadedResources);
-                        newResources.removeWhere((r) => r == res);
-                        setState(() => _uploadedResources = newResources);
-                        if (widget.selectedSubjectId != null &&
-                            widget.selectedCategoryId != null &&
-                            widget.selectedTopicId != null &&
-                            widget.selectedUnitId != null &&
-                            widget.selectedConceptId != null &&
-                            widget.selectedLearningBiteId != null) {
-                          await widget.adminService.updateLearningBite(
-                            subjectId: widget.selectedSubjectId!,
-                            categoryId: widget.selectedCategoryId!,
-                            topicId: widget.selectedTopicId!,
-                            unitId: widget.selectedUnitId!,
-                            conceptId: widget.selectedConceptId!,
-                            learningBiteId: widget.selectedLearningBiteId!,
-                            data: {'resources': newResources},
-                          );
-                          widget.onUpdate?.call();
-                        }
-                      },
-                    ))
+                .map(
+                  (res) => Chip(
+                    label: Text(res['name'] ?? 'Datei'),
+                    onDeleted: () async {
+                      final newResources = List<Map<String, dynamic>>.from(
+                        _uploadedResources,
+                      );
+                      newResources.removeWhere((r) => r == res);
+                      setState(() => _uploadedResources = newResources);
+                      if (widget.selectedSubjectId != null &&
+                          widget.selectedCategoryId != null &&
+                          widget.selectedTopicId != null &&
+                          widget.selectedUnitId != null &&
+                          widget.selectedConceptId != null &&
+                          widget.selectedLearningBiteId != null) {
+                        await widget.adminService.updateLearningBite(
+                          subjectId: widget.selectedSubjectId!,
+                          categoryId: widget.selectedCategoryId!,
+                          topicId: widget.selectedTopicId!,
+                          unitId: widget.selectedUnitId!,
+                          conceptId: widget.selectedConceptId!,
+                          learningBiteId: widget.selectedLearningBiteId!,
+                          data: {'resources': newResources},
+                        );
+                        widget.onUpdate?.call();
+                      }
+                    },
+                  ),
+                )
                 .toList(),
           ),
           const SizedBox(height: 16),
@@ -598,9 +611,7 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             ),
             const SizedBox(height: 12),
             TextField(
-              decoration: const InputDecoration(
-                labelText: 'Titel',
-              ),
+              decoration: const InputDecoration(labelText: 'Titel'),
               style: const TextStyle(fontWeight: FontWeight.bold),
               onChanged: (value) => _aiTitle = value,
               controller: _aiTitleController,
@@ -608,123 +619,141 @@ class _AiAuthoringCardState extends State<AiAuthoringCard> {
             if (_aiContentParts.isNotEmpty || _aiTasks.isNotEmpty) ...[
               const SizedBox(height: 16),
               if (_aiContentParts.isNotEmpty) ...[
-                Text('Generierte Lernabschnitte: ${_aiContentParts.length}',
-                    style: TextStyle(
-                        color: cs.onSurfaceVariant,
-                        fontWeight: FontWeight.w600)),
+                Text(
+                  'Generierte Lernabschnitte: ${_aiContentParts.length}',
+                  style: TextStyle(
+                    color: cs.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                ..._aiContentParts.asMap().entries.map((entry) => Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainer,
-                        borderRadius: BorderRadius.circular(24),
-                        border:
-                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                ..._aiContentParts.asMap().entries.map(
+                  (entry) => Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: cs.outlineVariant.withAlpha(40),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: cs.primary.withAlpha(26),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: cs.outlineVariant.withAlpha(51),
-                              ),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.description,
-                                color: cs.primary,
-                                size: 24,
-                              ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Teil ${entry.key + 1}',
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  entry.value,
-                                  style: TextStyle(
-                                      fontSize: 14, color: cs.onSurface),
-                                ),
-                              ],
+                          child: Center(
+                            child: Icon(
+                              Icons.description,
+                              color: cs.primary,
+                              size: 24,
                             ),
                           ),
-                        ],
-                      ),
-                    )),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Teil ${entry.key + 1}',
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                entry.value,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: cs.onSurface,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
               if (_aiTasks.isNotEmpty) ...[
                 const SizedBox(height: 12),
-                Text('Generierte Aufgaben: ${_aiTasks.length}',
-                    style: TextStyle(
-                        color: cs.onSurfaceVariant,
-                        fontWeight: FontWeight.w600)),
+                Text(
+                  'Generierte Aufgaben: ${_aiTasks.length}',
+                  style: TextStyle(
+                    color: cs.onSurfaceVariant,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
                 const SizedBox(height: 8),
-                ..._aiTasks.map((task) => Container(
-                      margin: const EdgeInsets.only(bottom: 12),
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: cs.surfaceContainer,
-                        borderRadius: BorderRadius.circular(24),
-                        border:
-                            Border.all(color: cs.outlineVariant.withAlpha(40)),
+                ..._aiTasks.map(
+                  (task) => Container(
+                    margin: const EdgeInsets.only(bottom: 12),
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: cs.surfaceContainer,
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(
+                        color: cs.outlineVariant.withAlpha(40),
                       ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Container(
-                            width: 48,
-                            height: 48,
-                            decoration: BoxDecoration(
-                              color: cs.primary.withAlpha(26),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: cs.outlineVariant.withAlpha(51),
-                              ),
-                            ),
-                            child: Center(
-                              child: Icon(
-                                Icons.quiz,
-                                color: cs.primary,
-                                size: 24,
-                              ),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                          width: 48,
+                          height: 48,
+                          decoration: BoxDecoration(
+                            color: cs.primary.withAlpha(26),
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: cs.outlineVariant.withAlpha(51),
                             ),
                           ),
-                          const SizedBox(width: 16),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  task.question,
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  '${task.type.name}\nAntwort: ${task.correctAnswer}',
-                                  style: TextStyle(
-                                      fontSize: 13, color: cs.onSurfaceVariant),
-                                ),
-                              ],
+                          child: Center(
+                            child: Icon(
+                              Icons.quiz,
+                              color: cs.primary,
+                              size: 24,
                             ),
                           ),
-                        ],
-                      ),
-                    )),
+                        ),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                task.question,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${task.type.name}\nAntwort: ${task.correctAnswer}',
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  color: cs.onSurfaceVariant,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
               const SizedBox(height: 16),
               SizedBox(

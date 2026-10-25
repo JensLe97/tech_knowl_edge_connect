@@ -6,10 +6,10 @@ class ReportReasonBottomSheet extends StatelessWidget {
   final bool isContent;
 
   const ReportReasonBottomSheet({
-    Key? key,
+    super.key,
     required this.report,
     this.isContent = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

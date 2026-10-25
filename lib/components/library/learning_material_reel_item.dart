@@ -29,7 +29,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
   final LearningMaterialService _learningMaterialsService =
       LearningMaterialService();
 
-  toggleLike() async {
+  Future<void> toggleLike() async {
     final likedLearningMaterials = UserState.of(
       context,
     )!.likedLearningMaterials;
@@ -407,7 +407,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
 
 class VideoPlayerWidget extends StatefulWidget {
   final String url;
-  const VideoPlayerWidget({Key? key, required this.url}) : super(key: key);
+  const VideoPlayerWidget({super.key, required this.url});
 
   @override
   State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();

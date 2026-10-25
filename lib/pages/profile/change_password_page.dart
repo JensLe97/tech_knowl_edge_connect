@@ -171,7 +171,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     );
   }
 
-  changeUserPassword(String email) async {
+  Future<void> changeUserPassword(String email) async {
     if (oldPasswordController.text.isEmpty ||
         newPasswordController.text.isEmpty ||
         confirmNewPasswordController.text.isEmpty) {

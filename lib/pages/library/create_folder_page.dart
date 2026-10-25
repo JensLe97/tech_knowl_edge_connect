@@ -7,7 +7,7 @@ import 'package:tech_knowl_edge_connect/components/buttons/submit_button.dart';
 
 class CreateFolderPage extends StatefulWidget {
   final void Function(IdeaFolder folder) onCreate;
-  const CreateFolderPage({Key? key, required this.onCreate}) : super(key: key);
+  const CreateFolderPage({super.key, required this.onCreate});
 
   @override
   State<CreateFolderPage> createState() => _CreateFolderPageState();

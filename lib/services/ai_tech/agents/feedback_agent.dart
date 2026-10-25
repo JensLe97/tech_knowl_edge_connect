@@ -288,7 +288,7 @@ Bewertung: $verdictDesc
 Bitte erstelle jetzt die persönliche Rückmeldung für den Lernenden.''';
   }
 
-  /// Analyse bite-level results and return one of: review, repeat, advance, custom:<text>.
+  /// Analyse bite-level results and return one of: review, repeat, advance, `custom:<text>`.
   Future<String> analyze({
     required List<Map<String, dynamic>> biteResults,
     String? journeyGoal,

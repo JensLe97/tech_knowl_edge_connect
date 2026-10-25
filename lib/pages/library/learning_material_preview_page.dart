@@ -18,11 +18,11 @@ class LearningMaterialPreviewPage extends StatefulWidget {
   final String name;
 
   const LearningMaterialPreviewPage({
-    Key? key,
+    super.key,
     required this.url,
     required this.type,
     required this.name,
-  }) : super(key: key);
+  });
 
   @override
   State<LearningMaterialPreviewPage> createState() =>
@@ -170,12 +170,11 @@ class _TextPreview extends StatefulWidget {
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
   const _TextPreview({
-    Key? key,
     required this.url,
     required this.name,
     required this.summarizeMaterial,
     required this.generateLearningBite,
-  }) : super(key: key);
+  });
 
   @override
   State<_TextPreview> createState() => _TextPreviewState();
@@ -258,12 +257,11 @@ class _VideoPreview extends StatefulWidget {
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
   const _VideoPreview({
-    Key? key,
     required this.url,
     required this.name,
     required this.summarizeMaterial,
     required this.generateLearningBite,
-  }) : super(key: key);
+  });
 
   @override
   State<_VideoPreview> createState() => _VideoPreviewState();

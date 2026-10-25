@@ -6,11 +6,11 @@ class FolderTextField extends StatelessWidget {
   final String? Function(String?)? validator;
 
   const FolderTextField({
-    Key? key,
+    super.key,
     required this.controller,
     required this.hintText,
     this.validator,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

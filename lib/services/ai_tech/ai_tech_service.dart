@@ -43,7 +43,7 @@ class AiTechService {
       'sessionId': sessionId,
       'createdAt': DateTime.now(),
       'status': 'pending',
-      if (userMessage != null) 'userMessage': userMessage,
+      'userMessage': ?userMessage,
       if (instruction != null && instruction.isNotEmpty)
         'instruction': instruction,
       if (context != null && context.isNotEmpty) 'context': context,

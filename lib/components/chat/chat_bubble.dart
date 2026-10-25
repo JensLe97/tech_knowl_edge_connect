@@ -182,7 +182,7 @@ class ChatBubble extends StatelessWidget {
                       ),
                       fadeInDuration: Duration.zero,
                       fadeOutDuration: Duration.zero,
-                      errorWidget: (_, __, ___) => SizedBox(
+                      errorWidget: (_, _, _) => SizedBox(
                         width: 220,
                         height: 80,
                         child: Icon(

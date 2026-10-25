@@ -140,7 +140,7 @@ class LearningJourneyAgent extends BaseAgent {
       'progress': progress,
       'recommendation': recommendation,
       'updatedAt': DateTime.now(),
-      if (feedbackText != null) 'lastFeedback': feedbackText,
+      'lastFeedback': ?feedbackText,
       if (newInstruction != null && newInstruction.isNotEmpty)
         'instruction': newInstruction,
     };

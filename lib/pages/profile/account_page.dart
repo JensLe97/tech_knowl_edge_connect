@@ -12,7 +12,7 @@ import 'package:tech_knowl_edge_connect/pages/login/auth_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountPage extends StatefulWidget {
-  const AccountPage({Key? key}) : super(key: key);
+  const AccountPage({super.key});
 
   @override
   State<AccountPage> createState() => _AccountPageState();

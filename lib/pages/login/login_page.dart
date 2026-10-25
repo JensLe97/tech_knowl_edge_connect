@@ -261,7 +261,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  signUserIn() async {
+  Future<void> signUserIn() async {
     if (emailController.text.trim().isEmpty ||
         passwordController.text.isEmpty) {
       showErrorMessage(context, 'Bitte E-Mail und Passwort eingeben');

@@ -5,7 +5,7 @@ import 'package:tech_knowl_edge_connect/pages/profile/settings.dart';
 class MenuItems extends StatelessWidget {
   final bool isAdmin;
 
-  const MenuItems({Key? key, this.isAdmin = false}) : super(key: key);
+  const MenuItems({super.key, this.isAdmin = false});
 
   @override
   Widget build(BuildContext context) {

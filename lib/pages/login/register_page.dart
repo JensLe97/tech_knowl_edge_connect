@@ -199,7 +199,7 @@ class _RegisterPageState extends State<RegisterPage> {
     );
   }
 
-  signUserUp() async {
+  Future<void> signUserUp() async {
     if (usernameController.text.trim().isEmpty ||
         emailController.text.trim().isEmpty ||
         passwordController.text.isEmpty ||

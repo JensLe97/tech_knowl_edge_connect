@@ -24,7 +24,7 @@ import 'package:tech_knowl_edge_connect/services/user/idea_folder_service.dart';
 
 class FolderDetailPage extends StatefulWidget {
   final IdeaFolder folder;
-  const FolderDetailPage({Key? key, required this.folder}) : super(key: key);
+  const FolderDetailPage({super.key, required this.folder});
 
   @override
   State<FolderDetailPage> createState() => _FolderDetailPageState();

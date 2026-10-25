@@ -1001,7 +1001,7 @@ class ContentAdminService {
         'mimeType': mimeType,
         'size': bytes.length,
         'createdAt': Timestamp.now(),
-        if (metadata != null) ...metadata,
+        ...?metadata,
       });
     }
     return resources;

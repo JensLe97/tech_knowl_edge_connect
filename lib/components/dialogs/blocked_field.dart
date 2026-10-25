@@ -6,10 +6,10 @@ class BlockedField extends StatelessWidget {
   final bool isBlocked;
 
   const BlockedField({
-    Key? key,
+    super.key,
     required this.toggleBlockUser,
     this.isBlocked = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

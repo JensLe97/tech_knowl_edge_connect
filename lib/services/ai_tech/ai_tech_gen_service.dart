@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:firebase_ai/firebase_ai.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/foundation.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task.dart' as tk;
@@ -50,9 +49,7 @@ class AiTechGenService {
         "$_markdownStyling"
         "$_generalInstructions");
 
-    final model = FirebaseAI.googleAI(
-      appCheck: FirebaseAppCheck.instance,
-    ).generativeModel(
+    final model = FirebaseAI.googleAI().generativeModel(
       model: kDefaultAiModel,
       generationConfig: generationConfig,
     );
@@ -120,9 +117,7 @@ class AiTechGenService {
       },
     );
 
-    final model = FirebaseAI.googleAI(
-      appCheck: FirebaseAppCheck.instance,
-    ).generativeModel(
+    final model = FirebaseAI.googleAI().generativeModel(
         model: kDefaultAiModel,
         generationConfig: GenerationConfig(
           responseMimeType:
@@ -227,9 +222,7 @@ Format: {"learningBites": [{"title": "...", "type": "lesson", "content": ["...",
       },
     );
 
-    final model = FirebaseAI.googleAI(
-      appCheck: FirebaseAppCheck.instance,
-    ).generativeModel(
+    final model = FirebaseAI.googleAI().generativeModel(
         model: kDefaultAiModel,
         generationConfig: GenerationConfig(
           responseMimeType:

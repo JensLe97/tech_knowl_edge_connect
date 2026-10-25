@@ -1,5 +1,4 @@
 import 'package:firebase_ai/firebase_ai.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 /// Set to `true` to call Firebase AI even when running in debug mode.
 /// When `false` (default), all agents return fast mock responses in debug.
@@ -14,8 +13,7 @@ abstract class BaseAgent {
   final FirebaseAI _firebaseAI;
 
   BaseAgent({FirebaseAI? firebaseAI})
-      : _firebaseAI = firebaseAI ??
-            FirebaseAI.googleAI(appCheck: FirebaseAppCheck.instance);
+      : _firebaseAI = firebaseAI ?? FirebaseAI.googleAI();
 
   /// Shared helper to generate base text content (single-shot, no history).
   Future<String> generateText(String prompt,

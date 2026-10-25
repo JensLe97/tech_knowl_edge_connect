@@ -29,10 +29,7 @@ class SubjectsCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CardHeader(
-          title: 'Fächer',
-          onAdd: onAdd,
-        ),
+        CardHeader(title: 'Fächer', onAdd: onAdd),
         const SizedBox(height: 8),
         StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: adminService.streamSubjects(),
@@ -62,7 +59,8 @@ class SubjectsCard extends StatelessWidget {
                 IconData? icon;
                 if (data['iconData'] != null) {
                   icon = AdminConstants.getIconFromData(
-                      data['iconData'] as Map<String, dynamic>);
+                    data['iconData'] as Map<String, dynamic>,
+                  );
                 }
 
                 Color? color;
@@ -72,70 +70,80 @@ class SubjectsCard extends StatelessWidget {
 
                 final cs = Theme.of(context).colorScheme;
                 return Container(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    decoration: BoxDecoration(
-                      color: isSelected
-                          ? cs.primaryContainer.withAlpha(76)
-                          : cs.surfaceContainer,
+                  margin: const EdgeInsets.only(bottom: 12),
+                  decoration: BoxDecoration(
+                    color: isSelected
+                        ? cs.primaryContainer.withAlpha(76)
+                        : cs.surfaceContainer,
+                    borderRadius: BorderRadius.circular(24),
+                    border: isSelected
+                        ? Border.all(color: cs.primary.withAlpha(38))
+                        : Border.all(color: cs.outlineVariant.withAlpha(40)),
+                  ),
+                  clipBehavior: Clip.antiAlias,
+                  child: ListTile(
+                    shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(24),
-                      border: isSelected
-                          ? Border.all(color: cs.primary.withAlpha(38))
-                          : Border.all(color: cs.outlineVariant.withAlpha(40)),
                     ),
-                    clipBehavior: Clip.antiAlias,
-                    child: ListTile(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(24)),
-                      selected: isSelected,
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      leading: Container(
-                        width: 48,
-                        height: 48,
-                        decoration: BoxDecoration(
-                          color: (color ?? cs.primary).withAlpha(26),
-                          borderRadius: BorderRadius.circular(12),
-                          border: Border.all(
-                            color: cs.outlineVariant.withAlpha(51),
-                          ),
-                        ),
-                        child: Center(
-                          child: Icon(
-                            icon ?? Icons.folder,
-                            color: color ?? cs.primary,
-                            size: 24,
-                          ),
+                    selected: isSelected,
+                    contentPadding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    leading: Container(
+                      width: 48,
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: (color ?? cs.primary).withAlpha(26),
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: cs.outlineVariant.withAlpha(51),
                         ),
                       ),
-                      title: Text(data['name'] ?? 'Unbenannt'),
-                      subtitle: Text(
-                        'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
+                      child: Center(
+                        child: Icon(
+                          icon ?? Icons.folder,
+                          color: color ?? cs.primary,
+                          size: 24,
+                        ),
                       ),
-                      onTap: () => onSelect(doc.id),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            style: IconButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                            icon: Icon(Icons.edit, color: cs.onSurfaceVariant),
-                            tooltip: 'Bearbeiten',
-                            onPressed: () => onEdit(doc.id, data),
+                    ),
+                    title: Text(data['name'] ?? 'Unbenannt'),
+                    subtitle: Text(
+                      'Status: ${AdminConstants.statusLabels[data['status']] ?? data['status'] ?? 'Entwurf'} · v${data['version'] ?? 1}',
+                    ),
+                    onTap: () => onSelect(doc.id),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                          const SizedBox(width: 4),
-                          IconButton(
-                            style: IconButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12))),
-                            icon: Icon(Icons.delete_outline,
-                                color: cs.onSurfaceVariant),
-                            tooltip: 'Löschen',
-                            onPressed: () => onDelete(doc.id),
+                          icon: Icon(Icons.edit, color: cs.onSurfaceVariant),
+                          tooltip: 'Bearbeiten',
+                          onPressed: () => onEdit(doc.id, data),
+                        ),
+                        const SizedBox(width: 4),
+                        IconButton(
+                          style: IconButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
                           ),
-                        ],
-                      ),
-                    ));
+                          icon: Icon(
+                            Icons.delete_outline,
+                            color: cs.onSurfaceVariant,
+                          ),
+                          tooltip: 'Löschen',
+                          onPressed: () => onDelete(doc.id),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
               },
             );
           },

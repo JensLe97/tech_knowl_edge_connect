@@ -19,10 +19,12 @@ class AuthService {
     final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
     final credential = GoogleAuthProvider.credential(
-        accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+      accessToken: gAuth.accessToken,
+      idToken: gAuth.idToken,
+    );
 
-    final UserCredential userCredential =
-        await FirebaseAuth.instance.signInWithCredential(credential);
+    final UserCredential userCredential = await FirebaseAuth.instance
+        .signInWithCredential(credential);
 
     try {
       final docRef = FirebaseFirestore.instance
@@ -44,11 +46,13 @@ class AuthService {
     UserCredential userCredential;
     try {
       if (kIsWeb) {
-        userCredential =
-            await FirebaseAuth.instance.signInWithPopup(appleProvider);
+        userCredential = await FirebaseAuth.instance.signInWithPopup(
+          appleProvider,
+        );
       } else {
-        userCredential =
-            await FirebaseAuth.instance.signInWithProvider(appleProvider);
+        userCredential = await FirebaseAuth.instance.signInWithProvider(
+          appleProvider,
+        );
       }
     } catch (e) {
       return null;
@@ -69,7 +73,9 @@ class AuthService {
   }
 
   Future<void> createUserDocument(
-      GoogleSignInAccount? gUser, String uid) async {
+    GoogleSignInAccount? gUser,
+    String uid,
+  ) async {
     if (gUser != null) {
       await FirebaseFirestore.instance.collection("Users").doc(uid).set({
         'email': gUser.email,
@@ -80,7 +86,10 @@ class AuthService {
   }
 
   Future<void> createAppleUserDocument(
-      String email, String displayName, String uid) async {
+    String email,
+    String displayName,
+    String uid,
+  ) async {
     await FirebaseFirestore.instance.collection("Users").doc(uid).set({
       'email': email,
       'username': displayName,

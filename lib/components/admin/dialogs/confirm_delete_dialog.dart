@@ -23,23 +23,14 @@ class ConfirmDeleteDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: cs.errorContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.error.withAlpha(25),
-          ),
+          border: Border.all(color: cs.error.withAlpha(25)),
         ),
-        child: Icon(
-          Icons.delete_outline,
-          size: 32,
-          color: cs.error,
-        ),
+        child: Icon(Icons.delete_outline, size: 32, color: cs.error),
       ),
       title: Text(
         title,
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: Text(message, textAlign: TextAlign.center),
       actions: [

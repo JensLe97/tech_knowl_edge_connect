@@ -32,16 +32,25 @@ void main() {
     // Track whether we've converted the Android Flutter surface already.
     bool androidSurfaceConverted = false;
 
-    const String deviceName =
-        String.fromEnvironment('DEVICE_NAME', defaultValue: '');
+    const String deviceName = String.fromEnvironment(
+      'DEVICE_NAME',
+      defaultValue: '',
+    );
     // Test credentials passed via --dart-define=TEST_EMAIL=... --dart-define=TEST_PASS=...
-    const String testEmail =
-        String.fromEnvironment('TEST_EMAIL', defaultValue: '');
-    const String testPass =
-        String.fromEnvironment('TEST_PASS', defaultValue: '');
+    const String testEmail = String.fromEnvironment(
+      'TEST_EMAIL',
+      defaultValue: '',
+    );
+    const String testPass = String.fromEnvironment(
+      'TEST_PASS',
+      defaultValue: '',
+    );
 
-    Future<void> captureScreen(String name,
-        {bool settle = false, int preDelaySeconds = 0}) async {
+    Future<void> captureScreen(
+      String name, {
+      bool settle = false,
+      int preDelaySeconds = 0,
+    }) async {
       if (preDelaySeconds > 0) {
         await tester.pump(Duration(seconds: preDelaySeconds));
       }
@@ -96,8 +105,9 @@ void main() {
         await tester.tap(backButton);
       } else {
         // Fallback: Programmatically pop the current route using the root Navigator
-        final BuildContext context =
-            tester.element(find.byType(Scaffold).first);
+        final BuildContext context = tester.element(
+          find.byType(Scaffold).first,
+        );
         Navigator.of(context).pop();
       }
 
@@ -241,8 +251,11 @@ void main() {
       try {
         await tester.tap(chatsTab, warnIfMissed: false);
       } catch (_) {}
-      await captureScreen('chat_overview_screen',
-          settle: true, preDelaySeconds: 0);
+      await captureScreen(
+        'chat_overview_screen',
+        settle: true,
+        preDelaySeconds: 0,
+      );
 
       final chatFinder = find.text('Lilly@Jens');
       if (chatFinder.evaluate().isNotEmpty) {
@@ -256,8 +269,11 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await captureScreen('chat_page_screen',
-            settle: true, preDelaySeconds: 0);
+        await captureScreen(
+          'chat_page_screen',
+          settle: true,
+          preDelaySeconds: 0,
+        );
         // go back one page after viewing chat
         await safePageBack(tester);
         await tester.pump(const Duration(milliseconds: 500));
@@ -287,8 +303,11 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await captureScreen('idea_folder_screen',
-            settle: true, preDelaySeconds: 0);
+        await captureScreen(
+          'idea_folder_screen',
+          settle: true,
+          preDelaySeconds: 0,
+        );
       }
     }
     // After viewing 'Der Wasserkreislauf', go back to Search and navigate deeper
@@ -318,8 +337,11 @@ void main() {
 
         await tester.pumpAndSettle();
 
-        await captureScreen('learning_journey_screen',
-            settle: true, preDelaySeconds: 0);
+        await captureScreen(
+          'learning_journey_screen',
+          settle: true,
+          preDelaySeconds: 0,
+        );
 
         // go back one page
         await safePageBack(tester);
@@ -370,8 +392,11 @@ void main() {
 
             while (hasWeiterButton) {
               if (pageIndex == 1) {
-                await captureScreen('learning_bite_content_screen',
-                    settle: true, preDelaySeconds: 0);
+                await captureScreen(
+                  'learning_bite_content_screen',
+                  settle: true,
+                  preDelaySeconds: 0,
+                );
               }
 
               final weiterButton = find.text('Weiter');
@@ -382,8 +407,11 @@ void main() {
 
                 pageIndex++;
               } else {
-                await captureScreen('single_choice_cloze_screen',
-                    settle: true, preDelaySeconds: 0);
+                await captureScreen(
+                  'single_choice_cloze_screen',
+                  settle: true,
+                  preDelaySeconds: 0,
+                );
                 hasWeiterButton = false;
               }
             }
@@ -400,8 +428,11 @@ void main() {
 
               await tester.pumpAndSettle();
 
-              await captureScreen('free_text_cloze_screen',
-                  settle: true, preDelaySeconds: 2);
+              await captureScreen(
+                'free_text_cloze_screen',
+                settle: true,
+                preDelaySeconds: 2,
+              );
             }
           }
         }

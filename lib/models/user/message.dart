@@ -11,16 +11,17 @@ class Message {
   final bool blocked;
   final String? fileName;
 
-  Message(
-      {required this.senderId,
-      required this.senderEmail,
-      required this.senderName,
-      required this.receiverId,
-      required this.message,
-      required this.type,
-      required this.timestamp,
-      this.blocked = false,
-      this.fileName});
+  Message({
+    required this.senderId,
+    required this.senderEmail,
+    required this.senderName,
+    required this.receiverId,
+    required this.message,
+    required this.type,
+    required this.timestamp,
+    this.blocked = false,
+    this.fileName,
+  });
 
   Map<String, dynamic> toMap() {
     return {

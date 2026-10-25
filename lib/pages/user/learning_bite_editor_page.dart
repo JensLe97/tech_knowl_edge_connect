@@ -52,9 +52,7 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
       unitId: widget.unitId,
       conceptId: widget.conceptId,
       learningBiteId: widget.learningBiteId,
-      data: {
-        'status': UserConstants.statusPrivate,
-      },
+      data: {'status': UserConstants.statusPrivate},
     );
   }
 
@@ -131,23 +129,14 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
             decoration: BoxDecoration(
               color: cs.errorContainer.withAlpha(76),
               shape: BoxShape.circle,
-              border: Border.all(
-                color: cs.error.withAlpha(25),
-              ),
+              border: Border.all(color: cs.error.withAlpha(25)),
             ),
-            child: Icon(
-              Icons.delete_outline,
-              size: 32,
-              color: cs.error,
-            ),
+            child: Icon(Icons.delete_outline, size: 32, color: cs.error),
           ),
           title: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           content: Text(message, textAlign: TextAlign.center),
           actions: [
@@ -189,7 +178,8 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Scaffold(
-              body: Center(child: CircularProgressIndicator()));
+            body: Center(child: CircularProgressIndicator()),
+          );
         }
         final data = snapshot.data?.data();
         if (data == null) {
@@ -205,10 +195,13 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
 
         if (user == null || authorId == null || authorId != user.uid) {
           return Scaffold(
-              appBar: AppBar(title: const Text("Zugriff verweigert")),
-              body: const Center(
-                  child: Text(
-                      'Du kannst nur deine eigenen Learning Bites bearbeiten.')));
+            appBar: AppBar(title: const Text("Zugriff verweigert")),
+            body: const Center(
+              child: Text(
+                'Du kannst nur deine eigenen Learning Bites bearbeiten.',
+              ),
+            ),
+          );
         }
 
         return Scaffold(
@@ -281,15 +274,14 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                                 unitId: widget.unitId,
                                 conceptId: widget.conceptId,
                                 learningBiteId: widget.learningBiteId,
-                                data: {
-                                  'status': UserConstants.statusPending,
-                                },
+                                data: {'status': UserConstants.statusPending},
                               );
                               if (context.mounted) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                        'Learning Bite zur Prüfung eingereicht.'),
+                                      'Learning Bite zur Prüfung eingereicht.',
+                                    ),
                                   ),
                                 );
                               }
@@ -305,7 +297,8 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(
                                     content: Text(
-                                        'Learning Bite auf Entwurf gesetzt.'),
+                                      'Learning Bite auf Entwurf gesetzt.',
+                                    ),
                                   ),
                                 );
                               }
@@ -328,12 +321,11 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                           Expanded(
                             child: Text(
                               'Ein Admin prüft derzeit dieses Learning Bite sowie das übergeordnete Konzept, die Einheit, das Thema, die Kategorie und das Fach.',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .bodySmall
+                              style: Theme.of(context).textTheme.bodySmall
                                   ?.copyWith(
-                                    color:
-                                        Theme.of(context).colorScheme.outline,
+                                    color: Theme.of(
+                                      context,
+                                    ).colorScheme.outline,
                                   ),
                             ),
                           ),
@@ -376,10 +368,10 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                               onAdd: () => _openContentDialog(),
                               onEdit: (index, content, allContent) =>
                                   _openContentDialog(
-                                index: index,
-                                initialContent: content,
-                                allContent: allContent,
-                              ),
+                                    index: index,
+                                    initialContent: content,
+                                    allContent: allContent,
+                                  ),
                               onDelete: (index, allContent) => _confirmDelete(
                                 title: 'Inhalt löschen?',
                                 message:
@@ -451,10 +443,10 @@ class _LearningBiteEditorPageState extends State<LearningBiteEditorPage> {
                             onAdd: () => _openContentDialog(),
                             onEdit: (index, content, allContent) =>
                                 _openContentDialog(
-                              index: index,
-                              initialContent: content,
-                              allContent: allContent,
-                            ),
+                                  index: index,
+                                  initialContent: content,
+                                  allContent: allContent,
+                                ),
                             onDelete: (index, allContent) => _confirmDelete(
                               title: 'Inhalt löschen?',
                               message:

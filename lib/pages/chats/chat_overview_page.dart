@@ -30,8 +30,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text("Neuer Chat",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              const Text(
+                "Neuer Chat",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 20),
               _buildUserList(),
             ],
@@ -50,10 +52,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
         title: const Text('Chats'),
         centerTitle: true,
         actions: [
-          IconButton(
-            onPressed: _showNewChatSheet,
-            icon: const Icon(Icons.add),
-          ),
+          IconButton(onPressed: _showNewChatSheet, icon: const Icon(Icons.add)),
           const SizedBox(width: 8),
         ],
       ),
@@ -63,10 +62,7 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 6.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildChatList(),
-              const SizedBox(height: 100),
-            ],
+            children: [_buildChatList(), const SizedBox(height: 100)],
           ),
         ),
       ),
@@ -75,69 +71,79 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
 
   Widget _buildChatList() {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection("chat_rooms")
-            .orderBy("lastTimestamp", descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: Padding(
-                padding: EdgeInsets.all(20.0),
-                child: CircularProgressIndicator(),
-              ),
-            );
-          } else if (snapshot.hasError) {
-            return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
-          } else if (snapshot.hasData) {
-            List<Widget> chats = snapshot.data!.docs
-                .map<Widget>((docs) => _buildChatListItem(docs))
-                .toList();
+      stream: FirebaseFirestore.instance
+          .collection("chat_rooms")
+          .orderBy("lastTimestamp", descending: true)
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Padding(
+              padding: EdgeInsets.all(20.0),
+              child: CircularProgressIndicator(),
+            ),
+          );
+        } else if (snapshot.hasError) {
+          return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
+        } else if (snapshot.hasData) {
+          List<Widget> chats = snapshot.data!.docs
+              .map<Widget>((docs) => _buildChatListItem(docs))
+              .toList();
 
-            if (chats.every((element) => element is SizedBox)) {
-              return SizedBox(
-                height: MediaQuery.of(context).size.height * 0.5,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Center(
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Du hast noch keine Chats.",
+          if (chats.every((element) => element is SizedBox)) {
+            return SizedBox(
+              height: MediaQuery.of(context).size.height * 0.5,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "Du hast noch keine Chats.",
+                        style: TextStyle(fontSize: 16),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            "Nutze das ",
                             style: TextStyle(fontSize: 16),
-                            textAlign: TextAlign.center),
-                        const SizedBox(height: 8),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text("Nutze das ",
-                                style: TextStyle(fontSize: 16)),
-                            Icon(Icons.add,
-                                color: Theme.of(context).colorScheme.primary),
-                            const Text("-Symbol oben rechts.",
-                                style: TextStyle(fontSize: 16)),
-                          ],
-                        ),
-                      ],
-                    ),
+                          ),
+                          Icon(
+                            Icons.add,
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          const Text(
+                            "-Symbol oben rechts.",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
-              );
-            } else {
-              return ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: chats,
-              );
-            }
+              ),
+            );
           } else {
-            return const Text("Keine Chats vorhanden.");
+            return ListView(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              children: chats,
+            );
           }
-        });
+        } else {
+          return const Text("Keine Chats vorhanden.");
+        }
+      },
+    );
   }
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails(
-      String otherUserId) async {
+    String otherUserId,
+  ) async {
     return await FirebaseFirestore.instance
         .collection("Users")
         .doc(otherUserId)
@@ -161,12 +167,12 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           }
 
           Map<String, dynamic>? otherUser = snapshot.data!.data();
-          DateTime lastDateTime =
-              (document['lastTimestamp'] as Timestamp).toDate();
+          DateTime lastDateTime = (document['lastTimestamp'] as Timestamp)
+              .toDate();
           DateFormat format =
               DateTime.now().difference(lastDateTime).inDays >= 1
-                  ? DateFormat('dd.MM.yyyy')
-                  : DateFormat('HH:mm');
+              ? DateFormat('dd.MM.yyyy')
+              : DateFormat('HH:mm');
           String lastTime = format.format(lastDateTime);
           int unread = (document.id.split("_").first == currentUser!.uid)
               ? docData!['unreadFrom'] ?? 0
@@ -178,10 +184,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           String initials = parts.isEmpty || parts[0].isEmpty
               ? '?'
               : parts.length > 1
-                  ? (parts[0][0] + parts.last[0]).toUpperCase()
-                  : parts[0].length > 1
-                      ? parts[0].substring(0, 2).toUpperCase()
-                      : parts[0].toUpperCase();
+              ? (parts[0][0] + parts.last[0]).toUpperCase()
+              : parts[0].length > 1
+              ? parts[0].substring(0, 2).toUpperCase()
+              : parts[0].toUpperCase();
 
           Widget subtitleWidget;
           if (document['type'] == "text") {
@@ -204,7 +210,8 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
           } else {
             subtitleWidget = FaIcon(
               LearningMaterialType.getIconForMessageType(
-                  document['type'] as String? ?? ''),
+                document['type'] as String? ?? '',
+              ),
               size: 16,
               color: cs.onSurfaceVariant.withAlpha(200),
             );
@@ -259,7 +266,9 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16.0, vertical: 12.0),
+                    horizontal: 16.0,
+                    vertical: 12.0,
+                  ),
                   child: Row(
                     children: [
                       Stack(
@@ -276,9 +285,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                             child: Text(
                               initials,
                               style: TextStyle(
-                                  color: cs.onSecondaryContainer,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18),
+                                color: cs.onSecondaryContainer,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                           if (unread > 0)
@@ -288,13 +298,16 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                               child: Container(
                                 constraints: const BoxConstraints(minWidth: 22),
                                 height: 22,
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 5),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                ),
                                 decoration: BoxDecoration(
                                   color: cs.primary,
                                   borderRadius: BorderRadius.circular(11),
                                   border: Border.all(
-                                      color: cs.surfaceContainer, width: 2.5),
+                                    color: cs.surfaceContainer,
+                                    width: 2.5,
+                                  ),
                                 ),
                                 alignment: Alignment.center,
                                 child: Text(
@@ -364,31 +377,34 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
 
   Widget _buildUserList() {
     return StreamBuilder<QuerySnapshot>(
-        stream: FirebaseFirestore.instance.collection("Users").snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
-          } else if (snapshot.hasData) {
-            var users = snapshot.data!.docs.toList();
-            users.sort((a, b) => (a['username'] as String)
-                .toLowerCase()
-                .compareTo((b['username'] as String).toLowerCase()));
+      stream: FirebaseFirestore.instance.collection("Users").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (snapshot.hasError) {
+          return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
+        } else if (snapshot.hasData) {
+          var users = snapshot.data!.docs.toList();
+          users.sort(
+            (a, b) => (a['username'] as String).toLowerCase().compareTo(
+              (b['username'] as String).toLowerCase(),
+            ),
+          );
 
-            return Flexible(
-              child: ListView.builder(
-                shrinkWrap: true,
-                itemCount: users.length,
-                itemBuilder: (context, index) {
-                  return _buildUserListItem(users[index]);
-                },
-              ),
-            );
-          } else {
-            return const Text("Keine Benutzer vorhanden.");
-          }
-        });
+          return Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                return _buildUserListItem(users[index]);
+              },
+            ),
+          );
+        } else {
+          return const Text("Keine Benutzer vorhanden.");
+        }
+      },
+    );
   }
 
   Widget _buildUserListItem(DocumentSnapshot document) {
@@ -401,10 +417,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
       String initials = parts.isEmpty || parts[0].isEmpty
           ? '?'
           : parts.length > 1
-              ? (parts[0][0] + parts.last[0]).toUpperCase()
-              : parts[0].length > 1
-                  ? parts[0].substring(0, 2).toUpperCase()
-                  : parts[0].toUpperCase();
+          ? (parts[0][0] + parts.last[0]).toUpperCase()
+          : parts[0].length > 1
+          ? parts[0].substring(0, 2).toUpperCase()
+          : parts[0].toUpperCase();
 
       final cs = Theme.of(context).colorScheme;
 
@@ -412,8 +428,9 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         child: Material(
           color: cs.surfaceContainerHigh.withAlpha(150),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
           clipBehavior: Clip.antiAlias,
           child: InkWell(
             onTap: () {
@@ -429,8 +446,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
               );
             },
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical: 12.0,
+              ),
               child: Row(
                 children: [
                   Container(
@@ -444,9 +463,10 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                     child: Text(
                       initials,
                       style: TextStyle(
-                          color: cs.onSecondaryContainer,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16),
+                        color: cs.onSecondaryContainer,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -457,7 +477,9 @@ class _ChatOverviewPageState extends State<ChatOverviewPage> {
                         Text(
                           username,
                           style: const TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 16),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
                         ),
                         if (email.isNotEmpty)
                           Text(

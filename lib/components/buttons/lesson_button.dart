@@ -5,8 +5,12 @@ class LessonButton extends StatelessWidget {
   final String text;
   final Color? color;
 
-  const LessonButton(
-      {super.key, required this.onTap, required this.text, this.color});
+  const LessonButton({
+    super.key,
+    required this.onTap,
+    required this.text,
+    this.color,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +27,7 @@ class LessonButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
       ),
     );

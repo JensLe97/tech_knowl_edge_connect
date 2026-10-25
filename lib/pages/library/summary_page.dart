@@ -25,9 +25,7 @@ class SummaryPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: StreamBuilder<GenerateContentResponse>(
-        stream: _aiTechGenService.summarizeMultipleData(
-          fileParts: fileParts,
-        ),
+        stream: _aiTechGenService.summarizeMultipleData(fileParts: fileParts),
         builder: (context, snapshot) {
           // Accumulate all streamed text parts
           // Use a ValueNotifier to store the full summary
@@ -82,17 +80,20 @@ class _SummaryStreamAccumulatorState extends State<_SummaryStreamAccumulator> {
           Positioned.fill(
             child: SingleChildScrollView(
               padding: const EdgeInsets.only(
-                  left: 16, right: 16, top: 10, bottom: 120),
+                left: 16,
+                right: 16,
+                top: 10,
+                bottom: 120,
+              ),
               child: Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
                   color: Theme.of(context).colorScheme.surfaceContainerLowest,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: Theme.of(context)
-                        .colorScheme
-                        .outlineVariant
-                        .withAlpha(50),
+                    color: Theme.of(
+                      context,
+                    ).colorScheme.outlineVariant.withAlpha(50),
                   ),
                 ),
                 child: MarkdownBody(

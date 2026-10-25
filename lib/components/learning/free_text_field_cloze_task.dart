@@ -49,7 +49,9 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
     // Using simple split for answers, question is parsed by Markdown
 
     controllers = List.generate(
-        correctAnswersParts.length, (index) => TextEditingController());
+      correctAnswersParts.length,
+      (index) => TextEditingController(),
+    );
   }
 
   @override
@@ -82,7 +84,11 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
         Positioned.fill(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-                left: 16, right: 16, top: 10, bottom: 120),
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 120,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -99,9 +105,9 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
                 Text(
                   "Fülle die Lücken aus.",
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 Container(
@@ -110,10 +116,9 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
                     color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outlineVariant
-                          .withAlpha(50),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(50),
                     ),
                   ),
                   child: MarkdownBody(
@@ -124,13 +129,15 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
                       [
                         ClozeSyntax(),
                         ColorSyntax(),
-                        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+                        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
                       ],
                     ),
                     builders: {
                       ...getMarkdownColorBuilders(),
-                      'cloze':
-                          ClozeBuilder(correctAnswersParts, (index, answer) {
+                      'cloze': ClozeBuilder(correctAnswersParts, (
+                        index,
+                        answer,
+                      ) {
                         if (index < controllers.length) {
                           return AnswerField(
                             setAllCorrect: _checkAllCorrect,
@@ -161,10 +168,9 @@ class _FreeTextFieldClozeTaskState extends State<FreeTextFieldClozeTask> {
                   Container(
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .secondaryContainer
-                          .withAlpha(80),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.secondaryContainer.withAlpha(80),
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
                         color: Theme.of(context).colorScheme.secondaryContainer,

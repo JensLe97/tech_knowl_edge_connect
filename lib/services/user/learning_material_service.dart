@@ -10,22 +10,32 @@ class LearningMaterialService {
   final FirebaseStorage _storage = FirebaseStorage.instance;
 
   Future<String> uploadFile(
-      File file, String userId, String folderId, String fileName) async {
-    final ref =
-        _storage.ref().child('users/$userId/folders/$folderId/$fileName');
+    File file,
+    String userId,
+    String folderId,
+    String fileName,
+  ) async {
+    final ref = _storage.ref().child(
+      'users/$userId/folders/$folderId/$fileName',
+    );
     final uploadTask = await ref.putFile(file);
     return await uploadTask.ref.getDownloadURL();
   }
 
   Future<String> uploadData(
-      XFile file, String userId, String folderId, String fullName) async {
+    XFile file,
+    String userId,
+    String folderId,
+    String fullName,
+  ) async {
     String extension = fullName.contains('.') ? fullName.split('.').last : '';
     extension = extension == "jpg" ? "jpeg" : extension;
 
     final mimeType = LearningMaterialType.getMimeType(extension);
 
-    final ref =
-        _storage.ref().child('users/$userId/folders/$folderId/$fullName');
+    final ref = _storage.ref().child(
+      'users/$userId/folders/$folderId/$fullName',
+    );
     final uploadTask = await ref.putData(
       await file.readAsBytes(),
       SettableMetadata(contentType: mimeType),
@@ -101,8 +111,9 @@ class LearningMaterialService {
         .toList();
   }
 
-  Stream<QuerySnapshot> getAllPublicLearningMaterials(
-      {String excludeUserId = ''}) {
+  Stream<QuerySnapshot> getAllPublicLearningMaterials({
+    String excludeUserId = '',
+  }) {
     return _firestore
         .collection('learningMaterials')
         .where('isPublic', isEqualTo: true)

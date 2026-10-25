@@ -33,7 +33,8 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
   void initState() {
     super.initState();
     _materialsStream = _materialService.getAllPublicLearningMaterials(
-        excludeUserId: _firebaseAuth.currentUser?.uid ?? '');
+      excludeUserId: _firebaseAuth.currentUser?.uid ?? '',
+    );
   }
 
   @override
@@ -123,8 +124,11 @@ class _LearningFeedPageState extends State<LearningFeedPage> {
           final materials = snapshot.data!.docs
               .where((doc) => !blockedUsers.contains(doc['userId']))
               .map((doc) {
-            return LearningMaterial.fromMap(doc.data() as Map<String, dynamic>);
-          }).toList();
+                return LearningMaterial.fromMap(
+                  doc.data() as Map<String, dynamic>,
+                );
+              })
+              .toList();
 
           switch (_currentView) {
             case 0:

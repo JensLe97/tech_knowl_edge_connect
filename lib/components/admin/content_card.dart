@@ -31,7 +31,8 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canInteract = selectedSubjectId != null &&
+    final canInteract =
+        selectedSubjectId != null &&
         selectedCategoryId != null &&
         selectedTopicId != null &&
         selectedUnitId != null &&
@@ -42,10 +43,7 @@ class ContentCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CardHeader(
-          title: 'Inhalte',
-          onAdd: canInteract ? onAdd : null,
-        ),
+        CardHeader(title: 'Inhalte', onAdd: canInteract ? onAdd : null),
         const SizedBox(height: 12),
         if (!canInteract)
           const Text('Bitte ein Learning Bite auswählen.')
@@ -112,7 +110,8 @@ class ContentCard extends StatelessWidget {
                               Text(
                                 'Teil ${index + 1}',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -127,33 +126,31 @@ class ContentCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon:
-                                  Icon(Icons.edit, color: cs.onSurfaceVariant),
+                              icon: Icon(
+                                Icons.edit,
+                                color: cs.onSurfaceVariant,
+                              ),
                               tooltip: 'Bearbeiten',
                               style: IconButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              onPressed: () => onEdit(
-                                index,
-                                content,
-                                contentList,
-                              ),
+                              onPressed: () =>
+                                  onEdit(index, content, contentList),
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete_outline,
-                                  color: cs.onSurfaceVariant),
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: cs.onSurfaceVariant,
+                              ),
                               tooltip: 'Löschen',
                               style: IconButton.styleFrom(
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                               ),
-                              onPressed: () => onDelete(
-                                index,
-                                contentList,
-                              ),
+                              onPressed: () => onDelete(index, contentList),
                             ),
                           ],
                         ),

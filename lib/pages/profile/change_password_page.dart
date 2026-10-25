@@ -40,128 +40,134 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     final cs = Theme.of(context).colorScheme;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Passwort ändern'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Passwort ändern'), centerTitle: true),
       body: StreamBuilder<User?>(
-          stream: _authStream,
-          builder: (context, authSnapshot) {
-            if (authSnapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            }
+        stream: _authStream,
+        builder: (context, authSnapshot) {
+          if (authSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            final firebaseUser = authSnapshot.data;
-            if (firebaseUser == null) {
-              return Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.person_outline,
-                        size: 64,
-                        color: Theme.of(context).colorScheme.onSurface),
-                    const SizedBox(height: 12),
-                    const Text('Nicht eingeloggt.'),
-                  ],
-                ),
-              );
-            }
-
-            final email = firebaseUser.email ?? '';
-
-            return SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const SizedBox(height: 25),
-                      LoginTextField(
-                        controller: oldPasswordController,
-                        hintText: 'Altes Passwort',
-                        obscureText: _obscureOld,
-                        textInputAction: TextInputAction.next,
-                        prefixIcon: Icon(Icons.lock_outline,
-                            color: cs.onSurfaceVariant),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureOld
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: cs.onSurfaceVariant,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureOld = !_obscureOld;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      LoginTextField(
-                        controller: newPasswordController,
-                        hintText: 'Neues Passwort',
-                        obscureText: _obscureNew,
-                        textInputAction: TextInputAction.next,
-                        prefixIcon: Icon(Icons.lock_outline,
-                            color: cs.onSurfaceVariant),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureNew
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: cs.onSurfaceVariant,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureNew = !_obscureNew;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      LoginTextField(
-                        controller: confirmNewPasswordController,
-                        hintText: 'Neues Passwort wiederholen',
-                        obscureText: _obscureConfirm,
-                        textInputAction: TextInputAction.done,
-                        prefixIcon: Icon(Icons.lock_reset_outlined,
-                            color: cs.onSurfaceVariant),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _obscureConfirm
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined,
-                            color: cs.onSurfaceVariant,
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _obscureConfirm = !_obscureConfirm;
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(height: 25),
-                      SubmitButton(
-                        onTap: () {
-                          if (email.isEmpty) {
-                            showErrorMessage(
-                                context, 'Benutzer E-Mail Adresse ungültig!');
-                            return;
-                          }
-                          changeUserPassword(email);
-                        },
-                        text: "Passwort ändern",
-                      ),
-                    ],
+          final firebaseUser = authSnapshot.data;
+          if (firebaseUser == null) {
+            return Center(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.person_outline,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurface,
                   ),
-                ),
+                  const SizedBox(height: 12),
+                  const Text('Nicht eingeloggt.'),
+                ],
               ),
             );
-          }),
+          }
+
+          final email = firebaseUser.email ?? '';
+
+          return SafeArea(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 25),
+                    LoginTextField(
+                      controller: oldPasswordController,
+                      hintText: 'Altes Passwort',
+                      obscureText: _obscureOld,
+                      textInputAction: TextInputAction.next,
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        color: cs.onSurfaceVariant,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureOld
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          color: cs.onSurfaceVariant,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureOld = !_obscureOld;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    LoginTextField(
+                      controller: newPasswordController,
+                      hintText: 'Neues Passwort',
+                      obscureText: _obscureNew,
+                      textInputAction: TextInputAction.next,
+                      prefixIcon: Icon(
+                        Icons.lock_outline,
+                        color: cs.onSurfaceVariant,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureNew
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          color: cs.onSurfaceVariant,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureNew = !_obscureNew;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    LoginTextField(
+                      controller: confirmNewPasswordController,
+                      hintText: 'Neues Passwort wiederholen',
+                      obscureText: _obscureConfirm,
+                      textInputAction: TextInputAction.done,
+                      prefixIcon: Icon(
+                        Icons.lock_reset_outlined,
+                        color: cs.onSurfaceVariant,
+                      ),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _obscureConfirm
+                              ? Icons.visibility_outlined
+                              : Icons.visibility_off_outlined,
+                          color: cs.onSurfaceVariant,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _obscureConfirm = !_obscureConfirm;
+                          });
+                        },
+                      ),
+                    ),
+                    const SizedBox(height: 25),
+                    SubmitButton(
+                      onTap: () {
+                        if (email.isEmpty) {
+                          showErrorMessage(
+                            context,
+                            'Benutzer E-Mail Adresse ungültig!',
+                          );
+                          return;
+                        }
+                        changeUserPassword(email);
+                      },
+                      text: "Passwort ändern",
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -178,9 +184,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
     showDialog(
       context: context,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
 
@@ -221,24 +225,29 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
 
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (!mounted) return;
-          showInfoMessage(context, 'Passwort wurde erfolgreich geändert.')
-              .then((_) {
-            if (!mounted) return;
-            navigator.pop();
-          });
+          showInfoMessage(context, 'Passwort wurde erfolgreich geändert.').then(
+            (_) {
+              if (!mounted) return;
+              navigator.pop();
+            },
+          );
         });
       }
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'requires-recent-login') {
         if (mounted) {
-          showErrorMessage(context,
-              'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.');
+          showErrorMessage(
+            context,
+            'Dieser Vorgang erfordert eine aktuelle Authentifizierung. Melde dich erneut an und versuche es noch einmal.',
+          );
         }
       } else if (e.code == 'weak-password') {
         if (mounted) {
-          showErrorMessage(context,
-              'Das neue Passwort muss mindestens 6 Zeichen enthalten!');
+          showErrorMessage(
+            context,
+            'Das neue Passwort muss mindestens 6 Zeichen enthalten!',
+          );
         }
       } else if (e.code == 'channel-error') {
         if (mounted) {

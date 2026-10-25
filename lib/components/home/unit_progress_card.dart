@@ -16,12 +16,20 @@ class UnitProgressCard extends StatelessWidget {
   final VoidCallback onOpenUnit;
   final VoidCallback onOpenAiSession;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
-  final void Function(UnitProgress unit, LearningBite lb,
-      {required String journeyId}) onJourneyBiteTap;
-  final void Function(UnitProgress unit, LearningBite lb,
-      {required String categoryId,
-      required String topicId,
-      required String conceptId}) onContentBiteTap;
+  final void Function(
+    UnitProgress unit,
+    LearningBite lb, {
+    required String journeyId,
+  })
+  onJourneyBiteTap;
+  final void Function(
+    UnitProgress unit,
+    LearningBite lb, {
+    required String categoryId,
+    required String topicId,
+    required String conceptId,
+  })
+  onContentBiteTap;
 
   const UnitProgressCard({
     super.key,
@@ -55,9 +63,7 @@ class UnitProgressCard extends StatelessWidget {
             ? Theme.of(context).colorScheme.surfaceContainerLowest
             : Theme.of(context).colorScheme.secondary.withAlpha(40),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withAlpha(76),
-        ),
+        border: Border.all(color: colorScheme.outlineVariant.withAlpha(76)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withAlpha(10),
@@ -73,15 +79,26 @@ class UnitProgressCard extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 20.0),
             child: _buildBitesSection(
-                context, bites, isAiUnit, colorScheme, theme),
+              context,
+              bites,
+              isAiUnit,
+              colorScheme,
+              theme,
+            ),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context, bool isAiUnit,
-      ColorScheme colorScheme, ThemeData theme, String subtitle, int progress) {
+  Widget _buildHeader(
+    BuildContext context,
+    bool isAiUnit,
+    ColorScheme colorScheme,
+    ThemeData theme,
+    String subtitle,
+    int progress,
+  ) {
     final displayTitle = (unitTitle != null && unitTitle!.isNotEmpty)
         ? unitTitle!
         : (isAiUnit ? 'Lernreise' : 'Einheit');
@@ -144,14 +161,25 @@ class UnitProgressCard extends StatelessWidget {
     );
   }
 
-  Widget _buildBitesSection(BuildContext context, List<UnitBiteProgress> bites,
-      bool isAiUnit, ColorScheme colorScheme, ThemeData theme) {
+  Widget _buildBitesSection(
+    BuildContext context,
+    List<UnitBiteProgress> bites,
+    bool isAiUnit,
+    ColorScheme colorScheme,
+    ThemeData theme,
+  ) {
     Widget headerBuilder(String subtitle, int progress) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           _buildHeader(
-              context, isAiUnit, colorScheme, theme, subtitle, progress),
+            context,
+            isAiUnit,
+            colorScheme,
+            theme,
+            subtitle,
+            progress,
+          ),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -178,7 +206,9 @@ class UnitProgressCard extends StatelessWidget {
   }
 
   Widget _buildJourneySection(
-      List<UnitBiteProgress> bites, ProgressHeaderBuilder headerBuilder) {
+    List<UnitBiteProgress> bites,
+    ProgressHeaderBuilder headerBuilder,
+  ) {
     final Map<String, List<UnitBiteProgress>> journeyGroups = {};
     for (final ub in unit.bites.values) {
       final jid = ub.journeyId ?? unit.unitId;
@@ -187,9 +217,7 @@ class UnitProgressCard extends StatelessWidget {
     if (journeyGroups.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerBuilder('Lernreise', unit.progress),
-        ],
+        children: [headerBuilder('Lernreise', unit.progress)],
       );
     }
 
@@ -198,7 +226,8 @@ class UnitProgressCard extends StatelessWidget {
     int latestTs = -1;
     for (final entry in journeyGroups.entries) {
       for (final ub in entry.value) {
-        final ts = ub.createdAt?.millisecondsSinceEpoch ??
+        final ts =
+            ub.createdAt?.millisecondsSinceEpoch ??
             ub.lastUpdated?.millisecondsSinceEpoch ??
             0;
         if (ts > latestTs) {
@@ -210,9 +239,7 @@ class UnitProgressCard extends StatelessWidget {
     if (latestJourneyId == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerBuilder('Lernreise', unit.progress),
-        ],
+        children: [headerBuilder('Lernreise', unit.progress)],
       );
     }
 
@@ -227,7 +254,9 @@ class UnitProgressCard extends StatelessWidget {
   }
 
   Widget _buildConceptSection(
-      List<UnitBiteProgress> bites, ProgressHeaderBuilder headerBuilder) {
+    List<UnitBiteProgress> bites,
+    ProgressHeaderBuilder headerBuilder,
+  ) {
     final Map<String, List<UnitBiteProgress>> conceptGroups = {};
     for (final b in bites) {
       if (b.conceptId != null && b.categoryId != null && b.topicId != null) {
@@ -237,9 +266,7 @@ class UnitProgressCard extends StatelessWidget {
     if (conceptGroups.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerBuilder('Lerneinheit', unit.progress),
-        ],
+        children: [headerBuilder('Lerneinheit', unit.progress)],
       );
     }
 
@@ -248,7 +275,8 @@ class UnitProgressCard extends StatelessWidget {
     int latestTs = -1;
     for (final b in bites) {
       if (b.conceptId == null) continue;
-      final ts = b.createdAt?.millisecondsSinceEpoch ??
+      final ts =
+          b.createdAt?.millisecondsSinceEpoch ??
           b.lastUpdated?.millisecondsSinceEpoch ??
           0;
       if (ts > latestTs) {
@@ -259,9 +287,7 @@ class UnitProgressCard extends StatelessWidget {
     if (latestConceptId == null) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerBuilder('Lerneinheit', unit.progress),
-        ],
+        children: [headerBuilder('Lerneinheit', unit.progress)],
       );
     }
 
@@ -269,9 +295,7 @@ class UnitProgressCard extends StatelessWidget {
     if (entry == null || entry.isEmpty) {
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          headerBuilder('Lerneinheit', unit.progress),
-        ],
+        children: [headerBuilder('Lerneinheit', unit.progress)],
       );
     }
 
@@ -285,10 +309,20 @@ class UnitProgressCard extends StatelessWidget {
       conceptBites: entry,
       headerBuilder: headerBuilder,
       onBiteTap: onBiteTap,
-      onNewBiteTap: (u, lb,
-              {required categoryId, required topicId, required conceptId}) =>
-          onContentBiteTap(u, lb,
-              categoryId: categoryId, topicId: topicId, conceptId: conceptId),
+      onNewBiteTap:
+          (
+            u,
+            lb, {
+            required categoryId,
+            required topicId,
+            required conceptId,
+          }) => onContentBiteTap(
+            u,
+            lb,
+            categoryId: categoryId,
+            topicId: topicId,
+            conceptId: conceptId,
+          ),
     );
   }
 }

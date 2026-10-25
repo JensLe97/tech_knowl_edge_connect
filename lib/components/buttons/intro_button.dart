@@ -28,10 +28,7 @@ class IntroButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
         ),
       );
     }
@@ -42,16 +39,11 @@ class IntroButton extends StatelessWidget {
         foregroundColor: Theme.of(context).colorScheme.onSurfaceVariant,
         minimumSize: const Size(120, 56),
         padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       child: Text(
         text,
-        style: const TextStyle(
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
+        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
       ),
     );
   }

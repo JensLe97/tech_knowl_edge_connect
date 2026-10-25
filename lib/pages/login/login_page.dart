@@ -49,18 +49,15 @@ class _LoginPageState extends State<LoginPage> {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color:
-                      cs.surfaceContainerHighest.withAlpha(153), // ~60% alpha
+                  color: cs.surfaceContainerHighest.withAlpha(
+                    153,
+                  ), // ~60% alpha
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
                     color: cs.outline.withAlpha(12), // ring-black/5
                   ),
                 ),
-                child: Icon(
-                  Icons.auto_awesome,
-                  size: 32,
-                  color: cs.primary,
-                ),
+                child: Icon(Icons.auto_awesome, size: 32, color: cs.primary),
               ),
               const SizedBox(height: 24),
 
@@ -99,8 +96,10 @@ class _LoginPageState extends State<LoginPage> {
                 obscureText: false,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                prefixIcon:
-                    Icon(Icons.email_outlined, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: cs.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 16),
 
@@ -111,8 +110,10 @@ class _LoginPageState extends State<LoginPage> {
                 hintText: 'Passwort',
                 obscureText: _obscureText,
                 textInputAction: TextInputAction.done,
-                prefixIcon:
-                    Icon(Icons.lock_outline, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: cs.onSurfaceVariant,
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText
@@ -134,10 +135,14 @@ class _LoginPageState extends State<LoginPage> {
                 alignment: Alignment.centerRight,
                 child: TextButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return const ForgotPasswordPage();
-                    }));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ForgotPasswordPage();
+                        },
+                      ),
+                    );
                   },
                   style: TextButton.styleFrom(
                     padding: const EdgeInsets.symmetric(horizontal: 4.0),
@@ -268,11 +273,13 @@ class _LoginPageState extends State<LoginPage> {
       builder: (context) {
         return Center(
           child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16)),
-              child: const CircularProgressIndicator()),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const CircularProgressIndicator(),
+          ),
         );
       },
     );

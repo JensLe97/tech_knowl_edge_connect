@@ -73,14 +73,14 @@ class AiTechOrchestrator implements AiTechAgent {
   static const int _contextWindowSize = 12;
 
   AiTechOrchestrator(this.service)
-      : _explainAgent = ExplainAgent(),
-        _hintAgent = HintAgent(),
-        _quizAgent = QuizAgent(),
-        _journeyAgent = LearningJourneyAgent(service),
-        _feedbackAgent = FeedbackAgent(service),
-        _analyzeAgent = AnalyzeAgent(),
-        _generalAgent = GeneralPurposeAgent(),
-        _reviewAgent = ReviewAgent();
+    : _explainAgent = ExplainAgent(),
+      _hintAgent = HintAgent(),
+      _quizAgent = QuizAgent(),
+      _journeyAgent = LearningJourneyAgent(service),
+      _feedbackAgent = FeedbackAgent(service),
+      _analyzeAgent = AnalyzeAgent(),
+      _generalAgent = GeneralPurposeAgent(),
+      _reviewAgent = ReviewAgent();
 
   // ---------------------------------------------------------------------------
   // Primary entry point
@@ -117,7 +117,7 @@ class AiTechOrchestrator implements AiTechAgent {
       ),
     );
 
-// 2. Load session history and build structured content for chat agents.
+    // 2. Load session history and build structured content for chat agents.
     final history = await service.getSessionMessages(sessionId);
     // Exclude the just-persisted user message (last item) so it becomes the
     // explicit sendMessage() call inside each agent.
@@ -183,7 +183,8 @@ class AiTechOrchestrator implements AiTechAgent {
           context: contextStr,
           fileParts: fileParts,
         );
-        responseText = 'Ich habe eine Lernreise zu "$journeyGoal" erstellt. '
+        responseText =
+            'Ich habe eine Lernreise zu "$journeyGoal" erstellt. '
             'Klicke auf eine Lerneinheit, um zu starten!';
 
       case JourneyIntent(skill: JourneySkill.update):
@@ -226,13 +227,17 @@ class AiTechOrchestrator implements AiTechAgent {
             if (recommendation != 'custom') {
               // Performance summary + confirmation for post-analysis flow.
               final bites = await service.getBiteResultsForJourney(
-                  userId, latestJourneyId);
+                userId,
+                latestJourneyId,
+              );
               final biteResults = bites
-                  .map((d) => {
-                        'title': d['title'] ?? '',
-                        'points': d['points'] ?? 0,
-                        'maxPoints': d['maxPoints'] ?? 0,
-                      })
+                  .map(
+                    (d) => {
+                      'title': d['title'] ?? '',
+                      'points': d['points'] ?? 0,
+                      'maxPoints': d['maxPoints'] ?? 0,
+                    },
+                  )
                   .toList();
               responseText = await _feedbackAgent.confirmationMessage(
                 recommendation: recommendation,
@@ -457,8 +462,10 @@ class AiTechOrchestrator implements AiTechAgent {
 
   /// Generate a short, descriptive session title (2–5 words, German) from the
   /// user's first message. Returns the original [fallback] if generation fails.
-  Future<String> generateSessionTitle(String userMessage,
-      {String fallback = ''}) async {
+  Future<String> generateSessionTitle(
+    String userMessage, {
+    String fallback = '',
+  }) async {
     if (kDebugMode && !kUseRealAiInDebug) return 'Debug-Sitzung';
     try {
       final result = await _generalAgent.generateText(

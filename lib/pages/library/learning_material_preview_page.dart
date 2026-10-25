@@ -103,7 +103,8 @@ class _LearningMaterialPreviewPageState
         body: PdfViewer.uri(
           Uri.parse(url),
           params: PdfViewerParams(
-              backgroundColor: Theme.of(context).colorScheme.surface),
+            backgroundColor: Theme.of(context).colorScheme.surface,
+          ),
         ),
       );
     } else if (LearningMaterialType.imageTypes.contains(type.toLowerCase())) {
@@ -156,13 +157,8 @@ class _LearningMaterialPreviewPageState
     } else {
       // Fallback: just show the URL
       return Scaffold(
-        appBar: AppBar(
-          title: Text(name),
-          centerTitle: true,
-        ),
-        body: Center(
-          child: Text('Dateityp wird nicht unterstützt.\n$url'),
-        ),
+        appBar: AppBar(title: Text(name), centerTitle: true),
+        body: Center(child: Text('Dateityp wird nicht unterstützt.\n$url')),
       );
     }
   }
@@ -173,13 +169,13 @@ class _TextPreview extends StatefulWidget {
   final String name;
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
-  const _TextPreview(
-      {Key? key,
-      required this.url,
-      required this.name,
-      required this.summarizeMaterial,
-      required this.generateLearningBite})
-      : super(key: key);
+  const _TextPreview({
+    Key? key,
+    required this.url,
+    required this.name,
+    required this.summarizeMaterial,
+    required this.generateLearningBite,
+  }) : super(key: key);
 
   @override
   State<_TextPreview> createState() => _TextPreviewState();
@@ -198,8 +194,9 @@ class _TextPreviewState extends State<_TextPreview> {
 
   Future<void> _loadText() async {
     try {
-      final data =
-          await FirebaseStorage.instance.refFromURL(widget.url).getData();
+      final data = await FirebaseStorage.instance
+          .refFromURL(widget.url)
+          .getData();
       if (data != null) {
         setState(() {
           _content = utf8.decode(data, allowMalformed: true);
@@ -239,19 +236,18 @@ class _TextPreviewState extends State<_TextPreview> {
       body: _loading
           ? const Center(child: CircularProgressIndicator())
           : _error != null
-              ? Center(child: Text(_error!))
-              : SingleChildScrollView(
-                  padding: const EdgeInsets.all(16),
-                  child: SelectableText(
-                    _content!,
-                    style: GoogleFonts.robotoMono(
-                      textStyle: Theme.of(context)
-                          .textTheme
-                          .bodyMedium
-                          ?.copyWith(height: 1.5),
-                    ),
-                  ),
+          ? Center(child: Text(_error!))
+          : SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: SelectableText(
+                _content!,
+                style: GoogleFonts.robotoMono(
+                  textStyle: Theme.of(
+                    context,
+                  ).textTheme.bodyMedium?.copyWith(height: 1.5),
                 ),
+              ),
+            ),
     );
   }
 }
@@ -261,13 +257,13 @@ class _VideoPreview extends StatefulWidget {
   final String name;
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
-  const _VideoPreview(
-      {Key? key,
-      required this.url,
-      required this.name,
-      required this.summarizeMaterial,
-      required this.generateLearningBite})
-      : super(key: key);
+  const _VideoPreview({
+    Key? key,
+    required this.url,
+    required this.name,
+    required this.summarizeMaterial,
+    required this.generateLearningBite,
+  }) : super(key: key);
 
   @override
   State<_VideoPreview> createState() => _VideoPreviewState();

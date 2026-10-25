@@ -12,9 +12,7 @@ import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   // ReCaptcha V3 public site key
   const siteKey = '6LfiidArAAAAAOr-wo5IEfX_FqSL4bzLBb4ugZdI';
   if (kDebugMode) {

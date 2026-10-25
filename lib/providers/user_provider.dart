@@ -45,8 +45,9 @@ class _UserProviderState extends State<UserProvider> {
   @override
   void initState() {
     super.initState();
-    _authSubscription =
-        FirebaseAuth.instance.authStateChanges().listen((User? user) {
+    _authSubscription = FirebaseAuth.instance.authStateChanges().listen((
+      User? user,
+    ) {
       if (user != null) {
         setState(() {
           currentUser = user;

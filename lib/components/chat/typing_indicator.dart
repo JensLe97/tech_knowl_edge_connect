@@ -37,8 +37,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
         final offset = t < 0.3
             ? (t / 0.3)
             : t < 0.6
-                ? ((0.6 - t) / 0.3)
-                : 0.0;
+            ? ((0.6 - t) / 0.3)
+            : 0.0;
         return Transform.translate(
           offset: Offset(0, -6 * offset.toDouble()),
           child: Container(
@@ -68,8 +68,8 @@ class _TypingIndicatorState extends State<TypingIndicator>
             color: isMe
                 ? Theme.of(context).colorScheme.secondary.withAlpha(120)
                 : Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).colorScheme.surfaceContainerLowest
-                    : Theme.of(context).colorScheme.secondary.withAlpha(40),
+                ? Theme.of(context).colorScheme.surfaceContainerLowest
+                : Theme.of(context).colorScheme.secondary.withAlpha(40),
             border: Border.all(
               color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
             ),

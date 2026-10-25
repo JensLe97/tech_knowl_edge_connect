@@ -33,8 +33,9 @@ class _TopicDialogState extends State<TopicDialog> {
   @override
   void initState() {
     super.initState();
-    _nameController =
-        TextEditingController(text: widget.existingData?['name'] ?? '');
+    _nameController = TextEditingController(
+      text: widget.existingData?['name'] ?? '',
+    );
     _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
   }
@@ -63,10 +64,7 @@ class _TopicDialogState extends State<TopicDialog> {
       title: Text(
         widget.topicId == null ? 'Thema hinzufügen' : 'Thema bearbeiten',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -84,9 +82,12 @@ class _TopicDialogState extends State<TopicDialog> {
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(
+                  .map(
+                    (s) => DropdownMenuItem(
                       value: s,
-                      child: Text(AdminConstants.statusLabels[s] ?? s)))
+                      child: Text(AdminConstants.statusLabels[s] ?? s),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -146,9 +147,9 @@ class _TopicDialogState extends State<TopicDialog> {
                   Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

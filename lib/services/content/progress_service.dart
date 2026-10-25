@@ -33,26 +33,28 @@ class UnitBiteProgress {
   });
 
   Map<String, dynamic> toMap() => {
-        'biteId': biteId,
-        if (conceptId != null) 'conceptId': conceptId,
-        if (journeyId != null) 'journeyId': journeyId,
-        if (categoryId != null) 'categoryId': categoryId,
-        if (topicId != null) 'topicId': topicId,
-        'status': status,
-        'progress': progress,
-        if (points > 0) 'points': points,
-        if (maxPoints > 0) 'maxPoints': maxPoints,
-        'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
-        if (createdAt != null) 'createdAt': createdAt,
-        'currentTaskIndex': currentTaskIndex ?? 0,
-        'tasks': tasks.map((k, v) => MapEntry(k, v.toMap())),
-      };
+    'biteId': biteId,
+    if (conceptId != null) 'conceptId': conceptId,
+    if (journeyId != null) 'journeyId': journeyId,
+    if (categoryId != null) 'categoryId': categoryId,
+    if (topicId != null) 'topicId': topicId,
+    'status': status,
+    'progress': progress,
+    if (points > 0) 'points': points,
+    if (maxPoints > 0) 'maxPoints': maxPoints,
+    'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
+    if (createdAt != null) 'createdAt': createdAt,
+    'currentTaskIndex': currentTaskIndex ?? 0,
+    'tasks': tasks.map((k, v) => MapEntry(k, v.toMap())),
+  };
 
   factory UnitBiteProgress.fromMap(Map<String, dynamic> map) {
     final rawTasks = map['tasks'] as Map<String, dynamic>?;
     final parsedTasks = rawTasks != null
-        ? rawTasks.map((k, v) =>
-            MapEntry(k, TaskProgress.fromMap(v as Map<String, dynamic>)))
+        ? rawTasks.map(
+            (k, v) =>
+                MapEntry(k, TaskProgress.fromMap(v as Map<String, dynamic>)),
+          )
         : <String, TaskProgress>{};
     return UnitBiteProgress(
       biteId: map['biteId'] as String,
@@ -88,12 +90,12 @@ class TaskProgress {
   });
 
   Map<String, dynamic> toMap() => {
-        'taskId': taskId,
-        'type': type,
-        'status': status,
-        'progress': progress,
-        'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
-      };
+    'taskId': taskId,
+    'type': type,
+    'status': status,
+    'progress': progress,
+    'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
+  };
 
   factory TaskProgress.fromMap(Map<String, dynamic> map) {
     return TaskProgress(
@@ -128,15 +130,15 @@ class UnitProgress {
   });
 
   Map<String, dynamic> toMap() => {
-        'unitId': unitId,
-        'subjectId': subjectId,
-        'source': source,
-        'status': status,
-        'expectedBiteCount': expectedBiteCount,
-        'progress': progress,
-        'bites': bites.map((k, v) => MapEntry(k, v.toMap())),
-        'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
-      };
+    'unitId': unitId,
+    'subjectId': subjectId,
+    'source': source,
+    'status': status,
+    'expectedBiteCount': expectedBiteCount,
+    'progress': progress,
+    'bites': bites.map((k, v) => MapEntry(k, v.toMap())),
+    'lastUpdated': lastUpdated ?? FieldValue.serverTimestamp(),
+  };
 
   factory UnitProgress.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     final data = doc.data() ?? {};
@@ -154,21 +156,27 @@ class UnitProgress {
       status: data['status'] as String? ?? 'not_started',
       expectedBiteCount:
           (data['expectedBiteCount'] as num?)?.toInt() ?? bitesMap.length,
-      progress: (data['progress'] as num?)?.toInt() ??
+      progress:
+          (data['progress'] as num?)?.toInt() ??
           _calcProgressFromBites(
-              bitesMap, (data['expectedBiteCount'] as num?)?.toInt()),
+            bitesMap,
+            (data['expectedBiteCount'] as num?)?.toInt(),
+          ),
       bites: bitesMap,
       lastUpdated: data['lastUpdated'] as Timestamp?,
     );
   }
 
-  static int _calcProgressFromBites(Map<String, UnitBiteProgress> bites,
-      [int? expectedTotal]) {
+  static int _calcProgressFromBites(
+    Map<String, UnitBiteProgress> bites, [
+    int? expectedTotal,
+  ]) {
     if (bites.isEmpty && (expectedTotal == null || expectedTotal == 0)) {
       return 0;
     }
-    final totalProgress =
-        bites.values.map((b) => b.progress).fold<int>(0, (a, b) => a + b);
+    final totalProgress = bites.values
+        .map((b) => b.progress)
+        .fold<int>(0, (a, b) => a + b);
     final denom = (expectedTotal != null && expectedTotal > 0)
         ? expectedTotal
         : bites.length;
@@ -187,7 +195,10 @@ class ProgressService {
   /// be positive (increment) or negative (decrement). This updates
   /// `expectedBiteCount`, recalculates aggregate progress and status.
   Future<void> changeExpectedBiteCount(
-      String uid, String unitId, int delta) async {
+    String uid,
+    String unitId,
+    int delta,
+  ) async {
     final docRef = _userProgressColl(uid).doc(unitId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
@@ -196,8 +207,10 @@ class ProgressService {
       }
       final data = snap.data() as Map<String, dynamic>;
       final bites = Map<String, dynamic>.from(
-          data['bites'] as Map<String, dynamic>? ?? {});
-      final current = (data['expectedBiteCount'] as num?)?.toInt() ??
+        data['bites'] as Map<String, dynamic>? ?? {},
+      );
+      final current =
+          (data['expectedBiteCount'] as num?)?.toInt() ??
           (bites.isEmpty ? 1 : bites.length);
       final updated = (current + delta) < 0 ? 0 : (current + delta);
 
@@ -207,8 +220,8 @@ class ProgressService {
       final agg = biteValues.isEmpty
           ? 0
           : (biteValues.reduce((a, b) => a + b) /
-                  (updated > 0 ? updated : biteValues.length))
-              .round();
+                    (updated > 0 ? updated : biteValues.length))
+                .round();
       tx.update(docRef, {
         'expectedBiteCount': updated,
         'progress': agg >= 100 ? 100 : agg,
@@ -219,26 +232,30 @@ class ProgressService {
   }
 
   Stream<List<UnitProgress>> subscribeUserUnits(String uid) {
-    return _userProgressColl(uid).snapshots().map((snap) => snap.docs
-        .map((d) => UnitProgress.fromDoc(d))
-        .where((u) => u.status == 'in_progress')
-        .toList());
+    return _userProgressColl(uid).snapshots().map(
+      (snap) => snap.docs
+          .map((d) => UnitProgress.fromDoc(d))
+          .where((u) => u.status == 'in_progress')
+          .toList(),
+    );
   }
 
   /// Attach a standalone bite to a unit. If unitId is null, this will create a
   /// minimal synthetic unit document and attach the bite there. Optionally
   /// include `conceptId` and `tasks` metadata so resume UI doesn't need to
   /// perform collectionGroup lookups at display time.
-  Future<void> startOrAttachBite(String uid,
-      {required String biteId,
-      String? unitId,
-      String? subjectId,
-      String? categoryId,
-      String? topicId,
-      String? conceptId,
-      String? journeyId,
-      Map<String, TaskProgress>? tasks,
-      int initialProgress = 0}) async {
+  Future<void> startOrAttachBite(
+    String uid, {
+    required String biteId,
+    String? unitId,
+    String? subjectId,
+    String? categoryId,
+    String? topicId,
+    String? conceptId,
+    String? journeyId,
+    Map<String, TaskProgress>? tasks,
+    int initialProgress = 0,
+  }) async {
     final coll = _userProgressColl(uid);
     String targetUnitId = unitId ?? _firestore.collection('tmp').doc().id;
     final docRef = coll.doc(targetUnitId);
@@ -268,8 +285,9 @@ class ProgressService {
         int total = 0;
         for (final conceptDoc in conceptsSnap.docs) {
           try {
-            final lbSnap =
-                await conceptDoc.reference.collection('learning_bites').get();
+            final lbSnap = await conceptDoc.reference
+                .collection('learning_bites')
+                .get();
             for (final doc in lbSnap.docs) {
               final data = doc.data();
               final String? status = data['status'] as String?;
@@ -298,8 +316,9 @@ class ProgressService {
             .get();
         for (final journeyDoc in journeysSnap.docs) {
           try {
-            final lbSnap =
-                await journeyDoc.reference.collection('learning_bites').get();
+            final lbSnap = await journeyDoc.reference
+                .collection('learning_bites')
+                .get();
             total += lbSnap.docs.length;
           } catch (_) {}
         }
@@ -336,7 +355,7 @@ class ProgressService {
               'createdAt': FieldValue.serverTimestamp(),
               'currentTaskIndex': 0,
               'tasks': tasks?.map((k, v) => MapEntry(k, v.toMap())) ?? {},
-            }
+            },
           },
           'expectedBiteCount': computedExpected,
           'progress': initialProgress,
@@ -347,17 +366,20 @@ class ProgressService {
 
       final data = snapshot.data() as Map<String, dynamic>;
       final bites = Map<String, dynamic>.from(
-          data['bites'] as Map<String, dynamic>? ?? {});
+        data['bites'] as Map<String, dynamic>? ?? {},
+      );
       final existingBite = Map<String, dynamic>.from(
-          bites[biteId] as Map<String, dynamic>? ?? {});
+        bites[biteId] as Map<String, dynamic>? ?? {},
+      );
       final wasCompleted =
           ((existingBite['progress'] as num?)?.toInt() ?? 0) >= 100 ||
-              (existingBite['status'] as String? ?? '') == 'completed';
+          (existingBite['status'] as String? ?? '') == 'completed';
       existingBite['biteId'] = biteId;
       // only set status/progress when the bite is not already completed
       if (!wasCompleted) {
-        existingBite['status'] =
-            initialProgress >= 100 ? 'completed' : 'in_progress';
+        existingBite['status'] = initialProgress >= 100
+            ? 'completed'
+            : 'in_progress';
         existingBite['progress'] = initialProgress;
       }
       existingBite['lastUpdated'] = FieldValue.serverTimestamp();
@@ -381,8 +403,8 @@ class ProgressService {
       final agg = biteValues.isEmpty
           ? 0
           : (biteValues.reduce((a, b) => a + b) /
-                  (expected > 0 ? expected : biteValues.length))
-              .round();
+                    (expected > 0 ? expected : biteValues.length))
+                .round();
 
       tx.update(docRef, {
         'bites': bites,
@@ -393,23 +415,27 @@ class ProgressService {
     });
   }
 
-  Future<void> updateBiteProgress(String uid,
-      {required String unitId,
-      required String biteId,
-      required int progress,
-      String status = 'in_progress',
-      int? currentTaskIndex,
-      int? points,
-      int? maxPoints}) async {
+  Future<void> updateBiteProgress(
+    String uid, {
+    required String unitId,
+    required String biteId,
+    required int progress,
+    String status = 'in_progress',
+    int? currentTaskIndex,
+    int? points,
+    int? maxPoints,
+  }) async {
     final docRef = _userProgressColl(uid).doc(unitId);
     await _firestore.runTransaction((tx) async {
       final snap = await tx.get(docRef);
       if (!snap.exists) return;
       final data = snap.data() as Map<String, dynamic>;
       final bites = Map<String, dynamic>.from(
-          data['bites'] as Map<String, dynamic>? ?? {});
+        data['bites'] as Map<String, dynamic>? ?? {},
+      );
       final existing = Map<String, dynamic>.from(
-          bites[biteId] as Map<String, dynamic>? ?? {});
+        bites[biteId] as Map<String, dynamic>? ?? {},
+      );
       existing['progress'] = progress;
       existing['status'] = status;
       existing['lastUpdated'] = FieldValue.serverTimestamp();
@@ -428,8 +454,8 @@ class ProgressService {
       final agg = biteValues.isEmpty
           ? 0
           : (biteValues.reduce((a, b) => a + b) /
-                  (expected > 0 ? expected : biteValues.length))
-              .round();
+                    (expected > 0 ? expected : biteValues.length))
+                .round();
 
       tx.update(docRef, {
         'bites': bites,
@@ -449,7 +475,9 @@ class ProgressService {
   /// Returns bite results (title, points, maxPoints) for all bites belonging
   /// to [journeyId] stored in the user's resumeProgress collection.
   Future<List<Map<String, dynamic>>> getBiteResultsForJourney(
-      String uid, String journeyId) async {
+    String uid,
+    String journeyId,
+  ) async {
     final snap = await _userProgressColl(uid).get();
     final results = <Map<String, dynamic>>[];
     for (final doc in snap.docs) {
@@ -490,23 +518,27 @@ class ProgressService {
   /// `users/{uid}/resumeProgress/{learningBiteId}`. The document contains
   /// the content path fields and a timestamp. This replaces the previous
   /// nested `resumeProgress.{subjectId}` map approach.
-  Future<void> setResumePointer(String uid,
-      {required String learningBiteId,
-      required String subjectId,
-      required String categoryId,
-      required String topicId,
-      required String unitId,
-      required String conceptId}) async {
+  Future<void> setResumePointer(
+    String uid, {
+    required String learningBiteId,
+    required String subjectId,
+    required String categoryId,
+    required String topicId,
+    required String unitId,
+    required String conceptId,
+  }) async {
     // Attach the bite into the unit document under users/{uid}/resumeProgress/{unitId}
     // by reusing startOrAttachBite which ensures a unit doc with a `bites` map.
-    await startOrAttachBite(uid,
-        biteId: learningBiteId,
-        unitId: unitId,
-        subjectId: subjectId,
-        categoryId: categoryId,
-        topicId: topicId,
-        conceptId: conceptId,
-        initialProgress: 0);
+    await startOrAttachBite(
+      uid,
+      biteId: learningBiteId,
+      unitId: unitId,
+      subjectId: subjectId,
+      categoryId: categoryId,
+      topicId: topicId,
+      conceptId: conceptId,
+      initialProgress: 0,
+    );
   }
 
   /// Remove a resume pointer (bite entry) from whichever unit document
@@ -517,16 +549,18 @@ class ProgressService {
     for (final doc in snap.docs) {
       final data = doc.data();
       final bites = Map<String, dynamic>.from(
-          data['bites'] as Map<String, dynamic>? ?? {});
+        data['bites'] as Map<String, dynamic>? ?? {},
+      );
       if (bites.containsKey(learningBiteId)) {
         // If the bite is already completed, keep its entry so progress
         // history and UI checkmarks remain visible. Only remove resume
         // entries for bites that are not completed.
         final existing = Map<String, dynamic>.from(
-            bites[learningBiteId] as Map<String, dynamic>? ?? {});
+          bites[learningBiteId] as Map<String, dynamic>? ?? {},
+        );
         final wasCompleted =
             ((existing['progress'] as num?)?.toInt() ?? 0) >= 100 ||
-                (existing['status'] as String? ?? '') == 'completed';
+            (existing['status'] as String? ?? '') == 'completed';
         if (!wasCompleted) {
           bites.remove(learningBiteId);
           if (bites.isEmpty) {
@@ -534,15 +568,17 @@ class ProgressService {
           } else {
             final biteValues = bites.values
                 .map(
-                    (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                  (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                )
                 .toList();
-            final expected = (data['expectedBiteCount'] as num?)?.toInt() ??
+            final expected =
+                (data['expectedBiteCount'] as num?)?.toInt() ??
                 biteValues.length;
             final agg = biteValues.isEmpty
                 ? 0
                 : (biteValues.reduce((a, b) => a + b) /
-                        (expected > 0 ? expected : biteValues.length))
-                    .round();
+                          (expected > 0 ? expected : biteValues.length))
+                      .round();
             await doc.reference.update({
               'bites': bites,
               'progress': agg >= 100 ? 100 : agg,
@@ -553,8 +589,9 @@ class ProgressService {
         } else {
           // preserve completed bite; optionally touch timestamp so listeners
           // see a small update without removing the entry.
-          await doc.reference
-              .update({'lastUpdated': FieldValue.serverTimestamp()});
+          await doc.reference.update({
+            'lastUpdated': FieldValue.serverTimestamp(),
+          });
         }
         break;
       }

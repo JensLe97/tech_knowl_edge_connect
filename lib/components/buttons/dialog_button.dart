@@ -23,8 +23,9 @@ class DialogButton extends StatelessWidget {
           onPressed: onTap,
           style: FilledButton.styleFrom(
             backgroundColor: isDestructive ? cs.error : cs.secondaryContainer,
-            foregroundColor:
-                isDestructive ? cs.onError : cs.onSecondaryContainer,
+            foregroundColor: isDestructive
+                ? cs.onError
+                : cs.onSecondaryContainer,
             elevation: 0,
             padding: const EdgeInsets.symmetric(vertical: 16),
             shape: RoundedRectangleBorder(
@@ -33,10 +34,7 @@ class DialogButton extends StatelessWidget {
           ),
           child: Text(
             text,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 16,
-            ),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
         ),
       ),

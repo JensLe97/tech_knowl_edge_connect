@@ -70,8 +70,10 @@ class OnboardingSlide extends StatelessWidget {
               // Badge
               Container(
                 margin: const EdgeInsets.only(bottom: 24),
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: cs.surfaceContainerHighest.withAlpha(230),
                   borderRadius: BorderRadius.circular(12),
@@ -83,7 +85,7 @@ class OnboardingSlide extends StatelessWidget {
                       color: Colors.black.withAlpha(10),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
-                    )
+                    ),
                   ],
                 ),
                 child: Row(

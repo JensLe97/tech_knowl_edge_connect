@@ -53,7 +53,11 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
         Positioned.fill(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-                left: 16, right: 16, top: 10, bottom: 120),
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 120,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -70,9 +74,9 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
                 Text(
                   "Wähle die korrekte Antwort.",
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 Container(
@@ -81,10 +85,9 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
                     color: Theme.of(context).colorScheme.surfaceContainer,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outlineVariant
-                          .withAlpha(50),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(50),
                     ),
                   ),
                   child: MarkdownBody(
@@ -95,31 +98,32 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
                       [
                         ClozeSyntax(),
                         ColorSyntax(),
-                        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes
+                        ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
                       ],
                     ),
                     builders: {
                       ...getMarkdownColorBuilders(),
-                      'cloze':
-                          ClozeBuilder(correctAnswersParts, (index, answer) {
+                      'cloze': ClozeBuilder(correctAnswersParts, (
+                        index,
+                        answer,
+                      ) {
                         Color textColor = isAnswered && isCorrect
                             ? Colors.green
                             : Theme.of(context).colorScheme.primary;
 
-                        double calculatedWidth = (TextPainter(
-                                        text: TextSpan(
-                                            text: answer,
-                                            style: TextStyle(
-                                              color: textColor,
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 18,
-                                            )),
-                                        textScaler:
-                                            MediaQuery.of(context).textScaler,
-                                        textDirection: TextDirection.ltr)
-                                      ..layout())
-                                    .size
-                                    .width *
+                        double calculatedWidth =
+                            (TextPainter(
+                                  text: TextSpan(
+                                    text: answer,
+                                    style: TextStyle(
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  textScaler: MediaQuery.of(context).textScaler,
+                                  textDirection: TextDirection.ltr,
+                                )..layout()).size.width *
                                 1.02 +
                             28; // Extra padding for web font rendering and TextField margins
 
@@ -140,15 +144,18 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
                               decoration: InputDecoration(
                                 isDense: true,
                                 contentPadding: const EdgeInsets.only(
-                                    left: 4, right: 4, top: 6, bottom: 6),
+                                  left: 4,
+                                  right: 4,
+                                  top: 6,
+                                  bottom: 6,
+                                ),
                                 disabledBorder: UnderlineInputBorder(
                                   borderSide: BorderSide(
                                     color: textColor == Colors.green
                                         ? Colors.green
-                                        : Theme.of(context)
-                                            .colorScheme
-                                            .primary
-                                            .withAlpha(100),
+                                        : Theme.of(
+                                            context,
+                                          ).colorScheme.primary.withAlpha(100),
                                     width: 2,
                                   ),
                                 ),
@@ -187,8 +194,9 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
     bool isSelected = isAnswered && answeredIndex == index;
 
     Color backgroundColor = Theme.of(context).colorScheme.surfaceContainer;
-    Color borderColor =
-        Theme.of(context).colorScheme.outlineVariant.withAlpha(50);
+    Color borderColor = Theme.of(
+      context,
+    ).colorScheme.outlineVariant.withAlpha(50);
     Widget icon = Container(
       width: 24,
       height: 24,
@@ -215,8 +223,9 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
           child: const Icon(Icons.check, size: 16, color: Colors.white),
         );
       } else {
-        backgroundColor =
-            Theme.of(context).colorScheme.errorContainer.withAlpha(50);
+        backgroundColor = Theme.of(
+          context,
+        ).colorScheme.errorContainer.withAlpha(50);
         borderColor = Theme.of(context).colorScheme.error;
         icon = Container(
           width: 24,
@@ -225,8 +234,11 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
             shape: BoxShape.circle,
             color: Theme.of(context).colorScheme.error,
           ),
-          child: Icon(Icons.close,
-              size: 16, color: Theme.of(context).colorScheme.onError),
+          child: Icon(
+            Icons.close,
+            size: 16,
+            color: Theme.of(context).colorScheme.onError,
+          ),
         );
       }
     }
@@ -279,8 +291,9 @@ class _SingleChoiceClozeTaskState extends State<SingleChoiceClozeTask> {
                   answerText,
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),

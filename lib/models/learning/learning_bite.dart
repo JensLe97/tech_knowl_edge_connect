@@ -11,7 +11,7 @@ class LearningBite {
   final IconData iconData;
   final String? authorId;
   final String
-      status; // 'private', 'pending', UserConstants.statusApproved, 'rejected'
+  status; // 'private', 'pending', UserConstants.statusApproved, 'rejected'
   final DateTime? createdAt;
   final DateTime? updatedAt;
 

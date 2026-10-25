@@ -16,8 +16,10 @@ class _IntroPage3State extends State<IntroPage3> with TickerProviderStateMixin {
     return OnboardingSlide(
       image: kIsWeb
           ? Image.asset('images/rocket.png', fit: BoxFit.fitWidth)
-          : Lottie.asset('images/animations/rocket_animation.json',
-              fit: BoxFit.fitWidth),
+          : Lottie.asset(
+              'images/animations/rocket_animation.json',
+              fit: BoxFit.fitWidth,
+            ),
       badgeIcon: Icons.rocket_launch,
       badgeText: 'Beginne deine Reise',
       titlePart1: 'Starte jetzt durch mit',

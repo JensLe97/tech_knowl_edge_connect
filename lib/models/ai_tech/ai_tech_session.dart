@@ -22,27 +22,27 @@ class AiTechSession {
   });
 
   Map<String, dynamic> toMap() => {
-        'sessionId': sessionId,
-        'userId': userId,
-        'startAt': startAt,
-        'endAt': endAt,
-        'lastTimestamp': lastTimestamp,
-        'sessionType': sessionType.name,
-        'unit': unit,
-      };
+    'sessionId': sessionId,
+    'userId': userId,
+    'startAt': startAt,
+    'endAt': endAt,
+    'lastTimestamp': lastTimestamp,
+    'sessionType': sessionType.name,
+    'unit': unit,
+  };
 
   factory AiTechSession.fromMap(Map<String, dynamic> map) => AiTechSession(
-        sessionId: map['sessionId'],
-        userId: map['userId'],
-        startAt: (map['startAt'] as Timestamp).toDate(),
-        endAt:
-            map['endAt'] != null ? (map['endAt'] as Timestamp).toDate() : null,
-        lastTimestamp: map['lastTimestamp'] != null
-            ? (map['lastTimestamp'] as Timestamp).toDate()
-            : (map['startAt'] as Timestamp).toDate(),
-        sessionType: SessionType.values.firstWhere(
-            (e) => e.name == map['sessionType'],
-            orElse: () => SessionType.study),
-        unit: map['unit'] ?? '',
-      );
+    sessionId: map['sessionId'],
+    userId: map['userId'],
+    startAt: (map['startAt'] as Timestamp).toDate(),
+    endAt: map['endAt'] != null ? (map['endAt'] as Timestamp).toDate() : null,
+    lastTimestamp: map['lastTimestamp'] != null
+        ? (map['lastTimestamp'] as Timestamp).toDate()
+        : (map['startAt'] as Timestamp).toDate(),
+    sessionType: SessionType.values.firstWhere(
+      (e) => e.name == map['sessionType'],
+      orElse: () => SessionType.study,
+    ),
+    unit: map['unit'] ?? '',
+  );
 }

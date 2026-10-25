@@ -5,11 +5,7 @@ class SubjectTile extends StatelessWidget {
   final Subject subject;
   final void Function()? onTap;
 
-  const SubjectTile({
-    super.key,
-    required this.subject,
-    required this.onTap,
-  });
+  const SubjectTile({super.key, required this.subject, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -83,10 +79,7 @@ class SubjectTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: colorScheme.outline,
-                  ),
+                  Icon(Icons.chevron_right, color: colorScheme.outline),
                 ],
               ),
             ),

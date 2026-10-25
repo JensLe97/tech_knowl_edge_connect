@@ -28,11 +28,11 @@ class ReportReasonBottomSheet extends StatelessWidget {
           child: Text(
             "Wir informieren den Benutzer nicht darüber, wer ihn gemeldet hat.",
             style: TextStyle(
-                fontSize: 16,
-                color: Theme.of(context)
-                    .colorScheme
-                    .onSurfaceVariant
-                    .withAlpha(200)),
+              fontSize: 16,
+              color: Theme.of(
+                context,
+              ).colorScheme.onSurfaceVariant.withAlpha(200),
+            ),
           ),
         ),
         ListTile(

@@ -24,9 +24,9 @@ class Task {
       ),
       question: (data['question'] ?? '').replaceAll(r'\n', '\n'),
       correctAnswer: (data['correctAnswer'] ?? '').replaceAll(r'\n', '\n'),
-      answers: List<String>.from(data['answers'] ?? [])
-          .map((e) => e.replaceAll(r'\n', '\n'))
-          .toList(),
+      answers: List<String>.from(
+        data['answers'] ?? [],
+      ).map((e) => e.replaceAll(r'\n', '\n')).toList(),
     );
   }
 

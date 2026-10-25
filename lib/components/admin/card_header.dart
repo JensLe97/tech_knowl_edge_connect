@@ -5,12 +5,7 @@ class CardHeader extends StatelessWidget {
   final VoidCallback? onAdd;
   final Widget? trailing;
 
-  const CardHeader({
-    super.key,
-    required this.title,
-    this.onAdd,
-    this.trailing,
-  });
+  const CardHeader({super.key, required this.title, this.onAdd, this.trailing});
 
   @override
   Widget build(BuildContext context) {
@@ -36,19 +31,16 @@ class CardHeader extends StatelessWidget {
               width: 40,
               height: 40,
               decoration: BoxDecoration(
-                color:
-                    cs.primaryContainer.withAlpha(76), // 30% primaryContainer
+                color: cs.primaryContainer.withAlpha(
+                  76,
+                ), // 30% primaryContainer
                 borderRadius: BorderRadius.circular(12),
                 border: Border.all(
                   color: cs.primary.withAlpha(25), // 10% primary
                 ),
               ),
               child: Center(
-                child: Icon(
-                  Icons.add,
-                  color: cs.primary,
-                  size: 24,
-                ),
+                child: Icon(Icons.add, color: cs.primary, size: 24),
               ),
             ),
           ),

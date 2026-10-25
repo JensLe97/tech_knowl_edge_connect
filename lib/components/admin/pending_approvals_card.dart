@@ -52,7 +52,8 @@ class PendingApprovalsCard extends StatelessWidget {
                 IconData? icon;
                 if (data['iconData'] != null) {
                   icon = AdminConstants.getIconFromData(
-                      data['iconData'] as Map<String, dynamic>);
+                    data['iconData'] as Map<String, dynamic>,
+                  );
                 }
 
                 final cs = Theme.of(context).colorScheme;
@@ -70,10 +71,13 @@ class PendingApprovalsCard extends StatelessWidget {
                       HierarchyBreadcrumbs(reference: doc.reference),
                       ListTile(
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 4, vertical: 8),
-                        title: Text(title,
-                            style:
-                                const TextStyle(fontWeight: FontWeight.bold)),
+                          horizontal: 4,
+                          vertical: 8,
+                        ),
+                        title: Text(
+                          title,
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
                         leading: Container(
                           width: 48,
                           height: 48,
@@ -97,28 +101,38 @@ class PendingApprovalsCard extends StatelessWidget {
                           children: [
                             IconButton(
                               style: IconButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              icon: Icon(Icons.visibility,
-                                  color: cs.onSurfaceVariant),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.visibility,
+                                color: cs.onSurfaceVariant,
+                              ),
                               tooltip: 'Ansehen',
                               onPressed: () => onPreview(doc),
                             ),
                             const SizedBox(width: 4),
                             IconButton(
                               style: IconButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
-                              icon: const Icon(Icons.check_circle_outline,
-                                  color: Colors.green),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
+                              icon: const Icon(
+                                Icons.check_circle_outline,
+                                color: Colors.green,
+                              ),
                               tooltip: 'Genehmigen',
                               onPressed: () => _approve(context, doc.reference),
                             ),
                             const SizedBox(width: 4),
                             IconButton(
                               style: IconButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12))),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                              ),
                               icon: Icon(Icons.highlight_off, color: cs.error),
                               tooltip: 'Ablehnen',
                               onPressed: () => _reject(context, doc.reference),

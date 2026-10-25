@@ -21,7 +21,8 @@ class AuthBackground extends StatelessWidget {
             decoration: const BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBJ6ymwK36DD2Wa9J6d2V-V1g0IZZsWERfBIPvuSIt1B7BSUMWiH697koIlp43ETpthGfee9sDJFuAs55I1gtojtkxW3djF3olVUiIUKR1cM5EgvVllMjSZ512UUM6xrs4lazhqStUCT-2v5E2GhwZ4ztq4XKJIWXsa2M3Z-IP9ZnB_AHp--BLXQbY7_czcdG9oCyKF1w7HFbjgWWG07OYNQvls1big_BsuWk77uhO7xYUUGjXdscO1cii0UdLZ-Bq81_7JV0u4o1CF'),
+                  'https://lh3.googleusercontent.com/aida-public/AB6AXuBJ6ymwK36DD2Wa9J6d2V-V1g0IZZsWERfBIPvuSIt1B7BSUMWiH697koIlp43ETpthGfee9sDJFuAs55I1gtojtkxW3djF3olVUiIUKR1cM5EgvVllMjSZ512UUM6xrs4lazhqStUCT-2v5E2GhwZ4ztq4XKJIWXsa2M3Z-IP9ZnB_AHp--BLXQbY7_czcdG9oCyKF1w7HFbjgWWG07OYNQvls1big_BsuWk77uhO7xYUUGjXdscO1cii0UdLZ-Bq81_7JV0u4o1CF',
+                ),
                 fit: BoxFit.cover,
                 opacity: 0.3,
                 // blendMode: BlendMode.multiply, // Add if needed

@@ -15,10 +15,14 @@ class ConceptBitesSection extends StatefulWidget {
   final List<UnitBiteProgress> conceptBites;
   final Widget Function(String subtitle, int progress) headerBuilder;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
-  final void Function(UnitProgress unit, LearningBite lb,
-      {required String categoryId,
-      required String topicId,
-      required String conceptId}) onNewBiteTap;
+  final void Function(
+    UnitProgress unit,
+    LearningBite lb, {
+    required String categoryId,
+    required String topicId,
+    required String conceptId,
+  })
+  onNewBiteTap;
 
   const ConceptBitesSection({
     super.key,
@@ -89,7 +93,9 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
         }
 
         final totalProgress = bitesList.fold<int>(
-            0, (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0));
+          0,
+          (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0),
+        );
         final denom = bitesList.length;
         final conceptPercent = denom == 0 ? 0 : (totalProgress / denom).round();
 
@@ -99,12 +105,15 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
             if (!_scrollController.hasClients) return;
 
             final firstIncomplete = bitesList.indexWhere(
-                (lb) => (widget.unit.bites[lb.id]?.progress ?? 0) < 100);
+              (lb) => (widget.unit.bites[lb.id]?.progress ?? 0) < 100,
+            );
 
             final idx = firstIncomplete == -1 ? 0 : firstIncomplete;
 
-            final target = (idx * _totalStep)
-                .clamp(0.0, _scrollController.position.maxScrollExtent);
+            final target = (idx * _totalStep).clamp(
+              0.0,
+              _scrollController.position.maxScrollExtent,
+            );
 
             _scrollController.animateTo(
               target,
@@ -131,8 +140,8 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
             final conceptDoc = conceptSnap.data?.data();
             final conceptName =
                 (conceptDoc != null && conceptDoc['name'] is String)
-                    ? conceptDoc['name'] as String
-                    : 'Lerneinheit';
+                ? conceptDoc['name'] as String
+                : 'Lerneinheit';
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -156,14 +165,18 @@ class _ConceptBitesSectionState extends State<ConceptBitesSection> {
                             ? UnitBiteCard(
                                 bite: up,
                                 authoritativeTitle: lb.name,
-                                onTap: () => widget.onBiteTap(widget.unit, up))
+                                onTap: () => widget.onBiteTap(widget.unit, up),
+                              )
                             : NewBiteCard(
                                 title: lb.name,
                                 onTap: () => widget.onNewBiteTap(
-                                    widget.unit, lb,
-                                    categoryId: widget.categoryId,
-                                    topicId: widget.topicId,
-                                    conceptId: widget.conceptId)),
+                                  widget.unit,
+                                  lb,
+                                  categoryId: widget.categoryId,
+                                  topicId: widget.topicId,
+                                  conceptId: widget.conceptId,
+                                ),
+                              ),
                       );
                     },
                   ),

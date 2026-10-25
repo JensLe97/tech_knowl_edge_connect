@@ -13,11 +13,13 @@ abstract class BaseAgent {
   final FirebaseAI _firebaseAI;
 
   BaseAgent({FirebaseAI? firebaseAI})
-      : _firebaseAI = firebaseAI ?? FirebaseAI.googleAI();
+    : _firebaseAI = firebaseAI ?? FirebaseAI.googleAI();
 
   /// Shared helper to generate base text content (single-shot, no history).
-  Future<String> generateText(String prompt,
-      {String modelName = kDefaultAiModel}) async {
+  Future<String> generateText(
+    String prompt, {
+    String modelName = kDefaultAiModel,
+  }) async {
     final model = _firebaseAI.generativeModel(model: modelName);
     final response = await model.generateContent([Content.text(prompt)]);
     return response.text ?? '';

@@ -49,11 +49,7 @@ class IdeaFolderTile extends StatelessWidget {
                     ),
                   ),
                   alignment: Alignment.center,
-                  child: Icon(
-                    icon,
-                    color: color,
-                    size: 28,
-                  ),
+                  child: Icon(icon, color: color, size: 28),
                 ),
                 const SizedBox(height: 8),
                 Text(

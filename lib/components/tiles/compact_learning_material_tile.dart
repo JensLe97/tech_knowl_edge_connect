@@ -30,10 +30,14 @@ class CompactLearningMaterialTile extends StatelessWidget {
     final likedLearningMaterials = userState.likedLearningMaterials;
     if (likedLearningMaterials.contains(material.id)) {
       await learningMaterialsService.unlikeLearningMaterial(
-          firebaseAuth.currentUser!.uid, material.id);
+        firebaseAuth.currentUser!.uid,
+        material.id,
+      );
     } else {
       await learningMaterialsService.likeLearningMaterial(
-          firebaseAuth.currentUser!.uid, material.id);
+        firebaseAuth.currentUser!.uid,
+        material.id,
+      );
     }
   }
 
@@ -56,8 +60,10 @@ class CompactLearningMaterialTile extends StatelessWidget {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12.0),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 16.0,
+              vertical: 12.0,
+            ),
             child: Row(
               children: [
                 Container(
@@ -130,7 +136,9 @@ class CompactLearningMaterialTile extends StatelessWidget {
                               onTap: () => _toggleLike(context),
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 6.0, vertical: 6.0),
+                                  horizontal: 6.0,
+                                  vertical: 6.0,
+                                ),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
@@ -149,8 +157,9 @@ class CompactLearningMaterialTile extends StatelessWidget {
                                       style: TextStyle(
                                         fontSize: 12,
                                         fontWeight: FontWeight.bold,
-                                        color:
-                                            cs.onSurfaceVariant.withAlpha(150),
+                                        color: cs.onSurfaceVariant.withAlpha(
+                                          150,
+                                        ),
                                       ),
                                     ),
                                   ],

@@ -12,7 +12,7 @@ class LearningMaterialTile extends StatelessWidget {
   final LearningMaterial material;
   final VoidCallback? onTap;
   const LearningMaterialTile({Key? key, required this.material, this.onTap})
-      : super(key: key);
+    : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,9 @@ class LearningMaterialTile extends StatelessWidget {
                 child: Ink(
                   decoration: BoxDecoration(
                     color: colorScheme.surfaceContainerHigh,
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(12)),
+                    borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(12),
+                    ),
                   ),
                   child: Center(
                     child: FaIcon(
@@ -55,8 +56,10 @@ class LearningMaterialTile extends StatelessWidget {
               ),
               // Meta Area
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12.0,
+                  vertical: 8.0,
+                ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.center,

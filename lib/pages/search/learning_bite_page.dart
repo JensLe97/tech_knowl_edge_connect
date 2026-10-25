@@ -32,8 +32,10 @@ class _LearningBitePageState extends State<LearningBitePage>
 
   @override
   void initState() {
-    controller =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
     pageController = PageController();
 
     super.initState();
@@ -66,9 +68,13 @@ class _LearningBitePageState extends State<LearningBitePage>
     } else {
       if (!mounted) return;
       Navigator.pop(
-          context,
-          LearningBiteResult(
-              completed: true, points: points, maxPoints: widget.tasks.length));
+        context,
+        LearningBiteResult(
+          completed: true,
+          points: points,
+          maxPoints: widget.tasks.length,
+        ),
+      );
     }
   }
 
@@ -94,8 +100,9 @@ class _LearningBitePageState extends State<LearningBitePage>
     int maxDataNum = data.length;
     int maxTaskNum = tasks.length;
     int maxPageNum = maxDataNum + maxTaskNum;
-    final double progressValue =
-        maxPageNum > 0 ? currentPage.toDouble() / maxPageNum : 0.0;
+    final double progressValue = maxPageNum > 0
+        ? currentPage.toDouble() / maxPageNum
+        : 0.0;
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -124,8 +131,9 @@ class _LearningBitePageState extends State<LearningBitePage>
                     tween: Tween<double>(begin: 0, end: progressValue),
                     builder: (context, value, _) => LinearProgressIndicator(
                       value: value,
-                      backgroundColor:
-                          Theme.of(context).colorScheme.surfaceContainerHighest,
+                      backgroundColor: Theme.of(
+                        context,
+                      ).colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(12),
                       color: Theme.of(context).colorScheme.primary,
                       minHeight: 10,
@@ -150,11 +158,13 @@ class _LearningBitePageState extends State<LearningBitePage>
                     points: points,
                     maxPoints: maxTaskNum,
                     onComplete: () => Navigator.pop(
-                        context,
-                        LearningBiteResult(
-                            completed: true,
-                            points: points,
-                            maxPoints: maxTaskNum)),
+                      context,
+                      LearningBiteResult(
+                        completed: true,
+                        points: points,
+                        maxPoints: maxTaskNum,
+                      ),
+                    ),
                   );
                 } else if (currentPageIndex < maxDataNum) {
                   return LearningContentPage(
@@ -163,7 +173,9 @@ class _LearningBitePageState extends State<LearningBitePage>
                   );
                 } else {
                   return _buildTaskWidget(
-                      tasks[currentPageIndex - maxDataNum], maxPageNum);
+                    tasks[currentPageIndex - maxDataNum],
+                    maxPageNum,
+                  );
                 }
               },
             ),

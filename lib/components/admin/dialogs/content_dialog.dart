@@ -40,8 +40,9 @@ class _ContentDialogState extends State<ContentDialog> {
   @override
   void initState() {
     super.initState();
-    _contentController =
-        TextEditingController(text: widget.initialContent ?? '');
+    _contentController = TextEditingController(
+      text: widget.initialContent ?? '',
+    );
   }
 
   @override
@@ -70,10 +71,7 @@ class _ContentDialogState extends State<ContentDialog> {
             ? 'Inhaltsteil hinzufügen'
             : 'Inhaltsteil bearbeiten',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -125,8 +123,9 @@ class _ContentDialogState extends State<ContentDialog> {
                           widget.learningBiteId,
                         )
                         .first;
-                    currentContent =
-                        List<String>.from(snapshot.data()?['content'] ?? []);
+                    currentContent = List<String>.from(
+                      snapshot.data()?['content'] ?? [],
+                    );
                   }
 
                   if (widget.index == null) {
@@ -157,9 +156,9 @@ class _ContentDialogState extends State<ContentDialog> {
                   Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

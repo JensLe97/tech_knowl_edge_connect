@@ -86,19 +86,20 @@ class _PersonalLibraryState extends State<PersonalLibrary> {
                     onTap: () {
                       Navigator.of(context)
                           .push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              FolderDetailPage(folder: folder),
-                        ),
-                      )
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  FolderDetailPage(folder: folder),
+                            ),
+                          )
                           .then((folderDeleted) {
-                        if (folderDeleted == true) {
-                          setState(() {
-                            _foldersFuture =
-                                _folderService.getFolders(userId: userId!);
+                            if (folderDeleted == true) {
+                              setState(() {
+                                _foldersFuture = _folderService.getFolders(
+                                  userId: userId!,
+                                );
+                              });
+                            }
                           });
-                        }
-                      });
                     },
                   );
                 },

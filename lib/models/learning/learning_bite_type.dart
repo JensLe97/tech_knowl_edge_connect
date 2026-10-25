@@ -1,6 +1,1 @@
-enum LearningBiteType {
-  text,
-  video,
-  task,
-  lesson,
-}
+enum LearningBiteType { text, video, task, lesson }

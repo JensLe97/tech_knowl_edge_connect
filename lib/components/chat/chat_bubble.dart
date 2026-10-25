@@ -69,8 +69,8 @@ class ChatBubble extends StatelessWidget {
     // Effective file extension for LearningMaterialPreviewPage and icon lookup.
     final effectiveExt =
         LearningMaterialType.supportedTypes.contains(type.toLowerCase())
-            ? type.toLowerCase()
-            : _extractExtFromUrl(message);
+        ? type.toLowerCase()
+        : _extractExtFromUrl(message);
 
     // Display name: explicit param wins, else extract from Storage URL.
     final effectiveName = (fileName != null && fileName!.isNotEmpty)
@@ -85,27 +85,25 @@ class ChatBubble extends StatelessWidget {
     final int cacheSize = min((400 * pixelRatio).round(), 800);
 
     return Padding(
-      padding: EdgeInsets.only(
-        left: isMe ? 40 : 0,
-        right: isMe ? 0 : 40,
-      ),
+      padding: EdgeInsets.only(left: isMe ? 40 : 0, right: isMe ? 0 : 40),
       child: InkWell(
         borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(isMe ? 16 : 2),
-            topRight: Radius.circular(isMe ? 2 : 16),
-            bottomLeft: const Radius.circular(16),
-            bottomRight: const Radius.circular(16)),
+          topLeft: Radius.circular(isMe ? 16 : 2),
+          topRight: Radius.circular(isMe ? 2 : 16),
+          bottomLeft: const Radius.circular(16),
+          bottomRight: const Radius.circular(16),
+        ),
         onTap: isMedia
             ? () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => LearningMaterialPreviewPage(
-                      url: message,
-                      type: effectiveExt,
-                      name: effectiveName,
-                    ),
+                context,
+                MaterialPageRoute(
+                  builder: (_) => LearningMaterialPreviewPage(
+                    url: message,
+                    type: effectiveExt,
+                    name: effectiveName,
                   ),
-                )
+                ),
+              )
             : null,
         onLongPress: () {
           if (isMe) {
@@ -118,9 +116,10 @@ class ChatBubble extends StatelessWidget {
             enableDrag: true,
             builder: (BuildContext context) => SafeArea(
               child: UserBottomSheet(
-                  toggleBlockUser: () {},
-                  report: reportContent,
-                  isContent: true),
+                toggleBlockUser: () {},
+                report: reportContent,
+                isContent: true,
+              ),
             ),
           );
         },
@@ -132,8 +131,8 @@ class ChatBubble extends StatelessWidget {
             color: isMe
                 ? Theme.of(context).colorScheme.secondary.withAlpha(120)
                 : Theme.of(context).brightness == Brightness.light
-                    ? Theme.of(context).colorScheme.surfaceContainerLowest
-                    : Theme.of(context).colorScheme.secondary.withAlpha(40),
+                ? Theme.of(context).colorScheme.surfaceContainerLowest
+                : Theme.of(context).colorScheme.secondary.withAlpha(40),
             border: Border.all(
               color: Theme.of(context).colorScheme.outlineVariant.withAlpha(26),
             ),
@@ -145,10 +144,11 @@ class ChatBubble extends StatelessWidget {
               ),
             ],
             borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(isMe ? 16 : 2),
-                topRight: Radius.circular(isMe ? 2 : 16),
-                bottomLeft: const Radius.circular(16),
-                bottomRight: const Radius.circular(16)),
+              topLeft: Radius.circular(isMe ? 16 : 2),
+              topRight: Radius.circular(isMe ? 2 : 16),
+              bottomLeft: const Radius.circular(16),
+              bottomRight: const Radius.circular(16),
+            ),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -158,7 +158,10 @@ class ChatBubble extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
-                        maxWidth: 260, minHeight: 160, minWidth: 220),
+                      maxWidth: 260,
+                      minHeight: 160,
+                      minWidth: 220,
+                    ),
                     child: CachedNetworkImage(
                       imageUrl: message,
                       fit: BoxFit.contain,
@@ -171,8 +174,9 @@ class ChatBubble extends StatelessWidget {
                         height: 160,
                         child: Center(
                           child: CircularProgressIndicator(
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
                           ),
                         ),
                       ),
@@ -181,9 +185,10 @@ class ChatBubble extends StatelessWidget {
                       errorWidget: (_, __, ___) => SizedBox(
                         width: 220,
                         height: 80,
-                        child: Icon(Icons.broken_image,
-                            color:
-                                Theme.of(context).colorScheme.onSurfaceVariant),
+                        child: Icon(
+                          Icons.broken_image,
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ),
                   ),
@@ -192,9 +197,11 @@ class ChatBubble extends StatelessWidget {
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    FaIcon(icon,
-                        size: 20,
-                        color: Theme.of(context).colorScheme.onSurface),
+                    FaIcon(
+                      icon,
+                      size: 20,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                     const SizedBox(width: 10),
                     Flexible(
                       child: Column(
@@ -214,9 +221,9 @@ class ChatBubble extends StatelessWidget {
                           Text(
                             effectiveExt.toUpperCase(),
                             style: TextStyle(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
                               fontSize: 11,
                             ),
                           ),
@@ -230,8 +237,8 @@ class ChatBubble extends StatelessWidget {
                   data: message,
                   styleSheet: createMarkdownStyleSheet(context).copyWith(
                     p: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                   extensionSet: getMarkdownExtensionSet(),
                   builders: getMarkdownColorBuilders(),

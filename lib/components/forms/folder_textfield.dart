@@ -27,8 +27,10 @@ class FolderTextField extends StatelessWidget {
         hintText: hintText,
         hintStyle: const TextStyle(fontSize: 16, height: 1.2),
         isDense: true,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 10,
+          vertical: 12,
+        ),
         helperText: ' ', // Reserve space for error message
       ),
     );

@@ -31,15 +31,9 @@ class ConfirmActionDialog extends StatelessWidget {
         decoration: BoxDecoration(
           color: actionContainerColor.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: actionColor.withAlpha(25),
-          ),
+          border: Border.all(color: actionColor.withAlpha(25)),
         ),
-        child: Icon(
-          icon,
-          size: 32,
-          color: actionColor,
-        ),
+        child: Icon(icon, size: 32, color: actionColor),
       ),
       title: Text(title, textAlign: TextAlign.center),
       content: Text(message, textAlign: TextAlign.center),

@@ -42,12 +42,15 @@ class _TaskDialogState extends State<TaskDialog> {
   @override
   void initState() {
     super.initState();
-    _questionController =
-        TextEditingController(text: widget.existingData?['question'] ?? '');
+    _questionController = TextEditingController(
+      text: widget.existingData?['question'] ?? '',
+    );
     _answerController = TextEditingController(
-        text: widget.existingData?['correctAnswer'] ?? '');
+      text: widget.existingData?['correctAnswer'] ?? '',
+    );
     _answersController = TextEditingController(
-        text: (widget.existingData?['answers'] as List?)?.join(', ') ?? '');
+      text: (widget.existingData?['answers'] as List?)?.join(', ') ?? '',
+    );
     _type = widget.existingData?['type'] ?? 'singleChoice';
   }
 
@@ -70,9 +73,7 @@ class _TaskDialogState extends State<TaskDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -83,10 +84,7 @@ class _TaskDialogState extends State<TaskDialog> {
       title: Text(
         isEditing ? 'Aufgabe bearbeiten' : 'Aufgabe hinzufügen',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -98,9 +96,12 @@ class _TaskDialogState extends State<TaskDialog> {
                   ? _type
                   : AdminConstants.taskTypes.first,
               items: AdminConstants.taskTypes
-                  .map((t) => DropdownMenuItem(
+                  .map(
+                    (t) => DropdownMenuItem(
                       value: t,
-                      child: Text(AdminConstants.taskTypeLabels[t] ?? t)))
+                      child: Text(AdminConstants.taskTypeLabels[t] ?? t),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _type = value);
@@ -122,8 +123,9 @@ class _TaskDialogState extends State<TaskDialog> {
             const SizedBox(height: 12),
             TextField(
               controller: _answersController,
-              decoration:
-                  const InputDecoration(labelText: 'Antworten (kommagetrennt)'),
+              decoration: const InputDecoration(
+                labelText: 'Antworten (kommagetrennt)',
+              ),
               maxLines: 4,
             ),
             const SizedBox(height: 8),
@@ -188,9 +190,9 @@ class _TaskDialogState extends State<TaskDialog> {
                   Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

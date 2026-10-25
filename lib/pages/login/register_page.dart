@@ -55,9 +55,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 decoration: BoxDecoration(
                   color: cs.surfaceContainerHighest.withAlpha(153),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: cs.outline.withAlpha(12),
-                  ),
+                  border: Border.all(color: cs.outline.withAlpha(12)),
                 ),
                 child: Icon(
                   Icons.person_add_alt_1,
@@ -91,8 +89,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: 'Benutzername',
                 obscureText: false,
                 textInputAction: TextInputAction.next,
-                prefixIcon:
-                    Icon(Icons.person_outline, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.person_outline,
+                  color: cs.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -102,8 +102,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 obscureText: false,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
-                prefixIcon:
-                    Icon(Icons.email_outlined, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: cs.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 12),
 
@@ -112,8 +114,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: 'Passwort',
                 obscureText: _obscureText,
                 textInputAction: TextInputAction.next,
-                prefixIcon:
-                    Icon(Icons.lock_outline, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.lock_outline,
+                  color: cs.onSurfaceVariant,
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureText
@@ -135,8 +139,10 @@ class _RegisterPageState extends State<RegisterPage> {
                 hintText: 'Passwort wiederholen',
                 obscureText: _obscureConfirmText,
                 textInputAction: TextInputAction.done,
-                prefixIcon:
-                    Icon(Icons.lock_reset_outlined, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.lock_reset_outlined,
+                  color: cs.onSurfaceVariant,
+                ),
                 suffixIcon: IconButton(
                   icon: Icon(
                     _obscureConfirmText
@@ -154,10 +160,7 @@ class _RegisterPageState extends State<RegisterPage> {
               const SizedBox(height: 32),
 
               // Submit Button
-              SubmitButton(
-                onTap: signUserUp,
-                text: "Registrieren",
-              ),
+              SubmitButton(onTap: signUserUp, text: "Registrieren"),
               const SizedBox(height: 32),
 
               // Login Toggle
@@ -210,11 +213,13 @@ class _RegisterPageState extends State<RegisterPage> {
       builder: (context) {
         return Center(
           child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16)),
-              child: const CircularProgressIndicator()),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const CircularProgressIndicator(),
+          ),
         );
       },
     );
@@ -227,11 +232,11 @@ class _RegisterPageState extends State<RegisterPage> {
         if (mounted) Navigator.of(context).pop();
         if (mounted) showErrorMessage(context, 'Passwörter nicht identisch!');
       } else {
-        UserCredential? userCredential =
-            await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text,
-        );
+        UserCredential? userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text,
+            );
         createUserDocument(userCredential);
 
         if (mounted) Navigator.of(context).pop();
@@ -241,7 +246,9 @@ class _RegisterPageState extends State<RegisterPage> {
       if (e.code == 'weak-password') {
         if (mounted) {
           showErrorMessage(
-              context, 'Passwort muss mindestens 6 Zeichen enthalten!');
+            context,
+            'Passwort muss mindestens 6 Zeichen enthalten!',
+          );
         }
       } else if (e.code == 'channel-error') {
         if (mounted) {
@@ -263,10 +270,10 @@ class _RegisterPageState extends State<RegisterPage> {
           .collection("Users")
           .doc(userCredential.user!.uid)
           .set({
-        'email': userCredential.user!.email,
-        'username': usernameController.text,
-        'uid': userCredential.user!.uid,
-      });
+            'email': userCredential.user!.email,
+            'username': usernameController.text,
+            'uid': userCredential.user!.uid,
+          });
     }
   }
 }

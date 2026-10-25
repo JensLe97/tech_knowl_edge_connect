@@ -27,10 +27,7 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
     p: baseStyle,
     horizontalRuleDecoration: BoxDecoration(
       border: Border(
-        top: BorderSide(
-          width: 1.5,
-          color: theme.colorScheme.outlineVariant,
-        ),
+        top: BorderSide(width: 1.5, color: theme.colorScheme.outlineVariant),
       ),
       borderRadius: BorderRadius.circular(4),
     ),
@@ -57,10 +54,7 @@ MarkdownStyleSheet createMarkdownStyleSheet(BuildContext context) {
       color: theme.colorScheme.surfaceContainerHighest.withAlpha(128),
       borderRadius: BorderRadius.circular(8),
       border: Border(
-        left: BorderSide(
-          color: theme.colorScheme.primary,
-          width: 4,
-        ),
+        left: BorderSide(color: theme.colorScheme.primary, width: 4),
       ),
     ),
     blockquotePadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -114,8 +108,9 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
     TextStyle? parentStyle,
   ) {
     final theme = Theme.of(context);
-    final baseStyle =
-        (preferredStyle ?? theme.textTheme.bodyMedium!).merge(parentStyle);
+    final baseStyle = (preferredStyle ?? theme.textTheme.bodyMedium!).merge(
+      parentStyle,
+    );
     final codeStyle = GoogleFonts.robotoMono(
       textStyle: baseStyle.copyWith(
         fontFamilyFallback: const ['Courier New', 'Courier'],
@@ -138,10 +133,7 @@ class InlineCodeBuilder extends MarkdownElementBuilder {
                 color: theme.colorScheme.surfaceContainerHighest,
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: Text(
-                element.textContent,
-                style: codeStyle,
-              ),
+              child: Text(element.textContent, style: codeStyle),
             ),
           ),
         ],
@@ -203,12 +195,7 @@ class ColorBuilder extends MarkdownElementBuilder {
     // Must use Text.rich with a TextSpan so flutter_markdown's
     // _mergeInlineChildren can extract and merge it with adjacent spans.
     // A plain Text("string") has textSpan == null and breaks the inline flow.
-    return Text.rich(
-      TextSpan(
-        text: parsed.text,
-        style: style,
-      ),
-    );
+    return Text.rich(TextSpan(text: parsed.text, style: style));
   }
 }
 
@@ -237,7 +224,10 @@ _InlineEmphasisResult _parseInlineEmphasis(String input) {
     isBold = true;
     isItalic = true;
     return _InlineEmphasisResult(
-        text: text, isBold: isBold, isItalic: isItalic);
+      text: text,
+      isBold: isBold,
+      isItalic: isItalic,
+    );
   }
 
   final bold = RegExp(r'^\*\*(.+)\*\*$', dotAll: true);
@@ -275,11 +265,8 @@ Map<String, MarkdownElementBuilder> getMarkdownColorBuilders() {
 }
 
 md.ExtensionSet getMarkdownExtensionSet() {
-  return md.ExtensionSet(
-    md.ExtensionSet.gitHubFlavored.blockSyntaxes,
-    [
-      ColorSyntax(),
-      ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
-    ],
-  );
+  return md.ExtensionSet(md.ExtensionSet.gitHubFlavored.blockSyntaxes, [
+    ColorSyntax(),
+    ...md.ExtensionSet.gitHubFlavored.inlineSyntaxes,
+  ]);
 }

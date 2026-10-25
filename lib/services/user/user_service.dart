@@ -15,8 +15,8 @@ class UserService extends ChangeNotifier {
         .collection('Users')
         .doc(_firebaseAuth.currentUser!.uid)
         .update({
-      'blockedUsers': FieldValue.arrayUnion([receiverId]),
-    });
+          'blockedUsers': FieldValue.arrayUnion([receiverId]),
+        });
   }
 
   Stream<List<String>> getCompletedLearningBites() {
@@ -25,12 +25,12 @@ class UserService extends ChangeNotifier {
         .doc(_firebaseAuth.currentUser!.uid)
         .snapshots()
         .map((snapshot) {
-      final data = snapshot.data();
-      if (data == null || !data.containsKey('completedLearningBiteIds')) {
-        return [];
-      }
-      return List<String>.from(data['completedLearningBiteIds']);
-    });
+          final data = snapshot.data();
+          if (data == null || !data.containsKey('completedLearningBiteIds')) {
+            return [];
+          }
+          return List<String>.from(data['completedLearningBiteIds']);
+        });
   }
 
   Future<void> markLearningBiteComplete(String learningBiteId) async {
@@ -50,11 +50,13 @@ class UserService extends ChangeNotifier {
       if (bites.containsKey(learningBiteId)) {
         // update bite progress to completed
         try {
-          await _progressService.updateBiteProgress(uid,
-              unitId: doc.id,
-              biteId: learningBiteId,
-              progress: 100,
-              status: 'completed');
+          await _progressService.updateBiteProgress(
+            uid,
+            unitId: doc.id,
+            biteId: learningBiteId,
+            progress: 100,
+            status: 'completed',
+          );
         } catch (e) {
           if (kDebugMode) {
             print('Failed to update bite progress: $e');
@@ -75,14 +77,16 @@ class UserService extends ChangeNotifier {
           final unitId = path['unitId']!;
           final conceptId = path['conceptId']!;
           try {
-            await _progressService.startOrAttachBite(uid,
-                biteId: learningBiteId,
-                unitId: unitId,
-                subjectId: subjectId,
-                categoryId: categoryId,
-                topicId: topicId,
-                conceptId: conceptId,
-                initialProgress: 100);
+            await _progressService.startOrAttachBite(
+              uid,
+              biteId: learningBiteId,
+              unitId: unitId,
+              subjectId: subjectId,
+              categoryId: categoryId,
+              topicId: topicId,
+              conceptId: conceptId,
+              initialProgress: 100,
+            );
           } catch (e) {
             if (kDebugMode) {
               print('Failed to start or attach bite: $e');
@@ -129,7 +133,8 @@ class UserService extends ChangeNotifier {
                         .doc(targetUnitId)
                         .get();
                     if (sdoc.exists) {
-                      unitTitle = (sdoc.data()?['title'] as String?) ??
+                      unitTitle =
+                          (sdoc.data()?['title'] as String?) ??
                           (sdoc.data()?['goal'] as String?);
                     }
                   } catch (e) {
@@ -141,7 +146,8 @@ class UserService extends ChangeNotifier {
                 // If we weren't able to get a session title, fall back to the
                 // journey's goal/title so we don't create a generic
                 // "Lernreise" document when attaching the bite.
-                unitTitle ??= (jdoc.data()?['goal'] as String?) ??
+                unitTitle ??=
+                    (jdoc.data()?['goal'] as String?) ??
                     (jdoc.data()?['context'] as String?) ??
                     (jdoc.data()?['title'] as String?);
               }
@@ -153,12 +159,14 @@ class UserService extends ChangeNotifier {
 
             // attach to session-level unit when possible
             try {
-              await _progressService.startOrAttachBite(uid,
-                  biteId: learningBiteId,
-                  unitId: targetUnitId,
-                  subjectId: null,
-                  journeyId: journeyId,
-                  initialProgress: 100);
+              await _progressService.startOrAttachBite(
+                uid,
+                biteId: learningBiteId,
+                unitId: targetUnitId,
+                subjectId: null,
+                journeyId: journeyId,
+                initialProgress: 100,
+              );
               attached = true;
               break;
             } catch (e) {
@@ -178,8 +186,11 @@ class UserService extends ChangeNotifier {
     // 4) Last resort: attach to a synthetic unit so HomePage reflects completion.
     if (!attached) {
       try {
-        await _progressService.startOrAttachBite(uid,
-            biteId: learningBiteId, initialProgress: 100);
+        await _progressService.startOrAttachBite(
+          uid,
+          biteId: learningBiteId,
+          initialProgress: 100,
+        );
       } catch (e) {
         if (kDebugMode) {
           print('Failed to attach generic bite progress: $e');
@@ -189,31 +200,36 @@ class UserService extends ChangeNotifier {
 
     // Persist completed id on user doc (keeps existing UI and provider expectations)
     await FirebaseFirestore.instance.collection('Users').doc(uid).set({
-      'completedLearningBiteIds': FieldValue.arrayUnion([learningBiteId])
+      'completedLearningBiteIds': FieldValue.arrayUnion([learningBiteId]),
     }, SetOptions(merge: true));
   }
 
   Future<void> updateResumeStatus(
-      String subjectId,
-      String learningBiteId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId) async {
+    String subjectId,
+    String learningBiteId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+  ) async {
     // store resume pointer (attach into unit doc)
-    await _progressService.setResumePointer(_firebaseAuth.currentUser!.uid,
-        learningBiteId: learningBiteId,
-        subjectId: subjectId,
-        categoryId: categoryId,
-        topicId: topicId,
-        unitId: unitId,
-        conceptId: conceptId);
+    await _progressService.setResumePointer(
+      _firebaseAuth.currentUser!.uid,
+      learningBiteId: learningBiteId,
+      subjectId: subjectId,
+      categoryId: categoryId,
+      topicId: topicId,
+      unitId: unitId,
+      conceptId: conceptId,
+    );
   }
 
   /// Remove the resume pointer for a specific learning bite id.
   Future<void> removeResumeStatus(String learningBiteId) async {
     await _progressService.removeResumePointer(
-        _firebaseAuth.currentUser!.uid, learningBiteId);
+      _firebaseAuth.currentUser!.uid,
+      learningBiteId,
+    );
   }
 
   Future<void> unblockUser(String receiverId) async {
@@ -221,12 +237,17 @@ class UserService extends ChangeNotifier {
         .collection("Users")
         .doc(_firebaseAuth.currentUser!.uid)
         .update({
-      'blockedUsers': FieldValue.arrayRemove([receiverId]),
-    });
+          'blockedUsers': FieldValue.arrayRemove([receiverId]),
+        });
   }
 
-  void reportContent(String contentId, String uid, String type,
-      isLearningMaterialId, ReportReason reason) async {
+  void reportContent(
+    String contentId,
+    String uid,
+    String type,
+    isLearningMaterialId,
+    ReportReason reason,
+  ) async {
     await FirebaseFirestore.instance.collection('reported_content').add({
       'contentId': contentId,
       'uid': uid,

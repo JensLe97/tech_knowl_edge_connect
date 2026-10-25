@@ -31,8 +31,9 @@ class _SubjectDialogState extends State<SubjectDialog> {
   @override
   void initState() {
     super.initState();
-    _nameController =
-        TextEditingController(text: widget.existingData?['name'] ?? '');
+    _nameController = TextEditingController(
+      text: widget.existingData?['name'] ?? '',
+    );
     _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
 
@@ -46,7 +47,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
 
     // Initialize Icon
     final iconMap = widget.existingData?['iconData'] as Map<String, dynamic>?;
-    _selectedIcon = AdminConstants.getIconFromData(iconMap) ??
+    _selectedIcon =
+        AdminConstants.getIconFromData(iconMap) ??
         AdminConstants.availableIcons.values.first;
   }
 
@@ -67,9 +69,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -80,10 +80,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
       title: Text(
         isEditing ? 'Fach bearbeiten' : 'Fach hinzufügen',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -101,9 +98,12 @@ class _SubjectDialogState extends State<SubjectDialog> {
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(
+                  .map(
+                    (s) => DropdownMenuItem(
                       value: s,
-                      child: Text(AdminConstants.statusLabels[s] ?? s)))
+                      child: Text(AdminConstants.statusLabels[s] ?? s),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -120,8 +120,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
               controller: TextEditingController(text: _version.toString()),
             ),
             const SizedBox(height: 16),
-            const Text('Farbe wählen:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Farbe wählen:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 8,
@@ -140,7 +142,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
                       border: isSelected
                           ? Border.all(
                               color: Theme.of(context).colorScheme.onSurface,
-                              width: 2)
+                              width: 2,
+                            )
                           : null,
                     ),
                   ),
@@ -148,8 +151,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
               }).toList(),
             ),
             const SizedBox(height: 16),
-            const Text('Icon wählen:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Icon wählen:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 12,
@@ -168,13 +173,16 @@ class _SubjectDialogState extends State<SubjectDialog> {
                       borderRadius: BorderRadius.circular(8),
                       border: isSelected
                           ? Border.all(
-                              color: Theme.of(context).colorScheme.primary)
+                              color: Theme.of(context).colorScheme.primary,
+                            )
                           : Border.all(color: Colors.grey.shade300),
                     ),
-                    child: Icon(entry.value,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : null),
+                    child: Icon(
+                      entry.value,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                    ),
                   ),
                 );
               }).toList(),
@@ -229,9 +237,9 @@ class _SubjectDialogState extends State<SubjectDialog> {
                   Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

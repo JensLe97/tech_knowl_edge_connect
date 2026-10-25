@@ -13,9 +13,7 @@ Future<void> showInfoMessage(BuildContext context, String message) {
         elevation: 0,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
-          side: BorderSide(
-            color: cs.outlineVariant.withAlpha(76),
-          ),
+          side: BorderSide(color: cs.outlineVariant.withAlpha(76)),
         ),
         titlePadding: const EdgeInsets.fromLTRB(24, 32, 24, 0),
         contentPadding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
@@ -27,9 +25,7 @@ Future<void> showInfoMessage(BuildContext context, String message) {
               decoration: BoxDecoration(
                 color: cs.primaryContainer.withAlpha(76),
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: cs.primary.withAlpha(25),
-                ),
+                border: Border.all(color: cs.primary.withAlpha(25)),
               ),
               child: Icon(
                 Icons.check_circle_outline,
@@ -51,9 +47,7 @@ Future<void> showInfoMessage(BuildContext context, String message) {
         content: Text(
           message,
           textAlign: TextAlign.center,
-          style: textTheme.bodyLarge?.copyWith(
-            color: cs.onSurfaceVariant,
-          ),
+          style: textTheme.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
         ),
         actions: [
           SizedBox(
@@ -69,8 +63,10 @@ Future<void> showInfoMessage(BuildContext context, String message) {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 elevation: 0,
               ),
-              child: const Text('Verstanden',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              child: const Text(
+                'Verstanden',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ),
         ],

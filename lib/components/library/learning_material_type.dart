@@ -24,7 +24,7 @@ class LearningMaterialType {
     'png',
     'gif',
     'bmp',
-    'webp'
+    'webp',
   ];
   static const List<String> videoTypes = ['mp4', 'mov', 'webm', 'mkv'];
 

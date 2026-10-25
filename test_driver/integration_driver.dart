@@ -13,19 +13,23 @@ import 'package:integration_test/integration_test_driver_extended.dart';
 //  --target=integration_test/app_test.dart -d emulator-5554
 Future<void> main() async {
   await integrationDriver(
-    onScreenshot: (String screenshotName, List<int> screenshotBytes,
-        [Map<String, Object?>? args]) async {
-      // Create a "screenshots" directory at the root of your project
-      final File image = File('screenshots/$screenshotName.png');
+    onScreenshot:
+        (
+          String screenshotName,
+          List<int> screenshotBytes, [
+          Map<String, Object?>? args,
+        ]) async {
+          // Create a "screenshots" directory at the root of your project
+          final File image = File('screenshots/$screenshotName.png');
 
-      // Ensure the directory exists
-      image.parent.createSync(recursive: true);
+          // Ensure the directory exists
+          image.parent.createSync(recursive: true);
 
-      // Write the image bytes to your computer
-      image.writeAsBytesSync(screenshotBytes);
+          // Write the image bytes to your computer
+          image.writeAsBytesSync(screenshotBytes);
 
-      // Return true to indicate the screenshot was successfully processed
-      return true;
-    },
+          // Return true to indicate the screenshot was successfully processed
+          return true;
+        },
   );
 }

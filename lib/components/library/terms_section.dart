@@ -53,9 +53,7 @@ class TermsAndConditions extends StatelessWidget {
               child: Text("AGB", style: linkStyle),
             ),
           ),
-          const TextSpan(
-            text: "und",
-          ),
+          const TextSpan(text: "und"),
           WidgetSpan(
             alignment: PlaceholderAlignment.middle,
             child: TextButton(
@@ -64,9 +62,7 @@ class TermsAndConditions extends StatelessWidget {
               child: Text("Datenschutzbestimmungen", style: linkStyle),
             ),
           ),
-          const TextSpan(
-            text: "gelesen und akzeptiert hast.",
-          ),
+          const TextSpan(text: "gelesen und akzeptiert hast."),
         ],
       ),
       textAlign: TextAlign.center,

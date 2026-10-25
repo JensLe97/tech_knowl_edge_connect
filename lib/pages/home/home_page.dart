@@ -31,8 +31,9 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final ContentService _contentService = ContentService();
   final ProgressService _progressService = ProgressService();
-  late final AiTechOrchestrator _orchestrator =
-      AiTechOrchestrator(AiTechService());
+  late final AiTechOrchestrator _orchestrator = AiTechOrchestrator(
+    AiTechService(),
+  );
   final AiTechService _aiTechService = AiTechService();
 
   User? _user = FirebaseAuth.instance.currentUser;
@@ -84,11 +85,14 @@ class _HomePageState extends State<HomePage> {
         .collection('Users')
         .doc(uid)
         .snapshots()
-        .listen((doc) {
-      _safeSetState(() => _userData = doc.data());
-    }, onError: (_) {
-      _safeSetState(() => _userData = null);
-    });
+        .listen(
+          (doc) {
+            _safeSetState(() => _userData = doc.data());
+          },
+          onError: (_) {
+            _safeSetState(() => _userData = null);
+          },
+        );
   }
 
   void _subscribeUnits() {
@@ -102,14 +106,19 @@ class _HomePageState extends State<HomePage> {
       return;
     }
     _safeSetState(() => _isLoadingUnits = true);
-    _unitsSub = _progressService.subscribeUserUnits(uid).listen((list) {
-      _safeSetState(() {
-        _units = list;
-        _isLoadingUnits = false;
-      });
-    }, onError: (_) {
-      _safeSetState(() => _isLoadingUnits = false);
-    });
+    _unitsSub = _progressService
+        .subscribeUserUnits(uid)
+        .listen(
+          (list) {
+            _safeSetState(() {
+              _units = list;
+              _isLoadingUnits = false;
+            });
+          },
+          onError: (_) {
+            _safeSetState(() => _isLoadingUnits = false);
+          },
+        );
   }
 
   @override
@@ -128,22 +137,27 @@ class _HomePageState extends State<HomePage> {
     if (unit.subjectId.isEmpty) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Einheiten-Übersicht nicht verfügbar')));
+        const SnackBar(content: Text('Einheiten-Übersicht nicht verfügbar')),
+      );
       return;
     }
     try {
       final q = await FirebaseFirestore.instance.collectionGroup('units').get();
-      final d = q.docs.firstWhere((doc) => doc.id == unit.unitId,
-          orElse: () =>
-              throw Exception('Unit document not found for id ${unit.unitId}'));
-      final path = d.reference
+      final d = q.docs.firstWhere(
+        (doc) => doc.id == unit.unitId,
+        orElse: () =>
+            throw Exception('Unit document not found for id ${unit.unitId}'),
+      );
+      final path = d
+          .reference
           .path; // content_subjects/{subject}/categories/{cat}/topics/{topic}/units/{unitId}
       final segments = path.split('/');
       final idx = segments.indexOf('content_subjects');
       if (idx == -1 || segments.length <= idx + 6) {
         if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Einheiten-Übersicht nicht verfügbar')));
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Einheiten-Übersicht nicht verfügbar')),
+        );
         return;
       }
       final subjectId = segments[idx + 1];
@@ -152,26 +166,33 @@ class _HomePageState extends State<HomePage> {
       final unitModel = Unit.fromMap(d.data(), d.id);
       if (!mounted) return;
       Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (_) => UnitOverviewPage(
-                  subjectId: subjectId,
-                  categoryId: categoryId,
-                  topicId: topicId,
-                  unit: unitModel)));
+        context,
+        MaterialPageRoute(
+          builder: (_) => UnitOverviewPage(
+            subjectId: subjectId,
+            categoryId: categoryId,
+            topicId: topicId,
+            unit: unitModel,
+          ),
+        ),
+      );
     } catch (e) {
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Einheiten-Übersicht nicht verfügbar')));
+        const SnackBar(content: Text('Einheiten-Übersicht nicht verfügbar')),
+      );
     }
   }
 
   Future<void> _openBiteFromUnit(
-      UnitProgress unit, UnitBiteProgress bite) async {
+    UnitProgress unit,
+    UnitBiteProgress bite,
+  ) async {
     try {
       showDialog(
-          context: context,
-          builder: (_) => const Center(child: CircularProgressIndicator()));
+        context: context,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
       final path = await _contentService.findLearningBitePath(bite.biteId);
       if (path == null) {
         final genDoc = await FirebaseFirestore.instance
@@ -184,15 +205,18 @@ class _HomePageState extends State<HomePage> {
               .collection('tasks')
               .orderBy('createdAt')
               .get();
-          final genTasks =
-              taskDocs.docs.map((d) => Task.fromMap(d.data(), d.id)).toList();
+          final genTasks = taskDocs.docs
+              .map((d) => Task.fromMap(d.data(), d.id))
+              .toList();
           if (!mounted) return;
           Navigator.pop(context);
           final result = await Navigator.push<LearningBiteResult>(
-              context,
-              MaterialPageRoute(
-                  builder: (_) =>
-                      LearningBitePage(learningBite: lb, tasks: genTasks)));
+            context,
+            MaterialPageRoute(
+              builder: (_) =>
+                  LearningBitePage(learningBite: lb, tasks: genTasks),
+            ),
+          );
           if (result != null && result.completed) {
             try {
               await UserService().markLearningBiteComplete(bite.biteId);
@@ -226,8 +250,9 @@ class _HomePageState extends State<HomePage> {
                 .collection('tasks')
                 .orderBy('createdAt')
                 .get();
-            final genTasks =
-                taskDocs.docs.map((d) => Task.fromMap(d.data(), d.id)).toList();
+            final genTasks = taskDocs.docs
+                .map((d) => Task.fromMap(d.data(), d.id))
+                .toList();
             if (!mounted) return;
             Navigator.pop(context);
             // Ensure resumeProgress exists for this journey bite so
@@ -237,20 +262,24 @@ class _HomePageState extends State<HomePage> {
                 journeyDoc.reference.parent.parent?.id ?? unit.unitId;
             if (userId != null) {
               try {
-                await _progressService.startOrAttachBite(userId,
-                    biteId: lb.id,
-                    unitId: unit.unitId,
-                    subjectId: null,
-                    journeyId: resolvedJourneyId,
-                    initialProgress: 0);
+                await _progressService.startOrAttachBite(
+                  userId,
+                  biteId: lb.id,
+                  unitId: unit.unitId,
+                  subjectId: null,
+                  journeyId: resolvedJourneyId,
+                  initialProgress: 0,
+                );
               } catch (_) {}
             }
             if (!mounted) return;
             final result = await Navigator.push<LearningBiteResult>(
-                context,
-                MaterialPageRoute(
-                    builder: (_) =>
-                        LearningBitePage(learningBite: lb, tasks: genTasks)));
+              context,
+              MaterialPageRoute(
+                builder: (_) =>
+                    LearningBitePage(learningBite: lb, tasks: genTasks),
+              ),
+            );
             if (result != null && result.completed) {
               try {
                 await _handlePostCompletionForContent(
@@ -271,73 +300,84 @@ class _HomePageState extends State<HomePage> {
         } catch (_) {}
         if (!mounted) return;
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Inhalt nicht gefunden')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Inhalt nicht gefunden')));
         return;
       }
 
       final learningBite = await _contentService.getLearningBite(
-          path['subjectId']!,
-          path['categoryId']!,
-          path['topicId']!,
-          path['unitId']!,
-          path['conceptId']!,
-          path['learningBiteId']!);
+        path['subjectId']!,
+        path['categoryId']!,
+        path['topicId']!,
+        path['unitId']!,
+        path['conceptId']!,
+        path['learningBiteId']!,
+      );
       final tasks = await _contentService.getTasks(
-          path['subjectId']!,
-          path['categoryId']!,
-          path['topicId']!,
-          path['unitId']!,
-          path['conceptId']!,
-          path['learningBiteId']!);
+        path['subjectId']!,
+        path['categoryId']!,
+        path['topicId']!,
+        path['unitId']!,
+        path['conceptId']!,
+        path['learningBiteId']!,
+      );
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
         try {
           await _contentService.startLearningBiteForUser(
-              userId: userId,
-              subjectId: path['subjectId']!,
-              categoryId: path['categoryId']!,
-              topicId: path['topicId']!,
-              unitId: path['unitId']!,
-              conceptId: path['conceptId']!,
-              learningBiteId: path['learningBiteId']!);
+            userId: userId,
+            subjectId: path['subjectId']!,
+            categoryId: path['categoryId']!,
+            topicId: path['topicId']!,
+            unitId: path['unitId']!,
+            conceptId: path['conceptId']!,
+            learningBiteId: path['learningBiteId']!,
+          );
         } catch (_) {}
       }
       if (!mounted) return;
       Navigator.pop(context);
       final result = await Navigator.push<LearningBiteResult>(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  LearningBitePage(learningBite: learningBite, tasks: tasks)));
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              LearningBitePage(learningBite: learningBite, tasks: tasks),
+        ),
+      );
       if (result != null && result.completed) {
         try {
           await _handlePostCompletionForContent(
-              path['subjectId']!,
-              path['categoryId']!,
-              path['topicId']!,
-              path['unitId']!,
-              path['conceptId']!,
-              path['learningBiteId']!,
-              points: result.points,
-              maxPoints: result.maxPoints);
+            path['subjectId']!,
+            path['categoryId']!,
+            path['topicId']!,
+            path['unitId']!,
+            path['conceptId']!,
+            path['learningBiteId']!,
+            points: result.points,
+            maxPoints: result.maxPoints,
+          );
         } catch (_) {}
       }
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
     }
   }
 
   Future<void> _openAiTechJourneyLearningBite(
-      UnitProgress unit, String learningBiteId,
-      {String? journeyId}) async {
+    UnitProgress unit,
+    String learningBiteId, {
+    String? journeyId,
+  }) async {
     try {
       showDialog(
-          context: context,
-          builder: (_) => const Center(child: CircularProgressIndicator()));
+        context: context,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
       final resolvedJourneyId = journeyId ?? unit.unitId;
       final docRef = FirebaseFirestore.instance
           .collection('ai_tech_journeys')
@@ -358,8 +398,10 @@ class _HomePageState extends State<HomePage> {
             if (fallbackSnap.exists) {
               if (!mounted) return;
               Navigator.pop(context);
-              final lb =
-                  LearningBite.fromMap(fallbackSnap.data()!, fallbackSnap.id);
+              final lb = LearningBite.fromMap(
+                fallbackSnap.data()!,
+                fallbackSnap.id,
+              );
               final taskDocs = await fallbackRef
                   .collection('tasks')
                   .orderBy('createdAt')
@@ -372,20 +414,24 @@ class _HomePageState extends State<HomePage> {
               final userId = FirebaseAuth.instance.currentUser?.uid;
               if (userId != null) {
                 try {
-                  await _progressService.startOrAttachBite(userId,
-                      biteId: lb.id,
-                      unitId: unit.unitId,
-                      subjectId: null,
-                      journeyId: unit.unitId,
-                      initialProgress: 0);
+                  await _progressService.startOrAttachBite(
+                    userId,
+                    biteId: lb.id,
+                    unitId: unit.unitId,
+                    subjectId: null,
+                    journeyId: unit.unitId,
+                    initialProgress: 0,
+                  );
                 } catch (_) {}
               }
               if (!mounted) return;
               final result = await Navigator.push<LearningBiteResult>(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          LearningBitePage(learningBite: lb, tasks: tasks)));
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      LearningBitePage(learningBite: lb, tasks: tasks),
+                ),
+              );
               if (result != null && result.completed) {
                 try {
                   await _handlePostCompletionForContent(
@@ -407,35 +453,42 @@ class _HomePageState extends State<HomePage> {
         }
         if (!mounted) return;
         Navigator.pop(context);
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Inhalt nicht gefunden')));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Inhalt nicht gefunden')));
         return;
       }
       final lb = LearningBite.fromMap(snap.data()!, snap.id);
-      final taskDocs =
-          await docRef.collection('tasks').orderBy('createdAt').get();
-      final tasks =
-          taskDocs.docs.map((d) => Task.fromMap(d.data(), d.id)).toList();
+      final taskDocs = await docRef
+          .collection('tasks')
+          .orderBy('createdAt')
+          .get();
+      final tasks = taskDocs.docs
+          .map((d) => Task.fromMap(d.data(), d.id))
+          .toList();
       if (!mounted) return;
       Navigator.pop(context);
       // Ensure resumeProgress exists so completion updates the unit state
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
         try {
-          await _progressService.startOrAttachBite(userId,
-              biteId: lb.id,
-              unitId: unit.unitId,
-              subjectId: null,
-              journeyId: resolvedJourneyId,
-              initialProgress: 0);
+          await _progressService.startOrAttachBite(
+            userId,
+            biteId: lb.id,
+            unitId: unit.unitId,
+            subjectId: null,
+            journeyId: resolvedJourneyId,
+            initialProgress: 0,
+          );
         } catch (_) {}
       }
       if (!mounted) return;
       final result = await Navigator.push<LearningBiteResult>(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  LearningBitePage(learningBite: lb, tasks: tasks)));
+        context,
+        MaterialPageRoute(
+          builder: (_) => LearningBitePage(learningBite: lb, tasks: tasks),
+        ),
+      );
       if (result != null && result.completed) {
         try {
           await _handlePostCompletionForContent(
@@ -454,82 +507,111 @@ class _HomePageState extends State<HomePage> {
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
     }
   }
 
   Future<void> _openLearningBitePath(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      String learningBiteId) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    String learningBiteId,
+  ) async {
     try {
       showDialog(
-          context: context,
-          builder: (_) => const Center(child: CircularProgressIndicator()));
+        context: context,
+        builder: (_) => const Center(child: CircularProgressIndicator()),
+      );
       final learningBite = await _contentService.getLearningBite(
-          subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
+        subjectId,
+        categoryId,
+        topicId,
+        unitId,
+        conceptId,
+        learningBiteId,
+      );
       final tasks = await _contentService.getTasks(
-          subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
+        subjectId,
+        categoryId,
+        topicId,
+        unitId,
+        conceptId,
+        learningBiteId,
+      );
       final userId = FirebaseAuth.instance.currentUser?.uid;
       if (userId != null) {
         try {
           await _contentService.startLearningBiteForUser(
-              userId: userId,
-              subjectId: subjectId,
-              categoryId: categoryId,
-              topicId: topicId,
-              unitId: unitId,
-              conceptId: conceptId,
-              learningBiteId: learningBiteId);
+            userId: userId,
+            subjectId: subjectId,
+            categoryId: categoryId,
+            topicId: topicId,
+            unitId: unitId,
+            conceptId: conceptId,
+            learningBiteId: learningBiteId,
+          );
         } catch (_) {}
       }
       if (!mounted) return;
       Navigator.pop(context);
       final result = await Navigator.push<LearningBiteResult>(
-          context,
-          MaterialPageRoute(
-              builder: (_) =>
-                  LearningBitePage(learningBite: learningBite, tasks: tasks)));
+        context,
+        MaterialPageRoute(
+          builder: (_) =>
+              LearningBitePage(learningBite: learningBite, tasks: tasks),
+        ),
+      );
       if (result != null && result.completed) {
         try {
           await _handlePostCompletionForContent(
-              subjectId, categoryId, topicId, unitId, conceptId, learningBiteId,
-              points: result.points, maxPoints: result.maxPoints);
+            subjectId,
+            categoryId,
+            topicId,
+            unitId,
+            conceptId,
+            learningBiteId,
+            points: result.points,
+            maxPoints: result.maxPoints,
+          );
         } catch (_) {}
       }
     } catch (e) {
       if (!mounted) return;
       Navigator.pop(context);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Fehler beim Laden: $e')));
     }
   }
 
   Future<void> _handlePostCompletionForContent(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      String learningBiteId,
-      {String? journeyId,
-      int points = 0,
-      int maxPoints = 0}) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    String learningBiteId, {
+    String? journeyId,
+    int points = 0,
+    int maxPoints = 0,
+  }) async {
     final uid = FirebaseAuth.instance.currentUser?.uid;
     if (uid == null) return;
 
     // snapshot user's completed ids before marking to detect transition
-    final userDoc =
-        await FirebaseFirestore.instance.collection('Users').doc(uid).get();
+    final userDoc = await FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .get();
     final beforeCompleted =
         (userDoc.data()?['completedLearningBiteIds'] as List<dynamic>?)
-                ?.map((e) => e.toString())
-                .toList() ??
-            <String>[];
+            ?.map((e) => e.toString())
+            .toList() ??
+        <String>[];
 
     // fetch all bites in this concept or journey
     List<LearningBite> learningBites = [];
@@ -548,7 +630,8 @@ class _HomePageState extends State<HomePage> {
               id: d.id,
               name: d.data()['title'] ?? '',
               type: d.data()['type'] ?? 'text',
-              content: (d.data()['content'] as List<dynamic>?)
+              content:
+                  (d.data()['content'] as List<dynamic>?)
                       ?.map((e) => e.toString())
                       .toList() ??
                   [],
@@ -574,13 +657,15 @@ class _HomePageState extends State<HomePage> {
     // Save score into resumeProgress so FeedbackAgent can read points/maxPoints.
     if (journeyId != null && (points > 0 || maxPoints > 0)) {
       try {
-        await _progressService.updateBiteProgress(uid,
-            unitId: unitId,
-            biteId: learningBiteId,
-            progress: 100,
-            status: 'completed',
-            points: points,
-            maxPoints: maxPoints);
+        await _progressService.updateBiteProgress(
+          uid,
+          unitId: unitId,
+          biteId: learningBiteId,
+          progress: 100,
+          status: 'completed',
+          points: points,
+          maxPoints: maxPoints,
+        );
       } catch (_) {}
     }
 
@@ -619,14 +704,15 @@ class _HomePageState extends State<HomePage> {
               ? 0
               : (biteValues.reduce((a, b) => a + b) / denom).round();
           final updatedUnit = UnitProgress(
-              unitId: unit.unitId,
-              subjectId: unit.subjectId,
-              source: unit.source,
-              status: agg >= 100 ? 'completed' : 'in_progress',
-              progress: agg,
-              expectedBiteCount: unit.expectedBiteCount,
-              bites: bitesMap,
-              lastUpdated: Timestamp.now());
+            unitId: unit.unitId,
+            subjectId: unit.subjectId,
+            source: unit.source,
+            status: agg >= 100 ? 'completed' : 'in_progress',
+            progress: agg,
+            expectedBiteCount: unit.expectedBiteCount,
+            bites: bitesMap,
+            lastUpdated: Timestamp.now(),
+          );
           _units[uidx] = updatedUnit;
         }
       });
@@ -640,15 +726,23 @@ class _HomePageState extends State<HomePage> {
           final nextLB = learningBites[idx + 1];
           try {
             if (journeyId != null) {
-              await _progressService.startOrAttachBite(uid,
-                  biteId: nextLB.id,
-                  unitId: unitId,
-                  subjectId: null,
-                  journeyId: journeyId,
-                  initialProgress: 0);
+              await _progressService.startOrAttachBite(
+                uid,
+                biteId: nextLB.id,
+                unitId: unitId,
+                subjectId: null,
+                journeyId: journeyId,
+                initialProgress: 0,
+              );
             } else {
               await UserService().updateResumeStatus(
-                  subjectId, nextLB.id, categoryId, topicId, unitId, conceptId);
+                subjectId,
+                nextLB.id,
+                categoryId,
+                topicId,
+                unitId,
+                conceptId,
+              );
             }
           } catch (_) {}
         } else {
@@ -662,7 +756,8 @@ class _HomePageState extends State<HomePage> {
     // determine if all bites are completed now (treat current as completed)
     final allCompleted = learningBites.isNotEmpty
         ? learningBites.every(
-            (lb) => lb.id == learningBiteId || beforeCompleted.contains(lb.id))
+            (lb) => lb.id == learningBiteId || beforeCompleted.contains(lb.id),
+          )
         : false;
 
     if (allCompleted && !allCompletedBefore) {
@@ -674,7 +769,8 @@ class _HomePageState extends State<HomePage> {
               .collection('ai_tech_journeys')
               .doc(journeyId)
               .get();
-          conceptName = (journeyDoc.data()?['goal'] as String?) ??
+          conceptName =
+              (journeyDoc.data()?['goal'] as String?) ??
               (journeyDoc.data()?['title'] as String?) ??
               'Lernreise';
 
@@ -713,7 +809,9 @@ class _HomePageState extends State<HomePage> {
       showDialog(
         context: context,
         builder: (context) => CompletionDialog(
-            conceptName: conceptName, isJourney: journeyId != null),
+          conceptName: conceptName,
+          isJourney: journeyId != null,
+        ),
       );
     }
   }
@@ -724,73 +822,93 @@ class _HomePageState extends State<HomePage> {
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            HomeGreetingHeader(
-              username: _userData?['username'],
-              isLoading: _userData == null && _user != null,
-            ),
-            const SizedBox(height: 24),
-            if (_isLoadingUnits)
-              const Padding(
-                padding: EdgeInsets.only(top: 32.0),
-                child: Center(child: CircularProgressIndicator()),
-              )
-            else if (_units.isNotEmpty) ...[
-              const Text('In Bearbeitung',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w900,
-                  )),
-              const SizedBox(height: 12),
-              ListView.builder(
-                physics: const NeverScrollableScrollPhysics(),
-                shrinkWrap: true,
-                itemCount: _units.length,
-                itemBuilder: (context, idx) {
-                  final unit = _units[idx];
-                  return StreamBuilder<String>(
-                    stream: _aiTechService.streamUnitTitle(
-                        unitId: unit.unitId, subjectId: unit.subjectId),
-                    builder: (ctx, titleSnap) {
-                      final title =
-                          (titleSnap.data != null && titleSnap.data!.isNotEmpty)
-                              ? titleSnap.data!
-                              : null;
-                      return UnitProgressCard(
-                        unit: unit,
-                        unitTitle: title,
-                        subjectColor: _subjectColors[unit.subjectId],
-                        onOpenUnit: () => _openUnitOverview(unit),
-                        onOpenAiSession: () async {
-                          if (!mounted) return;
-                          final navigator = Navigator.of(context);
-                          navigator.push(MaterialPageRoute(
-                              builder: (_) => AiTechPage(
-                                  sessionId: unit.unitId,
-                                  sessionTitle: title)));
-                        },
-                        onBiteTap: _openBiteFromUnit,
-                        onJourneyBiteTap: (u, lb, {required journeyId}) =>
-                            _openAiTechJourneyLearningBite(u, lb.id,
-                                journeyId: journeyId),
-                        onContentBiteTap: (u, lb,
-                                {required categoryId,
-                                required topicId,
-                                required conceptId}) =>
-                            _openLearningBitePath(u.subjectId, categoryId,
-                                topicId, u.unitId, conceptId, lb.id),
-                      );
-                    },
-                  );
-                },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              HomeGreetingHeader(
+                username: _userData?['username'],
+                isLoading: _userData == null && _user != null,
               ),
-            ] else ...[
-              const SizedBox(height: 12),
-              const HomeEmptyState(),
+              const SizedBox(height: 24),
+              if (_isLoadingUnits)
+                const Padding(
+                  padding: EdgeInsets.only(top: 32.0),
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (_units.isNotEmpty) ...[
+                const Text(
+                  'In Bearbeitung',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w900),
+                ),
+                const SizedBox(height: 12),
+                ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: _units.length,
+                  itemBuilder: (context, idx) {
+                    final unit = _units[idx];
+                    return StreamBuilder<String>(
+                      stream: _aiTechService.streamUnitTitle(
+                        unitId: unit.unitId,
+                        subjectId: unit.subjectId,
+                      ),
+                      builder: (ctx, titleSnap) {
+                        final title =
+                            (titleSnap.data != null &&
+                                titleSnap.data!.isNotEmpty)
+                            ? titleSnap.data!
+                            : null;
+                        return UnitProgressCard(
+                          unit: unit,
+                          unitTitle: title,
+                          subjectColor: _subjectColors[unit.subjectId],
+                          onOpenUnit: () => _openUnitOverview(unit),
+                          onOpenAiSession: () async {
+                            if (!mounted) return;
+                            final navigator = Navigator.of(context);
+                            navigator.push(
+                              MaterialPageRoute(
+                                builder: (_) => AiTechPage(
+                                  sessionId: unit.unitId,
+                                  sessionTitle: title,
+                                ),
+                              ),
+                            );
+                          },
+                          onBiteTap: _openBiteFromUnit,
+                          onJourneyBiteTap: (u, lb, {required journeyId}) =>
+                              _openAiTechJourneyLearningBite(
+                                u,
+                                lb.id,
+                                journeyId: journeyId,
+                              ),
+                          onContentBiteTap:
+                              (
+                                u,
+                                lb, {
+                                required categoryId,
+                                required topicId,
+                                required conceptId,
+                              }) => _openLearningBitePath(
+                                u.subjectId,
+                                categoryId,
+                                topicId,
+                                u.unitId,
+                                conceptId,
+                                lb.id,
+                              ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ] else ...[
+                const SizedBox(height: 12),
+                const HomeEmptyState(),
+              ],
+              const SizedBox(height: 16),
             ],
-            const SizedBox(height: 16),
-          ]),
+          ),
         ),
       ),
     );

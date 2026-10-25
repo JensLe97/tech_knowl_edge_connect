@@ -96,10 +96,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
         widget.topicId,
         widget.unitId,
         widget.concept!.id,
-        {
-          'name': nameController.text,
-          'status': status,
-        },
+        {'name': nameController.text, 'status': status},
       );
     }
     if (mounted) Navigator.pop(context);
@@ -116,9 +113,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -129,10 +124,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
       title: Text(
         isEditing ? "Konzept bearbeiten" : "Neues Konzept erstellen",
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -151,8 +143,10 @@ class _ConceptDialogState extends State<ConceptDialog> {
           if (isEditing) ...[
             Row(
               children: [
-                const Text("Status: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  "Status: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(width: 8),
                 StatusPill(status: _currentStatus),
               ],

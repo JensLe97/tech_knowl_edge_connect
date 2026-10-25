@@ -24,10 +24,9 @@ class IdeaFolderService {
         .where('folderId', isEqualTo: folderId)
         .get();
     for (final doc in materialsSnapshot.docs) {
-      await _firestore
-          .collection('learningMaterials')
-          .doc(doc.id)
-          .update({'isPublic': isPublic});
+      await _firestore.collection('learningMaterials').doc(doc.id).update({
+        'isPublic': isPublic,
+      });
     }
   }
 
@@ -43,9 +42,7 @@ class IdeaFolderService {
         .set(folder.toMap());
   }
 
-  Future<List<IdeaFolder>> getFolders({
-    required String userId,
-  }) async {
+  Future<List<IdeaFolder>> getFolders({required String userId}) async {
     final snapshot = await _firestore
         .collection('Users')
         .doc(userId)
@@ -53,15 +50,17 @@ class IdeaFolderService {
         .orderBy('timestamp', descending: true)
         .get();
     return snapshot.docs
-        .map((doc) => IdeaFolder(
-              id: doc['id'] ?? doc.id,
-              name: doc['name'],
-              description: doc['description'],
-              ideaPostIds: List<String>.from(doc['ideaPostIds'] ?? []),
-              timestamp: doc['timestamp'],
-              userId: doc['userId'],
-              isPublic: doc['isPublic'] ?? true,
-            ))
+        .map(
+          (doc) => IdeaFolder(
+            id: doc['id'] ?? doc.id,
+            name: doc['name'],
+            description: doc['description'],
+            ideaPostIds: List<String>.from(doc['ideaPostIds'] ?? []),
+            timestamp: doc['timestamp'],
+            userId: doc['userId'],
+            isPublic: doc['isPublic'] ?? true,
+          ),
+        )
         .toList();
   }
 }

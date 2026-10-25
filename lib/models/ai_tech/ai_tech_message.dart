@@ -19,24 +19,24 @@ class AiTechMessage {
   });
 
   Map<String, dynamic> toMap() => {
-        'role': role,
-        'text': text,
-        'ts': ts,
-        'type': type,
-        'journeyId': journeyId,
-        'meta': meta,
-      };
+    'role': role,
+    'text': text,
+    'ts': ts,
+    'type': type,
+    'journeyId': journeyId,
+    'meta': meta,
+  };
 
   factory AiTechMessage.fromMap(Map<String, dynamic> map) => AiTechMessage(
-        role: (map['role'] ?? 'user').toString(),
-        text: (map['text'] ?? '').toString(),
-        ts: map['ts'] is Timestamp
-            ? (map['ts'] as Timestamp).toDate()
-            : (map['ts'] is DateTime
-                ? map['ts'] as DateTime
-                : DateTime.fromMillisecondsSinceEpoch(0)),
-        type: map['type'] ?? 'default',
-        journeyId: map['journeyId'] ?? '',
-        meta: map['meta'],
-      );
+    role: (map['role'] ?? 'user').toString(),
+    text: (map['text'] ?? '').toString(),
+    ts: map['ts'] is Timestamp
+        ? (map['ts'] as Timestamp).toDate()
+        : (map['ts'] is DateTime
+              ? map['ts'] as DateTime
+              : DateTime.fromMillisecondsSinceEpoch(0)),
+    type: map['type'] ?? 'default',
+    journeyId: map['journeyId'] ?? '',
+    meta: map['meta'],
+  );
 }

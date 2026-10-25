@@ -21,17 +21,20 @@ class LearningJourneyAgent extends BaseAgent {
     required List<Part> fileParts,
     required List<LearningBite> learningBites,
   }) async {
-    final biteTaskPairs = await Future.wait(learningBites.map((bite) async {
-      final tasks = await aiTechGenService.generateLearningBiteTasks(
-        additionalText:
-            bite.content.isNotEmpty ? bite.content.join('\n') : bite.name,
-        biteTitle: bite.name,
-        subject: subject,
-        fileParts: fileParts,
-        useGoogleSearchTool: true,
-      );
-      return {'bite': bite, 'tasks': tasks};
-    }));
+    final biteTaskPairs = await Future.wait(
+      learningBites.map((bite) async {
+        final tasks = await aiTechGenService.generateLearningBiteTasks(
+          additionalText: bite.content.isNotEmpty
+              ? bite.content.join('\n')
+              : bite.name,
+          biteTitle: bite.name,
+          subject: subject,
+          fileParts: fileParts,
+          useGoogleSearchTool: true,
+        );
+        return {'bite': bite, 'tasks': tasks};
+      }),
+    );
 
     for (final pair in biteTaskPairs) {
       final bite = pair['bite'] as LearningBite;
@@ -244,8 +247,9 @@ Nutzer-Nachricht: "$userMessage"
     final completedLine = upcomingTasks != null && upcomingTasks.isNotEmpty
         ? '\nAbgeschlossene Konzepte: ${upcomingTasks.join(", ")}'
         : '';
-    final feedbackLine =
-        feedback != null && feedback.isNotEmpty ? '\nKontext: $feedback' : '';
+    final feedbackLine = feedback != null && feedback.isNotEmpty
+        ? '\nKontext: $feedback'
+        : '';
 
     return '''
 Du bist ein Lernreise-Planer für eine Bildungs-App.

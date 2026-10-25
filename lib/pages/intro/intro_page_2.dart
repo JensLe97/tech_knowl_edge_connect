@@ -15,12 +15,11 @@ class _IntroPage2State extends State<IntroPage2> {
   Widget build(BuildContext context) {
     return OnboardingSlide(
       image: kIsWeb
-          ? SizedBox(
-              height: 400,
-              child: Image.asset('images/knowledge.png'),
-            )
-          : Lottie.asset('images/animations/knowledge_animation.json',
-              fit: BoxFit.fitWidth),
+          ? SizedBox(height: 400, child: Image.asset('images/knowledge.png'))
+          : Lottie.asset(
+              'images/animations/knowledge_animation.json',
+              fit: BoxFit.fitWidth,
+            ),
       badgeIcon: Icons.menu_book,
       badgeText: 'Dein Lern-Hub',
       titlePart1: 'Jederzeit Zugriff auf',

@@ -10,11 +10,7 @@ class CategoryDialog extends StatefulWidget {
   final String subjectId;
   final Category? category;
 
-  const CategoryDialog({
-    super.key,
-    required this.subjectId,
-    this.category,
-  });
+  const CategoryDialog({super.key, required this.subjectId, this.category});
 
   @override
   State<CategoryDialog> createState() => _CategoryDialogState();
@@ -81,10 +77,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
       await _contentService.updateCategory(
         widget.subjectId,
         widget.category!.id,
-        {
-          'name': nameController.text,
-          'status': status,
-        },
+        {'name': nameController.text, 'status': status},
       );
     }
     if (mounted) Navigator.pop(context);
@@ -101,9 +94,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -114,10 +105,7 @@ class _CategoryDialogState extends State<CategoryDialog> {
       title: Text(
         isEditing ? "Kategorie bearbeiten" : "Neue Kategorie erstellen",
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
@@ -136,8 +124,10 @@ class _CategoryDialogState extends State<CategoryDialog> {
           if (isEditing) ...[
             Row(
               children: [
-                const Text("Status: ",
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                const Text(
+                  "Status: ",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(width: 8),
                 StatusPill(status: _currentStatus),
               ],

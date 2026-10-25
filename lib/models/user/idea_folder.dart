@@ -9,14 +9,15 @@ class IdeaFolder {
   final String userId;
   final bool isPublic;
 
-  IdeaFolder(
-      {required this.id,
-      required this.name,
-      required this.description,
-      required this.ideaPostIds,
-      required this.timestamp,
-      required this.userId,
-      this.isPublic = true});
+  IdeaFolder({
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.ideaPostIds,
+    required this.timestamp,
+    required this.userId,
+    this.isPublic = true,
+  });
 
   Map<String, dynamic> toMap() {
     return {

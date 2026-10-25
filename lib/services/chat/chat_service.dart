@@ -16,15 +16,21 @@ class ChatService extends ChangeNotifier {
         .collection('chat_rooms')
         .doc(chatRoomId)
         .collection('messages')
-        .where(Filter.or(Filter('blocked', isEqualTo: false),
-            Filter('senderId', isEqualTo: userId)))
+        .where(
+          Filter.or(
+            Filter('blocked', isEqualTo: false),
+            Filter('senderId', isEqualTo: userId),
+          ),
+        )
         .orderBy('timestamp', descending: false)
         .snapshots();
   }
 
   Future<bool> isBlocked(String userId, String otherUserId) async {
-    var documentSnapshot =
-        await _firebaseFirestore.collection('Users').doc(otherUserId).get();
+    var documentSnapshot = await _firebaseFirestore
+        .collection('Users')
+        .doc(otherUserId)
+        .get();
 
     if (documentSnapshot.data() != null) {
       List<dynamic> blockedUsers =
@@ -37,8 +43,12 @@ class ChatService extends ChangeNotifier {
     return false;
   }
 
-  Future<void> sendMessage(String receiverId, String message,
-      {String type = "text", String? fileName}) async {
+  Future<void> sendMessage(
+    String receiverId,
+    String message, {
+    String type = "text",
+    String? fileName,
+  }) async {
     final String currentUserId = _firebaseAuth.currentUser!.uid;
     final String currentUserEmail = _firebaseAuth.currentUser!.email.toString();
     final String currentUserName =

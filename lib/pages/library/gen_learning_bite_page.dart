@@ -23,24 +23,16 @@ class GenLearningBitePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Task>>(
-      future: _aiTechGenService.generateLearningBiteTasks(
-        fileParts: fileParts,
-      ),
+      future: _aiTechGenService.generateLearningBiteTasks(fileParts: fileParts),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(name),
-              centerTitle: true,
-            ),
+            appBar: AppBar(title: Text(name), centerTitle: true),
             body: const Center(child: CircularProgressIndicator()),
           );
         } else if (snapshot.hasError) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(name),
-              centerTitle: true,
-            ),
+            appBar: AppBar(title: Text(name), centerTitle: true),
             body: Center(
               child: Text(
                 'Fehler bei der Generierung des Learning Bites: ${snapshot.error}',
@@ -49,10 +41,7 @@ class GenLearningBitePage extends StatelessWidget {
           );
         } else if (!snapshot.hasData) {
           return Scaffold(
-            appBar: AppBar(
-              title: Text(name),
-              centerTitle: true,
-            ),
+            appBar: AppBar(title: Text(name), centerTitle: true),
             body: const Center(child: Text('Kein Learning Bite verfügbar.')),
           );
         } else {

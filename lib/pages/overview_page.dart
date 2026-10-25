@@ -30,70 +30,70 @@ class _OverviewPageState extends State<OverviewPage> {
     });
   }
 
-  Widget _buildNavItem(BuildContext context,
-      {required int index,
-      required IconData icon,
-      required IconData activeIcon,
-      required String label,
-      Key? itemKey}) {
+  Widget _buildNavItem(
+    BuildContext context, {
+    required int index,
+    required IconData icon,
+    required IconData activeIcon,
+    required String label,
+    Key? itemKey,
+  }) {
     final isSelected = _currentIndex == index;
     final colorScheme = Theme.of(context).colorScheme;
 
     return AnimatedContainer(
-        key: itemKey,
-        duration: const Duration(milliseconds: 150),
-        decoration: BoxDecoration(
-          color: isSelected
-              ? colorScheme.primaryContainer.withAlpha(188)
-              : colorScheme.primaryContainer.withAlpha(0),
+      key: itemKey,
+      duration: const Duration(milliseconds: 150),
+      decoration: BoxDecoration(
+        color: isSelected
+            ? colorScheme.primaryContainer.withAlpha(188)
+            : colorScheme.primaryContainer.withAlpha(0),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () => _onTap(index),
           borderRadius: BorderRadius.circular(16),
-        ),
-        child: Material(
-            color: Colors.transparent,
-            child: InkWell(
-              onTap: () => _onTap(index),
-              borderRadius: BorderRadius.circular(16),
-              hoverColor: colorScheme.primaryContainer.withAlpha(40),
-              splashColor: colorScheme.primaryContainer.withAlpha(0),
-              highlightColor: colorScheme.primaryContainer.withAlpha(60),
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      isSelected ? activeIcon : icon,
-                      color: isSelected
-                          ? colorScheme.onPrimaryContainer
-                          : colorScheme.onSurfaceVariant,
-                      size: 24,
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      label,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
-                        color: isSelected
-                            ? colorScheme.onPrimaryContainer
-                            : colorScheme.onSurfaceVariant,
-                      ),
-                    ),
-                  ],
+          hoverColor: colorScheme.primaryContainer.withAlpha(40),
+          splashColor: colorScheme.primaryContainer.withAlpha(0),
+          highlightColor: colorScheme.primaryContainer.withAlpha(60),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  isSelected ? activeIcon : icon,
+                  color: isSelected
+                      ? colorScheme.onPrimaryContainer
+                      : colorScheme.onSurfaceVariant,
+                  size: 24,
                 ),
-              ),
-            )));
+                const SizedBox(height: 2),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: isSelected
+                        ? colorScheme.onPrimaryContainer
+                        : colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      body: IndexedStack(
-        index: _currentIndex,
-        children: _tabs,
-      ),
+      body: IndexedStack(index: _currentIndex, children: _tabs),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surface,
@@ -107,8 +107,9 @@ class _OverviewPageState extends State<OverviewPage> {
           ],
           border: Border(
             top: BorderSide(
-              color:
-                  Theme.of(context).colorScheme.outlineVariant.withAlpha(128),
+              color: Theme.of(
+                context,
+              ).colorScheme.outlineVariant.withAlpha(128),
               width: 1,
             ),
           ),
@@ -117,41 +118,53 @@ class _OverviewPageState extends State<OverviewPage> {
           borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
           child: SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8.0,
+                vertical: 8.0,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  _buildNavItem(context,
-                      index: 0,
-                      icon: Icons.home_outlined,
-                      activeIcon: Icons.home,
-                      label: 'Home',
-                      itemKey: const ValueKey('tab_home')),
-                  _buildNavItem(context,
-                      index: 1,
-                      icon: Icons.search_outlined,
-                      activeIcon: Icons.search,
-                      label: 'Suche',
-                      itemKey: const ValueKey('tab_search')),
-                  _buildNavItem(context,
-                      index: 2,
-                      icon: Icons.dynamic_feed_outlined,
-                      activeIcon: Icons.dynamic_feed,
-                      label: 'Feed',
-                      itemKey: const ValueKey('tab_feed')),
-                  _buildNavItem(context,
-                      index: 3,
-                      icon: Icons.chat_bubble_outline,
-                      activeIcon: Icons.chat,
-                      label: 'Chats',
-                      itemKey: const ValueKey('tab_chats')),
-                  _buildNavItem(context,
-                      index: 4,
-                      icon: Icons.person_outline,
-                      activeIcon: Icons.person,
-                      label: 'Profil',
-                      itemKey: const ValueKey('tab_profile')),
+                  _buildNavItem(
+                    context,
+                    index: 0,
+                    icon: Icons.home_outlined,
+                    activeIcon: Icons.home,
+                    label: 'Home',
+                    itemKey: const ValueKey('tab_home'),
+                  ),
+                  _buildNavItem(
+                    context,
+                    index: 1,
+                    icon: Icons.search_outlined,
+                    activeIcon: Icons.search,
+                    label: 'Suche',
+                    itemKey: const ValueKey('tab_search'),
+                  ),
+                  _buildNavItem(
+                    context,
+                    index: 2,
+                    icon: Icons.dynamic_feed_outlined,
+                    activeIcon: Icons.dynamic_feed,
+                    label: 'Feed',
+                    itemKey: const ValueKey('tab_feed'),
+                  ),
+                  _buildNavItem(
+                    context,
+                    index: 3,
+                    icon: Icons.chat_bubble_outline,
+                    activeIcon: Icons.chat,
+                    label: 'Chats',
+                    itemKey: const ValueKey('tab_chats'),
+                  ),
+                  _buildNavItem(
+                    context,
+                    index: 4,
+                    icon: Icons.person_outline,
+                    activeIcon: Icons.person,
+                    label: 'Profil',
+                    itemKey: const ValueKey('tab_profile'),
+                  ),
                 ],
               ),
             ),

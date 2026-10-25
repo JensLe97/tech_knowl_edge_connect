@@ -37,8 +37,9 @@ class _ConceptDialogState extends State<ConceptDialog> {
   @override
   void initState() {
     super.initState();
-    _nameController =
-        TextEditingController(text: widget.existingData?['name'] ?? '');
+    _nameController = TextEditingController(
+      text: widget.existingData?['name'] ?? '',
+    );
     _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
   }
@@ -67,10 +68,7 @@ class _ConceptDialogState extends State<ConceptDialog> {
       title: Text(
         widget.conceptId == null ? 'Konzept hinzufügen' : 'Konzept bearbeiten',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -88,9 +86,12 @@ class _ConceptDialogState extends State<ConceptDialog> {
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(
+                  .map(
+                    (s) => DropdownMenuItem(
                       value: s,
-                      child: Text(AdminConstants.statusLabels[s] ?? s)))
+                      child: Text(AdminConstants.statusLabels[s] ?? s),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -152,9 +153,9 @@ class _ConceptDialogState extends State<ConceptDialog> {
                   if (context.mounted) Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

@@ -59,7 +59,8 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                       final uid = _adminUidController.text.trim();
                       if (uid.isEmpty) {
                         setState(
-                            () => _uidErrorText = 'Bitte gib eine UID ein.');
+                          () => _uidErrorText = 'Bitte gib eine UID ein.',
+                        );
                         return;
                       }
                       setState(() {
@@ -81,17 +82,16 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              'Fehler: ${e.message ?? e.code}',
-                            ),
+                            content: Text('Fehler: ${e.message ?? e.code}'),
                           ),
                         );
                       } catch (_) {
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content:
-                                Text('Fehler beim Setzen der Admin-Rechte.'),
+                            content: Text(
+                              'Fehler beim Setzen der Admin-Rechte.',
+                            ),
                           ),
                         );
                       } finally {
@@ -100,9 +100,9 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                         }
                       }
                     },
-              child: Text(_grantingAdmin
-                  ? 'Bitte warten...'
-                  : 'Als Admin freischalten'),
+              child: Text(
+                _grantingAdmin ? 'Bitte warten...' : 'Als Admin freischalten',
+              ),
             ),
             OutlinedButton(
               onPressed: _revokingAdmin
@@ -111,7 +111,8 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                       final uid = _adminUidController.text.trim();
                       if (uid.isEmpty) {
                         setState(
-                            () => _uidErrorText = 'Bitte gib eine UID ein.');
+                          () => _uidErrorText = 'Bitte gib eine UID ein.',
+                        );
                         return;
                       }
                       setState(() {
@@ -133,17 +134,16 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(
-                              'Fehler: ${e.message ?? e.code}',
-                            ),
+                            content: Text('Fehler: ${e.message ?? e.code}'),
                           ),
                         );
                       } catch (_) {
                         if (!context.mounted) return;
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
-                            content:
-                                Text('Fehler beim Entziehen der Admin-Rechte.'),
+                            content: Text(
+                              'Fehler beim Entziehen der Admin-Rechte.',
+                            ),
                           ),
                         );
                       } finally {
@@ -152,16 +152,18 @@ class _AdminManagementCardState extends State<AdminManagementCard> {
                         }
                       }
                     },
-              child:
-                  Text(_revokingAdmin ? 'Bitte warten...' : 'Admin entziehen'),
+              child: Text(
+                _revokingAdmin ? 'Bitte warten...' : 'Admin entziehen',
+              ),
             ),
           ],
         ),
         const SizedBox(height: 6),
         Text(
           'Hinweis: Der Benutzer muss sich ab- und wieder anmelden, um die Rolle zu sehen.',
-          style:
-              TextStyle(color: Theme.of(context).colorScheme.onSurfaceVariant),
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
         ),
       ],
     );

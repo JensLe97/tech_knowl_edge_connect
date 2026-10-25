@@ -6,51 +6,58 @@ import 'package:tech_knowl_edge_connect/components/tiles/subject_tile.dart';
 
 void main() {
   Widget makeTestableWidget(Widget child) {
-    return MaterialApp(
-      home: child,
-    );
+    return MaterialApp(home: child);
   }
 
   testWidgets(
-      'SubjectTile displays subject name, icon, color, and responds to tap',
-      (WidgetTester tester) async {
-    bool tapped = false;
-    final subject = Subject(
+    'SubjectTile displays subject name, icon, color, and responds to tap',
+    (WidgetTester tester) async {
+      bool tapped = false;
+      final subject = Subject(
         id: 'test_subject',
         name: 'Testfach',
         color: Colors.blue,
-        iconData: Icons.book);
-    await tester.pumpWidget(
-      makeTestableWidget(
-        Scaffold(
-          body: SubjectTile(
-            subject: subject,
-            onTap: () {
-              tapped = true;
-            },
+        iconData: Icons.book,
+      );
+      await tester.pumpWidget(
+        makeTestableWidget(
+          Scaffold(
+            body: SubjectTile(
+              subject: subject,
+              onTap: () {
+                tapped = true;
+              },
+            ),
           ),
         ),
-      ),
-    );
-    // Check name
-    expect(find.text('Testfach'), findsOneWidget);
-    // Check icon
-    expect(find.byType(Icon), findsNWidgets(3));
-    // Check color (Card background)
-    final icon = tester.widget<Icon>(find.byWidgetPredicate((widget) => widget is Icon && widget.color == Colors.blue).first);
-    expect(icon.color, Colors.blue);
-    // Check tap
-    await tester.tap(find.byType(SubjectTile));
-    expect(tapped, isTrue);
-  });
+      );
+      // Check name
+      expect(find.text('Testfach'), findsOneWidget);
+      // Check icon
+      expect(find.byType(Icon), findsNWidgets(3));
+      // Check color (Card background)
+      final icon = tester.widget<Icon>(
+        find
+            .byWidgetPredicate(
+              (widget) => widget is Icon && widget.color == Colors.blue,
+            )
+            .first,
+      );
+      expect(icon.color, Colors.blue);
+      // Check tap
+      await tester.tap(find.byType(SubjectTile));
+      expect(tapped, isTrue);
+    },
+  );
 
   group('Test Subject', () {
     test('Subject should return the initial values', () {
       final subject = Subject(
-          id: 'test_mathe',
-          name: 'Mathe',
-          color: Colors.blue,
-          iconData: Icons.add);
+        id: 'test_mathe',
+        name: 'Mathe',
+        color: Colors.blue,
+        iconData: Icons.add,
+      );
       expect(subject.name, 'Mathe');
       expect(subject.color, Colors.blue);
       expect(subject.iconData, Icons.add);
@@ -58,10 +65,11 @@ void main() {
 
     test('Subject should return the initial values', () {
       final subject = Subject(
-          id: 'test_deutsch',
-          name: 'Deutsch',
-          color: Colors.red,
-          iconData: Icons.book);
+        id: 'test_deutsch',
+        name: 'Deutsch',
+        color: Colors.red,
+        iconData: Icons.book,
+      );
       expect(subject.name, 'Deutsch');
       expect(subject.color, Colors.red);
       expect(subject.iconData, Icons.book);

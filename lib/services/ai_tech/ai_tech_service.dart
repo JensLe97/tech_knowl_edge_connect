@@ -14,7 +14,9 @@ class AiTechService {
   // --- Journey ---
 
   Future<void> createJourneyWithId(
-      String journeyId, Map<String, dynamic> journeyData) async {
+    String journeyId,
+    Map<String, dynamic> journeyData,
+  ) async {
     final journeyRef = firestore.collection('ai_tech_journeys').doc(journeyId);
     await journeyRef.set(journeyData);
   }
@@ -67,8 +69,10 @@ class AiTechService {
 
   /// Get a journey document by ID
   Future<Map<String, dynamic>?> getJourneyById(String journeyId) async {
-    final docSnap =
-        await firestore.collection('ai_tech_journeys').doc(journeyId).get();
+    final docSnap = await firestore
+        .collection('ai_tech_journeys')
+        .doc(journeyId)
+        .get();
     if (docSnap.exists) {
       return docSnap.data() as Map<String, dynamic>;
     }
@@ -114,7 +118,8 @@ class AiTechService {
 
   /// Stream all learning bites for a journey
   Stream<QuerySnapshot<Map<String, dynamic>>> streamLearningBites(
-      String journeyId) {
+    String journeyId,
+  ) {
     return firestore
         .collection('ai_tech_journeys')
         .doc(journeyId)
@@ -125,7 +130,9 @@ class AiTechService {
 
   /// Stream a learning bite document by journeyId and learningBiteId
   Stream<DocumentSnapshot<Map<String, dynamic>>> streamLearningBite(
-      String journeyId, String learningBiteId) {
+    String journeyId,
+    String learningBiteId,
+  ) {
     return firestore
         .collection('ai_tech_journeys')
         .doc(journeyId)
@@ -136,7 +143,8 @@ class AiTechService {
 
   /// Get all learning bites for a journey
   Future<List<Map<String, dynamic>>> getLearningBitesForJourney(
-      String journeyId) async {
+    String journeyId,
+  ) async {
     final bitesSnap = await firestore
         .collection('ai_tech_journeys')
         .doc(journeyId)
@@ -148,7 +156,9 @@ class AiTechService {
   /// Returns bite results (title, points, maxPoints) stored in the user's
   /// resumeProgress for the given journey. These reflect actual user scores.
   Future<List<Map<String, dynamic>>> getBiteResultsForJourney(
-      String userId, String journeyId) async {
+    String userId,
+    String journeyId,
+  ) async {
     return _progressService.getBiteResultsForJourney(userId, journeyId);
   }
 
@@ -229,7 +239,9 @@ class AiTechService {
 
   /// Stream tasks for a learning bite by journeyId and learningBiteId
   Stream<QuerySnapshot<Map<String, dynamic>>> streamTasks(
-      String journeyId, String learningBiteId) {
+    String journeyId,
+    String learningBiteId,
+  ) {
     return firestore
         .collection('ai_tech_journeys')
         .doc(journeyId)
@@ -252,10 +264,9 @@ class AiTechService {
     await msgRef.set(message.toMap());
     // Update session's lastTimestamp to the message timestamp
     try {
-      await firestore
-          .collection('ai_tech_sessions')
-          .doc(sessionId)
-          .update({'lastTimestamp': message.ts});
+      await firestore.collection('ai_tech_sessions').doc(sessionId).update({
+        'lastTimestamp': message.ts,
+      });
     } catch (e) {
       // ignore errors updating lastTimestamp to avoid breaking message writes
     }
@@ -295,8 +306,10 @@ class AiTechService {
   /// Fetch a session document and return its display title (`unit` or `title`).
   Future<String?> fetchSessionTitle(String sessionId) async {
     try {
-      final snap =
-          await firestore.collection('ai_tech_sessions').doc(sessionId).get();
+      final snap = await firestore
+          .collection('ai_tech_sessions')
+          .doc(sessionId)
+          .get();
       if (!snap.exists) return null;
       final data = snap.data();
       return (data?['unit'] as String?) ?? (data?['title'] as String?);
@@ -313,14 +326,15 @@ class AiTechService {
         .doc(sessionId)
         .snapshots()
         .map((snap) {
-      try {
-        return (snap.data()?['unit'] as String?) ??
-            (snap.data()?['title'] as String?) ??
-            '';
-      } catch (_) {
-        return '';
-      }
-    }).distinct();
+          try {
+            return (snap.data()?['unit'] as String?) ??
+                (snap.data()?['title'] as String?) ??
+                '';
+          } catch (_) {
+            return '';
+          }
+        })
+        .distinct();
   }
 
   /// Stream a content unit title by watching collectionGroup('units') and
@@ -345,8 +359,10 @@ class AiTechService {
   /// Convenience method: return a stream that yields the authoritative title
   /// for a unit. If `subjectId` is empty, treat the unit as a session and
   /// stream the session title; otherwise stream the content unit title.
-  Stream<String> streamUnitTitle(
-      {required String unitId, required String subjectId}) {
+  Stream<String> streamUnitTitle({
+    required String unitId,
+    required String subjectId,
+  }) {
     if (subjectId.isEmpty) {
       return streamSessionTitle(unitId);
     }
@@ -379,10 +395,9 @@ class AiTechService {
 
   /// Update the `unit` (title) field of an existing session document.
   Future<void> updateSessionUnit(String sessionId, String unit) async {
-    await firestore
-        .collection('ai_tech_sessions')
-        .doc(sessionId)
-        .update({'unit': unit});
+    await firestore.collection('ai_tech_sessions').doc(sessionId).update({
+      'unit': unit,
+    });
   }
 
   /// Delete a session and its messages (deletes messages in batches)
@@ -390,8 +405,9 @@ class AiTechService {
     // Delete uploaded attachment files from Storage
     if (userId != null) {
       try {
-        final storageRef = FirebaseStorage.instance
-            .ref('ai_tech_attachments/$userId/$sessionId');
+        final storageRef = FirebaseStorage.instance.ref(
+          'ai_tech_attachments/$userId/$sessionId',
+        );
         final listed = await storageRef.listAll();
         await Future.wait(listed.items.map((item) => item.delete()));
       } catch (_) {}
@@ -449,7 +465,7 @@ class AiTechService {
         try {
           final userDocRef = firestore.collection('Users').doc(userId);
           await userDocRef.update({
-            'completedLearningBiteIds': FieldValue.arrayRemove(journeyBiteIds)
+            'completedLearningBiteIds': FieldValue.arrayRemove(journeyBiteIds),
           });
 
           final resumeColl = userDocRef.collection('resumeProgress');
@@ -457,7 +473,8 @@ class AiTechService {
           for (final rdoc in resumeSnap.docs) {
             final data = rdoc.data();
             final bites = Map<String, dynamic>.from(
-                data['bites'] as Map<String, dynamic>? ?? {});
+              data['bites'] as Map<String, dynamic>? ?? {},
+            );
             bool mutated = false;
             for (final bid in journeyBiteIds) {
               if (bites.containsKey(bid)) {
@@ -470,16 +487,19 @@ class AiTechService {
                 await rdoc.reference.delete();
               } else {
                 final biteValues = bites.values
-                    .map((e) =>
-                        (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                    .map(
+                      (e) =>
+                          (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                    )
                     .toList();
-                final expected = (data['expectedBiteCount'] as num?)?.toInt() ??
+                final expected =
+                    (data['expectedBiteCount'] as num?)?.toInt() ??
                     biteValues.length;
                 final agg = biteValues.isEmpty
                     ? 0
                     : (biteValues.reduce((a, b) => a + b) /
-                            (expected > 0 ? expected : biteValues.length))
-                        .round();
+                              (expected > 0 ? expected : biteValues.length))
+                          .round();
                 await rdoc.reference.update({
                   'bites': bites,
                   'progress': agg,

@@ -122,9 +122,7 @@ class _UnitDialogState extends State<UnitDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -135,10 +133,7 @@ class _UnitDialogState extends State<UnitDialog> {
       title: Text(
         isEditing ? "Einheit bearbeiten" : "Neue Einheit erstellen",
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SizedBox(
         width: double.maxFinite,
@@ -157,8 +152,10 @@ class _UnitDialogState extends State<UnitDialog> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text("Icon wählen:",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Icon wählen:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -184,7 +181,8 @@ class _UnitDialogState extends State<UnitDialog> {
                         border: selectedIcon == icon
                             ? Border.all(
                                 color: Theme.of(context).colorScheme.primary,
-                                width: 2)
+                                width: 2,
+                              )
                             : Border.all(color: Colors.grey.shade300),
                       ),
                       child: Icon(
@@ -201,8 +199,10 @@ class _UnitDialogState extends State<UnitDialog> {
               if (isEditing) ...[
                 Row(
                   children: [
-                    const Text("Status: ",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      "Status: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(width: 8),
                     StatusPill(status: _currentStatus),
                   ],

@@ -25,29 +25,29 @@ class AiTechGenService {
 
     if (splitIntoParts) {
       final summarySchema = Schema.object(
-        properties: {
-          'parts': Schema.array(items: Schema.string()),
-        },
+        properties: {'parts': Schema.array(items: Schema.string())},
       );
       generationConfig = GenerationConfig(
         responseMimeType: 'application/json',
         responseSchema: summarySchema,
       );
       buffer.write(
-          "Teile die Zusammenfassung in mehrere Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
-          "Jeder Abschnitt soll einen klaren Gedanken oder Aspekt behandeln. "
-          "Z.B. könnte sich jeder Abschnitt auf ein bestimmtes Dokument oder einen bestimmten Themenbereich beziehen. "
-          "Achte darauf, dass die Abschnitte inhaltlich sinnvoll aufgeteilt sind und nicht zu lang oder zu kurz sind. "
-          "Nutze keine horizontale Trennlinien, um die Abschnitte zu trennen, sondern um Themen innerhalb eines Abschnitts zu strukturieren. "
-          "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}");
+        "Teile die Zusammenfassung in mehrere Abschnitte (Parts) auf, die nacheinander gelesen werden können. "
+        "Jeder Abschnitt soll einen klaren Gedanken oder Aspekt behandeln. "
+        "Z.B. könnte sich jeder Abschnitt auf ein bestimmtes Dokument oder einen bestimmten Themenbereich beziehen. "
+        "Achte darauf, dass die Abschnitte inhaltlich sinnvoll aufgeteilt sind und nicht zu lang oder zu kurz sind. "
+        "Nutze keine horizontale Trennlinien, um die Abschnitte zu trennen, sondern um Themen innerhalb eines Abschnitts zu strukturieren. "
+        "Antworte im JSON-Format: {'parts': ['Abschnitt 1', 'Abschnitt 2', ...]}",
+      );
     }
 
     buffer.write(
-        "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache, "
-        "sodass sie zum Lernen und schnellen Verstehen der Inhalte geeignet ist. "
-        "Die Zusammenfassung soll im Markdown-Format sein, damit sie später gut dargestellt werden können. "
-        "$_markdownStyling"
-        "$_generalInstructions");
+      "Erstelle eine übersichtliche Zusammenfassung in deutscher Sprache, "
+      "sodass sie zum Lernen und schnellen Verstehen der Inhalte geeignet ist. "
+      "Die Zusammenfassung soll im Markdown-Format sein, damit sie später gut dargestellt werden können. "
+      "$_markdownStyling"
+      "$_generalInstructions",
+    );
 
     final model = FirebaseAI.googleAI().generativeModel(
       model: kDefaultAiModel,
@@ -100,14 +100,14 @@ class AiTechGenService {
               'type': Schema.string(),
               'content': Schema.array(items: Schema.string()),
               'completed': Schema.boolean(),
-              'iconData': Schema.object(properties: {
-                'codePoint': Schema.integer(),
-                'fontFamily': Schema.string(),
-                'fontPackage': Schema.string(),
-              }, optionalProperties: [
-                'fontFamily',
-                'fontPackage'
-              ]),
+              'iconData': Schema.object(
+                properties: {
+                  'codePoint': Schema.integer(),
+                  'fontFamily': Schema.string(),
+                  'fontPackage': Schema.string(),
+                },
+                optionalProperties: ['fontFamily', 'fontPackage'],
+              ),
               'authorId': Schema.string(),
               'status': Schema.string(),
             },
@@ -118,13 +118,15 @@ class AiTechGenService {
     );
 
     final model = FirebaseAI.googleAI().generativeModel(
-        model: kDefaultAiModel,
-        generationConfig: GenerationConfig(
-          responseMimeType:
-              useGoogleSearchTool ? 'text/plain' : 'application/json',
-          responseSchema: learningBiteSchema,
-        ),
-        tools: useGoogleSearchTool ? [Tool.googleSearch()] : []);
+      model: kDefaultAiModel,
+      generationConfig: GenerationConfig(
+        responseMimeType: useGoogleSearchTool
+            ? 'text/plain'
+            : 'application/json',
+        responseSchema: learningBiteSchema,
+      ),
+      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+    );
 
     final userMessageLine = userMessage != null && userMessage.trim().isNotEmpty
         ? '\n• Original-Wunsch des Lernenden: "$userMessage"'
@@ -160,15 +162,20 @@ Format: {"learningBites": [{"title": "...", "type": "lesson", "content": ["...",
     parts.addAll(fileParts);
     final response = await model.generateContent([Content.multi(parts)]);
     String bitesJson = response.text ?? '';
-    String cleanedJson =
-        bitesJson.replaceAll(RegExp(r'```[a-zA-Z]*'), '').trim();
+    String cleanedJson = bitesJson
+        .replaceAll(RegExp(r'```[a-zA-Z]*'), '')
+        .trim();
     final Map<String, dynamic> parsedLearningBites = json.decode(cleanedJson);
-    List<LearningBite> learningBites = (parsedLearningBites['learningBites']
-            as List)
+    List<LearningBite>
+    learningBites = (parsedLearningBites['learningBites'] as List)
         .asMap()
         .entries
-        .map((entry) => LearningBite.fromMap(entry.value,
-            'ai_generated_${DateTime.now().millisecondsSinceEpoch}_${entry.key}'))
+        .map(
+          (entry) => LearningBite.fromMap(
+            entry.value,
+            'ai_generated_${DateTime.now().millisecondsSinceEpoch}_${entry.key}',
+          ),
+        )
         .toList();
     return learningBites;
   }
@@ -204,17 +211,17 @@ Format: {"learningBites": [{"title": "...", "type": "lesson", "content": ["...",
         'tasks': Schema.array(
           items: Schema.object(
             properties: {
-              'type': Schema.enumString(enumValues: [
-                'singleChoice',
-                'singleChoiceCloze',
-                'freeTextFieldCloze',
-                'indexCard',
-              ]),
+              'type': Schema.enumString(
+                enumValues: [
+                  'singleChoice',
+                  'singleChoiceCloze',
+                  'freeTextFieldCloze',
+                  'indexCard',
+                ],
+              ),
               'question': Schema.string(),
               'correctAnswer': Schema.string(),
-              'answers': Schema.array(
-                items: Schema.string(),
-              ),
+              'answers': Schema.array(items: Schema.string()),
             },
             optionalProperties: ['answers'],
           ),
@@ -223,13 +230,15 @@ Format: {"learningBites": [{"title": "...", "type": "lesson", "content": ["...",
     );
 
     final model = FirebaseAI.googleAI().generativeModel(
-        model: kDefaultAiModel,
-        generationConfig: GenerationConfig(
-          responseMimeType:
-              useGoogleSearchTool ? 'text/plain' : 'application/json',
-          responseSchema: taskJsonSchema,
-        ),
-        tools: useGoogleSearchTool ? [Tool.googleSearch()] : []);
+      model: kDefaultAiModel,
+      generationConfig: GenerationConfig(
+        responseMimeType: useGoogleSearchTool
+            ? 'text/plain'
+            : 'application/json',
+        responseSchema: taskJsonSchema,
+      ),
+      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+    );
     final biteTitleLine = biteTitle != null && biteTitle.isNotEmpty
         ? '\nLerneinheit: "$biteTitle"'
         : '';
@@ -275,14 +284,19 @@ Lerninhalt:
     }
     final response = await model.generateContent([Content.multi(parts)]);
     String tasksJson = response.text ?? '';
-    String cleanedTasksJson =
-        tasksJson.replaceAll(RegExp(r'```[a-zA-Z]*'), '').trim();
+    String cleanedTasksJson = tasksJson
+        .replaceAll(RegExp(r'```[a-zA-Z]*'), '')
+        .trim();
     final Map<String, dynamic> parsedTasks = json.decode(cleanedTasksJson);
     List<tk.Task> tasks = (parsedTasks['tasks'] as List)
         .asMap()
         .entries
-        .map((entry) => tk.Task.fromMap(entry.value,
-            'ai_generated_${DateTime.now().millisecondsSinceEpoch}_${entry.key}'))
+        .map(
+          (entry) => tk.Task.fromMap(
+            entry.value,
+            'ai_generated_${DateTime.now().millisecondsSinceEpoch}_${entry.key}',
+          ),
+        )
         .toList();
     return tasks;
   }

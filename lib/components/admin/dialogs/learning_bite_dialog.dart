@@ -41,15 +41,17 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
   @override
   void initState() {
     super.initState();
-    _titleController =
-        TextEditingController(text: widget.existingData?['title'] ?? '');
+    _titleController = TextEditingController(
+      text: widget.existingData?['title'] ?? '',
+    );
     _status = widget.existingData?['status'] ?? 'Entwurf';
     _version = (widget.existingData?['version'] ?? 1) as int;
     _type = widget.existingData?['type'] ?? 'lesson';
 
     // Initialize Icon
     final iconMap = widget.existingData?['iconData'] as Map<String, dynamic>?;
-    _selectedIcon = AdminConstants.getIconFromData(iconMap) ??
+    _selectedIcon =
+        AdminConstants.getIconFromData(iconMap) ??
         AdminConstants.availableIcons.values.first;
   }
 
@@ -79,10 +81,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
             ? 'Learning Bite hinzufügen'
             : 'Learning Bite bearbeiten',
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SingleChildScrollView(
         child: Column(
@@ -99,10 +98,14 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   ? _type
                   : AdminConstants.learningBiteTypes.first,
               items: AdminConstants.learningBiteTypes
-                  .map((t) => DropdownMenuItem(
+                  .map(
+                    (t) => DropdownMenuItem(
                       value: t,
-                      child:
-                          Text(AdminConstants.learningBiteTypeLabels[t] ?? t)))
+                      child: Text(
+                        AdminConstants.learningBiteTypeLabels[t] ?? t,
+                      ),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _type = value);
@@ -115,9 +118,12 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   ? _status
                   : AdminConstants.statusOptions.first,
               items: AdminConstants.statusOptions
-                  .map((s) => DropdownMenuItem(
+                  .map(
+                    (s) => DropdownMenuItem(
                       value: s,
-                      child: Text(AdminConstants.statusLabels[s] ?? s)))
+                      child: Text(AdminConstants.statusLabels[s] ?? s),
+                    ),
+                  )
                   .toList(),
               onChanged: (value) {
                 if (value != null) setState(() => _status = value);
@@ -134,8 +140,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
               controller: TextEditingController(text: _version.toString()),
             ),
             const SizedBox(height: 16),
-            const Text('Icon wählen:',
-                style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text(
+              'Icon wählen:',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 8),
             Wrap(
               spacing: 12,
@@ -154,13 +162,16 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                       borderRadius: BorderRadius.circular(8),
                       border: isSelected
                           ? Border.all(
-                              color: Theme.of(context).colorScheme.primary)
+                              color: Theme.of(context).colorScheme.primary,
+                            )
                           : Border.all(color: Colors.grey.shade300),
                     ),
-                    child: Icon(entry.value,
-                        color: isSelected
-                            ? Theme.of(context).colorScheme.primary
-                            : null),
+                    child: Icon(
+                      entry.value,
+                      color: isSelected
+                          ? Theme.of(context).colorScheme.primary
+                          : null,
+                    ),
                   ),
                 );
               }).toList(),
@@ -227,9 +238,9 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   Navigator.pop(context);
                 } catch (e) {
                   if (context.mounted) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Fehler: $e')),
-                    );
+                    ScaffoldMessenger.of(
+                      context,
+                    ).showSnackBar(SnackBar(content: Text('Fehler: $e')));
                   }
                 }
               },

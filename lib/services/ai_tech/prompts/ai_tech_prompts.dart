@@ -11,7 +11,8 @@ class AiTechPrompts {
       'Setze Farben sparsam ein; Opening- und Closing-Tag müssen identisch sein. ';
 
   /// Tone + language rules for human-facing chat replies.
-  static const String chatTone = 'Sprich den Lernenden in der Du-Form an. '
+  static const String chatTone =
+      'Sprich den Lernenden in der Du-Form an. '
       'Sei freundlich, motivierend und präzise. '
       'Halte deine Antworten kurz und fokussiert – maximal 3–5 Sätze oder eine kompakte Aufzählung; vermeide unnötige Füllsätze und Wiederholungen. '
       'Antworte auf Deutsch, außer wenn der Nutzer eine andere Sprache verwendet. ';

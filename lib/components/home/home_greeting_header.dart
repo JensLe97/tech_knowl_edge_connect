@@ -14,10 +14,10 @@ class HomeGreetingHeader extends StatelessWidget {
     final String initials = parts.isEmpty || parts[0].isEmpty
         ? '?'
         : parts.length > 1
-            ? (parts[0][0] + parts.last[0]).toUpperCase()
-            : parts[0].length > 1
-                ? parts[0].substring(0, 2).toUpperCase()
-                : parts[0].toUpperCase();
+        ? (parts[0][0] + parts.last[0]).toUpperCase()
+        : parts[0].length > 1
+        ? parts[0].substring(0, 2).toUpperCase()
+        : parts[0].toUpperCase();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

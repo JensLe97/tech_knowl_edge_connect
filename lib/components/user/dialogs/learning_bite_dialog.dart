@@ -133,9 +133,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -148,10 +146,7 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
             ? "Learning Bite bearbeiten"
             : "Neues Learning Bite erstellen",
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SizedBox(
         width: double.maxFinite,
@@ -170,8 +165,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text("Icon wählen:",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Icon wählen:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -197,7 +194,8 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                         border: selectedIcon == icon
                             ? Border.all(
                                 color: Theme.of(context).colorScheme.primary,
-                                width: 2)
+                                width: 2,
+                              )
                             : Border.all(color: Colors.grey.shade300),
                       ),
                       child: Icon(
@@ -214,8 +212,10 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
               if (isEditing) ...[
                 Row(
                   children: [
-                    const Text("Status: ",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      "Status: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(width: 8),
                     StatusPill(status: _currentStatus),
                   ],
@@ -240,10 +240,12 @@ class _LearningBiteDialogState extends State<LearningBiteDialog> {
                   ),
               ] else ...[
                 Text(
-                    "Hinweis: Nach dem Erstellen ist das Learning Bite noch leer.",
-                    style: TextStyle(
-                        fontSize: 12,
-                        color: Theme.of(context).colorScheme.onSecondary)),
+                  "Hinweis: Nach dem Erstellen ist das Learning Bite noch leer.",
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Theme.of(context).colorScheme.onSecondary,
+                  ),
+                ),
                 const SizedBox(height: 8),
               ],
             ],

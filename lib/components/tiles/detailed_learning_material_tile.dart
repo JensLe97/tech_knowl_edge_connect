@@ -57,10 +57,14 @@ class DetailedLearningMaterialTile extends StatelessWidget {
     final likedLearningMaterials = userState.likedLearningMaterials;
     if (likedLearningMaterials.contains(material.id)) {
       await learningMaterialsService.unlikeLearningMaterial(
-          firebaseAuth.currentUser!.uid, material.id);
+        firebaseAuth.currentUser!.uid,
+        material.id,
+      );
     } else {
       await learningMaterialsService.likeLearningMaterial(
-          firebaseAuth.currentUser!.uid, material.id);
+        firebaseAuth.currentUser!.uid,
+        material.id,
+      );
     }
   }
 
@@ -71,17 +75,18 @@ class DetailedLearningMaterialTile extends StatelessWidget {
     final likedLearningMaterials = userState?.likedLearningMaterials ?? [];
     final isLiked = likedLearningMaterials.contains(material.id);
 
-    final isImage =
-        LearningMaterialType.imageTypes.contains(material.type.toLowerCase());
+    final isImage = LearningMaterialType.imageTypes.contains(
+      material.type.toLowerCase(),
+    );
 
     final parts = material.userName.trim().split(RegExp(r'\s+'));
     String initials = parts.isEmpty || parts[0].isEmpty
         ? '?'
         : parts.length > 1
-            ? (parts[0][0] + parts.last[0]).toUpperCase()
-            : parts[0].length > 1
-                ? parts[0].substring(0, 2).toUpperCase()
-                : parts[0].toUpperCase();
+        ? (parts[0][0] + parts.last[0]).toUpperCase()
+        : parts[0].length > 1
+        ? parts[0].substring(0, 2).toUpperCase()
+        : parts[0].toUpperCase();
 
     return GestureDetector(
       onTap: onTap,
@@ -112,12 +117,14 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                 Expanded(
                   child: GestureDetector(
                     onTap: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => PostProfilePage(
-                          username: material.userName,
-                          uid: material.userId,
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => PostProfilePage(
+                            username: material.userName,
+                            uid: material.userId,
+                          ),
                         ),
-                      ));
+                      );
                     },
                     child: Row(
                       children: [
@@ -173,7 +180,9 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
+                        horizontal: 12,
+                        vertical: 4,
+                      ),
                       decoration: BoxDecoration(
                         color: cs.tertiaryContainer.withAlpha(77),
                         borderRadius: BorderRadius.circular(20),
@@ -206,8 +215,9 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                                 toggleBlockUser: () =>
                                     _toggleBlockUser(context),
                                 report: _reportContent,
-                                isBlocked:
-                                    blockedUsers.contains(material.userId),
+                                isBlocked: blockedUsers.contains(
+                                  material.userId,
+                                ),
                                 isContent: true,
                               ),
                             ),
@@ -245,13 +255,17 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                         children: [
                           AspectRatio(
                             aspectRatio: 3 / 2,
-                            child:
-                                Image.network(material.url, fit: BoxFit.cover),
+                            child: Image.network(
+                              material.url,
+                              fit: BoxFit.cover,
+                            ),
                           ),
                           Container(
                             color: cs.secondaryContainer.withAlpha(51),
                             padding: const EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 16),
+                              vertical: 20,
+                              horizontal: 16,
+                            ),
                             child: Text(
                               material.name,
                               maxLines: 2,
@@ -268,12 +282,15 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                       )
                     : Padding(
                         padding: const EdgeInsets.symmetric(
-                            vertical: 40, horizontal: 16),
+                          vertical: 40,
+                          horizontal: 16,
+                        ),
                         child: Column(
                           children: [
                             FaIcon(
                               LearningMaterialType.getIconForType(
-                                  material.type),
+                                material.type,
+                              ),
                               size: 48,
                               color: cs.primary,
                             ),
@@ -308,7 +325,9 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                         onTap: () => _toggleLike(context),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 8.0),
+                            horizontal: 12.0,
+                            vertical: 8.0,
+                          ),
                           child: Row(
                             children: [
                               Icon(
@@ -355,7 +374,9 @@ class DetailedLearningMaterialTile extends StatelessWidget {
                       onTap: onTap,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 24, vertical: 8),
+                          horizontal: 24,
+                          vertical: 8,
+                        ),
                         child: Text(
                           'ÖFFNEN',
                           style: TextStyle(

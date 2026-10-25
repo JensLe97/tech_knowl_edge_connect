@@ -32,7 +32,8 @@ class TasksCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final canInteract = selectedSubjectId != null &&
+    final canInteract =
+        selectedSubjectId != null &&
         selectedCategoryId != null &&
         selectedTopicId != null &&
         selectedUnitId != null &&
@@ -43,10 +44,7 @@ class TasksCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        CardHeader(
-          title: 'Aufgaben',
-          onAdd: canInteract ? onAdd : null,
-        ),
+        CardHeader(title: 'Aufgaben', onAdd: canInteract ? onAdd : null),
         const SizedBox(height: 12),
         if (!canInteract)
           const Text('Bitte Lerninhalt auswählen.')
@@ -115,7 +113,8 @@ class TasksCard extends StatelessWidget {
                               Text(
                                 data['question'] ?? 'Keine Frage',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               const SizedBox(height: 4),
                               Text(
@@ -128,8 +127,10 @@ class TasksCard extends StatelessWidget {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             IconButton(
-                              icon:
-                                  Icon(Icons.edit, color: cs.onSurfaceVariant),
+                              icon: Icon(
+                                Icons.edit,
+                                color: cs.onSurfaceVariant,
+                              ),
                               tooltip: 'Bearbeiten',
                               style: IconButton.styleFrom(
                                 shape: RoundedRectangleBorder(
@@ -139,8 +140,10 @@ class TasksCard extends StatelessWidget {
                               onPressed: () => onEdit(doc.id, data),
                             ),
                             IconButton(
-                              icon: Icon(Icons.delete_outline,
-                                  color: cs.onSurfaceVariant),
+                              icon: Icon(
+                                Icons.delete_outline,
+                                color: cs.onSurfaceVariant,
+                              ),
                               tooltip: 'Löschen',
                               style: IconButton.styleFrom(
                                 shape: RoundedRectangleBorder(

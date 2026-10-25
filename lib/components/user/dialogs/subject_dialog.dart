@@ -9,10 +9,7 @@ import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 class SubjectDialog extends StatefulWidget {
   final Subject? subject;
 
-  const SubjectDialog({
-    super.key,
-    this.subject,
-  });
+  const SubjectDialog({super.key,this.subject});
 
   @override
   State<SubjectDialog> createState() => _SubjectDialogState();
@@ -116,9 +113,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
         decoration: BoxDecoration(
           color: cs.primaryContainer.withAlpha(76),
           shape: BoxShape.circle,
-          border: Border.all(
-            color: cs.primary.withAlpha(25),
-          ),
+          border: Border.all(color: cs.primary.withAlpha(25)),
         ),
         child: Icon(
           isEditing ? Icons.edit : Icons.add,
@@ -129,10 +124,7 @@ class _SubjectDialogState extends State<SubjectDialog> {
       title: Text(
         isEditing ? "Fach bearbeiten" : "Neues Fach erstellen",
         textAlign: TextAlign.center,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
       content: SizedBox(
         width: double.maxFinite,
@@ -152,8 +144,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text("Farbe wählen:",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Farbe wählen:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -177,21 +171,26 @@ class _SubjectDialogState extends State<SubjectDialog> {
                         border: selectedColor.toARGB32() == color.toARGB32()
                             ? Border.all(
                                 color: Theme.of(context).colorScheme.onSurface,
-                                width: 2)
+                                width: 2,
+                              )
                             : null,
                       ),
                       child: selectedColor.toARGB32() == color.toARGB32()
-                          ? Icon(Icons.check,
+                          ? Icon(
+                              Icons.check,
                               size: 20,
-                              color: Theme.of(context).colorScheme.onPrimary)
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )
                           : null,
                     ),
                   );
                 }).toList(),
               ),
               const SizedBox(height: 16),
-              const Text("Icon wählen:",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                "Icon wählen:",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
               const SizedBox(height: 8),
               Wrap(
                 spacing: 8,
@@ -217,7 +216,8 @@ class _SubjectDialogState extends State<SubjectDialog> {
                         border: selectedIcon == icon
                             ? Border.all(
                                 color: Theme.of(context).colorScheme.primary,
-                                width: 2)
+                                width: 2,
+                              )
                             : Border.all(color: Colors.grey.shade300),
                       ),
                       child: Icon(
@@ -234,8 +234,10 @@ class _SubjectDialogState extends State<SubjectDialog> {
               if (isEditing) ...[
                 Row(
                   children: [
-                    const Text("Status: ",
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    const Text(
+                      "Status: ",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
                     const SizedBox(width: 8),
                     StatusPill(status: _currentStatus),
                   ],

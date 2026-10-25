@@ -12,8 +12,12 @@ class JourneyBitesSection extends StatefulWidget {
   final String journeyId;
   final Widget Function(String subtitle, int progress) headerBuilder;
   final void Function(UnitProgress unit, UnitBiteProgress bite) onBiteTap;
-  final void Function(UnitProgress unit, LearningBite lb,
-      {required String journeyId}) onNewBiteTap;
+  final void Function(
+    UnitProgress unit,
+    LearningBite lb, {
+    required String journeyId,
+  })
+  onNewBiteTap;
 
   const JourneyBitesSection({
     super.key,
@@ -59,30 +63,30 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
           .collection('learning_bites')
           .orderBy('createdAt')
           .snapshots()
-          .map((snap) => snap.docs
-              .map((d) => LearningBite.fromMap(d.data(), d.id))
-              .toList()),
+          .map(
+            (snap) => snap.docs
+                .map((d) => LearningBite.fromMap(d.data(), d.id))
+                .toList(),
+          ),
       builder: (context, snap) {
         if (!snap.hasData) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.headerBuilder('Lernreise', widget.unit.progress),
-            ],
+            children: [widget.headerBuilder('Lernreise', widget.unit.progress)],
           );
         }
         final bitesList = snap.data!;
         if (bitesList.isEmpty) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              widget.headerBuilder('Lernreise', widget.unit.progress),
-            ],
+            children: [widget.headerBuilder('Lernreise', widget.unit.progress)],
           );
         }
 
         final totalProgress = bitesList.fold<int>(
-            0, (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0));
+          0,
+          (acc, lb) => acc + (widget.unit.bites[lb.id]?.progress ?? 0),
+        );
         final denom = bitesList.length;
         final journeyPercent = denom == 0 ? 0 : (totalProgress / denom).round();
 
@@ -92,12 +96,15 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
             if (!_scrollController.hasClients) return;
 
             final firstIncomplete = bitesList.indexWhere(
-                (lb) => (widget.unit.bites[lb.id]?.progress ?? 0) < 100);
+              (lb) => (widget.unit.bites[lb.id]?.progress ?? 0) < 100,
+            );
 
             final idx = firstIncomplete == -1 ? 0 : firstIncomplete;
 
-            final target = (idx * _totalStep)
-                .clamp(0.0, _scrollController.position.maxScrollExtent);
+            final target = (idx * _totalStep).clamp(
+              0.0,
+              _scrollController.position.maxScrollExtent,
+            );
 
             _scrollController.animateTo(
               target,
@@ -150,12 +157,16 @@ class _JourneyBitesSectionState extends State<JourneyBitesSection> {
                             ? UnitBiteCard(
                                 bite: up,
                                 authoritativeTitle: lb.name,
-                                onTap: () => widget.onBiteTap(widget.unit, up))
+                                onTap: () => widget.onBiteTap(widget.unit, up),
+                              )
                             : NewBiteCard(
                                 title: lb.name,
                                 onTap: () => widget.onNewBiteTap(
-                                    widget.unit, lb,
-                                    journeyId: widget.journeyId)),
+                                  widget.unit,
+                                  lb,
+                                  journeyId: widget.journeyId,
+                                ),
+                              ),
                       );
                     },
                   ),

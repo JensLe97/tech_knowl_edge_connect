@@ -8,14 +8,15 @@ class AnswerField extends StatefulWidget {
   final TextInputAction textInputAction;
   final bool autofocus;
 
-  const AnswerField(
-      {super.key,
-      required this.answer,
-      required this.enabled,
-      required this.setAllCorrect,
-      required this.controller,
-      this.textInputAction = TextInputAction.done,
-      this.autofocus = false});
+  const AnswerField({
+    super.key,
+    required this.answer,
+    required this.enabled,
+    required this.setAllCorrect,
+    required this.controller,
+    this.textInputAction = TextInputAction.done,
+    this.autofocus = false,
+  });
 
   @override
   State<AnswerField> createState() => _AnswerFieldState();
@@ -46,8 +47,8 @@ class _AnswerFieldState extends State<AnswerField> {
   Widget build(BuildContext context) {
     int answerLength = widget.answer.length;
 
-    bool isCorrectInput = (currentValue.toLowerCase() ==
-            widget.answer.toLowerCase() ||
+    bool isCorrectInput =
+        (currentValue.toLowerCase() == widget.answer.toLowerCase() ||
         widget.controller.text.toLowerCase() == widget.answer.toLowerCase());
 
     bool isFieldEnabled = widget.enabled && !(answered && isCorrectInput);
@@ -68,19 +69,19 @@ class _AnswerFieldState extends State<AnswerField> {
       }
     }
 
-    double calculatedWidth = (TextPainter(
-                    text: TextSpan(
-                        text: widget.answer,
-                        style: TextStyle(
-                          color: textColor,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        )),
-                    textScaler: MediaQuery.of(context).textScaler,
-                    textDirection: TextDirection.ltr)
-                  ..layout())
-                .size
-                .width *
+    double calculatedWidth =
+        (TextPainter(
+              text: TextSpan(
+                text: widget.answer,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              textScaler: MediaQuery.of(context).textScaler,
+              textDirection: TextDirection.ltr,
+            )..layout()).size.width *
             1.02 +
         28; // Extra padding for web font rendering and cursor
 
@@ -103,9 +104,13 @@ class _AnswerFieldState extends State<AnswerField> {
               height: 1.2,
             ),
             maxLength: answerLength > 0 ? answerLength : 50,
-            buildCounter: (context,
-                    {required currentLength, required isFocused, maxLength}) =>
-                null,
+            buildCounter:
+                (
+                  context, {
+                  required currentLength,
+                  required isFocused,
+                  maxLength,
+                }) => null,
             onChanged: (value) {
               if (answered) {
                 setState(() {
@@ -148,14 +153,20 @@ class _AnswerFieldState extends State<AnswerField> {
             cursorColor: Theme.of(context).colorScheme.primary,
             decoration: InputDecoration(
               isDense: true,
-              contentPadding:
-                  const EdgeInsets.only(left: 4, right: 4, top: 6, bottom: 6),
+              contentPadding: const EdgeInsets.only(
+                left: 4,
+                right: 4,
+                top: 6,
+                bottom: 6,
+              ),
               enabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: borderColor, width: 2),
               ),
               focusedBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.tertiary, width: 2),
+                  color: Theme.of(context).colorScheme.tertiary,
+                  width: 2,
+                ),
               ),
               disabledBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
@@ -166,11 +177,15 @@ class _AnswerFieldState extends State<AnswerField> {
               errorStyle: const TextStyle(height: 0.01, fontSize: 1),
               errorBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.error, width: 2),
+                  color: Theme.of(context).colorScheme.error,
+                  width: 2,
+                ),
               ),
               focusedErrorBorder: UnderlineInputBorder(
                 borderSide: BorderSide(
-                    color: Theme.of(context).colorScheme.error, width: 2),
+                  color: Theme.of(context).colorScheme.error,
+                  width: 2,
+                ),
               ),
             ),
           ),

@@ -32,10 +32,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: const Text('Account'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('Account'), centerTitle: true),
       body: StreamBuilder<User?>(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (context, authSnapshot) {
@@ -49,8 +46,11 @@ class _AccountPageState extends State<AccountPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.person_outline,
-                      size: 64, color: Theme.of(context).colorScheme.onSurface),
+                  Icon(
+                    Icons.person_outline,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   const SizedBox(height: 12),
                   const Text('Nicht eingeloggt.'),
                 ],
@@ -62,9 +62,7 @@ class _AccountPageState extends State<AccountPage> {
             stream: getUserDetails(firebaseUser.uid),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
+                return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
               } else if (snapshot.hasData) {
@@ -80,21 +78,22 @@ class _AccountPageState extends State<AccountPage> {
                       children: <Widget>[
                         ListTile(
                           enabled: false,
-                          leading: FaIcon(FontAwesomeIcons.solidUser,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge!
-                                  .color),
+                          leading: FaIcon(
+                            FontAwesomeIcons.solidUser,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.displayLarge!.color,
+                          ),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Benutzername',
                                 style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .color),
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge!.color,
+                                ),
                               ),
                               const SizedBox(width: 8),
                               Flexible(
@@ -103,32 +102,34 @@ class _AccountPageState extends State<AccountPage> {
                                   child: Text(
                                     displayName,
                                     style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                         ListTile(
                           enabled: false,
-                          leading: Icon(Icons.email,
-                              color: Theme.of(context)
-                                  .textTheme
-                                  .displayLarge!
-                                  .color),
+                          leading: Icon(
+                            Icons.email,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.displayLarge!.color,
+                          ),
                           title: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'E-Mail',
                                 style: TextStyle(
-                                    color: Theme.of(context)
-                                        .textTheme
-                                        .displayLarge!
-                                        .color),
+                                  color: Theme.of(
+                                    context,
+                                  ).textTheme.displayLarge!.color,
+                                ),
                               ),
                               const SizedBox(width: 8),
                               Flexible(
@@ -137,21 +138,24 @@ class _AccountPageState extends State<AccountPage> {
                                   child: Text(
                                     emailText,
                                     style: TextStyle(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .primary),
+                                      color: Theme.of(
+                                        context,
+                                      ).colorScheme.primary,
+                                    ),
                                   ),
                                 ),
-                              )
+                              ),
                             ],
                           ),
                         ),
                         ListTile(
                           leading: const Icon(Icons.password),
-                          trailing: Icon(Icons.chevron_right,
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .onSurfaceVariant),
+                          trailing: Icon(
+                            Icons.chevron_right,
+                            color: Theme.of(
+                              context,
+                            ).colorScheme.onSurfaceVariant,
+                          ),
                           title: const Text('Passwort ändern'),
                           onTap: () {
                             Navigator.of(context).push(
@@ -163,12 +167,17 @@ class _AccountPageState extends State<AccountPage> {
                           },
                         ),
                         ListTile(
-                          leading: Icon(Icons.delete_outline,
-                              color: Theme.of(context).colorScheme.error),
-                          title: Text('Account löschen',
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.error,
-                                  fontWeight: FontWeight.bold)),
+                          leading: Icon(
+                            Icons.delete_outline,
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                          title: Text(
+                            'Account löschen',
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           onTap: confirmDeleteUser,
                         ),
                       ],
@@ -187,9 +196,10 @@ class _AccountPageState extends State<AccountPage> {
 
   void confirmDeleteUser() {
     showConfirmMessage(
-        "Account löschen",
-        "Dieser Prozess kann nicht rückgängig gemacht werden. Möchtest du deinen Account und alle Daten löschen?",
-        deleteUser);
+      "Account löschen",
+      "Dieser Prozess kann nicht rückgängig gemacht werden. Möchtest du deinen Account und alle Daten löschen?",
+      deleteUser,
+    );
   }
 
   Future deleteUser() async {
@@ -199,9 +209,7 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       barrierDismissible: false,
       builder: (context) {
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
+        return const Center(child: CircularProgressIndicator());
       },
     );
 
@@ -230,7 +238,8 @@ class _AccountPageState extends State<AccountPage> {
       if (!mounted) return;
 
       showSuccessMessage(
-          'Dein Account und deine Daten wurden erfolgreich gelöscht.');
+        'Dein Account und deine Daten wurden erfolgreich gelöscht.',
+      );
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (!mounted) return;
@@ -261,19 +270,24 @@ class _AccountPageState extends State<AccountPage> {
             await FirebaseAuth.instance.currentUser!.delete();
             if (mounted) Navigator.of(context).pop();
             showSuccessMessage(
-                'Dein Account und deine Daten wurden erfolgreich gelöscht.');
+              'Dein Account und deine Daten wurden erfolgreich gelöscht.',
+            );
             return;
           } on FirebaseAuthException catch (e2) {
             if (mounted) Navigator.of(context).pop();
             if (!mounted) return;
             showErrorMessage(
-                context, 'Fehler beim Löschen des Accounts: ${e2.message}');
+              context,
+              'Fehler beim Löschen des Accounts: ${e2.message}',
+            );
             return;
           }
         } else {
           if (mounted) {
-            showErrorMessage(context,
-                'Re-Authentifizierung fehlgeschlagen. Bitte melde dich erneut an und versuche es noch einmal.');
+            showErrorMessage(
+              context,
+              'Re-Authentifizierung fehlgeschlagen. Bitte melde dich erneut an und versuche es noch einmal.',
+            );
           }
           return;
         }
@@ -294,7 +308,9 @@ class _AccountPageState extends State<AccountPage> {
       if (password == null) return false;
       try {
         final cred = EmailAuthProvider.credential(
-            email: user.email!, password: password);
+          email: user.email!,
+          password: password,
+        );
         await user.reauthenticateWithCredential(cred);
         return true;
       } catch (e) {
@@ -311,13 +327,17 @@ class _AccountPageState extends State<AccountPage> {
         if (gUser == null) return false;
         final gAuth = await gUser.authentication;
         final credential = GoogleAuthProvider.credential(
-            accessToken: gAuth.accessToken, idToken: gAuth.idToken);
+          accessToken: gAuth.accessToken,
+          idToken: gAuth.idToken,
+        );
         await user.reauthenticateWithCredential(credential);
         return true;
       } catch (e) {
         if (mounted) {
           showErrorMessage(
-              context, 'Google Re-Authentifizierung fehlgeschlagen.');
+            context,
+            'Google Re-Authentifizierung fehlgeschlagen.',
+          );
         }
         return false;
       }
@@ -342,14 +362,17 @@ class _AccountPageState extends State<AccountPage> {
       } catch (e) {
         if (mounted) {
           showErrorMessage(
-              context, 'Apple Re-Authentifizierung fehlgeschlagen.');
+            context,
+            'Apple Re-Authentifizierung fehlgeschlagen.',
+          );
         }
         return false;
       }
     }
 
     // No automatic reauth available for this provider; ask user to sign in again.
-    final ok = await showDialog<bool>(
+    final ok =
+        await showDialog<bool>(
           context: context,
           builder: (ctx) {
             final cs = Theme.of(ctx).colorScheme;
@@ -409,9 +432,13 @@ class _AccountPageState extends State<AccountPage> {
                       padding: const EdgeInsets.symmetric(vertical: 16),
                       elevation: 0,
                     ),
-                    child: const Text('Zum Login',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16)),
+                    child: const Text(
+                      'Zum Login',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                      ),
+                    ),
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -430,8 +457,9 @@ class _AccountPageState extends State<AccountPage> {
 
     if (ok && mounted) {
       Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => const AuthPage()),
-          (route) => false);
+        MaterialPageRoute(builder: (_) => const AuthPage()),
+        (route) => false,
+      );
     }
     return false;
   }
@@ -462,11 +490,7 @@ class _AccountPageState extends State<AccountPage> {
                   shape: BoxShape.circle,
                   border: Border.all(color: cs.primary.withAlpha(25)),
                 ),
-                child: Icon(
-                  Icons.lock_outline,
-                  size: 32,
-                  color: cs.primary,
-                ),
+                child: Icon(Icons.lock_outline, size: 32, color: cs.primary),
               ),
               const SizedBox(height: 16),
               Text(
@@ -503,9 +527,10 @@ class _AccountPageState extends State<AccountPage> {
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   elevation: 0,
                 ),
-                child: const Text('OK',
-                    style:
-                        TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -530,55 +555,48 @@ class _AccountPageState extends State<AccountPage> {
     Future Function() onConfirmTap,
   ) {
     showDialog(
-        context: context,
-        builder: (BuildContext dialogContext) {
-          final cs = Theme.of(dialogContext).colorScheme;
-          return AlertDialog(
-            icon: Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: cs.errorContainer.withAlpha(76),
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: cs.error.withAlpha(25),
+      context: context,
+      builder: (BuildContext dialogContext) {
+        final cs = Theme.of(dialogContext).colorScheme;
+        return AlertDialog(
+          icon: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: cs.errorContainer.withAlpha(76),
+              shape: BoxShape.circle,
+              border: Border.all(color: cs.error.withAlpha(25)),
+            ),
+            child: Icon(Icons.warning_amber_rounded, size: 32, color: cs.error),
+          ),
+          title: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          content: Text(content, textAlign: TextAlign.center),
+          actions: [
+            Row(
+              children: [
+                DialogButton(
+                  onTap: () {
+                    Navigator.pop(dialogContext);
+                  },
+                  text: "Nein",
                 ),
-              ),
-              child: Icon(
-                Icons.warning_amber_rounded,
-                size: 32,
-                color: cs.error,
-              ),
+                DialogButton(
+                  onTap: () {
+                    Navigator.pop(dialogContext);
+                    Future.microtask(() => onConfirmTap());
+                  },
+                  text: "Ja",
+                  isDestructive: true,
+                ),
+              ],
             ),
-            title: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            content: Text(content, textAlign: TextAlign.center),
-            actions: [
-              Row(
-                children: [
-                  DialogButton(
-                      onTap: () {
-                        Navigator.pop(dialogContext);
-                      },
-                      text: "Nein"),
-                  DialogButton(
-                    onTap: () {
-                      Navigator.pop(dialogContext);
-                      Future.microtask(() => onConfirmTap());
-                    },
-                    text: "Ja",
-                    isDestructive: true,
-                  ),
-                ],
-              )
-            ],
-          );
-        });
+          ],
+        );
+      },
+    );
   }
 
   void showSuccessMessage(String message) {
@@ -594,24 +612,31 @@ class _AccountPageState extends State<AccountPage> {
     // Try to show the info dialog immediately; afterwards navigate to AuthPage.
     // If the dialog cannot be shown for any reason, still navigate to AuthPage.
     try {
-      showInfoMessage(rootNav.context, message).then((_) {
-        if (!mounted) return;
-        rootNav.pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (_) => AuthPage(successMessage: message)),
-            (route) => false);
-      }).catchError((_) {
-        if (!mounted) return;
-        rootNav.pushAndRemoveUntil(
-            MaterialPageRoute(
-                builder: (_) => AuthPage(successMessage: message)),
-            (route) => false);
-      });
+      showInfoMessage(rootNav.context, message)
+          .then((_) {
+            if (!mounted) return;
+            rootNav.pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (_) => AuthPage(successMessage: message),
+              ),
+              (route) => false,
+            );
+          })
+          .catchError((_) {
+            if (!mounted) return;
+            rootNav.pushAndRemoveUntil(
+              MaterialPageRoute(
+                builder: (_) => AuthPage(successMessage: message),
+              ),
+              (route) => false,
+            );
+          });
     } catch (_) {
       if (!mounted) return;
       rootNav.pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => AuthPage(successMessage: message)),
-          (route) => false);
+        MaterialPageRoute(builder: (_) => AuthPage(successMessage: message)),
+        (route) => false,
+      );
     }
   }
 }

@@ -38,11 +38,7 @@ class _OnBoardingPageState extends State<OnBoardingPage> {
                 onLastPage = (index == 2);
               });
             },
-            children: const [
-              IntroPage1(),
-              IntroPage2(),
-              IntroPage3(),
-            ],
+            children: const [IntroPage1(), IntroPage2(), IntroPage3()],
           ),
 
           // Paginator positioned inside the glass panel area

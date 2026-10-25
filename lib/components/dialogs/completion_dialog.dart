@@ -26,8 +26,9 @@ class _CompletionDialogState extends State<CompletionDialog> {
   @override
   void initState() {
     super.initState();
-    _confettiController =
-        ConfettiController(duration: const Duration(seconds: 2));
+    _confettiController = ConfettiController(
+      duration: const Duration(seconds: 2),
+    );
     _confettiController.play();
   }
 
@@ -65,8 +66,9 @@ class _CompletionDialogState extends State<CompletionDialog> {
               createParticlePath: (Size size) {
                 final path = Path();
                 final rrect = RRect.fromRectAndRadius(
-                    Rect.fromLTWH(0, 0, size.width, size.height),
-                    Radius.circular(size.height * 0.4));
+                  Rect.fromLTWH(0, 0, size.width, size.height),
+                  Radius.circular(size.height * 0.4),
+                );
                 path.addRRect(rrect);
                 return path;
               },
@@ -104,8 +106,10 @@ class _CompletionDialogState extends State<CompletionDialog> {
             ),
             backgroundColor: cs.surface,
             actionsAlignment: MainAxisAlignment.center,
-            actionsPadding:
-                const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            actionsPadding: const EdgeInsets.symmetric(
+              horizontal: 24,
+              vertical: 12,
+            ),
             actions: [
               ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: 240, maxWidth: 360),

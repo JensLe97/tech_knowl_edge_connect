@@ -25,11 +25,12 @@ class _IndexCardTaskState extends State<IndexCardTask> {
   bool showAnswer = false;
 
   final Task _controlTask = Task(
-      id: "index_card_control",
-      type: TaskType.indexCard,
-      question: "## **Gewusst?**",
-      correctAnswer: "Ja",
-      answers: ["Nein", "Ja"]);
+    id: "index_card_control",
+    type: TaskType.indexCard,
+    question: "## **Gewusst?**",
+    correctAnswer: "Ja",
+    answers: ["Nein", "Ja"],
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +39,11 @@ class _IndexCardTaskState extends State<IndexCardTask> {
         Positioned.fill(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-                left: 16, right: 16, top: 10, bottom: 120),
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 120,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -55,9 +60,9 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                 Text(
                   showAnswer ? "Lösung" : "Überlege die Antwort...",
                   style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w800,
-                        color: Theme.of(context).colorScheme.onSurface,
-                      ),
+                    fontWeight: FontWeight.w800,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                 ),
                 const SizedBox(height: 32),
                 Container(
@@ -67,10 +72,9 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                     color: Theme.of(context).colorScheme.surfaceContainerLowest,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .outlineVariant
-                          .withAlpha(50),
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.outlineVariant.withAlpha(50),
                     ),
                   ),
                   child: MarkdownBody(
@@ -79,9 +83,9 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                         : widget.task.question,
                     extensionSet: getMarkdownExtensionSet(),
                     builders: getMarkdownColorBuilders(),
-                    styleSheet: createMarkdownStyleSheet(context).copyWith(
-                      textAlign: WrapAlignment.center,
-                    ),
+                    styleSheet: createMarkdownStyleSheet(
+                      context,
+                    ).copyWith(textAlign: WrapAlignment.center),
                   ),
                 ),
                 if (showAnswer) ...[
@@ -91,14 +95,14 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                       _controlTask.question
                           .replaceAll('## **', '')
                           .replaceAll('**', ''),
-                      style:
-                          Theme.of(context).textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.bold,
-                                color: Theme.of(context).colorScheme.onSurface,
-                              ),
+                      style: Theme.of(context).textTheme.headlineSmall
+                          ?.copyWith(
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context).colorScheme.onSurface,
+                          ),
                     ),
                   ),
-                ]
+                ],
               ],
             ),
           ),
@@ -125,9 +129,11 @@ class _IndexCardTaskState extends State<IndexCardTask> {
             child: BottomActionBar(
               child: Row(
                 children: [
-                  for (var answerIndex = 0;
-                      answerIndex < _controlTask.answers.length;
-                      answerIndex++)
+                  for (
+                    var answerIndex = 0;
+                    answerIndex < _controlTask.answers.length;
+                    answerIndex++
+                  )
                     Expanded(
                       child: Padding(
                         padding: EdgeInsets.only(
@@ -136,7 +142,8 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                         ),
                         child: FilledButton(
                           onPressed: () {
-                            bool correct = _controlTask.answers[answerIndex] ==
+                            bool correct =
+                                _controlTask.answers[answerIndex] ==
                                 _controlTask.correctAnswer;
                             widget.onResult(correct);
                             widget.onComplete();
@@ -144,12 +151,11 @@ class _IndexCardTaskState extends State<IndexCardTask> {
                           style: FilledButton.styleFrom(
                             backgroundColor:
                                 _controlTask.answers[answerIndex] ==
-                                        _controlTask.correctAnswer
-                                    ? Colors.green.withAlpha(200)
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .error
-                                        .withAlpha(200),
+                                    _controlTask.correctAnswer
+                                ? Colors.green.withAlpha(200)
+                                : Theme.of(
+                                    context,
+                                  ).colorScheme.error.withAlpha(200),
                           ),
                           child: Text(
                             _controlTask.answers[answerIndex],

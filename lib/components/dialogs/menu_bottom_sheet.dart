@@ -18,9 +18,7 @@ class MenuItems extends StatelessWidget {
           onTap: () {
             Navigator.pop(context);
             Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SettingsPage(),
-              ),
+              MaterialPageRoute(builder: (context) => const SettingsPage()),
             );
           },
         ),

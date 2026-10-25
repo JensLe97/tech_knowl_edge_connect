@@ -60,7 +60,10 @@ class UserConstants {
   ];
 
   static StatusColors getStatusColors(
-      String status, ColorScheme cs, bool isDark) {
+    String status,
+    ColorScheme cs,
+    bool isDark,
+  ) {
     if (status == statusApproved) {
       return StatusColors(
         background: Colors.green.withAlpha(38),
@@ -113,7 +116,7 @@ class UserConstants {
     'lesson',
     'text',
     'task',
-    'video'
+    'video',
   ];
 
   static const String learningBiteLesson = 'lesson';

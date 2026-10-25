@@ -5,9 +5,11 @@ class BlockedField extends StatelessWidget {
   final void Function() toggleBlockUser;
   final bool isBlocked;
 
-  const BlockedField(
-      {Key? key, required this.toggleBlockUser, this.isBlocked = false})
-      : super(key: key);
+  const BlockedField({
+    Key? key,
+    required this.toggleBlockUser,
+    this.isBlocked = false,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -26,16 +28,17 @@ class BlockedField extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         SubmitButton(
-            onTap: () {
-              toggleBlockUser();
-              final snackBar = SnackBar(
-                content: isBlocked
-                    ? const Text("Benutzer ist nicht mehr blockiert")
-                    : const Text("Benutzer ist blockiert"),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-            },
-            text: "Blockierung aufheben")
+          onTap: () {
+            toggleBlockUser();
+            final snackBar = SnackBar(
+              content: isBlocked
+                  ? const Text("Benutzer ist nicht mehr blockiert")
+                  : const Text("Benutzer ist blockiert"),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          },
+          text: "Blockierung aufheben",
+        ),
       ],
     );
   }

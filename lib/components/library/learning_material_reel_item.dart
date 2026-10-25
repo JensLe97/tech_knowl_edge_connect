@@ -16,10 +16,7 @@ import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 class LearningMaterialReelItem extends StatefulWidget {
   final LearningMaterial material;
 
-  const LearningMaterialReelItem({
-    super.key,
-    required this.material,
-  });
+  const LearningMaterialReelItem({super.key, required this.material});
 
   @override
   State<LearningMaterialReelItem> createState() =>
@@ -33,14 +30,19 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
       LearningMaterialService();
 
   toggleLike() async {
-    final likedLearningMaterials =
-        UserState.of(context)!.likedLearningMaterials;
+    final likedLearningMaterials = UserState.of(
+      context,
+    )!.likedLearningMaterials;
     if (likedLearningMaterials.contains(widget.material.id)) {
       await _learningMaterialsService.unlikeLearningMaterial(
-          _firebaseAuth.currentUser!.uid, widget.material.id);
+        _firebaseAuth.currentUser!.uid,
+        widget.material.id,
+      );
     } else {
       await _learningMaterialsService.likeLearningMaterial(
-          _firebaseAuth.currentUser!.uid, widget.material.id);
+        _firebaseAuth.currentUser!.uid,
+        widget.material.id,
+      );
     }
   }
 
@@ -82,29 +84,31 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
     String initials = parts.isEmpty || parts[0].isEmpty
         ? '?'
         : parts.length > 1
-            ? (parts[0][0] + parts.last[0]).toUpperCase()
-            : parts[0].length > 1
-                ? parts[0].substring(0, 2).toUpperCase()
-                : parts[0].toUpperCase();
+        ? (parts[0][0] + parts.last[0]).toUpperCase()
+        : parts[0].length > 1
+        ? parts[0].substring(0, 2).toUpperCase()
+        : parts[0].toUpperCase();
 
-    final isMedia = LearningMaterialType.imageTypes
-            .contains(material.type.toLowerCase()) ||
+    final isMedia =
+        LearningMaterialType.imageTypes.contains(material.type.toLowerCase()) ||
         LearningMaterialType.videoTypes.contains(material.type.toLowerCase());
 
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
     final useGlassMode = isDarkMode || isMedia;
 
     final textColor = useGlassMode ? Colors.white : cs.onSurface;
-    final secondaryTextColor =
-        useGlassMode ? Colors.white.withAlpha(220) : cs.onSecondaryContainer;
+    final secondaryTextColor = useGlassMode
+        ? Colors.white.withAlpha(220)
+        : cs.onSecondaryContainer;
     final pillBgColor = useGlassMode
         ? Colors.black.withAlpha(80)
         : cs.secondaryContainer.withAlpha(220);
     final outlineColor = useGlassMode
         ? Colors.white.withAlpha(40)
         : cs.outlineVariant.withAlpha(100);
-    final secondaryOutlineColor =
-        useGlassMode ? Colors.white.withAlpha(40) : cs.outlineVariant;
+    final secondaryOutlineColor = useGlassMode
+        ? Colors.white.withAlpha(40)
+        : cs.outlineVariant;
 
     return Stack(
       fit: StackFit.expand,
@@ -123,57 +127,58 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
               ),
             );
           },
-          child: LearningMaterialType.imageTypes
-                  .contains(material.type.toLowerCase())
+          child:
+              LearningMaterialType.imageTypes.contains(
+                material.type.toLowerCase(),
+              )
               ? Image.network(
                   material.url,
                   height: double.infinity,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 )
-              : LearningMaterialType.videoTypes
-                      .contains(material.type.toLowerCase())
-                  ? VideoPlayerWidget(url: material.url)
-                  : Center(
-                      child: FractionallySizedBox(
-                        heightFactor: 0.40,
-                        widthFactor: 1.0,
+              : LearningMaterialType.videoTypes.contains(
+                  material.type.toLowerCase(),
+                )
+              ? VideoPlayerWidget(url: material.url)
+              : Center(
+                  child: FractionallySizedBox(
+                    heightFactor: 0.40,
+                    widthFactor: 1.0,
+                    child: Container(
+                      margin: const EdgeInsets.symmetric(horizontal: 16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).brightness == Brightness.light
+                            ? Theme.of(
+                                context,
+                              ).colorScheme.surfaceContainerLowest
+                            : Theme.of(
+                                context,
+                              ).colorScheme.primary.withAlpha(20),
+                        borderRadius: BorderRadius.circular(24),
+                        border: Border.all(
+                          color: secondaryOutlineColor.withAlpha(77),
+                        ),
+                      ),
+                      child: Center(
                         child: Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          width: 80,
+                          height: 80,
                           decoration: BoxDecoration(
-                            color:
-                                Theme.of(context).brightness == Brightness.light
-                                    ? Theme.of(context)
-                                        .colorScheme
-                                        .surfaceContainerLowest
-                                    : Theme.of(context)
-                                        .colorScheme
-                                        .primary
-                                        .withAlpha(20),
-                            borderRadius: BorderRadius.circular(24),
-                            border: Border.all(
-                                color: secondaryOutlineColor.withAlpha(77)),
+                            color: cs.primary.withAlpha(26),
+                            shape: BoxShape.circle,
                           ),
-                          child: Center(
-                            child: Container(
-                              width: 80,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                color: cs.primary.withAlpha(26),
-                                shape: BoxShape.circle,
-                              ),
-                              alignment: Alignment.center,
-                              child: FaIcon(
-                                LearningMaterialType.getIconForType(
-                                    material.type),
-                                size: 40,
-                                color: cs.primary,
-                              ),
-                            ),
+                          alignment: Alignment.center,
+                          child: FaIcon(
+                            LearningMaterialType.getIconForType(material.type),
+                            size: 40,
+                            color: cs.primary,
                           ),
                         ),
                       ),
                     ),
+                  ),
+                ),
         ),
         // Bottom Details & Actions
         Positioned(
@@ -200,12 +205,14 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                             clipBehavior: Clip.antiAlias,
                             child: InkWell(
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => PostProfilePage(
-                                    username: material.userName,
-                                    uid: material.userId,
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => PostProfilePage(
+                                      username: material.userName,
+                                      uid: material.userId,
+                                    ),
                                   ),
-                                ));
+                                );
                               },
                               child: Container(
                                 padding: const EdgeInsets.fromLTRB(6, 6, 12, 6),
@@ -223,7 +230,8 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                                         color: cs.primaryContainer,
                                         shape: BoxShape.circle,
                                         border: Border.all(
-                                            color: secondaryOutlineColor),
+                                          color: secondaryOutlineColor,
+                                        ),
                                       ),
                                       alignment: Alignment.center,
                                       child: Text(
@@ -254,7 +262,8 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                                           ),
                                           Text(
                                             _formatTimeAgo(
-                                                material.createdAt.toDate()),
+                                              material.createdAt.toDate(),
+                                            ),
                                             style: TextStyle(
                                               color: secondaryTextColor,
                                               fontSize: 11,
@@ -316,8 +325,9 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
                               child: UserBottomSheet(
                                 toggleBlockUser: toggleBlockUser,
                                 report: reportContent,
-                                isBlocked:
-                                    blockedUsers.contains(material.userId),
+                                isBlocked: blockedUsers.contains(
+                                  material.userId,
+                                ),
                                 isContent: true,
                               ),
                             ),
@@ -389,7 +399,7 @@ class _LearningMaterialReelItemState extends State<LearningMaterialReelItem> {
               fontSize: 12,
             ),
           ),
-        ]
+        ],
       ],
     );
   }

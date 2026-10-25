@@ -26,9 +26,7 @@ class LearningBiteTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: colorScheme.surfaceContainer,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: colorScheme.outlineVariant.withAlpha(51),
-        ),
+        border: Border.all(color: colorScheme.outlineVariant.withAlpha(51)),
       ),
       child: Material(
         color: Colors.transparent,
@@ -84,10 +82,8 @@ class LearningBiteTile extends StatelessWidget {
                     Expanded(
                       child: Text(
                         learningBite.name,
-                        style:
-                            Theme.of(context).textTheme.titleMedium?.copyWith(
-                                  fontWeight: FontWeight.bold,
-                                ),
+                        style: Theme.of(context).textTheme.titleMedium
+                            ?.copyWith(fontWeight: FontWeight.bold),
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),

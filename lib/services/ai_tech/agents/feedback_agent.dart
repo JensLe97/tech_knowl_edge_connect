@@ -20,16 +20,19 @@ class FeedbackAgent extends BaseAgent {
     List<Content> history = const [],
   }) async {
     final journeyData = await service.getJourneyById(journeyId);
-    final journeyGoal = (journeyData?['goal'] as String?)?.trim() ??
+    final journeyGoal =
+        (journeyData?['goal'] as String?)?.trim() ??
         (journeyData?['context'] as String?)?.trim() ??
         '';
     final bites = await service.getBiteResultsForJourney(userId, journeyId);
     final biteResults = bites
-        .map((d) => {
-              'title': d['title'] ?? '',
-              'points': d['points'] ?? 0,
-              'maxPoints': d['maxPoints'] ?? 0,
-            })
+        .map(
+          (d) => {
+            'title': d['title'] ?? '',
+            'points': d['points'] ?? 0,
+            'maxPoints': d['maxPoints'] ?? 0,
+          },
+        )
         .toList();
 
     if (kDebugMode && !kUseRealAiInDebug) {
@@ -39,9 +42,11 @@ class FeedbackAgent extends BaseAgent {
     final biteLines = biteResults.isEmpty
         ? 'Noch keine abgeschlossenen Lerneinheiten.'
         : biteResults
-            .map((b) =>
-                '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte')
-            .join('\n');
+              .map(
+                (b) =>
+                    '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte',
+              )
+              .join('\n');
     final subjectLine = journeyGoal.isNotEmpty ? 'Thema: "$journeyGoal"\n' : '';
     final prompt =
         '${subjectLine}Ergebnisse:\n$biteLines\n\nBitte gib eine ehrliche, persönliche Rückmeldung zum aktuellen Lernfortschritt.';
@@ -77,18 +82,21 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''',
   }) async {
     // 1. Fetch journey metadata for goal/subject context.
     final journeyData = await service.getJourneyById(journeyId);
-    final journeyGoal = (journeyData?['goal'] as String?)?.trim() ??
+    final journeyGoal =
+        (journeyData?['goal'] as String?)?.trim() ??
         (journeyData?['context'] as String?)?.trim() ??
         '';
 
     // 2. Fetch bite results from resumeProgress (contains actual user scores).
     final bites = await service.getBiteResultsForJourney(userId, journeyId);
     final List<Map<String, dynamic>> biteResults = bites
-        .map((data) => {
-              'title': data['title'] ?? '',
-              'points': data['points'] ?? 0,
-              'maxPoints': data['maxPoints'] ?? 0,
-            })
+        .map(
+          (data) => {
+            'title': data['title'] ?? '',
+            'points': data['points'] ?? 0,
+            'maxPoints': data['maxPoints'] ?? 0,
+          },
+        )
         .toList();
 
     // 3. Analyse results to determine next action.
@@ -100,8 +108,9 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''',
     String status = 'awaiting_confirmation';
     String recommendation = 'continue';
     String? feedbackPrompt;
-    final subjectHint =
-        journeyGoal.isNotEmpty ? ' zum Thema "$journeyGoal"' : '';
+    final subjectHint = journeyGoal.isNotEmpty
+        ? ' zum Thema "$journeyGoal"'
+        : '';
 
     if (verdict.startsWith('custom:')) {
       recommendation = verdict.substring(7).trim();
@@ -114,7 +123,8 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''',
           'Baue auf dem gelernten Stoff auf.';
     } else if (verdict.contains('repeat')) {
       recommendation = 'repeat';
-      feedbackPrompt = 'Der Lernende übt noch$subjectHint. '
+      feedbackPrompt =
+          'Der Lernende übt noch$subjectHint. '
           'Erstelle abwechslungsreiche Wiederholungsaufgaben zum selben Konzept '
           'mit anderen Beispielen und verschiedenen Aufgabenformaten. '
           'Erkläre unsichere Stellen auf eine alternative, anschaulichere Weise.';
@@ -166,8 +176,10 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''',
           'Neue Lerninhalte werden jetzt erstellt – schau gleich in deine Lernreise!';
     }
     final biteLines = biteResults
-        .map((b) =>
-            '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte')
+        .map(
+          (b) =>
+              '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte',
+        )
         .join('\n');
     final subjectLine = journeyGoal.isNotEmpty ? 'Thema: "$journeyGoal"\n' : '';
     final recommendationDesc = switch (recommendation) {
@@ -178,7 +190,8 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''',
         'Der Lernende wiederholt die Grundlagen mit einfacheren Erklärungen.',
       _ => 'Der Lernende erhält neue Inhalte nach seinem Wunsch.',
     };
-    final prompt = '''
+    final prompt =
+        '''
 ${subjectLine}Ergebnisse:
 $biteLines
 
@@ -251,8 +264,10 @@ ${AiTechPrompts.markdownStyling}${AiTechPrompts.chatTone}''';
     required String journeyGoal,
   }) {
     final bites = biteResults
-        .map((b) =>
-            '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte')
+        .map(
+          (b) =>
+              '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte',
+        )
         .join('\n');
     final subjectLine = journeyGoal.isNotEmpty ? 'Thema: "$journeyGoal"\n' : '';
     final verdictDesc = switch (verdict) {
@@ -290,8 +305,10 @@ Bitte erstelle jetzt die persönliche Rückmeldung für den Lernenden.''';
     String? journeyGoal,
   }) {
     final bites = biteResults
-        .map((b) =>
-            '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte')
+        .map(
+          (b) =>
+              '- ${b['title'] ?? '(ohne Titel)'}: ${b['points'] ?? 0} / ${b['maxPoints'] ?? 0} Punkte',
+        )
         .join('\n');
     final subjectLine = journeyGoal != null && journeyGoal.isNotEmpty
         ? '\nLernbereich: "$journeyGoal"'

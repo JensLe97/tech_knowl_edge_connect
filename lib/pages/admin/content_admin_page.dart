@@ -98,9 +98,7 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
             title: const Row(
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min,
-              children: [
-                Text('Admin Dashboard'),
-              ],
+              children: [Text('Admin Dashboard')],
             ),
             centerTitle: true,
           ),
@@ -145,8 +143,10 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(
-                                content: Text(
-                                    'Konnte Pfad nicht auflösen. Vorschau nicht möglich.')),
+                              content: Text(
+                                'Konnte Pfad nicht auflösen. Vorschau nicht möglich.',
+                              ),
+                            ),
                           );
                         }
                       },
@@ -159,8 +159,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                         child: Padding(
                           padding: const EdgeInsets.only(right: 8.0),
                           child: DropdownButtonFormField<String?>(
-                            decoration:
-                                const InputDecoration(labelText: "Status"),
+                            decoration: const InputDecoration(
+                              labelText: "Status",
+                            ),
                             initialValue: _statusFilter,
                             borderRadius: BorderRadius.circular(12),
                             isDense: true,
@@ -168,7 +169,9 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             hint: const Text('Alle Inhalte'),
                             items: [
                               const DropdownMenuItem(
-                                  value: null, child: Text('Alle Inhalte')),
+                                value: null,
+                                child: Text('Alle Inhalte'),
+                              ),
                               ...AdminConstants.statusLabels.entries.map(
                                 (entry) => DropdownMenuItem(
                                   value: entry.key,
@@ -193,32 +196,34 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                  child: SubjectsCard(
-                                adminService: _adminService,
-                                selectedSubjectId: _selectedSubjectId,
-                                statusFilter: _statusFilter,
-                                onAdd: () =>
-                                    _openSubjectDialog(userId: user.uid),
-                                onEdit: (id, data) => _openSubjectDialog(
+                                child: SubjectsCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  statusFilter: _statusFilter,
+                                  onAdd: () =>
+                                      _openSubjectDialog(userId: user.uid),
+                                  onEdit: (id, data) => _openSubjectDialog(
                                     userId: user.uid,
                                     subjectId: id,
-                                    existing: data),
-                                onSelect: (id) => setState(() {
-                                  _selectedSubjectId = id;
-                                  _selectedCategoryId = null;
-                                  _selectedTopicId = null;
-                                  _selectedUnitId = null;
-                                  _selectedConceptId = null;
-                                  _selectedLearningBiteId = null;
-                                  _selectedLearningBiteData = null;
-                                }),
-                                onDelete: (id) => _confirmDelete(
+                                    existing: data,
+                                  ),
+                                  onSelect: (id) => setState(() {
+                                    _selectedSubjectId = id;
+                                    _selectedCategoryId = null;
+                                    _selectedTopicId = null;
+                                    _selectedUnitId = null;
+                                    _selectedConceptId = null;
+                                    _selectedLearningBiteId = null;
+                                    _selectedLearningBiteData = null;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
                                     title: 'Fach löschen?',
                                     message:
                                         'Möchtest du dieses Fach wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteSubject(
-                                          subjectId: id);
+                                        subjectId: id,
+                                      );
                                       if (_selectedSubjectId == id) {
                                         setState(() {
                                           _selectedSubjectId = null;
@@ -230,41 +235,46 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteData = null;
                                         });
                                       }
-                                    }),
-                              )),
+                                    },
+                                  ),
+                                ),
+                              ),
                               const SizedBox(width: 12),
                               Expanded(
-                                  child: CategoriesCard(
-                                adminService: _adminService,
-                                selectedSubjectId: _selectedSubjectId,
-                                selectedCategoryId: _selectedCategoryId,
-                                statusFilter: _statusFilter,
-                                onAdd: _selectedSubjectId == null
-                                    ? null
-                                    : () => _openCategoryDialog(
-                                        userId: user.uid,
-                                        subjectId: _selectedSubjectId!),
-                                onEdit: (id, data) => _openCategoryDialog(
+                                child: CategoriesCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  statusFilter: _statusFilter,
+                                  onAdd: _selectedSubjectId == null
+                                      ? null
+                                      : () => _openCategoryDialog(
+                                          userId: user.uid,
+                                          subjectId: _selectedSubjectId!,
+                                        ),
+                                  onEdit: (id, data) => _openCategoryDialog(
                                     userId: user.uid,
                                     subjectId: _selectedSubjectId!,
                                     categoryId: id,
-                                    existing: data),
-                                onSelect: (id) => setState(() {
-                                  _selectedCategoryId = id;
-                                  _selectedTopicId = null;
-                                  _selectedUnitId = null;
-                                  _selectedConceptId = null;
-                                  _selectedLearningBiteId = null;
-                                  _selectedLearningBiteData = null;
-                                }),
-                                onDelete: (id) => _confirmDelete(
+                                    existing: data,
+                                  ),
+                                  onSelect: (id) => setState(() {
+                                    _selectedCategoryId = id;
+                                    _selectedTopicId = null;
+                                    _selectedUnitId = null;
+                                    _selectedConceptId = null;
+                                    _selectedLearningBiteId = null;
+                                    _selectedLearningBiteData = null;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
                                     title: 'Kategorie löschen?',
                                     message:
                                         'Möchtest du diese Kategorie wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteCategory(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: id);
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: id,
+                                      );
                                       if (_selectedCategoryId == id) {
                                         setState(() {
                                           _selectedCategoryId = null;
@@ -275,36 +285,42 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteData = null;
                                         });
                                       }
-                                    }),
-                              )),
+                                    },
+                                  ),
+                                ),
+                              ),
                             ],
                           )
-                        : Column(children: [
-                            SubjectsCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              statusFilter: _statusFilter,
-                              onAdd: () => _openSubjectDialog(userId: user.uid),
-                              onEdit: (id, data) => _openSubjectDialog(
+                        : Column(
+                            children: [
+                              SubjectsCard(
+                                adminService: _adminService,
+                                selectedSubjectId: _selectedSubjectId,
+                                statusFilter: _statusFilter,
+                                onAdd: () =>
+                                    _openSubjectDialog(userId: user.uid),
+                                onEdit: (id, data) => _openSubjectDialog(
                                   userId: user.uid,
                                   subjectId: id,
-                                  existing: data),
-                              onSelect: (id) => setState(() {
-                                _selectedSubjectId = id;
-                                _selectedCategoryId = null;
-                                _selectedTopicId = null;
-                                _selectedUnitId = null;
-                                _selectedConceptId = null;
-                                _selectedLearningBiteId = null;
-                                _selectedLearningBiteData = null;
-                              }),
-                              onDelete: (id) => _confirmDelete(
+                                  existing: data,
+                                ),
+                                onSelect: (id) => setState(() {
+                                  _selectedSubjectId = id;
+                                  _selectedCategoryId = null;
+                                  _selectedTopicId = null;
+                                  _selectedUnitId = null;
+                                  _selectedConceptId = null;
+                                  _selectedLearningBiteId = null;
+                                  _selectedLearningBiteData = null;
+                                }),
+                                onDelete: (id) => _confirmDelete(
                                   title: 'Fach löschen?',
                                   message:
                                       'Möchtest du dieses Fach wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteSubject(
-                                        subjectId: id);
+                                      subjectId: id,
+                                    );
                                     if (_selectedSubjectId == id) {
                                       setState(() {
                                         _selectedSubjectId = null;
@@ -316,40 +332,44 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteData = null;
                                       });
                                     }
-                                  }),
-                            ),
-                            const SizedBox(height: 12),
-                            CategoriesCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              statusFilter: _statusFilter,
-                              onAdd: _selectedSubjectId == null
-                                  ? null
-                                  : () => _openCategoryDialog(
-                                      userId: user.uid,
-                                      subjectId: _selectedSubjectId!),
-                              onEdit: (id, data) => _openCategoryDialog(
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              CategoriesCard(
+                                adminService: _adminService,
+                                selectedSubjectId: _selectedSubjectId,
+                                selectedCategoryId: _selectedCategoryId,
+                                statusFilter: _statusFilter,
+                                onAdd: _selectedSubjectId == null
+                                    ? null
+                                    : () => _openCategoryDialog(
+                                        userId: user.uid,
+                                        subjectId: _selectedSubjectId!,
+                                      ),
+                                onEdit: (id, data) => _openCategoryDialog(
                                   userId: user.uid,
                                   subjectId: _selectedSubjectId!,
                                   categoryId: id,
-                                  existing: data),
-                              onSelect: (id) => setState(() {
-                                _selectedCategoryId = id;
-                                _selectedTopicId = null;
-                                _selectedUnitId = null;
-                                _selectedConceptId = null;
-                                _selectedLearningBiteId = null;
-                                _selectedLearningBiteData = null;
-                              }),
-                              onDelete: (id) => _confirmDelete(
+                                  existing: data,
+                                ),
+                                onSelect: (id) => setState(() {
+                                  _selectedCategoryId = id;
+                                  _selectedTopicId = null;
+                                  _selectedUnitId = null;
+                                  _selectedConceptId = null;
+                                  _selectedLearningBiteId = null;
+                                  _selectedLearningBiteData = null;
+                                }),
+                                onDelete: (id) => _confirmDelete(
                                   title: 'Kategorie löschen?',
                                   message:
                                       'Möchtest du diese Kategorie wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteCategory(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: id);
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: id,
+                                    );
                                     if (_selectedCategoryId == id) {
                                       setState(() {
                                         _selectedCategoryId = null;
@@ -360,9 +380,11 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteData = null;
                                       });
                                     }
-                                  }),
-                            ),
-                          ]),
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
 
                     const SizedBox(height: 12),
 
@@ -372,41 +394,45 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                  child: TopicsCard(
-                                adminService: _adminService,
-                                selectedSubjectId: _selectedSubjectId,
-                                selectedCategoryId: _selectedCategoryId,
-                                selectedTopicId: _selectedTopicId,
-                                statusFilter: _statusFilter,
-                                onAdd: (_selectedSubjectId != null &&
-                                        _selectedCategoryId != null)
-                                    ? () => _openTopicDialog(
-                                        userId: user.uid,
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!)
-                                    : null,
-                                onEdit: (id, data) => _openTopicDialog(
+                                child: TopicsCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  statusFilter: _statusFilter,
+                                  onAdd:
+                                      (_selectedSubjectId != null &&
+                                          _selectedCategoryId != null)
+                                      ? () => _openTopicDialog(
+                                          userId: user.uid,
+                                          subjectId: _selectedSubjectId!,
+                                          categoryId: _selectedCategoryId!,
+                                        )
+                                      : null,
+                                  onEdit: (id, data) => _openTopicDialog(
                                     userId: user.uid,
                                     subjectId: _selectedSubjectId!,
                                     categoryId: _selectedCategoryId!,
                                     topicId: id,
-                                    existing: data),
-                                onSelect: (id) => setState(() {
-                                  _selectedTopicId = id;
-                                  _selectedUnitId = null;
-                                  _selectedConceptId = null;
-                                  _selectedLearningBiteId = null;
-                                  _selectedLearningBiteData = null;
-                                }),
-                                onDelete: (id) => _confirmDelete(
+                                    existing: data,
+                                  ),
+                                  onSelect: (id) => setState(() {
+                                    _selectedTopicId = id;
+                                    _selectedUnitId = null;
+                                    _selectedConceptId = null;
+                                    _selectedLearningBiteId = null;
+                                    _selectedLearningBiteData = null;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
                                     title: 'Thema löschen?',
                                     message:
                                         'Möchtest du dieses Thema wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteTopic(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: id);
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: id,
+                                      );
                                       if (_selectedTopicId == id) {
                                         setState(() {
                                           _selectedTopicId = null;
@@ -416,49 +442,55 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteData = null;
                                         });
                                       }
-                                    }),
-                              )),
+                                    },
+                                  ),
+                                ),
+                              ),
                               const SizedBox(width: 12),
                               Expanded(
-                                  child: UnitsCard(
-                                adminService: _adminService,
-                                selectedSubjectId: _selectedSubjectId,
-                                selectedCategoryId: _selectedCategoryId,
-                                selectedTopicId: _selectedTopicId,
-                                selectedUnitId: _selectedUnitId,
-                                statusFilter: _statusFilter,
-                                onAdd: (_selectedSubjectId != null &&
-                                        _selectedCategoryId != null &&
-                                        _selectedTopicId != null)
-                                    ? () => _openUnitDialog(
-                                        userId: user.uid,
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!)
-                                    : null,
-                                onEdit: (id, data) => _openUnitDialog(
+                                child: UnitsCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  selectedUnitId: _selectedUnitId,
+                                  statusFilter: _statusFilter,
+                                  onAdd:
+                                      (_selectedSubjectId != null &&
+                                          _selectedCategoryId != null &&
+                                          _selectedTopicId != null)
+                                      ? () => _openUnitDialog(
+                                          userId: user.uid,
+                                          subjectId: _selectedSubjectId!,
+                                          categoryId: _selectedCategoryId!,
+                                          topicId: _selectedTopicId!,
+                                        )
+                                      : null,
+                                  onEdit: (id, data) => _openUnitDialog(
                                     userId: user.uid,
                                     subjectId: _selectedSubjectId!,
                                     categoryId: _selectedCategoryId!,
                                     topicId: _selectedTopicId!,
                                     unitId: id,
-                                    existing: data),
-                                onSelect: (id) => setState(() {
-                                  _selectedUnitId = id;
-                                  _selectedConceptId = null;
-                                  _selectedLearningBiteId = null;
-                                  _selectedLearningBiteData = null;
-                                }),
-                                onDelete: (id) => _confirmDelete(
+                                    existing: data,
+                                  ),
+                                  onSelect: (id) => setState(() {
+                                    _selectedUnitId = id;
+                                    _selectedConceptId = null;
+                                    _selectedLearningBiteId = null;
+                                    _selectedLearningBiteData = null;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
                                     title: 'Einheit löschen?',
                                     message:
                                         'Möchtest du diese Einheit wirklich löschen?',
                                     onConfirm: () async {
                                       await _adminService.deleteUnit(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: _selectedTopicId!,
-                                          unitId: id);
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: id,
+                                      );
                                       if (_selectedUnitId == id) {
                                         setState(() {
                                           _selectedUnitId = null;
@@ -467,46 +499,53 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                           _selectedLearningBiteData = null;
                                         });
                                       }
-                                    }),
-                              )),
+                                    },
+                                  ),
+                                ),
+                              ),
                             ],
                           )
-                        : Column(children: [
-                            TopicsCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              statusFilter: _statusFilter,
-                              onAdd: (_selectedSubjectId != null &&
-                                      _selectedCategoryId != null)
-                                  ? () => _openTopicDialog(
-                                      userId: user.uid,
-                                      subjectId: _selectedSubjectId!,
-                                      categoryId: _selectedCategoryId!)
-                                  : null,
-                              onEdit: (id, data) => _openTopicDialog(
+                        : Column(
+                            children: [
+                              TopicsCard(
+                                adminService: _adminService,
+                                selectedSubjectId: _selectedSubjectId,
+                                selectedCategoryId: _selectedCategoryId,
+                                selectedTopicId: _selectedTopicId,
+                                statusFilter: _statusFilter,
+                                onAdd:
+                                    (_selectedSubjectId != null &&
+                                        _selectedCategoryId != null)
+                                    ? () => _openTopicDialog(
+                                        userId: user.uid,
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                      )
+                                    : null,
+                                onEdit: (id, data) => _openTopicDialog(
                                   userId: user.uid,
                                   subjectId: _selectedSubjectId!,
                                   categoryId: _selectedCategoryId!,
                                   topicId: id,
-                                  existing: data),
-                              onSelect: (id) => setState(() {
-                                _selectedTopicId = id;
-                                _selectedUnitId = null;
-                                _selectedConceptId = null;
-                                _selectedLearningBiteId = null;
-                                _selectedLearningBiteData = null;
-                              }),
-                              onDelete: (id) => _confirmDelete(
+                                  existing: data,
+                                ),
+                                onSelect: (id) => setState(() {
+                                  _selectedTopicId = id;
+                                  _selectedUnitId = null;
+                                  _selectedConceptId = null;
+                                  _selectedLearningBiteId = null;
+                                  _selectedLearningBiteData = null;
+                                }),
+                                onDelete: (id) => _confirmDelete(
                                   title: 'Thema löschen?',
                                   message:
                                       'Möchtest du dieses Thema wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteTopic(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: id);
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: id,
+                                    );
                                     if (_selectedTopicId == id) {
                                       setState(() {
                                         _selectedTopicId = null;
@@ -516,48 +555,53 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteData = null;
                                       });
                                     }
-                                  }),
-                            ),
-                            const SizedBox(height: 12),
-                            UnitsCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              selectedUnitId: _selectedUnitId,
-                              statusFilter: _statusFilter,
-                              onAdd: (_selectedSubjectId != null &&
-                                      _selectedCategoryId != null &&
-                                      _selectedTopicId != null)
-                                  ? () => _openUnitDialog(
-                                      userId: user.uid,
-                                      subjectId: _selectedSubjectId!,
-                                      categoryId: _selectedCategoryId!,
-                                      topicId: _selectedTopicId!)
-                                  : null,
-                              onEdit: (id, data) => _openUnitDialog(
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              UnitsCard(
+                                adminService: _adminService,
+                                selectedSubjectId: _selectedSubjectId,
+                                selectedCategoryId: _selectedCategoryId,
+                                selectedTopicId: _selectedTopicId,
+                                selectedUnitId: _selectedUnitId,
+                                statusFilter: _statusFilter,
+                                onAdd:
+                                    (_selectedSubjectId != null &&
+                                        _selectedCategoryId != null &&
+                                        _selectedTopicId != null)
+                                    ? () => _openUnitDialog(
+                                        userId: user.uid,
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                      )
+                                    : null,
+                                onEdit: (id, data) => _openUnitDialog(
                                   userId: user.uid,
                                   subjectId: _selectedSubjectId!,
                                   categoryId: _selectedCategoryId!,
                                   topicId: _selectedTopicId!,
                                   unitId: id,
-                                  existing: data),
-                              onSelect: (id) => setState(() {
-                                _selectedUnitId = id;
-                                _selectedConceptId = null;
-                                _selectedLearningBiteId = null;
-                                _selectedLearningBiteData = null;
-                              }),
-                              onDelete: (id) => _confirmDelete(
+                                  existing: data,
+                                ),
+                                onSelect: (id) => setState(() {
+                                  _selectedUnitId = id;
+                                  _selectedConceptId = null;
+                                  _selectedLearningBiteId = null;
+                                  _selectedLearningBiteData = null;
+                                }),
+                                onDelete: (id) => _confirmDelete(
                                   title: 'Einheit löschen?',
                                   message:
                                       'Möchtest du diese Einheit wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteUnit(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!,
-                                        unitId: id);
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: _selectedTopicId!,
+                                      unitId: id,
+                                    );
                                     if (_selectedUnitId == id) {
                                       setState(() {
                                         _selectedUnitId = null;
@@ -566,9 +610,11 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         _selectedLearningBiteData = null;
                                       });
                                     }
-                                  }),
-                            ),
-                          ]),
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
 
                     const SizedBox(height: 12),
 
@@ -578,7 +624,141 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                  child: ConceptsCard(
+                                child: ConceptsCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  selectedUnitId: _selectedUnitId,
+                                  selectedConceptId: _selectedConceptId,
+                                  statusFilter: _statusFilter,
+                                  onAdd:
+                                      (_selectedSubjectId != null &&
+                                          _selectedCategoryId != null &&
+                                          _selectedTopicId != null &&
+                                          _selectedUnitId != null)
+                                      ? () => _openConceptDialog(
+                                          userId: user.uid,
+                                          subjectId: _selectedSubjectId!,
+                                          categoryId: _selectedCategoryId!,
+                                          topicId: _selectedTopicId!,
+                                          unitId: _selectedUnitId!,
+                                        )
+                                      : null,
+                                  onEdit: (id, data) => _openConceptDialog(
+                                    userId: user.uid,
+                                    subjectId: _selectedSubjectId!,
+                                    categoryId: _selectedCategoryId!,
+                                    topicId: _selectedTopicId!,
+                                    unitId: _selectedUnitId!,
+                                    conceptId: id,
+                                    existing: data,
+                                  ),
+                                  onSelect: (id) => setState(() {
+                                    _selectedConceptId = id;
+                                    _selectedLearningBiteId = null;
+                                    _selectedLearningBiteData = null;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
+                                    title: 'Konzept löschen?',
+                                    message:
+                                        'Möchtest du dieses Konzept wirklich löschen?',
+                                    onConfirm: () async {
+                                      await _adminService.deleteConcept(
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: _selectedUnitId!,
+                                        conceptId: id,
+                                      );
+                                      if (_selectedConceptId == id) {
+                                        setState(() {
+                                          _selectedConceptId = null;
+                                          _selectedLearningBiteId = null;
+                                          _selectedLearningBiteData = null;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: LearningBitesCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  selectedUnitId: _selectedUnitId,
+                                  selectedConceptId: _selectedConceptId,
+                                  selectedLearningBiteId:
+                                      _selectedLearningBiteId,
+                                  statusFilter: _statusFilter,
+                                  onAdd:
+                                      (_selectedSubjectId != null &&
+                                          _selectedCategoryId != null &&
+                                          _selectedTopicId != null &&
+                                          _selectedUnitId != null &&
+                                          _selectedConceptId != null)
+                                      ? () => _openLearningBiteDialog(
+                                          userId: user.uid,
+                                          subjectId: _selectedSubjectId!,
+                                          categoryId: _selectedCategoryId!,
+                                          topicId: _selectedTopicId!,
+                                          unitId: _selectedUnitId!,
+                                          conceptId: _selectedConceptId!,
+                                        )
+                                      : null,
+                                  onEdit: (id, data) => _openLearningBiteDialog(
+                                    userId: user.uid,
+                                    subjectId: _selectedSubjectId!,
+                                    categoryId: _selectedCategoryId!,
+                                    topicId: _selectedTopicId!,
+                                    unitId: _selectedUnitId!,
+                                    conceptId: _selectedConceptId!,
+                                    learningBiteId: id,
+                                    existing: data,
+                                  ),
+                                  onSelect: (id, data) => setState(() {
+                                    _selectedLearningBiteId = id;
+                                    _selectedLearningBiteData = data;
+                                  }),
+                                  onDelete: (id) => _confirmDelete(
+                                    title: 'Learning Bite löschen?',
+                                    message:
+                                        'Möchtest du dieses Learning Bite unwiderruflich löschen?',
+                                    onConfirm: () async {
+                                      await _adminService.deleteLearningBite(
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: _selectedUnitId!,
+                                        conceptId: _selectedConceptId!,
+                                        learningBiteId: id,
+                                      );
+                                      setState(() {
+                                        _selectedLearningBiteId = null;
+                                        _selectedLearningBiteData = null;
+                                      });
+                                    },
+                                  ),
+                                  onPreview: (id, data) =>
+                                      _openTestLearningBite(
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: _selectedUnitId!,
+                                        conceptId: _selectedConceptId!,
+                                        learningBiteId: id,
+                                        learningBiteData: data,
+                                      ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              ConceptsCard(
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
@@ -586,7 +766,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedUnitId: _selectedUnitId,
                                 selectedConceptId: _selectedConceptId,
                                 statusFilter: _statusFilter,
-                                onAdd: (_selectedSubjectId != null &&
+                                onAdd:
+                                    (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null &&
                                         _selectedUnitId != null)
@@ -595,44 +776,47 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         subjectId: _selectedSubjectId!,
                                         categoryId: _selectedCategoryId!,
                                         topicId: _selectedTopicId!,
-                                        unitId: _selectedUnitId!)
+                                        unitId: _selectedUnitId!,
+                                      )
                                     : null,
                                 onEdit: (id, data) => _openConceptDialog(
-                                    userId: user.uid,
-                                    subjectId: _selectedSubjectId!,
-                                    categoryId: _selectedCategoryId!,
-                                    topicId: _selectedTopicId!,
-                                    unitId: _selectedUnitId!,
-                                    conceptId: id,
-                                    existing: data),
+                                  userId: user.uid,
+                                  subjectId: _selectedSubjectId!,
+                                  categoryId: _selectedCategoryId!,
+                                  topicId: _selectedTopicId!,
+                                  unitId: _selectedUnitId!,
+                                  conceptId: id,
+                                  existing: data,
+                                ),
                                 onSelect: (id) => setState(() {
                                   _selectedConceptId = id;
                                   _selectedLearningBiteId = null;
                                   _selectedLearningBiteData = null;
                                 }),
                                 onDelete: (id) => _confirmDelete(
-                                    title: 'Konzept löschen?',
-                                    message:
-                                        'Möchtest du dieses Konzept wirklich löschen?',
-                                    onConfirm: () async {
-                                      await _adminService.deleteConcept(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: _selectedTopicId!,
-                                          unitId: _selectedUnitId!,
-                                          conceptId: id);
-                                      if (_selectedConceptId == id) {
-                                        setState(() {
-                                          _selectedConceptId = null;
-                                          _selectedLearningBiteId = null;
-                                          _selectedLearningBiteData = null;
-                                        });
-                                      }
-                                    }),
-                              )),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                  child: LearningBitesCard(
+                                  title: 'Konzept löschen?',
+                                  message:
+                                      'Möchtest du dieses Konzept wirklich löschen?',
+                                  onConfirm: () async {
+                                    await _adminService.deleteConcept(
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: _selectedTopicId!,
+                                      unitId: _selectedUnitId!,
+                                      conceptId: id,
+                                    );
+                                    if (_selectedConceptId == id) {
+                                      setState(() {
+                                        _selectedConceptId = null;
+                                        _selectedLearningBiteId = null;
+                                        _selectedLearningBiteData = null;
+                                      });
+                                    }
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              LearningBitesCard(
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
@@ -641,7 +825,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedConceptId: _selectedConceptId,
                                 selectedLearningBiteId: _selectedLearningBiteId,
                                 statusFilter: _statusFilter,
-                                onAdd: (_selectedSubjectId != null &&
+                                onAdd:
+                                    (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null &&
                                         _selectedUnitId != null &&
@@ -652,165 +837,54 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                         categoryId: _selectedCategoryId!,
                                         topicId: _selectedTopicId!,
                                         unitId: _selectedUnitId!,
-                                        conceptId: _selectedConceptId!)
+                                        conceptId: _selectedConceptId!,
+                                      )
                                     : null,
                                 onEdit: (id, data) => _openLearningBiteDialog(
-                                    userId: user.uid,
-                                    subjectId: _selectedSubjectId!,
-                                    categoryId: _selectedCategoryId!,
-                                    topicId: _selectedTopicId!,
-                                    unitId: _selectedUnitId!,
-                                    conceptId: _selectedConceptId!,
-                                    learningBiteId: id,
-                                    existing: data),
+                                  userId: user.uid,
+                                  subjectId: _selectedSubjectId!,
+                                  categoryId: _selectedCategoryId!,
+                                  topicId: _selectedTopicId!,
+                                  unitId: _selectedUnitId!,
+                                  conceptId: _selectedConceptId!,
+                                  learningBiteId: id,
+                                  existing: data,
+                                ),
                                 onSelect: (id, data) => setState(() {
                                   _selectedLearningBiteId = id;
                                   _selectedLearningBiteData = data;
                                 }),
                                 onDelete: (id) => _confirmDelete(
-                                    title: 'Learning Bite löschen?',
-                                    message:
-                                        'Möchtest du dieses Learning Bite unwiderruflich löschen?',
-                                    onConfirm: () async {
-                                      await _adminService.deleteLearningBite(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: _selectedTopicId!,
-                                          unitId: _selectedUnitId!,
-                                          conceptId: _selectedConceptId!,
-                                          learningBiteId: id);
-                                      setState(() {
-                                        _selectedLearningBiteId = null;
-                                        _selectedLearningBiteData = null;
-                                      });
-                                    }),
-                                onPreview: (id, data) => _openTestLearningBite(
-                                    subjectId: _selectedSubjectId!,
-                                    categoryId: _selectedCategoryId!,
-                                    topicId: _selectedTopicId!,
-                                    unitId: _selectedUnitId!,
-                                    conceptId: _selectedConceptId!,
-                                    learningBiteId: id,
-                                    learningBiteData: data),
-                              )),
-                            ],
-                          )
-                        : Column(children: [
-                            ConceptsCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              selectedUnitId: _selectedUnitId,
-                              selectedConceptId: _selectedConceptId,
-                              statusFilter: _statusFilter,
-                              onAdd: (_selectedSubjectId != null &&
-                                      _selectedCategoryId != null &&
-                                      _selectedTopicId != null &&
-                                      _selectedUnitId != null)
-                                  ? () => _openConceptDialog(
-                                      userId: user.uid,
-                                      subjectId: _selectedSubjectId!,
-                                      categoryId: _selectedCategoryId!,
-                                      topicId: _selectedTopicId!,
-                                      unitId: _selectedUnitId!)
-                                  : null,
-                              onEdit: (id, data) => _openConceptDialog(
-                                  userId: user.uid,
-                                  subjectId: _selectedSubjectId!,
-                                  categoryId: _selectedCategoryId!,
-                                  topicId: _selectedTopicId!,
-                                  unitId: _selectedUnitId!,
-                                  conceptId: id,
-                                  existing: data),
-                              onSelect: (id) => setState(() {
-                                _selectedConceptId = id;
-                                _selectedLearningBiteId = null;
-                                _selectedLearningBiteData = null;
-                              }),
-                              onDelete: (id) => _confirmDelete(
-                                  title: 'Konzept löschen?',
-                                  message:
-                                      'Möchtest du dieses Konzept wirklich löschen?',
-                                  onConfirm: () async {
-                                    await _adminService.deleteConcept(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!,
-                                        unitId: _selectedUnitId!,
-                                        conceptId: id);
-                                    if (_selectedConceptId == id) {
-                                      setState(() {
-                                        _selectedConceptId = null;
-                                        _selectedLearningBiteId = null;
-                                        _selectedLearningBiteData = null;
-                                      });
-                                    }
-                                  }),
-                            ),
-                            const SizedBox(height: 12),
-                            LearningBitesCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              selectedUnitId: _selectedUnitId,
-                              selectedConceptId: _selectedConceptId,
-                              selectedLearningBiteId: _selectedLearningBiteId,
-                              statusFilter: _statusFilter,
-                              onAdd: (_selectedSubjectId != null &&
-                                      _selectedCategoryId != null &&
-                                      _selectedTopicId != null &&
-                                      _selectedUnitId != null &&
-                                      _selectedConceptId != null)
-                                  ? () => _openLearningBiteDialog(
-                                      userId: user.uid,
-                                      subjectId: _selectedSubjectId!,
-                                      categoryId: _selectedCategoryId!,
-                                      topicId: _selectedTopicId!,
-                                      unitId: _selectedUnitId!,
-                                      conceptId: _selectedConceptId!)
-                                  : null,
-                              onEdit: (id, data) => _openLearningBiteDialog(
-                                  userId: user.uid,
-                                  subjectId: _selectedSubjectId!,
-                                  categoryId: _selectedCategoryId!,
-                                  topicId: _selectedTopicId!,
-                                  unitId: _selectedUnitId!,
-                                  conceptId: _selectedConceptId!,
-                                  learningBiteId: id,
-                                  existing: data),
-                              onSelect: (id, data) => setState(() {
-                                _selectedLearningBiteId = id;
-                                _selectedLearningBiteData = data;
-                              }),
-                              onDelete: (id) => _confirmDelete(
                                   title: 'Learning Bite löschen?',
                                   message:
                                       'Möchtest du dieses Learning Bite unwiderruflich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteLearningBite(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!,
-                                        unitId: _selectedUnitId!,
-                                        conceptId: _selectedConceptId!,
-                                        learningBiteId: id);
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: _selectedTopicId!,
+                                      unitId: _selectedUnitId!,
+                                      conceptId: _selectedConceptId!,
+                                      learningBiteId: id,
+                                    );
                                     setState(() {
                                       _selectedLearningBiteId = null;
                                       _selectedLearningBiteData = null;
                                     });
-                                  }),
-                              onPreview: (id, data) => _openTestLearningBite(
+                                  },
+                                ),
+                                onPreview: (id, data) => _openTestLearningBite(
                                   subjectId: _selectedSubjectId!,
                                   categoryId: _selectedCategoryId!,
                                   topicId: _selectedTopicId!,
                                   unitId: _selectedUnitId!,
                                   conceptId: _selectedConceptId!,
                                   learningBiteId: id,
-                                  learningBiteData: data),
-                            ),
-                          ]),
+                                  learningBiteData: data,
+                                ),
+                              ),
+                            ],
+                          ),
 
                     const SizedBox(height: 12),
 
@@ -820,7 +894,90 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Expanded(
-                                  child: ContentCard(
+                                child: ContentCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  selectedUnitId: _selectedUnitId,
+                                  selectedConceptId: _selectedConceptId,
+                                  selectedLearningBiteId:
+                                      _selectedLearningBiteId,
+                                  onAdd: () => _openContentDialog(),
+                                  onEdit: (index, content, allContent) =>
+                                      _openContentDialog(
+                                        index: index,
+                                        initialContent: content,
+                                        allContent: allContent,
+                                      ),
+                                  onDelete: (index, allContent) => _confirmDelete(
+                                    title: 'Inhalt löschen?',
+                                    message:
+                                        'Möchtest du diesen Inhaltsteil wirklich löschen?',
+                                    onConfirm: () async {
+                                      allContent.removeAt(index);
+                                      await _adminService.updateLearningBite(
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: _selectedUnitId!,
+                                        conceptId: _selectedConceptId!,
+                                        learningBiteId:
+                                            _selectedLearningBiteId!,
+                                        data: {'content': allContent},
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: TasksCard(
+                                  adminService: _adminService,
+                                  selectedSubjectId: _selectedSubjectId,
+                                  selectedCategoryId: _selectedCategoryId,
+                                  selectedTopicId: _selectedTopicId,
+                                  selectedUnitId: _selectedUnitId,
+                                  selectedConceptId: _selectedConceptId,
+                                  selectedLearningBiteId:
+                                      _selectedLearningBiteId,
+                                  onAdd:
+                                      (_selectedSubjectId != null &&
+                                          _selectedCategoryId != null &&
+                                          _selectedTopicId != null &&
+                                          _selectedUnitId != null &&
+                                          _selectedConceptId != null &&
+                                          _selectedLearningBiteId != null)
+                                      ? () => _openTaskDialog()
+                                      : null,
+                                  onEdit: (id, data) => _openTaskDialog(
+                                    taskId: id,
+                                    existing: data,
+                                  ),
+                                  onDelete: (id) => _confirmDelete(
+                                    title: 'Aufgabe löschen?',
+                                    message:
+                                        'Möchtest du diese Aufgabe wirklich löschen?',
+                                    onConfirm: () async {
+                                      await _adminService.deleteTask(
+                                        subjectId: _selectedSubjectId!,
+                                        categoryId: _selectedCategoryId!,
+                                        topicId: _selectedTopicId!,
+                                        unitId: _selectedUnitId!,
+                                        conceptId: _selectedConceptId!,
+                                        learningBiteId:
+                                            _selectedLearningBiteId!,
+                                        taskId: id,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          )
+                        : Column(
+                            children: [
+                              ContentCard(
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
@@ -831,29 +988,30 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 onAdd: () => _openContentDialog(),
                                 onEdit: (index, content, allContent) =>
                                     _openContentDialog(
-                                        index: index,
-                                        initialContent: content,
-                                        allContent: allContent),
+                                      index: index,
+                                      initialContent: content,
+                                      allContent: allContent,
+                                    ),
                                 onDelete: (index, allContent) => _confirmDelete(
-                                    title: 'Inhalt löschen?',
-                                    message:
-                                        'Möchtest du diesen Inhaltsteil wirklich löschen?',
-                                    onConfirm: () async {
-                                      allContent.removeAt(index);
-                                      await _adminService.updateLearningBite(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: _selectedTopicId!,
-                                          unitId: _selectedUnitId!,
-                                          conceptId: _selectedConceptId!,
-                                          learningBiteId:
-                                              _selectedLearningBiteId!,
-                                          data: {'content': allContent});
-                                    }),
-                              )),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                  child: TasksCard(
+                                  title: 'Inhalt löschen?',
+                                  message:
+                                      'Möchtest du diesen Inhaltsteil wirklich löschen?',
+                                  onConfirm: () async {
+                                    allContent.removeAt(index);
+                                    await _adminService.updateLearningBite(
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: _selectedTopicId!,
+                                      unitId: _selectedUnitId!,
+                                      conceptId: _selectedConceptId!,
+                                      learningBiteId: _selectedLearningBiteId!,
+                                      data: {'content': allContent},
+                                    );
+                                  },
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              TasksCard(
                                 adminService: _adminService,
                                 selectedSubjectId: _selectedSubjectId,
                                 selectedCategoryId: _selectedCategoryId,
@@ -861,7 +1019,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 selectedUnitId: _selectedUnitId,
                                 selectedConceptId: _selectedConceptId,
                                 selectedLearningBiteId: _selectedLearningBiteId,
-                                onAdd: (_selectedSubjectId != null &&
+                                onAdd:
+                                    (_selectedSubjectId != null &&
                                         _selectedCategoryId != null &&
                                         _selectedTopicId != null &&
                                         _selectedUnitId != null &&
@@ -872,91 +1031,24 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                                 onEdit: (id, data) =>
                                     _openTaskDialog(taskId: id, existing: data),
                                 onDelete: (id) => _confirmDelete(
-                                    title: 'Aufgabe löschen?',
-                                    message:
-                                        'Möchtest du diese Aufgabe wirklich löschen?',
-                                    onConfirm: () async {
-                                      await _adminService.deleteTask(
-                                          subjectId: _selectedSubjectId!,
-                                          categoryId: _selectedCategoryId!,
-                                          topicId: _selectedTopicId!,
-                                          unitId: _selectedUnitId!,
-                                          conceptId: _selectedConceptId!,
-                                          learningBiteId:
-                                              _selectedLearningBiteId!,
-                                          taskId: id);
-                                    }),
-                              )),
-                            ],
-                          )
-                        : Column(children: [
-                            ContentCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              selectedUnitId: _selectedUnitId,
-                              selectedConceptId: _selectedConceptId,
-                              selectedLearningBiteId: _selectedLearningBiteId,
-                              onAdd: () => _openContentDialog(),
-                              onEdit: (index, content, allContent) =>
-                                  _openContentDialog(
-                                      index: index,
-                                      initialContent: content,
-                                      allContent: allContent),
-                              onDelete: (index, allContent) => _confirmDelete(
-                                  title: 'Inhalt löschen?',
-                                  message:
-                                      'Möchtest du diesen Inhaltsteil wirklich löschen?',
-                                  onConfirm: () async {
-                                    allContent.removeAt(index);
-                                    await _adminService.updateLearningBite(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!,
-                                        unitId: _selectedUnitId!,
-                                        conceptId: _selectedConceptId!,
-                                        learningBiteId:
-                                            _selectedLearningBiteId!,
-                                        data: {'content': allContent});
-                                  }),
-                            ),
-                            const SizedBox(height: 12),
-                            TasksCard(
-                              adminService: _adminService,
-                              selectedSubjectId: _selectedSubjectId,
-                              selectedCategoryId: _selectedCategoryId,
-                              selectedTopicId: _selectedTopicId,
-                              selectedUnitId: _selectedUnitId,
-                              selectedConceptId: _selectedConceptId,
-                              selectedLearningBiteId: _selectedLearningBiteId,
-                              onAdd: (_selectedSubjectId != null &&
-                                      _selectedCategoryId != null &&
-                                      _selectedTopicId != null &&
-                                      _selectedUnitId != null &&
-                                      _selectedConceptId != null &&
-                                      _selectedLearningBiteId != null)
-                                  ? () => _openTaskDialog()
-                                  : null,
-                              onEdit: (id, data) =>
-                                  _openTaskDialog(taskId: id, existing: data),
-                              onDelete: (id) => _confirmDelete(
                                   title: 'Aufgabe löschen?',
                                   message:
                                       'Möchtest du diese Aufgabe wirklich löschen?',
                                   onConfirm: () async {
                                     await _adminService.deleteTask(
-                                        subjectId: _selectedSubjectId!,
-                                        categoryId: _selectedCategoryId!,
-                                        topicId: _selectedTopicId!,
-                                        unitId: _selectedUnitId!,
-                                        conceptId: _selectedConceptId!,
-                                        learningBiteId:
-                                            _selectedLearningBiteId!,
-                                        taskId: id);
-                                  }),
-                            ),
-                          ]),
+                                      subjectId: _selectedSubjectId!,
+                                      categoryId: _selectedCategoryId!,
+                                      topicId: _selectedTopicId!,
+                                      unitId: _selectedUnitId!,
+                                      conceptId: _selectedConceptId!,
+                                      learningBiteId: _selectedLearningBiteId!,
+                                      taskId: id,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
 
                     const SizedBox(height: 24),
                     const CardHeader(title: 'Datei-Upload & KI-Generierung'),
@@ -981,20 +1073,21 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
                             _selectedLearningBiteId != null) {
                           _adminService
                               .streamLearningBite(
-                                  _selectedSubjectId!,
-                                  _selectedCategoryId!,
-                                  _selectedTopicId!,
-                                  _selectedUnitId!,
-                                  _selectedConceptId!,
-                                  _selectedLearningBiteId!)
+                                _selectedSubjectId!,
+                                _selectedCategoryId!,
+                                _selectedTopicId!,
+                                _selectedUnitId!,
+                                _selectedConceptId!,
+                                _selectedLearningBiteId!,
+                              )
                               .first
                               .then((snap) {
-                            if (mounted && snap.data() != null) {
-                              setState(() {
-                                _selectedLearningBiteData = snap.data();
+                                if (mounted && snap.data() != null) {
+                                  setState(() {
+                                    _selectedLearningBiteData = snap.data();
+                                  });
+                                }
                               });
-                            }
-                          });
                         }
                       },
                     ),
@@ -1212,7 +1305,13 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
   }) async {
     final tasksSnapshot = await _adminService
         .streamTasks(
-            subjectId, categoryId, topicId, unitId, conceptId, learningBiteId)
+          subjectId,
+          categoryId,
+          topicId,
+          unitId,
+          conceptId,
+          learningBiteId,
+        )
         .first;
     final tasks = tasksSnapshot.docs
         .map((doc) => Task.fromMap(doc.data(), doc.id))
@@ -1242,10 +1341,8 @@ class _ContentAdminPageState extends State<ContentAdminPage> {
     if (!mounted) return;
     await Navigator.of(context).push(
       MaterialPageRoute(
-        builder: (context) => LearningBitePage(
-          learningBite: learningBite,
-          tasks: tasks,
-        ),
+        builder: (context) =>
+            LearningBitePage(learningBite: learningBite, tasks: tasks),
       ),
     );
   }

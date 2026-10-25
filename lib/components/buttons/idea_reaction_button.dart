@@ -8,14 +8,15 @@ class IdeaReactionButton extends StatelessWidget {
   final bool isLiked;
   final Color? color;
 
-  const IdeaReactionButton(
-      {super.key,
-      required this.onTap,
-      required this.icon,
-      this.number = 0,
-      this.hasCounter = true,
-      this.isLiked = false,
-      this.color = Colors.white});
+  const IdeaReactionButton({
+    super.key,
+    required this.onTap,
+    required this.icon,
+    this.number = 0,
+    this.hasCounter = true,
+    this.isLiked = false,
+    this.color = Colors.white,
+  });
 
   @override
   Widget build(BuildContext context) {

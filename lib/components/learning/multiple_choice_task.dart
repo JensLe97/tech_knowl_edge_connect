@@ -31,7 +31,11 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
         Positioned.fill(
           child: SingleChildScrollView(
             padding: const EdgeInsets.only(
-                left: 16, right: 16, top: 10, bottom: 120),
+              left: 16,
+              right: 16,
+              top: 10,
+              bottom: 120,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -51,9 +55,9 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
                   builders: getMarkdownColorBuilders(),
                   styleSheet: createMarkdownStyleSheet(context).copyWith(
                     p: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                          fontWeight: FontWeight.w800,
-                          color: Theme.of(context).colorScheme.onSurface,
-                        ),
+                      fontWeight: FontWeight.w800,
+                      color: Theme.of(context).colorScheme.onSurface,
+                    ),
                   ),
                 ),
                 const SizedBox(height: 32),
@@ -75,8 +79,9 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
     bool isSelected = isAnswered && answeredIndex == index;
 
     Color backgroundColor = Theme.of(context).colorScheme.surfaceContainer;
-    Color borderColor =
-        Theme.of(context).colorScheme.outlineVariant.withAlpha(50);
+    Color borderColor = Theme.of(
+      context,
+    ).colorScheme.outlineVariant.withAlpha(50);
     Widget icon = Container(
       width: 24,
       height: 24,
@@ -105,8 +110,9 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
           child: const Icon(Icons.check, size: 16, color: Colors.white),
         );
       } else {
-        backgroundColor =
-            Theme.of(context).colorScheme.errorContainer.withAlpha(50);
+        backgroundColor = Theme.of(
+          context,
+        ).colorScheme.errorContainer.withAlpha(50);
         borderColor = Theme.of(context).colorScheme.error;
         icon = Container(
           width: 24,
@@ -116,8 +122,11 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
             borderRadius: BorderRadius.circular(6),
             color: Theme.of(context).colorScheme.error,
           ),
-          child: Icon(Icons.close,
-              size: 16, color: Theme.of(context).colorScheme.onError),
+          child: Icon(
+            Icons.close,
+            size: 16,
+            color: Theme.of(context).colorScheme.onError,
+          ),
         );
       }
     }
@@ -166,8 +175,9 @@ class _MultipleChoiceTaskState extends State<MultipleChoiceTask> {
                   answerText,
                   style: TextStyle(
                     fontSize: 16,
-                    fontWeight:
-                        isSelected ? FontWeight.bold : FontWeight.normal,
+                    fontWeight: isSelected
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                     color: Theme.of(context).colorScheme.onSurface,
                   ),
                 ),

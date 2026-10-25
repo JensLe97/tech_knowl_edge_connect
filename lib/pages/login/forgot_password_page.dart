@@ -32,9 +32,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: IconThemeData(
-          color: cs.onSurface,
-        ),
+        iconTheme: IconThemeData(color: cs.onSurface),
       ),
       body: AuthBackground(
         child: SingleChildScrollView(
@@ -51,9 +49,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 decoration: BoxDecoration(
                   color: cs.surfaceContainerHighest.withAlpha(153),
                   borderRadius: BorderRadius.circular(16),
-                  border: Border.all(
-                    color: cs.outline.withAlpha(12),
-                  ),
+                  border: Border.all(color: cs.outline.withAlpha(12)),
                 ),
                 child: Icon(
                   Icons.vpn_key_outlined,
@@ -92,16 +88,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 obscureText: false,
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.done,
-                prefixIcon:
-                    Icon(Icons.email_outlined, color: cs.onSurfaceVariant),
+                prefixIcon: Icon(
+                  Icons.email_outlined,
+                  color: cs.onSurfaceVariant,
+                ),
               ),
               const SizedBox(height: 32),
 
               // Submit Button
-              SubmitButton(
-                onTap: resetPassword,
-                text: "Zurücksetzen",
-              ),
+              SubmitButton(onTap: resetPassword, text: "Zurücksetzen"),
             ],
           ),
         ),
@@ -120,11 +115,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       builder: (context) {
         return Center(
           child: Container(
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  borderRadius: BorderRadius.circular(16)),
-              child: const CircularProgressIndicator()),
+            padding: const EdgeInsets.all(24),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surface,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const CircularProgressIndicator(),
+          ),
         );
       },
     );
@@ -137,7 +134,8 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       if (mounted) Navigator.of(context).pop();
 
       showSendMessage(
-          'Eine E-Mail mit dem Link zum Zurücksetzen des Passwortes wurde versendet.');
+        'Eine E-Mail mit dem Link zum Zurücksetzen des Passwortes wurde versendet.',
+      );
     } on FirebaseAuthException catch (e) {
       if (mounted) Navigator.of(context).pop();
       if (e.code == 'channel-error') {
@@ -203,9 +201,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           content: Text(
             message,
             textAlign: TextAlign.center,
-            style: textTheme.bodyLarge?.copyWith(
-              color: cs.onSurfaceVariant,
-            ),
+            style: textTheme.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
           ),
         );
       },

@@ -62,37 +62,36 @@ class _ProfilePageState extends State<ProfilePage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('Profil'),
-            ],
-          ),
-          centerTitle: true,
-          actions: [
-            IconButton(
-                onPressed: () {
-                  showModalBottomSheet(
-                      context: context,
-                      isScrollControlled: true,
-                      useRootNavigator: true,
-                      enableDrag: true,
-                      builder: (BuildContext context) {
-                        return SafeArea(child: MenuItems(isAdmin: _isAdmin));
-                      });
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
+          children: [Text('Profil')],
+        ),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                useRootNavigator: true,
+                enableDrag: true,
+                builder: (BuildContext context) {
+                  return SafeArea(child: MenuItems(isAdmin: _isAdmin));
                 },
-                icon: const Icon(Icons.more_horiz)),
-          ]),
+              );
+            },
+            icon: const Icon(Icons.more_horiz),
+          ),
+        ],
+      ),
       body: firebaseUser == null
           ? const Center(child: Text('Nicht eingeloggt.'))
           : StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
               stream: getUserDetails(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
+                  return const Center(child: CircularProgressIndicator());
                 } else if (snapshot.hasError) {
                   return Text("Ein Fehler ist aufgetreten: ${snapshot.error}");
                 } else if (snapshot.hasData) {
@@ -107,10 +106,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   String initials = parts.isEmpty || parts[0].isEmpty
                       ? '?'
                       : parts.length > 1
-                          ? (parts[0][0] + parts.last[0]).toUpperCase()
-                          : parts[0].length > 1
-                              ? parts[0].substring(0, 2).toUpperCase()
-                              : parts[0].toUpperCase();
+                      ? (parts[0][0] + parts.last[0]).toUpperCase()
+                      : parts[0].length > 1
+                      ? parts[0].substring(0, 2).toUpperCase()
+                      : parts[0].toUpperCase();
 
                   return SingleChildScrollView(
                     child: Padding(
@@ -123,18 +122,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               width: 120,
                               height: 120,
                               decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .secondaryContainer,
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.secondaryContainer,
                                 borderRadius: BorderRadius.circular(24),
                               ),
                               alignment: Alignment.center,
                               child: Text(
                                 initials,
                                 style: TextStyle(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .onSecondaryContainer,
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onSecondaryContainer,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 48,
                                 ),
@@ -146,30 +145,39 @@ class _ProfilePageState extends State<ProfilePage> {
                               child: Text(
                                 user['username'],
                                 style: const TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.bold),
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             const SizedBox(height: 10),
                             FittedBox(
                               fit: BoxFit.scaleDown,
-                              child: Text(user['email'],
-                                  style: TextStyle(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                  textAlign: TextAlign.center),
+                              child: Text(
+                                user['email'],
+                                style: TextStyle(
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.inversePrimary,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
                             ),
                             if (_isAdmin) ...[
                               const SizedBox(height: 25),
                               Container(
                                 padding: const EdgeInsets.symmetric(
-                                    horizontal: 15, vertical: 8),
+                                  horizontal: 15,
+                                  vertical: 8,
+                                ),
                                 decoration: BoxDecoration(
-                                    color:
-                                        Theme.of(context).colorScheme.onPrimary,
-                                    borderRadius: BorderRadius.circular(15)),
+                                  color: Theme.of(
+                                    context,
+                                  ).colorScheme.onPrimary,
+                                  borderRadius: BorderRadius.circular(15),
+                                ),
                                 child: const Text(
                                   "Admin",
                                   style: TextStyle(
@@ -187,9 +195,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   );
                 } else {
                   return const Text(
-                      "Keine Daten für diesen Benutzer vorhanden.");
+                    "Keine Daten für diesen Benutzer vorhanden.",
+                  );
                 }
-              }),
+              },
+            ),
     );
   }
 }

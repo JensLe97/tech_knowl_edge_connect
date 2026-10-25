@@ -26,9 +26,7 @@ void showErrorMessage(BuildContext context, String message) {
               decoration: BoxDecoration(
                 color: cs.errorContainer.withAlpha(76),
                 shape: BoxShape.circle,
-                border: Border.all(
-                  color: cs.error.withAlpha(25),
-                ),
+                border: Border.all(color: cs.error.withAlpha(25)),
               ),
               child: Icon(
                 Icons.error_outline_rounded,
@@ -50,9 +48,7 @@ void showErrorMessage(BuildContext context, String message) {
         content: Text(
           message,
           textAlign: TextAlign.center,
-          style: textTheme.bodyLarge?.copyWith(
-            color: cs.onSurfaceVariant,
-          ),
+          style: textTheme.bodyLarge?.copyWith(color: cs.onSurfaceVariant),
         ),
         actions: [
           SizedBox(
@@ -68,8 +64,10 @@ void showErrorMessage(BuildContext context, String message) {
                 padding: const EdgeInsets.symmetric(vertical: 16),
                 elevation: 0,
               ),
-              child: const Text('Verstanden',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+              child: const Text(
+                'Verstanden',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              ),
             ),
           ),
         ],

@@ -23,21 +23,25 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      final subjects = snapshot.docs.map((doc) {
-        return Subject.fromMap(doc.data(), doc.id);
-      }).toList();
-      subjects.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
-      return subjects;
-    });
+          final subjects = snapshot.docs.map((doc) {
+            return Subject.fromMap(doc.data(), doc.id);
+          }).toList();
+          subjects.sort(
+            (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+                .compareTo(
+                  b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
+                ),
+          );
+          return subjects;
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -48,14 +52,17 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      final subjects = snapshot.docs.map((doc) {
-        return Subject.fromMap(doc.data(), doc.id);
-      }).toList();
-      subjects.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
-      return subjects;
-    });
+          final subjects = snapshot.docs.map((doc) {
+            return Subject.fromMap(doc.data(), doc.id);
+          }).toList();
+          subjects.sort(
+            (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+                .compareTo(
+                  b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0),
+                ),
+          );
+          return subjects;
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -68,9 +75,10 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
@@ -85,17 +93,18 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Category.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Category.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -108,10 +117,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Category.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Category.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -124,9 +133,10 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
@@ -143,17 +153,18 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Topic.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Topic.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -168,10 +179,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Topic.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Topic.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -184,16 +195,20 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
 
   // --- Units ---
   Stream<List<Unit>> getUnits(
-      String subjectId, String categoryId, String topicId) {
+    String subjectId,
+    String categoryId,
+    String topicId,
+  ) {
     final globalStream = _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -206,17 +221,18 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Unit.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Unit.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -233,10 +249,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Unit.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Unit.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -249,16 +265,21 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
 
   // --- Concepts ---
   Stream<List<Concept>> getConcepts(
-      String subjectId, String categoryId, String topicId, String unitId) {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+  ) {
     final globalStream = _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -273,17 +294,18 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Concept.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Concept.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -302,10 +324,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Concept.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return Concept.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -318,16 +340,22 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
 
   // --- Learning Bites ---
-  Stream<List<LearningBite>> getLearningBites(String subjectId,
-      String categoryId, String topicId, String unitId, String conceptId) {
+  Stream<List<LearningBite>> getLearningBites(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+  ) {
     final globalStream = _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -344,17 +372,18 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return LearningBite.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return LearningBite.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     final user = FirebaseAuth.instance.currentUser;
     if (user == null) {
       return globalStream.map((list) {
-        list.sort((a, b) => (a.createdAt ??
-                DateTime.fromMillisecondsSinceEpoch(0))
-            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+        list.sort(
+          (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+              .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+        );
         return list;
       });
     }
@@ -375,10 +404,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return LearningBite.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return LearningBite.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
 
     return _combineStreams(globalStream, userStream).map((lists) {
       final global = lists[0];
@@ -391,9 +420,10 @@ class ContentService {
         combinedMap[s.id] = s;
       }
       final sortedList = combinedMap.values.toList();
-      sortedList.sort((a, b) => (a.createdAt ??
-              DateTime.fromMillisecondsSinceEpoch(0))
-          .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)));
+      sortedList.sort(
+        (a, b) => (a.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0))
+            .compareTo(b.createdAt ?? DateTime.fromMillisecondsSinceEpoch(0)),
+      );
       return sortedList;
     });
   }
@@ -406,10 +436,10 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return LearningBite.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return LearningBite.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
   }
 
   // Fetch all pending learning bites for admins to review
@@ -420,20 +450,21 @@ class ContentService {
         .orderBy('createdAt')
         .snapshots()
         .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return LearningBite.fromMap(doc.data(), doc.id);
-      }).toList();
-    });
+          return snapshot.docs.map((doc) {
+            return LearningBite.fromMap(doc.data(), doc.id);
+          }).toList();
+        });
   }
 
   // Add a new user-generated learning bite
   Future<void> addLearningBite(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      LearningBite bite) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    LearningBite bite,
+  ) async {
     final userId = FirebaseAuth.instance.currentUser?.uid;
 
     await _firestore
@@ -460,12 +491,17 @@ class ContentService {
   // --- Update Methods ---
 
   Future<void> updateSubject(
-      String subjectId, Map<String, dynamic> data) async {
+    String subjectId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore.collection('content_subjects').doc(subjectId).update(data);
   }
 
   Future<void> updateCategory(
-      String subjectId, String categoryId, Map<String, dynamic> data) async {
+    String subjectId,
+    String categoryId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -474,8 +510,12 @@ class ContentService {
         .update(data);
   }
 
-  Future<void> updateTopic(String subjectId, String categoryId, String topicId,
-      Map<String, dynamic> data) async {
+  Future<void> updateTopic(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -486,8 +526,13 @@ class ContentService {
         .update(data);
   }
 
-  Future<void> updateUnit(String subjectId, String categoryId, String topicId,
-      String unitId, Map<String, dynamic> data) async {
+  Future<void> updateUnit(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -501,12 +546,13 @@ class ContentService {
   }
 
   Future<void> updateConcept(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      Map<String, dynamic> data) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -522,13 +568,14 @@ class ContentService {
   }
 
   Future<void> updateLearningBite(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      String learningBiteId,
-      Map<String, dynamic> data) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    String learningBiteId,
+    Map<String, dynamic> data,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -607,7 +654,8 @@ class ContentService {
         final data = docSnap.data();
         if (data != null) {
           final bites = Map<String, dynamic>.from(
-              data['bites'] as Map<String, dynamic>? ?? {});
+            data['bites'] as Map<String, dynamic>? ?? {},
+          );
           final bool hasBite = bites.containsKey(learningBiteId);
           if (hasBite) {
             bites.remove(learningBiteId);
@@ -617,13 +665,15 @@ class ContentService {
           } else {
             final biteValues = bites.values
                 .map(
-                    (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0)
+                  (e) => (e as Map<String, dynamic>)['progress'] as num? ?? 0,
+                )
                 .toList();
             final currentExpected =
                 (data['expectedBiteCount'] as num?)?.toInt() ??
-                    (biteValues.length + (hasBite ? 1 : 0));
-            final expectedAfter =
-                (currentExpected - 1) < 0 ? 0 : (currentExpected - 1);
+                (biteValues.length + (hasBite ? 1 : 0));
+            final expectedAfter = (currentExpected - 1) < 0
+                ? 0
+                : (currentExpected - 1);
             final denom = expectedAfter > 0 ? expectedAfter : biteValues.length;
             final agg = biteValues.isEmpty
                 ? 0
@@ -791,9 +841,7 @@ class ContentService {
         .delete();
   }
 
-  Future<void> deleteSubject({
-    required String subjectId,
-  }) async {
+  Future<void> deleteSubject({required String subjectId}) async {
     final categories = await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -828,7 +876,10 @@ class ContentService {
   }
 
   Future<void> addTopic(
-      String subjectId, String categoryId, Topic topic) async {
+    String subjectId,
+    String categoryId,
+    Topic topic,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -839,7 +890,11 @@ class ContentService {
   }
 
   Future<void> addUnit(
-      String subjectId, String categoryId, String topicId, Unit unit) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    Unit unit,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -851,8 +906,13 @@ class ContentService {
         .add(unit.toMap());
   }
 
-  Future<void> addConcept(String subjectId, String categoryId, String topicId,
-      String unitId, Concept concept) async {
+  Future<void> addConcept(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    Concept concept,
+  ) async {
     await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -898,8 +958,10 @@ class ContentService {
 
   // --- Single Item Fetchers (for Resume/Navigation) ---
   Future<Subject> getSubject(String subjectId) async {
-    final doc =
-        await _firestore.collection('content_subjects').doc(subjectId).get();
+    final doc = await _firestore
+        .collection('content_subjects')
+        .doc(subjectId)
+        .get();
     return Subject.fromMap(doc.data()!, doc.id);
   }
 
@@ -914,7 +976,10 @@ class ContentService {
   }
 
   Future<Topic> getTopic(
-      String subjectId, String categoryId, String topicId) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+  ) async {
     final doc = await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -926,8 +991,12 @@ class ContentService {
     return Topic.fromMap(doc.data()!, doc.id);
   }
 
-  Future<Unit> getUnit(String subjectId, String categoryId, String topicId,
-      String unitId) async {
+  Future<Unit> getUnit(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+  ) async {
     final doc = await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -941,8 +1010,13 @@ class ContentService {
     return Unit.fromMap(doc.data()!, doc.id);
   }
 
-  Future<Concept> getConcept(String subjectId, String categoryId,
-      String topicId, String unitId, String conceptId) async {
+  Future<Concept> getConcept(
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+  ) async {
     final doc = await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -959,12 +1033,13 @@ class ContentService {
   }
 
   Future<LearningBite> getLearningBite(
-      String subjectId,
-      String categoryId,
-      String topicId,
-      String unitId,
-      String conceptId,
-      String learningBiteId) async {
+    String subjectId,
+    String categoryId,
+    String topicId,
+    String unitId,
+    String conceptId,
+    String learningBiteId,
+  ) async {
     final doc = await _firestore
         .collection('content_subjects')
         .doc(subjectId)
@@ -985,7 +1060,8 @@ class ContentService {
   /// Find the full content path for a learning bite by its document id
   /// Returns a map with keys: subjectId, categoryId, topicId, unitId, conceptId, learningBiteId
   Future<Map<String, String>?> findLearningBitePath(
-      String learningBiteId) async {
+    String learningBiteId,
+  ) async {
     // Firestore requires a full document path when querying collectionGroup by
     // documentId(). callers historically passed only the bare id which causes
     // an "odd number of segments" error. To be robust we fall back to
@@ -1038,24 +1114,33 @@ class ContentService {
     try {
       // enrich with task metadata so resume UI can show task progress without extra lookups
       final tasks = await getTasks(
-          subjectId, categoryId, topicId, unitId, conceptId, learningBiteId);
+        subjectId,
+        categoryId,
+        topicId,
+        unitId,
+        conceptId,
+        learningBiteId,
+      );
       final Map<String, TaskProgress> tasksMap = {
         for (final t in tasks)
           t.id: TaskProgress(
-              taskId: t.id,
-              type: t.type.name,
-              status: 'not_started',
-              progress: 0)
+            taskId: t.id,
+            type: t.type.name,
+            status: 'not_started',
+            progress: 0,
+          ),
       };
-      await _progressService.startOrAttachBite(userId,
-          biteId: learningBiteId,
-          unitId: unitId,
-          subjectId: subjectId,
-          categoryId: categoryId,
-          topicId: topicId,
-          conceptId: conceptId,
-          tasks: tasksMap,
-          initialProgress: 0);
+      await _progressService.startOrAttachBite(
+        userId,
+        biteId: learningBiteId,
+        unitId: unitId,
+        subjectId: subjectId,
+        categoryId: categoryId,
+        topicId: topicId,
+        conceptId: conceptId,
+        tasks: tasksMap,
+        initialProgress: 0,
+      );
     } catch (_) {
       // ignore
     }
@@ -1063,7 +1148,9 @@ class ContentService {
 
   // Helper to combine two streams of lists so that the output updates whenever *either* input updates.
   Stream<List<List<T>>> _combineStreams<T>(
-      Stream<List<T>> stream1, Stream<List<T>> stream2) {
+    Stream<List<T>> stream1,
+    Stream<List<T>> stream2,
+  ) {
     // ignore: close_sinks
     final controller = StreamController<List<List<T>>>();
     List<T> list1 = [];

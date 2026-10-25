@@ -3,5 +3,8 @@
   "extends": [
     "config:recommended"
   ],
-  "rebaseWhen": "behind-base-branch"
+  "rebaseWhen": "behind-base-branch",
+  "ignoreDeps": [
+    "dev.flutter.flutter-plugin-loader"
+  ]
 }

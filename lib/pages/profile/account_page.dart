@@ -323,11 +323,12 @@ class _AccountPageState extends State<AccountPage> {
 
     if (providerIds.contains('google.com')) {
       try {
-        final gUser = await GoogleSignIn().signIn();
-        if (gUser == null) return false;
-        final gAuth = await gUser.authentication;
+        final gUser = await GoogleSignIn.instance.authenticate();
+        final gAuth = gUser.authentication;
+        final authorization = await gUser.authorizationClient
+            .authorizationForScopes(const <String>['email']);
         final credential = GoogleAuthProvider.credential(
-          accessToken: gAuth.accessToken,
+          accessToken: authorization?.accessToken,
           idToken: gAuth.idToken,
         );
         await user.reauthenticateWithCredential(credential);

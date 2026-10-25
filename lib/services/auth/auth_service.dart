@@ -5,21 +5,20 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   Future<UserCredential?> signInWithGoogle() async {
-    GoogleSignInAccount? gUser;
+    late GoogleSignInAccount gUser;
     try {
-      gUser = await GoogleSignIn().signIn();
+      gUser = await GoogleSignIn.instance.authenticate();
     } catch (e) {
       return null;
     }
 
-    if (gUser == null) {
-      return null;
-    }
-
-    final GoogleSignInAuthentication gAuth = await gUser.authentication;
+    final GoogleSignInAuthentication gAuth = gUser.authentication;
+    final GoogleSignInClientAuthorization? authorization = await gUser
+        .authorizationClient
+        .authorizationForScopes(const <String>['email']);
 
     final credential = GoogleAuthProvider.credential(
-      accessToken: gAuth.accessToken,
+      accessToken: authorization?.accessToken,
       idToken: gAuth.idToken,
     );
 

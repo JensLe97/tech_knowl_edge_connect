@@ -7,12 +7,12 @@ class IdeaFolderTile extends StatelessWidget {
   final Color color;
 
   const IdeaFolderTile({
-    Key? key,
+    super.key,
     required this.title,
     required this.onTap,
     required this.icon,
     required this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

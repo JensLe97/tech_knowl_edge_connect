@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 class UploadImagePage extends StatelessWidget {
   final void Function(ImageSource) sendImage;
 
-  const UploadImagePage({Key? key, required this.sendImage}) : super(key: key);
+  const UploadImagePage({super.key, required this.sendImage});
 
   @override
   Widget build(BuildContext context) {

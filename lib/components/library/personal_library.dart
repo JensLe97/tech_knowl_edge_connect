@@ -7,7 +7,7 @@ import 'package:tech_knowl_edge_connect/components/tiles/idea_folder_tile.dart';
 import 'package:tech_knowl_edge_connect/pages/library/create_folder_page.dart';
 
 class PersonalLibrary extends StatefulWidget {
-  const PersonalLibrary({Key? key}) : super(key: key);
+  const PersonalLibrary({super.key});
 
   @override
   State<PersonalLibrary> createState() => _PersonalLibraryState();

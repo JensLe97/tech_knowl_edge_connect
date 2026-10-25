@@ -9,12 +9,12 @@ class UserBottomSheet extends StatelessWidget {
   final bool isContent;
 
   const UserBottomSheet({
-    Key? key,
+    super.key,
     required this.toggleBlockUser,
     required this.report,
     this.isBlocked = false,
     this.isContent = false,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

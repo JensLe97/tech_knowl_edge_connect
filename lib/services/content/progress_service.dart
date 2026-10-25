@@ -345,10 +345,10 @@ class ProgressService {
           'bites': {
             biteId: {
               'biteId': biteId,
-              if (conceptId != null) 'conceptId': conceptId,
-              if (categoryId != null) 'categoryId': categoryId,
-              if (topicId != null) 'topicId': topicId,
-              if (journeyId != null) 'journeyId': journeyId,
+              'conceptId': ?conceptId,
+              'categoryId': ?categoryId,
+              'topicId': ?topicId,
+              'journeyId': ?journeyId,
               'status': 'in_progress',
               'progress': initialProgress,
               'lastUpdated': FieldValue.serverTimestamp(),

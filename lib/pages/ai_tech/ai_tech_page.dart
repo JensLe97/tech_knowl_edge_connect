@@ -32,12 +32,12 @@ class AiTechPage extends StatefulWidget {
   final String? sessionTitle;
   final List<XFile> initialPickedFiles;
   const AiTechPage({
-    Key? key,
+    super.key,
     required this.sessionId,
     this.initialUserMessage,
     this.sessionTitle,
     this.initialPickedFiles = const [],
-  }) : super(key: key);
+  });
 
   @override
   State<AiTechPage> createState() => _AiTechPageState();
@@ -392,7 +392,7 @@ class _AiTechPageState extends State<AiTechPage> {
       fileAttachments.add({
         'name': displayName,
         'ext': ext,
-        if (url != null) 'url': url,
+        'url': ?url,
       });
     }
 

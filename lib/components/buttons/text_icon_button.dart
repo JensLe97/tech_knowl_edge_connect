@@ -7,12 +7,12 @@ class TextIconButton extends StatelessWidget {
   final Color? borderColor;
 
   const TextIconButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.icon,
     required this.onTap,
     this.borderColor,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

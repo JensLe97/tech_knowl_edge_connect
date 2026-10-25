@@ -11,8 +11,7 @@ class LearningMaterialTile extends StatelessWidget {
 
   final LearningMaterial material;
   final VoidCallback? onTap;
-  const LearningMaterialTile({Key? key, required this.material, this.onTap})
-    : super(key: key);
+  const LearningMaterialTile({super.key, required this.material, this.onTap});
 
   @override
   Widget build(BuildContext context) {

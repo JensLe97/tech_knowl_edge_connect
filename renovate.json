@@ -6,5 +6,47 @@
   "rebaseWhen": "behind-base-branch",
   "ignoreDeps": [
     "dev.flutter.flutter-plugin-loader"
+  ],
+  "packageRules": [
+    {
+      "description": "Keep FlutterFire on the SPM-compatible Firebase iOS SDK generation",
+      "groupName": "FlutterFire SPM-compatible updates",
+      "matchPackageNames": [
+        "firebase_core",
+        "firebase_auth",
+        "cloud_firestore",
+        "firebase_storage",
+        "firebase_ai",
+        "firebase_app_check",
+        "cloud_functions"
+      ]
+    },
+    {
+      "matchPackageNames": [
+        "firebase_core",
+        "firebase_ai"
+      ],
+      "allowedVersions": "<5.0.0"
+    },
+    {
+      "matchPackageNames": [
+        "firebase_auth",
+        "cloud_firestore",
+        "cloud_functions"
+      ],
+      "allowedVersions": "<7.0.0"
+    },
+    {
+      "matchPackageNames": [
+        "firebase_storage"
+      ],
+      "allowedVersions": "<14.0.0"
+    },
+    {
+      "matchPackageNames": [
+        "firebase_app_check"
+      ],
+      "allowedVersions": "<0.5.0"
+    }
   ]
 }

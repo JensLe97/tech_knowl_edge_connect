@@ -5,6 +5,15 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthService {
   Future<UserCredential?> signInWithGoogle() async {
+    if (kIsWeb) {
+      final provider = GoogleAuthProvider()..addScope('email');
+      final userCredential = await FirebaseAuth.instance.signInWithPopup(
+        provider,
+      );
+      await _ensureUserDocument(userCredential);
+      return userCredential;
+    }
+
     late GoogleSignInAccount gUser;
     try {
       gUser = await GoogleSignIn.instance.authenticate();
@@ -25,17 +34,25 @@ class AuthService {
     final UserCredential userCredential = await FirebaseAuth.instance
         .signInWithCredential(credential);
 
+    await _ensureUserDocument(userCredential);
+    return userCredential;
+  }
+
+  Future<void> _ensureUserDocument(UserCredential userCredential) async {
     try {
       final docRef = FirebaseFirestore.instance
           .collection('Users')
           .doc(userCredential.user!.uid);
       final snapshot = await docRef.get();
       if (!snapshot.exists) {
-        await createUserDocument(gUser, userCredential.user!.uid);
+        final user = userCredential.user!;
+        await FirebaseFirestore.instance.collection('Users').doc(user.uid).set({
+          'email': user.email ?? '',
+          'username': user.displayName ?? 'Anonymer User',
+          'uid': user.uid,
+        });
       }
     } catch (_) {}
-
-    return userCredential;
   }
 
   Future<UserCredential?> signInWithApple() async {

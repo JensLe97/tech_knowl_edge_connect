@@ -9,7 +9,7 @@ import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
 class SubjectDialog extends StatefulWidget {
   final Subject? subject;
 
-  const SubjectDialog({super.key,this.subject});
+  const SubjectDialog({super.key, this.subject});
 
   @override
   State<SubjectDialog> createState() => _SubjectDialogState();

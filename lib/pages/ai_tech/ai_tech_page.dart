@@ -389,11 +389,7 @@ class _AiTechPageState extends State<AiTechPage> {
           ? '${isVideo ? 'Video' : 'Foto'}_${DateFormat('dd.MM.yy_HH:mm').format(DateTime.now())}.$ext'
           : f.name;
 
-      fileAttachments.add({
-        'name': displayName,
-        'ext': ext,
-        'url': ?url,
-      });
+      fileAttachments.add({'name': displayName, 'ext': ext, 'url': ?url});
     }
 
     // On the first message without a generated title, generate one and

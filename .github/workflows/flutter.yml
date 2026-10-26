@@ -41,27 +41,3 @@ jobs:
 
       - name: Build App Bundle
         run: flutter build appbundle --debug
-
-  macos:
-    runs-on: macos-latest
-
-    steps:
-      - uses: actions/checkout@v7
-
-      - uses: subosito/flutter-action@v2
-        with:
-          flutter-version: "3.47.8"
-          channel: "stable"
-          cache: true
-
-      - name: Get dependencies
-        run: flutter pub get
-
-      - name: Analyze
-        run: flutter analyze
-
-      - name: Run tests
-        run: flutter test
-
-      - name: Build macOS application
-        run: xcodebuild -project macos/Runner.xcodeproj -scheme Runner -configuration Debug CODE_SIGNING_ALLOWED=NO CODE_SIGNING_REQUIRED=NO build

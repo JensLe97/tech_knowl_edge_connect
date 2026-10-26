@@ -40,6 +40,7 @@
 - [About](#about)
 - [GitHub Actions](#github-actions)
   - [Tests](#tests)
+  - [macOS Validation](#macos-validation)
   - [Web Deployment](#web-deployment)
   - [Android Deployment](#android-deployment)
   - [iOS Deployment](#ios-deployment)
@@ -59,6 +60,12 @@ Each commit triggers automated testing and builds to validate the codebase.
 ### Tests
 
 Each commit runs Flutter tests and builds an Android appbundle to validate the build process.
+
+### macOS Validation
+
+Each commit also builds the macOS application using Flutter's Swift Package Manager integration. Open
+[`macos/Runner.xcodeproj`](macos/Runner.xcodeproj) directly when working on the macOS host project;
+the macOS target no longer uses CocoaPods.
 
 ### Web Deployment
 

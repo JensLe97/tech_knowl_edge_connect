@@ -5,9 +5,11 @@
 # Install brew
 # /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 # Run "brew bundle"
+# Then run "pre-commit install" from the repository root to enable the Git hooks.
 
 # Core Development Dependencies
 brew "git"
+brew "pre-commit"
 
 # IDEs & Tools (Casks)
 cask "flutter"

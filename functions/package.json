@@ -2,7 +2,7 @@
   "name": "tech-knowl-edge-connect-functions",
   "private": true,
   "engines": {
-    "node": "24"
+    "node": "26"
   },
   "main": "index.js",
   "dependencies": {

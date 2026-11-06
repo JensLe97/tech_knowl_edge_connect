@@ -10,6 +10,7 @@ import 'package:tech_knowl_edge_connect/components/ai_tech/ai_tech_knowledge_che
 import 'package:tech_knowl_edge_connect/components/buttons/bottom_action_bar.dart';
 import 'package:record/record.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_answer.dart';
 import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_prompt.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/agents/base_agent.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
@@ -53,7 +54,7 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
   final List<String> _responses = [];
   final List<String> _answerFeedback = [];
   final List<String> _nextActions = [];
-  final List<String> _sessionTranscript = [];
+  final List<AiTechKnowledgeCheckAnswer> _resultAnswers = [];
   final List<Part> _journeySourceParts = [];
   final Map<String, Uint8List> _spokenQuestionAudio = {};
 
@@ -498,6 +499,7 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
         );
       }
 
+      final questionText = _questionText(prompts);
       final feedbackText = feedback.isCorrect
           ? '${feedback.feedback}\n\nKurzantwort: ${feedback.correctAnswer}'
           : _askedFollowUp
@@ -506,10 +508,13 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
       _responses.add(feedback.transcript);
       _answerFeedback.add(feedbackText);
       _nextActions.add(feedback.nextAction);
-      _sessionTranscript.add(
-        'Frage: ${_questionText(prompts)}\n'
-        'Antwort: ${feedback.transcript}\n'
-        'Rückmeldung: $feedbackText',
+      _resultAnswers.add(
+        AiTechKnowledgeCheckAnswer(
+          question: questionText,
+          answer: feedback.transcript,
+          feedback: feedbackText,
+          isCorrect: feedback.isCorrect,
+        ),
       );
       final hasFollowUp =
           feedback.needsFollowUp &&
@@ -597,15 +602,17 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
   }
 
   String _buildSummary() {
-    final assessment = _answerFeedback.isNotEmpty
-        ? _answerFeedback.last
-        : 'Bitte wiederhole die wichtigsten Punkte des Materials.';
     final nextAction = _nextActions.isNotEmpty
         ? _nextActions.last
         : 'Wiederhole die Kernaussage und vertiefe den Themenbereich mit einem passenden Lernbite.';
-    return '$assessment\n\n'
-        'Empfohlene nächste Maßnahme: $nextAction\n\n'
-        '${_sessionTranscript.join('\n\n')}';
+    final questionCount = _resultAnswers.length;
+    final correctAnswers = _resultAnswers
+        .where((answer) => answer.isCorrect)
+        .length;
+    return '## AI Tech Wissenscheck abgeschlossen\n\n'
+        '$questionCount ${questionCount == 1 ? 'Frage' : 'Fragen'} beantwortet, '
+        'davon $correctAnswers korrekt.\n\n'
+        '**Dein nächster Schritt:** $nextAction';
   }
 
   bool _isErrorStatusMessage(String message) {
@@ -711,7 +718,10 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
                   ),
                   child: AiTechKnowledgeCheckContent(
                     isComplete: _isComplete,
-                    summary: _isComplete ? _buildSummary() : '',
+                    resultAnswers: _resultAnswers,
+                    nextAction: _nextActions.isNotEmpty
+                        ? _nextActions.last
+                        : 'Wiederhole die Kernaussage und vertiefe den Themenbereich mit einem passenden Learning Bite.',
                     question: question,
                     statusMessage: _statusMessage,
                     isErrorStatus:

@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tech_knowl_edge_connect/components/ai_tech/ai_tech_knowledge_check_activity_indicator.dart';
 import 'package:tech_knowl_edge_connect/components/library/markdown_support.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_answer.dart';
 
 class AiTechKnowledgeCheckContent extends StatelessWidget {
   final bool isComplete;
-  final String summary;
+  final List<AiTechKnowledgeCheckAnswer> resultAnswers;
+  final String nextAction;
   final String question;
   final String? statusMessage;
   final bool isErrorStatus;
@@ -21,7 +23,8 @@ class AiTechKnowledgeCheckContent extends StatelessWidget {
   const AiTechKnowledgeCheckContent({
     super.key,
     required this.isComplete,
-    required this.summary,
+    required this.resultAnswers,
+    required this.nextAction,
     required this.question,
     required this.statusMessage,
     required this.isErrorStatus,
@@ -38,7 +41,10 @@ class AiTechKnowledgeCheckContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return isComplete
-        ? _AiTechKnowledgeCheckCompletion(summary: summary)
+        ? _AiTechKnowledgeCheckCompletion(
+            resultAnswers: resultAnswers,
+            nextAction: nextAction,
+          )
         : _AiTechKnowledgeCheckQuestion(
             question: question,
             statusMessage: statusMessage,
@@ -56,9 +62,13 @@ class AiTechKnowledgeCheckContent extends StatelessWidget {
 }
 
 class _AiTechKnowledgeCheckCompletion extends StatelessWidget {
-  final String summary;
+  final List<AiTechKnowledgeCheckAnswer> resultAnswers;
+  final String nextAction;
 
-  const _AiTechKnowledgeCheckCompletion({required this.summary});
+  const _AiTechKnowledgeCheckCompletion({
+    required this.resultAnswers,
+    required this.nextAction,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -66,28 +76,15 @@ class _AiTechKnowledgeCheckCompletion extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _SectionLabel('AI TECH WISSENSCHECK'),
-        const SizedBox(height: 24),
+        const SizedBox(height: 12),
         Center(
-          child: Container(
-            padding: const EdgeInsets.all(24),
-            decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surfaceContainerLowest,
-              shape: BoxShape.circle,
-              border: Border.all(
-                color: Theme.of(
-                  context,
-                ).colorScheme.outlineVariant.withAlpha(50),
-                width: 2,
-              ),
-            ),
-            child: Icon(
-              Icons.task_alt,
-              size: 64,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          child: Icon(
+            Icons.task_alt,
+            size: 44,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
-        const SizedBox(height: 24),
+        const SizedBox(height: 10),
         Text(
           'AI Tech Wissenscheck abgeschlossen',
           textAlign: TextAlign.center,
@@ -96,15 +93,196 @@ class _AiTechKnowledgeCheckCompletion extends StatelessWidget {
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
-        const SizedBox(height: 24),
-        _MarkdownCard(
-          data: summary,
-          padding: const EdgeInsets.all(24),
-          backgroundColor: Theme.of(context).colorScheme.surfaceContainerLowest,
+        const SizedBox(height: 4),
+        Text(
+          '${resultAnswers.length} '
+          '${resultAnswers.length == 1 ? 'Frage' : 'Fragen'} · '
+          '${resultAnswers.where((answer) => answer.isCorrect).length} korrekt',
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _NextStepCard(nextAction: nextAction),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _SectionLabel('DEINE ANTWORTEN (${resultAnswers.length})'),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        ...resultAnswers.indexed.map(
+          (entry) => Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: _ResultAnswerCard(index: entry.$1 + 1, answer: entry.$2),
+          ),
         ),
         const SizedBox(height: 16),
         const _FeedbackDisclaimer(),
       ],
+    );
+  }
+}
+
+class _NextStepCard extends StatelessWidget {
+  final String nextAction;
+
+  const _NextStepCard({required this.nextAction});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: colorScheme.primaryContainer.withAlpha(100),
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colorScheme.primary.withAlpha(38)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'DEIN NÄCHSTER SCHRITT',
+            style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              color: colorScheme.primary,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.8,
+            ),
+          ),
+          const SizedBox(height: 4),
+          _ResultMarkdown(data: nextAction),
+        ],
+      ),
+    );
+  }
+}
+
+class _ResultAnswerCard extends StatelessWidget {
+  final int index;
+  final AiTechKnowledgeCheckAnswer answer;
+
+  const _ResultAnswerCard({required this.index, required this.answer});
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Material(
+      color: colorScheme.surfaceContainerLowest,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: colorScheme.outlineVariant.withAlpha(60)),
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Theme(
+        data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+        child: ExpansionTile(
+          backgroundColor: colorScheme.surfaceContainerLowest,
+          collapsedBackgroundColor: colorScheme.surfaceContainerLowest,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          collapsedShape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          tilePadding: const EdgeInsets.symmetric(horizontal: 14),
+          childrenPadding: const EdgeInsets.fromLTRB(14, 8, 14, 14),
+          visualDensity: VisualDensity.compact,
+          leading: Container(
+            width: 28,
+            height: 28,
+            alignment: Alignment.center,
+            decoration: BoxDecoration(
+              color: answer.isCorrect
+                  ? colorScheme.primaryContainer
+                  : colorScheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: Text(
+              '$index',
+              style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                color: answer.isCorrect
+                    ? colorScheme.onPrimaryContainer
+                    : colorScheme.onSurfaceVariant,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          title: Text(
+            answer.question,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            style: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600),
+          ),
+          subtitle: Text(
+            answer.isCorrect ? 'Korrekt' : 'Details ansehen',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: answer.isCorrect
+                  ? colorScheme.primary
+                  : colorScheme.onSurfaceVariant,
+            ),
+          ),
+          children: [
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const _ResultSectionLabel('DEINE ANTWORT'),
+                  const SizedBox(height: 4),
+                  _ResultMarkdown(data: answer.answer),
+                  const SizedBox(height: 10),
+                  const _ResultSectionLabel('RÜCKMELDUNG'),
+                  const SizedBox(height: 4),
+                  _ResultMarkdown(data: answer.feedback),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ResultSectionLabel extends StatelessWidget {
+  final String text;
+
+  const _ResultSectionLabel(this.text);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: Theme.of(context).textTheme.labelMedium?.copyWith(
+        color: Theme.of(context).colorScheme.primary,
+        fontWeight: FontWeight.bold,
+        letterSpacing: 0.6,
+      ),
+    );
+  }
+}
+
+class _ResultMarkdown extends StatelessWidget {
+  final String data;
+
+  const _ResultMarkdown({required this.data});
+
+  @override
+  Widget build(BuildContext context) {
+    return MarkdownBody(
+      data: data,
+      extensionSet: getMarkdownExtensionSet(),
+      builders: getMarkdownColorBuilders(),
+      styleSheet: createMarkdownStyleSheet(context).copyWith(
+        p: Theme.of(context).textTheme.bodyMedium?.copyWith(height: 1.45),
+      ),
     );
   }
 }

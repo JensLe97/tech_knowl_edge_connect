@@ -1,15 +1,13 @@
 import 'dart:async';
-import 'dart:math' as math;
 import 'dart:typed_data';
 
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:flutter_soloud/flutter_soloud.dart';
+import 'package:tech_knowl_edge_connect/components/ai_tech/ai_tech_knowledge_check_content.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/bottom_action_bar.dart';
-import 'package:tech_knowl_edge_connect/components/library/markdown_support.dart';
 import 'package:record/record.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_prompt.dart';
@@ -711,316 +709,23 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
                     top: 10,
                     bottom: 120,
                   ),
-                  child: _isComplete
-                      ? Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'AI TECH WISSENSCHECK',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Center(
-                              child: Container(
-                                padding: const EdgeInsets.all(24),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.surfaceContainerLowest,
-                                  shape: BoxShape.circle,
-                                  border: Border.all(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.outlineVariant.withAlpha(50),
-                                    width: 2,
-                                  ),
-                                ),
-                                child: Icon(
-                                  Icons.task_alt,
-                                  size: 64,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 24),
-                            Text(
-                              'AI Tech Wissenscheck abgeschlossen',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context).textTheme.headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                  ),
-                            ),
-                            const SizedBox(height: 24),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.surfaceContainerLowest,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.outlineVariant.withAlpha(50),
-                                ),
-                              ),
-                              child: MarkdownBody(
-                                data: _buildSummary(),
-                                extensionSet: getMarkdownExtensionSet(),
-                                builders: getMarkdownColorBuilders(),
-                                styleSheet: createMarkdownStyleSheet(context)
-                                    .copyWith(
-                                      p: Theme.of(context).textTheme.bodyLarge
-                                          ?.copyWith(height: 1.5),
-                                    ),
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            Text(
-                              'AI-generierte Rückmeldung ist beratend und '
-                              'ersetzt keine Einschätzung durch Menschen.',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        )
-                      : Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Text(
-                              'AI TECH WISSENSCHECK',
-                              style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 14,
-                                letterSpacing: 1.2,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'Höre zu und antworte in deinen eigenen Worten.',
-                              style: Theme.of(context).textTheme.headlineSmall
-                                  ?.copyWith(
-                                    fontWeight: FontWeight.w800,
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.onSurface,
-                                  ),
-                            ),
-                            const SizedBox(height: 32),
-                            Container(
-                              width: double.infinity,
-                              padding: const EdgeInsets.all(24),
-                              decoration: BoxDecoration(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.surfaceContainerLowest,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.outlineVariant.withAlpha(50),
-                                ),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  MarkdownBody(
-                                    data: question,
-                                    extensionSet: getMarkdownExtensionSet(),
-                                    builders: getMarkdownColorBuilders(),
-                                    styleSheet:
-                                        createMarkdownStyleSheet(
-                                          context,
-                                        ).copyWith(
-                                          p: Theme.of(context)
-                                              .textTheme
-                                              .bodyLarge
-                                              ?.copyWith(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                                height: 1.6,
-                                                color: Theme.of(
-                                                  context,
-                                                ).colorScheme.onSurface,
-                                              ),
-                                        ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      if (_isSpeaking || _isAnalyzing)
-                                        _AiTechKnowledgeCheckActivityIndicator(
-                                          analyzing: _isAnalyzing,
-                                        ),
-                                      if (_isSpeaking || _isAnalyzing)
-                                        const SizedBox(width: 8),
-                                      IconButton.filledTonal(
-                                        onPressed: _isRecording || _isAnalyzing
-                                            ? null
-                                            : _isSpeaking
-                                            ? _stopSpeaking
-                                            : () => _speakText(question),
-                                        icon: Icon(
-                                          _isSpeaking
-                                              ? Icons.stop
-                                              : Icons.volume_up,
-                                        ),
-                                        tooltip: _isSpeaking
-                                            ? 'Vorlesen stoppen'
-                                            : 'Frage erneut vorlesen',
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                            if (_statusMessage != null && !_isAnalyzing) ...[
-                              const SizedBox(height: 16),
-                              Container(
-                                padding: const EdgeInsets.all(16),
-                                decoration: BoxDecoration(
-                                  color: _isErrorStatusMessage(_statusMessage!)
-                                      ? Theme.of(
-                                          context,
-                                        ).colorScheme.errorContainer
-                                      : Theme.of(
-                                          context,
-                                        ).colorScheme.secondaryContainer,
-                                  borderRadius: BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  _statusMessage!,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(
-                                        color:
-                                            _isErrorStatusMessage(
-                                              _statusMessage!,
-                                            )
-                                            ? Theme.of(
-                                                context,
-                                              ).colorScheme.onErrorContainer
-                                            : Theme.of(context)
-                                                  .colorScheme
-                                                  .onSecondaryContainer,
-                                      ),
-                                ),
-                              ),
-                            ],
-                            if (_hasCurrentAnswer && _responses.isNotEmpty) ...[
-                              const SizedBox(height: 24),
-                              Text(
-                                'DEINE ANTWORT',
-                                style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 14,
-                                  letterSpacing: 1.2,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.surfaceContainer,
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.outlineVariant.withAlpha(50),
-                                  ),
-                                ),
-                                child: MarkdownBody(
-                                  data: _responses.last,
-                                  extensionSet: getMarkdownExtensionSet(),
-                                  builders: getMarkdownColorBuilders(),
-                                  styleSheet: createMarkdownStyleSheet(context)
-                                      .copyWith(
-                                        p: Theme.of(context).textTheme.bodyLarge
-                                            ?.copyWith(height: 1.5),
-                                      ),
-                                ),
-                              ),
-                            ],
-                            if (_hasCurrentAnswer &&
-                                _answerFeedback.isNotEmpty) ...[
-                              const SizedBox(height: 16),
-                              Container(
-                                width: double.infinity,
-                                padding: const EdgeInsets.all(20),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(context)
-                                      .colorScheme
-                                      .secondaryContainer
-                                      .withAlpha(80),
-                                  borderRadius: BorderRadius.circular(16),
-                                  border: Border.all(
-                                    color: Theme.of(
-                                      context,
-                                    ).colorScheme.secondaryContainer,
-                                  ),
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'RÜCKMELDUNG',
-                                      style: TextStyle(
-                                        color: Theme.of(
-                                          context,
-                                        ).colorScheme.primary,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        letterSpacing: 1.2,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    MarkdownBody(
-                                      data: _answerFeedback.last,
-                                      extensionSet: getMarkdownExtensionSet(),
-                                      builders: getMarkdownColorBuilders(),
-                                      styleSheet:
-                                          createMarkdownStyleSheet(
-                                            context,
-                                          ).copyWith(
-                                            p: Theme.of(context)
-                                                .textTheme
-                                                .bodyLarge
-                                                ?.copyWith(height: 1.5),
-                                          ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                            const SizedBox(height: 20),
-                            Text(
-                              'Die Audioaufnahme wird zur Auswertung an '
-                              'Firebase AI gesendet und nicht als Audiodatei '
-                              'in der App gespeichert.',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'AI-generierte Rückmeldung ist beratend und '
-                              'ersetzt keine Einschätzung durch Menschen.',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
+                  child: AiTechKnowledgeCheckContent(
+                    isComplete: _isComplete,
+                    summary: _isComplete ? _buildSummary() : '',
+                    question: question,
+                    statusMessage: _statusMessage,
+                    isErrorStatus:
+                        _statusMessage != null &&
+                        _isErrorStatusMessage(_statusMessage!),
+                    isSpeaking: _isSpeaking,
+                    isAnalyzing: _isAnalyzing,
+                    isRecording: _isRecording,
+                    hasCurrentAnswer: _hasCurrentAnswer,
+                    responses: _responses,
+                    answerFeedback: _answerFeedback,
+                    onStopSpeaking: _stopSpeaking,
+                    onSpeakQuestion: () => _speakText(question),
+                  ),
                 ),
               ),
               Positioned(
@@ -1066,84 +771,6 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
           ),
         );
       },
-    );
-  }
-}
-
-class _AiTechKnowledgeCheckActivityIndicator extends StatefulWidget {
-  final bool analyzing;
-
-  const _AiTechKnowledgeCheckActivityIndicator({required this.analyzing});
-
-  @override
-  State<_AiTechKnowledgeCheckActivityIndicator> createState() =>
-      _AiTechKnowledgeCheckActivityIndicatorState();
-}
-
-class _AiTechKnowledgeCheckActivityIndicatorState
-    extends State<_AiTechKnowledgeCheckActivityIndicator>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 1100),
-    )..repeat();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    if (widget.analyzing) {
-      return Tooltip(
-        message: 'Antwort wird transkribiert und ausgewertet',
-        child: SizedBox(
-          width: 24,
-          height: 24,
-          child: CircularProgressIndicator(
-            strokeWidth: 2.5,
-            color: colorScheme.primary,
-          ),
-        ),
-      );
-    }
-
-    return Tooltip(
-      message: 'AI Tech liest die Frage vor',
-      child: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, child) {
-          return SizedBox(
-            width: 28,
-            height: 24,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: List.generate(3, (index) {
-                final phase = (_controller.value + index / 3) % 1;
-                final height = 8 + math.sin(phase * math.pi * 2).abs() * 14;
-                return Container(
-                  width: 5,
-                  height: height,
-                  decoration: BoxDecoration(
-                    color: colorScheme.primary,
-                    borderRadius: BorderRadius.circular(99),
-                  ),
-                );
-              }),
-            ),
-          );
-        },
-      ),
     );
   }
 }

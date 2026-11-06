@@ -371,9 +371,7 @@ class _AiTechKnowledgeCheckQuestion extends StatelessWidget {
                         ? onStopSpeaking
                         : onSpeakQuestion,
                     icon: Icon(isSpeaking ? Icons.stop : Icons.volume_up),
-                    tooltip: isSpeaking
-                        ? 'Vorlesen stoppen'
-                        : 'Frage erneut vorlesen',
+                    tooltip: isSpeaking ? 'Vorlesen stoppen' : 'Frage vorlesen',
                   ),
                 ],
               ),

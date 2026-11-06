@@ -652,7 +652,8 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
             ? 1.0
             : _completedQuestionCount / (prompts.length + _followUpCount);
         final question = _questionText(prompts);
-        if (!_isComplete &&
+        if (!kIsWeb &&
+            !_isComplete &&
             _lastSpokenPrompt != question &&
             !_isSpeaking &&
             !_isRecording &&

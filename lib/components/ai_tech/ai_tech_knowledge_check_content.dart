@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:tech_knowl_edge_connect/components/ai_tech/ai_tech_knowledge_check_activity_indicator.dart';
@@ -72,24 +74,79 @@ class _AiTechKnowledgeCheckCompletion extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final correctAnswers = resultAnswers
+        .where((answer) => answer.isCorrect)
+        .length;
+    final ratio = resultAnswers.isNotEmpty
+        ? correctAnswers / resultAnswers.length
+        : 0.0;
+    final completedEmojis = ['✅', '🏁', '✔️', '🟢', '🎓'];
+    final excellentEmojis = ['🎉', '🏆', '🥇', '🎖️', '🌟'];
+    final greatEmojis = ['👍', '🙌', '✨', '💯', '🥈'];
+    final practiceEmojis = ['💪', '🔁', '📈', '🛠️', '🤓'];
+    final String headerText;
+    final IconData headerIcon;
+    final Color iconColor;
+    final List<String> emojis;
+
+    if (resultAnswers.isEmpty) {
+      headerText = 'Absolviert!';
+      headerIcon = Icons.task_alt;
+      iconColor = Colors.green;
+      emojis = completedEmojis;
+    } else if (ratio >= 0.9) {
+      headerText = 'Super gemacht!';
+      headerIcon = Icons.rocket_launch;
+      iconColor = Colors.amber.shade700;
+      emojis = excellentEmojis;
+    } else if (ratio >= 0.5) {
+      headerText = 'Gut gemacht!';
+      headerIcon = Icons.thumb_up;
+      iconColor = Theme.of(context).colorScheme.primary;
+      emojis = greatEmojis;
+    } else {
+      headerText = 'Übe weiter!';
+      headerIcon = Icons.fitness_center;
+      iconColor = Colors.orange;
+      emojis = practiceEmojis;
+    }
+
+    final emoji = emojis[Random().nextInt(emojis.length)];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _SectionLabel('AI TECH WISSENSCHECK'),
         const SizedBox(height: 12),
         Center(
-          child: Icon(
-            Icons.task_alt,
-            size: 44,
-            color: Theme.of(context).colorScheme.primary,
+          child: Container(
+            padding: const EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.surfaceContainerLowest,
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Theme.of(
+                  context,
+                ).colorScheme.outlineVariant.withAlpha(50),
+                width: 2,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: iconColor.withAlpha(40),
+                  blurRadius: 28,
+                  spreadRadius: 6,
+                ),
+              ],
+            ),
+            child: Icon(headerIcon, size: 52, color: iconColor),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 12),
         Text(
-          'AI Tech Wissenscheck abgeschlossen',
+          '$emoji  $headerText',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-            fontWeight: FontWeight.w800,
+            fontSize: 26,
+            fontWeight: FontWeight.bold,
             color: Theme.of(context).colorScheme.onSurface,
           ),
         ),
@@ -97,7 +154,7 @@ class _AiTechKnowledgeCheckCompletion extends StatelessWidget {
         Text(
           '${resultAnswers.length} '
           '${resultAnswers.length == 1 ? 'Frage' : 'Fragen'} · '
-          '${resultAnswers.where((answer) => answer.isCorrect).length} korrekt',
+          '$correctAnswers korrekt',
           textAlign: TextAlign.center,
           style: Theme.of(context).textTheme.bodyMedium?.copyWith(
             color: Theme.of(context).colorScheme.onSurfaceVariant,

@@ -120,22 +120,10 @@ class _LearningMaterialPreviewPageState
           centerTitle: true,
           actionsPadding: const EdgeInsets.only(right: 8),
           actions: [
-            IconButton(
-              // Create AI summary action
-              icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
-              tooltip: 'AI Tech Zusammenfassung',
-              // Open new page to show AI summary
-              onPressed: _summarizeMaterial,
-            ),
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
-              tooltip: 'AI Tech Lektion erstellen',
-              onPressed: _generateLearningBite,
-            ),
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.commentDots),
-              tooltip: 'AI Tech Wissenscheck starten',
-              onPressed: _startAiTechKnowledgeCheck,
+            _AiTechMaterialActions(
+              onSummarize: _summarizeMaterial,
+              onCreateLesson: _generateLearningBite,
+              onStartKnowledgeCheck: _startAiTechKnowledgeCheck,
             ),
           ],
         ),
@@ -153,20 +141,10 @@ class _LearningMaterialPreviewPageState
           centerTitle: true,
           actionsPadding: const EdgeInsets.only(right: 8),
           actions: [
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
-              tooltip: 'AI Tech Zusammenfassung',
-              onPressed: _summarizeMaterial,
-            ),
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
-              tooltip: 'AI Tech Lektion erstellen',
-              onPressed: _generateLearningBite,
-            ),
-            IconButton(
-              icon: const FaIcon(FontAwesomeIcons.commentDots),
-              tooltip: 'AI Tech Wissenscheck starten',
-              onPressed: _startAiTechKnowledgeCheck,
+            _AiTechMaterialActions(
+              onSummarize: _summarizeMaterial,
+              onCreateLesson: _generateLearningBite,
+              onStartKnowledgeCheck: _startAiTechKnowledgeCheck,
             ),
           ],
         ),
@@ -274,20 +252,10 @@ class _TextPreviewState extends State<_TextPreview> {
         centerTitle: true,
         actionsPadding: const EdgeInsets.only(right: 8),
         actions: [
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
-            tooltip: 'AI Tech Zusammenfassung',
-            onPressed: widget.summarizeMaterial,
-          ),
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
-            tooltip: 'AI Tech Lektion erstellen',
-            onPressed: widget.generateLearningBite,
-          ),
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.commentDots),
-            tooltip: 'AI Tech Wissenscheck starten',
-            onPressed: widget.startAiTechKnowledgeCheck,
+          _AiTechMaterialActions(
+            onSummarize: widget.summarizeMaterial,
+            onCreateLesson: widget.generateLearningBite,
+            onStartKnowledgeCheck: widget.startAiTechKnowledgeCheck,
           ),
         ],
       ),
@@ -409,22 +377,10 @@ class _VideoPreviewState extends State<_VideoPreview> {
         centerTitle: true,
         actionsPadding: const EdgeInsets.only(right: 8),
         actions: [
-          IconButton(
-            // Create AI summary action
-            icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
-            tooltip: 'AI Tech Zusammenfassung',
-            // Open new page to show AI summary
-            onPressed: widget.summarizeMaterial,
-          ),
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
-            tooltip: 'AI Tech Lektion erstellen',
-            onPressed: widget.generateLearningBite,
-          ),
-          IconButton(
-            icon: const FaIcon(FontAwesomeIcons.commentDots),
-            tooltip: 'AI Tech Wissenscheck starten',
-            onPressed: widget.startAiTechKnowledgeCheck,
+          _AiTechMaterialActions(
+            onSummarize: widget.summarizeMaterial,
+            onCreateLesson: widget.generateLearningBite,
+            onStartKnowledgeCheck: widget.startAiTechKnowledgeCheck,
           ),
         ],
       ),
@@ -459,6 +415,61 @@ class _VideoPreviewState extends State<_VideoPreview> {
               )
             : const CircularProgressIndicator(),
       ),
+    );
+  }
+}
+
+class _AiTechMaterialActions extends StatelessWidget {
+  final VoidCallback onSummarize;
+  final VoidCallback onCreateLesson;
+  final VoidCallback onStartKnowledgeCheck;
+
+  const _AiTechMaterialActions({
+    required this.onSummarize,
+    required this.onCreateLesson,
+    required this.onStartKnowledgeCheck,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PopupMenuButton<String>(
+      icon: const Icon(Icons.more_horiz),
+      onSelected: (value) {
+        switch (value) {
+          case 'summarize':
+            onSummarize();
+          case 'learning_bite':
+            onCreateLesson();
+          case 'ai_tech_knowledge_check':
+            onStartKnowledgeCheck();
+        }
+      },
+      itemBuilder: (context) => [
+        const PopupMenuItem<String>(
+          value: 'summarize',
+          child: ListTile(
+            leading: FaIcon(FontAwesomeIcons.wandMagicSparkles),
+            title: Text('AI Tech Zusammenfassung'),
+            contentPadding: EdgeInsets.zero,
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'learning_bite',
+          child: ListTile(
+            leading: FaIcon(FontAwesomeIcons.schoolCircleCheck),
+            title: Text('AI Tech Lektion erstellen'),
+            contentPadding: EdgeInsets.zero,
+          ),
+        ),
+        const PopupMenuItem<String>(
+          value: 'ai_tech_knowledge_check',
+          child: ListTile(
+            leading: FaIcon(FontAwesomeIcons.commentDots),
+            title: Text('AI Tech Wissenscheck starten'),
+            contentPadding: EdgeInsets.zero,
+          ),
+        ),
+      ],
     );
   }
 }

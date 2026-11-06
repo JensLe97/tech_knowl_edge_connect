@@ -77,7 +77,6 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
   bool _hasCurrentAnswer = false;
   String? _activeFollowUp;
   String? _pendingFollowUpQuestion;
-  String _lastSpokenPrompt = '';
   String? _statusMessage;
 
   @override
@@ -652,17 +651,6 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
             ? 1.0
             : _completedQuestionCount / (prompts.length + _followUpCount);
         final question = _questionText(prompts);
-        if (!kIsWeb &&
-            !_isComplete &&
-            _lastSpokenPrompt != question &&
-            !_isSpeaking &&
-            !_isRecording &&
-            !_isAnalyzing) {
-          _lastSpokenPrompt = question;
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (mounted && !_isComplete) _speakText(question);
-          });
-        }
 
         return Scaffold(
           appBar: AppBar(

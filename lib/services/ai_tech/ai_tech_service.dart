@@ -32,6 +32,7 @@ class AiTechService {
     String? userMessage,
     String? instruction,
     String? context,
+    List<Map<String, dynamic>> sourceMaterials = const [],
   }) async {
     final journeyRef = firestore.collection('ai_tech_journeys').doc(journeyId);
     await journeyRef.set({
@@ -44,6 +45,7 @@ class AiTechService {
       'createdAt': DateTime.now(),
       'status': 'pending',
       'userMessage': ?userMessage,
+      if (sourceMaterials.isNotEmpty) 'sourceMaterials': sourceMaterials,
       if (instruction != null && instruction.isNotEmpty)
         'instruction': instruction,
       if (context != null && context.isNotEmpty) 'context': context,
@@ -57,6 +59,22 @@ class AiTechService {
   }) async {
     final journeyRef = firestore.collection('ai_tech_journeys').doc(journeyId);
     await journeyRef.update(updateData);
+  }
+
+  Future<void> addLearningJourneySourceMaterials({
+    required String journeyId,
+    required List<Map<String, dynamic>> sourceMaterials,
+  }) async {
+    final validSources = sourceMaterials
+        .where(
+          (source) =>
+              source['url'] is String && (source['url'] as String).isNotEmpty,
+        )
+        .toList();
+    if (validSources.isEmpty) return;
+    await firestore.collection('ai_tech_journeys').doc(journeyId).update({
+      'sourceMaterials': FieldValue.arrayUnion(validSources),
+    });
   }
 
   /// Stream all journeys for a session
@@ -149,6 +167,7 @@ class AiTechService {
         .collection('ai_tech_journeys')
         .doc(journeyId)
         .collection('learning_bites')
+        .orderBy('createdAt')
         .get();
     return bitesSnap.docs.map((doc) => doc.data()).toList();
   }
@@ -374,6 +393,7 @@ class AiTechService {
     required SessionType type,
     required String concept,
     String? learningBiteId,
+    String? journeyId,
   }) async {
     final sessionRef = firestore.collection('ai_tech_sessions').doc();
     final session = AiTechSession(
@@ -383,6 +403,7 @@ class AiTechService {
       lastTimestamp: DateTime.now(),
       sessionType: type,
       unit: concept,
+      journeyId: journeyId,
     );
     await sessionRef.set(session.toMap());
     return sessionRef.id;
@@ -398,6 +419,38 @@ class AiTechService {
     await firestore.collection('ai_tech_sessions').doc(sessionId).update({
       'unit': unit,
     });
+  }
+
+  /// Persist a short summary for a completed AI Tech knowledge check session.
+  Future<void> updateSessionSummary({
+    required String sessionId,
+    required String summary,
+    String status = 'completed',
+  }) async {
+    await firestore.collection('ai_tech_sessions').doc(sessionId).update({
+      'summary': summary,
+      'status': status,
+      'lastTimestamp': DateTime.now(),
+    });
+  }
+
+  /// Adds the completed AI Tech knowledge check transcript and recommendations to an
+  /// existing learning-session chat without changing its summary or status.
+  Future<void> addAiTechKnowledgeCheckResultToSession({
+    required String sessionId,
+    required String summary,
+    String? journeyId,
+  }) async {
+    await addMessage(
+      sessionId,
+      AiTechMessage(
+        role: 'assistant',
+        text: summary,
+        ts: DateTime.now(),
+        type: 'aiTechKnowledgeCheck.result',
+        journeyId: journeyId ?? '',
+      ),
+    );
   }
 
   /// Delete a session and its messages (deletes messages in batches)

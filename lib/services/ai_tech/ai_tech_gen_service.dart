@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
-
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/foundation.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_answer_feedback.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_prompt.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task.dart' as tk;
 import 'package:tech_knowl_edge_connect/models/learning/task_type.dart';
@@ -299,5 +301,264 @@ Lerninhalt:
         )
         .toList();
     return tasks;
+  }
+
+  /// Generates a short AI Tech knowledge check plan for a selected learning material.
+  Future<List<AiTechKnowledgeCheckPrompt>> generateAiTechKnowledgeCheckPrompts({
+    String? subject,
+    String? additionalText = '',
+    List<Part> fileParts = const [],
+    bool useGoogleSearchTool = false,
+    int maxQuestions = 3,
+  }) async {
+    if (kDebugMode && !kUseRealAiInDebug) {
+      return [
+        const AiTechKnowledgeCheckPrompt(
+          prompt:
+              'Erkläre das Kernkonzept dieses Materials mit deinen eigenen Worten.',
+          followUp:
+              'Nenne ein konkretes Beispiel oder einen Teil des Materials, der die Idee verdeutlicht.',
+          assessment:
+              'Du verstehst das Hauptprinzip bereits gut. Fokus auf die Erklärung und ein praktisches Beispiel.',
+        ),
+        const AiTechKnowledgeCheckPrompt(
+          prompt:
+              'Was ist der wichtigste Unterschied zwischen den zentralen Begriffen in diesem Abschnitt?',
+          followUp:
+              'Vergleiche sie mit einem kurzen Beispiel aus dem Lerninhalt.',
+          assessment:
+              'Die zentrale Unterscheidung ist klar. Wiederhole sie noch einmal mit einem eigenen Beispiel.',
+        ),
+      ];
+    }
+
+    final schema = Schema.object(
+      properties: {
+        'questions': Schema.array(
+          items: Schema.object(
+            properties: {
+              'prompt': Schema.string(),
+              'followUp': Schema.string(),
+              'assessment': Schema.string(),
+            },
+            optionalProperties: ['followUp', 'assessment'],
+          ),
+        ),
+      },
+    );
+
+    final model = FirebaseAI.googleAI().generativeModel(
+      model: kDefaultAiModel,
+      generationConfig: GenerationConfig(
+        responseMimeType: useGoogleSearchTool
+            ? 'text/plain'
+            : 'application/json',
+        responseSchema: schema,
+      ),
+      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+    );
+
+    final subjectLine = subject != null && subject.isNotEmpty
+        ? '\nThemenbereich: "$subject"'
+        : '';
+
+    final prompt = TextPart('''
+Du bist eine unterstützende Lernbegleitung für eine Bildungs-App.
+Erstelle genau $maxQuestions kurze Prüfungsfragen, die eine verständliche Erklärung, eine begründete Antwort und eine gezielte Rückfrage fördern.$subjectLine
+
+Ziel:
+- Jede Frage soll ein zentrales Konzept aus dem Lernmaterial prüfen.
+- Die Antwort soll in eigenen Worten erklärt werden.
+- Wenn der Lernende die Frage nicht gut beantwortet, hilft die followUp-Frage, das Verständnis präzise zu vertiefen.
+- Die assessment soll eine knappe Gesamtbewertung mit einem klaren nächsten Schritt enthalten.
+
+Achte auf:
+- Nur Deutsch.
+- Wenn nötig, sprich den Lernenden in der Du-Form an.
+- Keine generischen Wörter wie „Frage 1“ im Text.
+- Konkrete, auf das Material bezogene Fragen.
+- Antwortformat als JSON: {"questions": [{"prompt": "...", "followUp": "...", "assessment": "..."}, ...]}
+
+Lerninhalt:
+''');
+
+    final List<Part> parts = [prompt];
+    parts.addAll(fileParts);
+    if (additionalText != null && additionalText.trim().isNotEmpty) {
+      parts.add(TextPart("Zusätzlicher Textinhalt: $additionalText"));
+    }
+
+    final response = await model.generateContent([Content.multi(parts)]);
+    final content = response.text ?? '{}';
+    final cleaned = content.replaceAll(RegExp(r'```[a-zA-Z]*'), '').trim();
+    final parsed = json.decode(cleaned) as Map<String, dynamic>;
+    final questions = (parsed['questions'] as List?) ?? const [];
+    return questions
+        .map(
+          (entry) => AiTechKnowledgeCheckPrompt.fromMap(
+            Map<String, dynamic>.from(entry),
+          ),
+        )
+        .toList();
+  }
+
+  /// Generates spoken audio for an AI Tech knowledge check question using Firebase AI Logic.
+  Stream<Uint8List> generateAiTechKnowledgeCheckSpeech(String text) async* {
+    if (kDebugMode && !kUseRealAiInDebug) {
+      return;
+    }
+
+    final model = FirebaseAI.googleAI().generativeModel(
+      model: 'gemini-3.1-flash-tts-preview',
+      generationConfig: GenerationConfig(
+        responseModalities: [ResponseModalities.audio],
+        speechConfig: SpeechConfig(voiceName: 'Kore', languageCode: 'de-DE'),
+      ),
+    );
+    final responseStream = model.generateContentStream([
+      Content.text('''
+[Audio Profile: Eine freundliche, ruhige und professionelle Lernbegleiterin]
+[Scene: Ein entspannter AI Tech Wissenscheck in einer ruhigen Lernumgebung]
+[Director's Notes: Sprich klar, natürlich und ermutigend. Verwende ein moderates Tempo, eine warme Tonlage und eine deutliche deutsche Aussprache. Stelle die Frage interessiert und ohne Druck.]
+[Sample Context: Die Lernbegleiterin stellt dem Lernenden die nächste Frage und gibt ihm Zeit, in eigenen Worten zu antworten.]
+$text
+'''),
+    ]);
+    await for (final response in responseStream) {
+      for (final candidate in response.candidates) {
+        for (final part in candidate.content.parts) {
+          if (part is InlineDataPart && part.mimeType.startsWith('audio/')) {
+            yield part.bytes;
+          }
+        }
+      }
+    }
+  }
+
+  /// Transcribes and evaluates a recorded answer, then creates an adaptive
+  /// follow-up question when the learner's explanation has a clear gap.
+  Future<AiTechKnowledgeCheckAnswerFeedback> analyzeAiTechKnowledgeCheckAudio({
+    required String question,
+    required String subject,
+    required Uint8List audioData,
+    required String mimeType,
+    bool isFollowUp = false,
+    String? additionalText,
+    List<Part> fileParts = const [],
+  }) async {
+    if (kDebugMode && !kUseRealAiInDebug) {
+      return const AiTechKnowledgeCheckAnswerFeedback(
+        transcript: 'Debug-Antwort',
+        feedback:
+            'Die Kernaussage ist teilweise erklärt. Ergänze ein konkretes Beispiel.',
+        isCorrect: false,
+        correctAnswer:
+            'Eine vollständige Antwort erklärt die Kernaussage und belegt sie '
+            'mit einem passenden Beispiel aus dem Material.',
+        nextAction:
+            'Übe die Erklärung mit einem eigenen Beispiel aus dem Material.',
+        needsFollowUp: true,
+        followUpQuestion:
+            'Welches konkrete Beispiel aus dem Material belegt deine Erklärung?',
+      );
+    }
+
+    final transcriptionModel = FirebaseAI.googleAI().generativeModel(
+      model: kDefaultAiModel,
+      generationConfig: GenerationConfig(
+        temperature: 0,
+        responseMimeType: 'text/plain',
+      ),
+    );
+    final transcriptionResponse = await transcriptionModel
+        .generateContent([
+          Content.multi([
+            TextPart(
+              'Transkribiere die folgende Audioaufnahme wortgetreu in der '
+              'gesprochenen Sprache. Gib ausschließlich die erkannten Wörter '
+              'aus. Beantworte keine Frage, fasse nichts zusammen, korrigiere '
+              'keine Grammatik und ergänze keine vermuteten Wörter. Wenn ein '
+              'Wort nicht verständlich ist, markiere es als [unverständlich].',
+            ),
+            InlineDataPart(mimeType, audioData),
+          ]),
+        ])
+        .timeout(
+          const Duration(seconds: 45),
+          onTimeout: () => throw TimeoutException(
+            'Die Transkription hat länger als 45 Sekunden gedauert. '
+            'Bitte prüfe deine Verbindung und versuche es erneut.',
+          ),
+        );
+    final transcript = transcriptionResponse.text?.trim() ?? '';
+    if (transcript.isEmpty) {
+      throw StateError('Die gesprochene Antwort konnte nicht erkannt werden.');
+    }
+
+    final schema = Schema.object(
+      properties: {
+        'feedback': Schema.string(),
+        'isCorrect': Schema.boolean(),
+        'correctAnswer': Schema.string(),
+        'nextAction': Schema.string(),
+        'needsFollowUp': Schema.boolean(),
+        'followUpQuestion': Schema.string(),
+      },
+    );
+    final model = FirebaseAI.googleAI().generativeModel(
+      model: kDefaultAiModel,
+      generationConfig: GenerationConfig(
+        responseMimeType: 'application/json',
+        responseSchema: schema,
+      ),
+    );
+    final prompt = TextPart('''
+Du bist eine sorgfältige, unterstützende Lernbegleitung.
+Thema: $subject
+Aktuelle Frage: $question
+${isFollowUp ? 'Dies ist die einmalige Rückfrage zu einer vorherigen Frage. Bewerte, ob die Antwort die offene Lücke schließt. Stelle keine weitere Rückfrage.' : ''}
+${additionalText?.trim().isNotEmpty == true ? 'Lernmaterial:\\n$additionalText' : ''}
+
+Bewerte die folgende Transkription, ohne sie umzuschreiben oder zu ergänzen:
+$transcript
+
+Bewerte, ob die Antwort die Frage inhaltlich korrekt und ausreichend erklärt.
+Setze isCorrect nur dann auf true, wenn die Antwort korrekt und ausreichend ist.
+Gib kurzes, konkretes Feedback. Wenn die Antwort korrekt ist, erkläre im
+Feedback kurz, warum sie richtig ist. Erstelle immer eine kurze, sachlich
+richtige Musterantwort in correctAnswer. Wenn ein wichtiges Konzept fehlt oder
+unklar ist und dies keine Rückfrage ist, setze needsFollowUp auf true und stelle
+genau eine gezielte, kurze Rückfrage, die diese Lücke prüft. Andernfalls setze
+needsFollowUp auf false und followUpQuestion auf einen leeren String. Bei einer
+Rückfrage darf keine weitere Rückfrage gestellt werden. Gib außerdem einen
+passenden konkreten nächsten Lernschritt in nextAction an. Erfinde keine
+Anforderungen, die nicht aus der Frage oder dem Lernmaterial hervorgehen. Die
+Rückmeldung ist beratend.
+
+Gib ausschließlich JSON zurück mit den Feldern feedback, nextAction,
+needsFollowUp und followUpQuestion.
+''');
+    final response = await model
+        .generateContent([
+          Content.multi([prompt, ...fileParts]),
+        ])
+        .timeout(
+          const Duration(seconds: 45),
+          onTimeout: () => throw TimeoutException(
+            'Die Auswertung hat länger als 45 Sekunden gedauert. '
+            'Bitte prüfe deine Verbindung und versuche es erneut.',
+          ),
+        );
+    final decoded = json.decode(response.text ?? '') as Map<String, dynamic>;
+    final feedback = AiTechKnowledgeCheckAnswerFeedback.fromMap({
+      ...decoded,
+      'transcript': transcript,
+    });
+    if (feedback.correctAnswer.trim().isEmpty) {
+      throw const FormatException(
+        'Die Auswertung enthielt keine kurze Musterantwort.',
+      );
+    }
+    return feedback;
   }
 }

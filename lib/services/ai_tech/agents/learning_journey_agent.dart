@@ -5,6 +5,7 @@ import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dar
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task.dart'
     as task_model;
+import 'package:tech_knowl_edge_connect/models/ai_tech/ai_tech_knowledge_check_prompt.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 
 class LearningJourneyAgent extends BaseAgent {
@@ -48,6 +49,43 @@ class LearningJourneyAgent extends BaseAgent {
     }
   }
 
+  /// Builds AI Tech knowledge check questions from every bite in a journey and its source
+  /// materials, keeping the knowledge check grounded in what the learner studied.
+  Future<List<AiTechKnowledgeCheckPrompt>>
+  generateAiTechKnowledgeCheckForJourney({
+    required String journeyId,
+    required String subject,
+    List<Part> sourceMaterials = const [],
+    bool useGoogleSearchTool = false,
+    int maxQuestions = 3,
+  }) async {
+    final bites = await aiTechService.getLearningBitesForJourney(journeyId);
+    if (bites.isEmpty) {
+      throw StateError('Diese Lernreise enthält noch keine Lerneinheiten.');
+    }
+
+    final journeyContent = StringBuffer('Lernreise: $subject\n');
+    for (var index = 0; index < bites.length; index++) {
+      final bite = bites[index];
+      final title = (bite['title'] as String?)?.trim() ?? '';
+      final content = (bite['content'] as List<dynamic>? ?? const [])
+          .map((item) => item.toString())
+          .where((item) => item.trim().isNotEmpty)
+          .join('\n');
+      journeyContent
+        ..writeln('\nLerneinheit ${index + 1}: $title')
+        ..writeln(content);
+    }
+
+    return aiTechGenService.generateAiTechKnowledgeCheckPrompts(
+      subject: subject,
+      additionalText: journeyContent.toString(),
+      fileParts: sourceMaterials,
+      useGoogleSearchTool: useGoogleSearchTool,
+      maxQuestions: maxQuestions,
+    );
+  }
+
   /// Generates a learning journey and learning bites for the user, using user message as context
   Future<String> createLearningJourney({
     required String userId,
@@ -59,6 +97,7 @@ class LearningJourneyAgent extends BaseAgent {
     String? userMessage,
     String? context,
     List<Part> fileParts = const [],
+    List<Map<String, dynamic>> sourceMaterials = const [],
   }) async {
     // 1. Analyze user message to derive a precise generation instruction
     //    including the concept to start with and the difficulty/style.
@@ -83,6 +122,7 @@ class LearningJourneyAgent extends BaseAgent {
       userMessage: userMessage,
       instruction: analyzedInstruction.isNotEmpty ? analyzedInstruction : null,
       context: context,
+      sourceMaterials: sourceMaterials,
     );
 
     // 3. Generate learning bites – include BOTH the analyzed instruction and
@@ -122,7 +162,12 @@ class LearningJourneyAgent extends BaseAgent {
     String? journeyGoal,
     List<String>? upcomingTasks,
     List<Part> fileParts = const [],
+    List<Map<String, dynamic>> sourceMaterials = const [],
   }) async {
+    await aiTechService.addLearningJourneySourceMaterials(
+      journeyId: journeyId,
+      sourceMaterials: sourceMaterials,
+    );
     // Derive a new generation instruction from feedback + recommendation.
     String? newInstruction;
     if ((feedbackText != null && feedbackText.isNotEmpty) ||
@@ -178,7 +223,12 @@ class LearningJourneyAgent extends BaseAgent {
     required String userMessage,
     String? journeyGoal,
     List<Part> fileParts = const [],
+    List<Map<String, dynamic>> sourceMaterials = const [],
   }) async {
+    await aiTechService.addLearningJourneySourceMaterials(
+      journeyId: journeyId,
+      sourceMaterials: sourceMaterials,
+    );
     // Turn the raw user request into a focused generation instruction.
     final instruction = await analyze(
       userMessage: userMessage,

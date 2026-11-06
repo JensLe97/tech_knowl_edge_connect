@@ -1,4 +1,5 @@
 import 'package:confetti/confetti.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
@@ -10,10 +11,12 @@ import 'dart:math' as math;
 class CompletionDialog extends StatefulWidget {
   final String conceptName;
   final bool isJourney;
+  final VoidCallback? onStartAiTechKnowledgeCheck;
   const CompletionDialog({
     super.key,
     required this.conceptName,
     this.isJourney = false,
+    this.onStartAiTechKnowledgeCheck,
   });
 
   @override
@@ -113,17 +116,36 @@ class _CompletionDialogState extends State<CompletionDialog> {
             actions: [
               ConstrainedBox(
                 constraints: const BoxConstraints(minWidth: 240, maxWidth: 360),
-                child: FilledButton(
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(48),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (widget.onStartAiTechKnowledgeCheck != null) ...[
+                      FilledButton.icon(
+                        style: FilledButton.styleFrom(
+                          minimumSize: const Size.fromHeight(48),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                        ),
+                        onPressed: widget.onStartAiTechKnowledgeCheck,
+                        icon: const FaIcon(FontAwesomeIcons.commentDots),
+                        label: const Text('AI Tech Wissenscheck starten'),
+                      ),
+                      const SizedBox(height: 8),
+                    ],
+                    OutlinedButton(
+                      style: OutlinedButton.styleFrom(
+                        minimumSize: const Size.fromHeight(48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context, rootNavigator: true).pop();
+                      },
+                      child: const Text('Zurück zur Übersicht'),
                     ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context, rootNavigator: true).pop();
-                  },
-                  child: const Text('Zurück zur Übersicht'),
+                  ],
                 ),
               ),
             ],

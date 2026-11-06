@@ -13,6 +13,7 @@ import 'package:tech_knowl_edge_connect/components/dialogs/show_error_message.da
 import 'package:tech_knowl_edge_connect/models/user/idea_folder.dart';
 import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:tech_knowl_edge_connect/services/user/learning_material_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -320,6 +321,67 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
     }
   }
 
+  Future<void> _startAiTechKnowledgeCheckForMaterials() async {
+    try {
+      final materials = await _materialsFuture;
+      if (materials.isEmpty) {
+        if (mounted) {
+          showErrorMessage(
+            context,
+            'Keine Lerninhalte für den AI Tech Wissenscheck vorhanden.',
+          );
+        }
+        return;
+      }
+
+      final fileParts = <Part>[];
+      for (final material in materials) {
+        try {
+          final data = await FirebaseStorage.instance
+              .refFromURL(material.url)
+              .getData();
+          if (data != null && data.isNotEmpty) {
+            fileParts.add(
+              InlineDataPart(
+                LearningMaterialType.getMimeType(material.type),
+                data,
+              ),
+            );
+          }
+        } catch (_) {}
+      }
+
+      if (fileParts.isEmpty) {
+        if (mounted) {
+          showErrorMessage(
+            context,
+            'Die Lerninhalte konnten nicht für den AI Tech Wissenscheck geladen werden.',
+          );
+        }
+        return;
+      }
+
+      if (!mounted) return;
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AiTechKnowledgeCheckPage(
+            title: widget.folder.name,
+            fileParts: fileParts,
+            aiTechGenService: _aiTechGenService,
+          ),
+        ),
+      );
+    } catch (error) {
+      if (mounted) {
+        showErrorMessage(
+          context,
+          'AI Tech Wissenscheck konnte nicht starten: $error',
+        );
+      }
+    }
+  }
+
   final LearningMaterialService _materialService = LearningMaterialService();
   final AiTechGenService _aiTechGenService = AiTechGenService();
   final IdeaFolderService _folderService = IdeaFolderService();
@@ -417,6 +479,8 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                   _summarizeMaterials();
                 case 'learning_bite':
                   _generateLearningBite();
+                case 'ai_tech_knowledge_check':
+                  _startAiTechKnowledgeCheckForMaterials();
                 case 'delete':
                   _confirmAndDeleteFolder();
               }
@@ -445,6 +509,14 @@ class _FolderDetailPageState extends State<FolderDetailPage> {
                 child: ListTile(
                   leading: FaIcon(FontAwesomeIcons.schoolCircleCheck),
                   title: Text('AI Tech Lektion erstellen'),
+                  contentPadding: EdgeInsets.zero,
+                ),
+              ),
+              const PopupMenuItem<String>(
+                value: 'ai_tech_knowledge_check',
+                child: ListTile(
+                  leading: FaIcon(FontAwesomeIcons.commentDots),
+                  title: Text('AI Tech Wissenscheck starten'),
                   contentPadding: EdgeInsets.zero,
                 ),
               ),

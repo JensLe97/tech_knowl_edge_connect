@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tech_knowl_edge_connect/components/tiles/learning_bite_tile.dart';
@@ -10,9 +12,11 @@ import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
 import 'package:tech_knowl_edge_connect/models/content/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
 import 'package:tech_knowl_edge_connect/pages/user/learning_bite_editor_page.dart';
 import 'package:tech_knowl_edge_connect/providers/user_provider.dart';
 import 'package:tech_knowl_edge_connect/services/content/content_service.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 
 class UnitOverviewPage extends StatefulWidget {
@@ -36,6 +40,26 @@ class UnitOverviewPage extends StatefulWidget {
 class _UnitOverviewPageState extends State<UnitOverviewPage> {
   final ContentService _contentService = ContentService();
   final UserService _userService = UserService();
+
+  Future<void> _startConceptAiTechKnowledgeCheck(
+    Concept concept,
+    List<LearningBite> learningBites,
+  ) async {
+    final additionalText = learningBites
+        .map((bite) => ['## ${bite.name}', ...bite.content].join('\n'))
+        .join('\n\n');
+    if (additionalText.trim().isEmpty || !mounted) return;
+
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => AiTechKnowledgeCheckPage(
+          title: concept.name,
+          additionalText: additionalText,
+          aiTechGenService: AiTechGenService(),
+        ),
+      ),
+    );
+  }
 
   Future<void> _confirmDelete({
     required String title,
@@ -374,7 +398,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 4),
+                          const SizedBox(height: 8),
                           StreamBuilder<List<LearningBite>>(
                             stream: _contentService.getLearningBites(
                               widget.subjectId,
@@ -388,319 +412,415 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                 return const SizedBox.shrink();
                               }
                               final learningBites = lbSnapshot.data!;
+                              final allBitesCompleted =
+                                  learningBites.isNotEmpty &&
+                                  learningBites.every(
+                                    (bite) => completedLearningBiteIds.contains(
+                                      bite.id,
+                                    ),
+                                  );
 
-                              return SingleChildScrollView(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                ),
-                                scrollDirection: Axis.horizontal,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: learningBites.asMap().entries.map((
-                                    entry,
-                                  ) {
-                                    final learningBiteIndex = entry.key;
-                                    final learningBite = entry.value;
-                                    final isCompleted = completedLearningBiteIds
-                                        .contains(learningBite.id);
-                                    final currentUser =
-                                        FirebaseAuth.instance.currentUser;
-                                    final canEdit =
-                                        currentUser != null &&
-                                        learningBite.authorId ==
-                                            currentUser.uid;
-
-                                    return LearningBiteTile(
-                                      learningBite: learningBite,
-                                      onTap: () async {
-                                        // Show loading
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (context) => const Center(
-                                            child: CircularProgressIndicator(),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                      20,
+                                      0,
+                                      20,
+                                      12,
+                                    ),
+                                    child: Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            learningBites.isEmpty
+                                                ? 'Learning Bites erforderlich'
+                                                : allBitesCompleted
+                                                ? 'AI Tech Wissenscheck verfügbar'
+                                                : 'Nach Abschluss verfügbar',
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyMedium
+                                                ?.copyWith(
+                                                  color: Theme.of(context)
+                                                      .colorScheme
+                                                      .onSurfaceVariant,
+                                                ),
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                        );
-
-                                        try {
-                                          final tasks = await _contentService
-                                              .getTasks(
-                                                widget.subjectId,
-                                                widget.categoryId,
-                                                widget.topicId,
-                                                widget.unit.id,
-                                                concept.id,
-                                                learningBite.id,
-                                              );
-
-                                          final hasContent =
-                                              learningBite.content.isNotEmpty;
-                                          final hasTasks = tasks.isNotEmpty;
-
-                                          if (!hasContent && !hasTasks) {
-                                            if (context.mounted) {
-                                              Navigator.pop(
-                                                context,
-                                              ); // Hide loading
-                                              await showDialog(
-                                                context: context,
-                                                builder: (dialogCtx) {
-                                                  final cs = Theme.of(
-                                                    dialogCtx,
-                                                  ).colorScheme;
-                                                  return AlertDialog(
-                                                    icon: Container(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                            16,
-                                                          ),
-                                                      decoration: BoxDecoration(
-                                                        color: cs
-                                                            .secondaryContainer
-                                                            .withAlpha(76),
-                                                        shape: BoxShape.circle,
-                                                        border: Border.all(
-                                                          color: cs.secondary
-                                                              .withAlpha(25),
-                                                        ),
-                                                      ),
-                                                      child: Icon(
-                                                        Icons.info_outline,
-                                                        size: 32,
-                                                        color: cs.secondary,
-                                                      ),
-                                                    ),
-                                                    title: const Text(
-                                                      'Keine Inhalte verfügbar',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                      ),
-                                                    ),
-                                                    content: const Text(
-                                                      'Dieses Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst sie über den Bearbeiten-Button hinzufügen.',
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                    ),
-                                                    actions: [
-                                                      Row(
-                                                        children: [
-                                                          DialogButton(
-                                                            onTap: () =>
-                                                                Navigator.pop(
-                                                                  dialogCtx,
-                                                                ),
-                                                            text: 'Schließen',
-                                                          ),
-                                                          if (canEdit)
-                                                            DialogButton(
-                                                              onTap: () async {
-                                                                Navigator.pop(
-                                                                  dialogCtx,
-                                                                );
-                                                                Navigator.push(
-                                                                  dialogCtx,
-                                                                  MaterialPageRoute(
-                                                                    builder: (context) => LearningBiteEditorPage(
-                                                                      subjectId:
-                                                                          widget
-                                                                              .subjectId,
-                                                                      categoryId:
-                                                                          widget
-                                                                              .categoryId,
-                                                                      topicId:
-                                                                          widget
-                                                                              .topicId,
-                                                                      unitId: widget
-                                                                          .unit
-                                                                          .id,
-                                                                      conceptId:
-                                                                          concept
-                                                                              .id,
-                                                                      learningBiteId:
-                                                                          learningBite
-                                                                              .id,
-                                                                      learningBiteTitle:
-                                                                          learningBite
-                                                                              .name,
-                                                                    ),
-                                                                  ),
-                                                                );
-                                                              },
-                                                              text:
-                                                                  'Bearbeiten',
-                                                            ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  );
-                                                },
-                                              );
-                                            }
-                                            return;
-                                          }
-
-                                          if (context.mounted) {
-                                            // Attach bite to user's progress (create unit entry if missing)
-                                            try {
-                                              final userId = FirebaseAuth
-                                                  .instance
-                                                  .currentUser
-                                                  ?.uid;
-                                              if (userId != null) {
-                                                await _contentService
-                                                    .startLearningBiteForUser(
-                                                      userId: userId,
-                                                      subjectId:
-                                                          widget.subjectId,
-                                                      categoryId:
-                                                          widget.categoryId,
-                                                      topicId: widget.topicId,
-                                                      unitId: widget.unit.id,
-                                                      conceptId: concept.id,
-                                                      learningBiteId:
-                                                          learningBite.id,
-                                                    );
-                                              }
-                                            } catch (_) {}
-
-                                            await _userService
-                                                .updateResumeStatus(
-                                                  widget.subjectId,
-                                                  learningBite.id,
-                                                  widget.categoryId,
-                                                  widget.topicId,
-                                                  widget.unit.id,
-                                                  concept.id,
-                                                );
-
-                                            if (!context.mounted) {
-                                              return;
-                                            }
-
-                                            Navigator.pop(
+                                        ),
+                                        const SizedBox(width: 8),
+                                        OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                            foregroundColor: Theme.of(
                                               context,
-                                            ); // Hide loading
-                                            final result =
-                                                await Navigator.push<
-                                                  LearningBiteResult
-                                                >(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        LearningBitePage(
-                                                          learningBite:
-                                                              learningBite,
-                                                          tasks: tasks,
+                                            ).colorScheme.primary,
+                                            minimumSize: const Size(0, 44),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                            ),
+                                            visualDensity:
+                                                VisualDensity.compact,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                          ),
+                                          onPressed: allBitesCompleted
+                                              ? () =>
+                                                    _startConceptAiTechKnowledgeCheck(
+                                                      concept,
+                                                      learningBites,
+                                                    )
+                                              : null,
+                                          child: const Text('Starten'),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  SingleChildScrollView(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 12,
+                                    ),
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: learningBites.asMap().entries.map((
+                                        entry,
+                                      ) {
+                                        final learningBiteIndex = entry.key;
+                                        final learningBite = entry.value;
+                                        final isCompleted =
+                                            completedLearningBiteIds.contains(
+                                              learningBite.id,
+                                            );
+                                        final currentUser =
+                                            FirebaseAuth.instance.currentUser;
+                                        final canEdit =
+                                            currentUser != null &&
+                                            learningBite.authorId ==
+                                                currentUser.uid;
+
+                                        return LearningBiteTile(
+                                          learningBite: learningBite,
+                                          onTap: () async {
+                                            // Show loading
+                                            showDialog(
+                                              context: context,
+                                              barrierDismissible: false,
+                                              builder: (context) => const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+
+                                            try {
+                                              final tasks =
+                                                  await _contentService
+                                                      .getTasks(
+                                                        widget.subjectId,
+                                                        widget.categoryId,
+                                                        widget.topicId,
+                                                        widget.unit.id,
+                                                        concept.id,
+                                                        learningBite.id,
+                                                      );
+
+                                              final hasContent = learningBite
+                                                  .content
+                                                  .isNotEmpty;
+                                              final hasTasks = tasks.isNotEmpty;
+
+                                              if (!hasContent && !hasTasks) {
+                                                if (context.mounted) {
+                                                  Navigator.pop(
+                                                    context,
+                                                  ); // Hide loading
+                                                  await showDialog(
+                                                    context: context,
+                                                    builder: (dialogCtx) {
+                                                      final cs = Theme.of(
+                                                        dialogCtx,
+                                                      ).colorScheme;
+                                                      return AlertDialog(
+                                                        icon: Container(
+                                                          padding:
+                                                              const EdgeInsets.all(
+                                                                16,
+                                                              ),
+                                                          decoration: BoxDecoration(
+                                                            color: cs
+                                                                .secondaryContainer
+                                                                .withAlpha(76),
+                                                            shape:
+                                                                BoxShape.circle,
+                                                            border: Border.all(
+                                                              color: cs
+                                                                  .secondary
+                                                                  .withAlpha(
+                                                                    25,
+                                                                  ),
+                                                            ),
+                                                          ),
+                                                          child: Icon(
+                                                            Icons.info_outline,
+                                                            size: 32,
+                                                            color: cs.secondary,
+                                                          ),
                                                         ),
-                                                  ),
-                                                );
-
-                                            if (result != null &&
-                                                result.completed) {
-                                              final allCompletedBefore =
-                                                  learningBites.every(
-                                                    (lb) =>
-                                                        completedLearningBiteIds
-                                                            .contains(lb.id),
+                                                        title: const Text(
+                                                          'Keine Inhalte verfügbar',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        content: const Text(
+                                                          'Dieses Learning Bite hat noch keine Inhalte oder Aufgaben. Du kannst sie über den Bearbeiten-Button hinzufügen.',
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                        ),
+                                                        actions: [
+                                                          Row(
+                                                            children: [
+                                                              DialogButton(
+                                                                onTap: () =>
+                                                                    Navigator.pop(
+                                                                      dialogCtx,
+                                                                    ),
+                                                                text:
+                                                                    'Schließen',
+                                                              ),
+                                                              if (canEdit)
+                                                                DialogButton(
+                                                                  onTap: () async {
+                                                                    Navigator.pop(
+                                                                      dialogCtx,
+                                                                    );
+                                                                    Navigator.push(
+                                                                      dialogCtx,
+                                                                      MaterialPageRoute(
+                                                                        builder:
+                                                                            (
+                                                                              context,
+                                                                            ) => LearningBiteEditorPage(
+                                                                              subjectId: widget.subjectId,
+                                                                              categoryId: widget.categoryId,
+                                                                              topicId: widget.topicId,
+                                                                              unitId: widget.unit.id,
+                                                                              conceptId: concept.id,
+                                                                              learningBiteId: learningBite.id,
+                                                                              learningBiteTitle: learningBite.name,
+                                                                            ),
+                                                                      ),
+                                                                    );
+                                                                  },
+                                                                  text:
+                                                                      'Bearbeiten',
+                                                                ),
+                                                            ],
+                                                          ),
+                                                        ],
+                                                      );
+                                                    },
                                                   );
-                                              await _userService
-                                                  .markLearningBiteComplete(
-                                                    learningBite.id,
-                                                  );
+                                                }
+                                                return;
+                                              }
 
-                                              if (learningBiteIndex <
-                                                  learningBites.length - 1) {
-                                                final nextLB =
-                                                    learningBites[learningBiteIndex +
-                                                        1];
+                                              if (context.mounted) {
+                                                // Attach bite to user's progress (create unit entry if missing)
+                                                try {
+                                                  final userId = FirebaseAuth
+                                                      .instance
+                                                      .currentUser
+                                                      ?.uid;
+                                                  if (userId != null) {
+                                                    await _contentService
+                                                        .startLearningBiteForUser(
+                                                          userId: userId,
+                                                          subjectId:
+                                                              widget.subjectId,
+                                                          categoryId:
+                                                              widget.categoryId,
+                                                          topicId:
+                                                              widget.topicId,
+                                                          unitId:
+                                                              widget.unit.id,
+                                                          conceptId: concept.id,
+                                                          learningBiteId:
+                                                              learningBite.id,
+                                                        );
+                                                  }
+                                                } catch (_) {}
+
                                                 await _userService
                                                     .updateResumeStatus(
                                                       widget.subjectId,
-                                                      nextLB.id,
+                                                      learningBite.id,
                                                       widget.categoryId,
                                                       widget.topicId,
                                                       widget.unit.id,
                                                       concept.id,
                                                     );
-                                              } else {
-                                                await _userService
-                                                    .removeResumeStatus(
-                                                      learningBite.id,
-                                                    );
-                                              }
 
-                                              if (context.mounted) {
-                                                final allCompleted =
-                                                    learningBites.every(
-                                                      (lb) =>
-                                                          lb.id ==
-                                                              learningBite.id ||
-                                                          completedLearningBiteIds
-                                                              .contains(lb.id),
+                                                if (!context.mounted) {
+                                                  return;
+                                                }
+
+                                                Navigator.pop(
+                                                  context,
+                                                ); // Hide loading
+                                                final result =
+                                                    await Navigator.push<
+                                                      LearningBiteResult
+                                                    >(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            LearningBitePage(
+                                                              learningBite:
+                                                                  learningBite,
+                                                              tasks: tasks,
+                                                            ),
+                                                      ),
                                                     );
 
-                                                if (allCompleted &&
-                                                    !allCompletedBefore) {
-                                                  showDialog(
-                                                    context: context,
-                                                    builder: (dialogContext) =>
-                                                        CompletionDialog(
-                                                          conceptName:
-                                                              concept.name,
-                                                        ),
-                                                  );
+                                                if (result != null &&
+                                                    result.completed) {
+                                                  final allCompletedBefore =
+                                                      learningBites.every(
+                                                        (lb) =>
+                                                            completedLearningBiteIds
+                                                                .contains(
+                                                                  lb.id,
+                                                                ),
+                                                      );
+                                                  await _userService
+                                                      .markLearningBiteComplete(
+                                                        learningBite.id,
+                                                      );
+
+                                                  if (learningBiteIndex <
+                                                      learningBites.length -
+                                                          1) {
+                                                    final nextLB =
+                                                        learningBites[learningBiteIndex +
+                                                            1];
+                                                    await _userService
+                                                        .updateResumeStatus(
+                                                          widget.subjectId,
+                                                          nextLB.id,
+                                                          widget.categoryId,
+                                                          widget.topicId,
+                                                          widget.unit.id,
+                                                          concept.id,
+                                                        );
+                                                  } else {
+                                                    await _userService
+                                                        .removeResumeStatus(
+                                                          learningBite.id,
+                                                        );
+                                                  }
+
+                                                  if (context.mounted) {
+                                                    final allCompleted =
+                                                        learningBites.every(
+                                                          (lb) =>
+                                                              lb.id ==
+                                                                  learningBite
+                                                                      .id ||
+                                                              completedLearningBiteIds
+                                                                  .contains(
+                                                                    lb.id,
+                                                                  ),
+                                                        );
+
+                                                    if (allCompleted &&
+                                                        !allCompletedBefore) {
+                                                      showDialog(
+                                                        context: context,
+                                                        builder:
+                                                            (
+                                                              dialogContext,
+                                                            ) => CompletionDialog(
+                                                              conceptName:
+                                                                  concept.name,
+                                                              onStartAiTechKnowledgeCheck: () {
+                                                                Navigator.of(
+                                                                  context,
+                                                                  rootNavigator:
+                                                                      true,
+                                                                ).pop();
+                                                                unawaited(
+                                                                  _startConceptAiTechKnowledgeCheck(
+                                                                    concept,
+                                                                    learningBites,
+                                                                  ),
+                                                                );
+                                                              },
+                                                            ),
+                                                      );
+                                                    }
+                                                  }
                                                 }
                                               }
+                                            } catch (e) {
+                                              if (context.mounted) {
+                                                Navigator.pop(
+                                                  context,
+                                                ); // Hide loading
+                                                ScaffoldMessenger.of(
+                                                  context,
+                                                ).showSnackBar(
+                                                  SnackBar(
+                                                    content: Text(
+                                                      'Error loading tasks: $e',
+                                                    ),
+                                                  ),
+                                                );
+                                              }
                                             }
-                                          }
-                                        } catch (e) {
-                                          if (context.mounted) {
-                                            Navigator.pop(
-                                              context,
-                                            ); // Hide loading
-                                            ScaffoldMessenger.of(
-                                              context,
-                                            ).showSnackBar(
-                                              SnackBar(
-                                                content: Text(
-                                                  'Error loading tasks: $e',
-                                                ),
-                                              ),
-                                            );
-                                          }
-                                        }
-                                      },
-                                      onEdit: canEdit
-                                          ? () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      LearningBiteEditorPage(
-                                                        subjectId:
-                                                            widget.subjectId,
-                                                        categoryId:
-                                                            widget.categoryId,
-                                                        topicId: widget.topicId,
-                                                        unitId: widget.unit.id,
-                                                        conceptId: concept.id,
-                                                        learningBiteId:
-                                                            learningBite.id,
-                                                        learningBiteTitle:
-                                                            learningBite.name,
-                                                      ),
-                                                ),
-                                              );
-                                            }
-                                          : null,
-                                      completed: isCompleted,
-                                    );
-                                  }).toList(),
-                                ),
+                                          },
+                                          onEdit: canEdit
+                                              ? () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          LearningBiteEditorPage(
+                                                            subjectId: widget
+                                                                .subjectId,
+                                                            categoryId: widget
+                                                                .categoryId,
+                                                            topicId:
+                                                                widget.topicId,
+                                                            unitId:
+                                                                widget.unit.id,
+                                                            conceptId:
+                                                                concept.id,
+                                                            learningBiteId:
+                                                                learningBite.id,
+                                                            learningBiteTitle:
+                                                                learningBite
+                                                                    .name,
+                                                          ),
+                                                    ),
+                                                  );
+                                                }
+                                              : null,
+                                          completed: isCompleted,
+                                        );
+                                      }).toList(),
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           ),

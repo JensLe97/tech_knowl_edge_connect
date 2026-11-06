@@ -182,10 +182,30 @@ class AiTechOrchestrator implements AiTechAgent {
           userMessage: userMessage,
           context: contextStr,
           fileParts: fileParts,
+          sourceMaterials: fileAttachments,
         );
         responseText =
             'Ich habe eine Lernreise zu "$journeyGoal" erstellt. '
             'Klicke auf eine Lerneinheit, um zu starten!';
+
+      case JourneyIntent(skill: JourneySkill.aiTechKnowledgeCheck):
+        final journeysSnapKnowledgeCheck = await service
+            .streamJourneys(sessionId)
+            .first;
+        if (journeysSnapKnowledgeCheck.docs.isEmpty) {
+          responseText =
+              'Erstelle zuerst eine Lernreise. Danach kannst du jederzeit '
+              'einen AI Tech Wissenscheck dazu starten.';
+        } else {
+          journeyId = journeysSnapKnowledgeCheck.docs.last.id;
+          final journeyData = await service.getJourneyById(journeyId);
+          final journeyGoal =
+              (journeyData?['goal'] as String?)?.trim() ?? 'deiner Lernreise';
+          responseText =
+              'Alles klar — wir starten einen AI Tech Wissenscheck '
+              'zu "$journeyGoal". Deine Lerninhalte und das dazugehörige '
+              'Material dienen als Grundlage.';
+        }
 
       case JourneyIntent(skill: JourneySkill.update):
         // User confirmed a post-analysis recommendation OR explicitly requested
@@ -215,6 +235,7 @@ class AiTechOrchestrator implements AiTechAgent {
               feedbackText: feedbackPrompt,
               journeyGoal: journeyGoalU.isNotEmpty ? journeyGoalU : null,
               fileParts: fileParts,
+              sourceMaterials: fileAttachments,
             );
             await service.updateLearningJourneyDoc(
               journeyId: latestJourneyId,
@@ -260,6 +281,7 @@ class AiTechOrchestrator implements AiTechAgent {
               feedbackText: userMessage,
               journeyGoal: journeyGoalU.isNotEmpty ? journeyGoalU : null,
               fileParts: fileParts,
+              sourceMaterials: fileAttachments,
             );
             responseText =
                 'Neue Lerninhalte nach deinem Wunsch werden erstellt – schau gleich in deine Lernreise!';
@@ -288,6 +310,7 @@ class AiTechOrchestrator implements AiTechAgent {
             userMessage: userMessage,
             journeyGoal: journeyGoalAB.isNotEmpty ? journeyGoalAB : null,
             fileParts: fileParts,
+            sourceMaterials: fileAttachments,
           );
           responseText =
               'Neue Lerneinheit wurde deiner Lernreise hinzugefügt – schau gleich rein!';

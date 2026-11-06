@@ -1,6 +1,5 @@
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -162,34 +161,51 @@ class ChatBubble extends StatelessWidget {
                       minHeight: 160,
                       minWidth: 220,
                     ),
-                    child: CachedNetworkImage(
-                      imageUrl: message,
+                    child: Image.network(
+                      key: ValueKey(message),
+                      message,
                       fit: BoxFit.contain,
-                      memCacheHeight: cacheSize,
-                      memCacheWidth: cacheSize,
-                      maxHeightDiskCache: cacheSize,
-                      maxWidthDiskCache: cacheSize,
-                      placeholder: (context, url) => SizedBox(
-                        width: 220,
-                        height: 160,
-                        child: Center(
-                          child: CircularProgressIndicator(
+                      cacheHeight: cacheSize,
+                      cacheWidth: cacheSize,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return SizedBox(
+                          width: 220,
+                          height: 160,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              value: loadingProgress.expectedTotalBytes == null
+                                  ? null
+                                  : loadingProgress.cumulativeBytesLoaded /
+                                        loadingProgress.expectedTotalBytes!,
+                              color: Theme.of(
+                                context,
+                              ).colorScheme.onSurfaceVariant,
+                            ),
+                          ),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        return SizedBox(
+                          width: 220,
+                          height: 80,
+                          child: Icon(
+                            Icons.broken_image,
                             color: Theme.of(
                               context,
                             ).colorScheme.onSurfaceVariant,
                           ),
-                        ),
-                      ),
-                      fadeInDuration: Duration.zero,
-                      fadeOutDuration: Duration.zero,
-                      errorWidget: (_, _, _) => SizedBox(
-                        width: 220,
-                        height: 80,
-                        child: Icon(
-                          Icons.broken_image,
-                          color: Theme.of(context).colorScheme.onSurfaceVariant,
-                        ),
-                      ),
+                        );
+                      },
+                      frameBuilder:
+                          (context, child, frame, wasSynchronouslyLoaded) {
+                            if (wasSynchronouslyLoaded) return child;
+                            return AnimatedOpacity(
+                              opacity: frame == null ? 0 : 1,
+                              duration: const Duration(milliseconds: 150),
+                              child: child,
+                            );
+                          },
                     ),
                   ),
                 )

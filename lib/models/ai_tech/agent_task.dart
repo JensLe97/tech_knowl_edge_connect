@@ -1,5 +1,5 @@
 /// Skills available within [LearningJourneyAgent].
-enum JourneySkill { create, update, addBite }
+enum JourneySkill { create, update, addBite, aiTechKnowledgeCheck }
 
 /// Skills available within [FeedbackAgent].
 enum FeedbackSkill { giveFeedback, recommend }

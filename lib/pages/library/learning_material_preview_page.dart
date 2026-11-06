@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/gen_learning_bite_page.dart';
 import 'package:tech_knowl_edge_connect/pages/library/summary_page.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
@@ -77,6 +78,36 @@ class _LearningMaterialPreviewPageState
     );
   }
 
+  Future<void> _startAiTechKnowledgeCheck() async {
+    final mimeType = LearningMaterialType.getMimeType(widget.type);
+    try {
+      final data = await FirebaseStorage.instance
+          .refFromURL(widget.url)
+          .getData();
+      if (data == null || data.isEmpty) {
+        throw StateError('Das Lernmaterial enthält keine lesbaren Daten.');
+      }
+      if (!mounted) return;
+      await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => AiTechKnowledgeCheckPage(
+            title: widget.name,
+            fileParts: [InlineDataPart(mimeType, data)],
+            aiTechGenService: _aiTechGenService,
+          ),
+        ),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('AI Tech Wissenscheck konnte nicht starten: $error'),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final url = widget.url;
@@ -87,16 +118,24 @@ class _LearningMaterialPreviewPageState
         appBar: AppBar(
           title: Text(name),
           centerTitle: true,
+          actionsPadding: const EdgeInsets.only(right: 8),
           actions: [
             IconButton(
               // Create AI summary action
               icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+              tooltip: 'AI Tech Zusammenfassung',
               // Open new page to show AI summary
               onPressed: _summarizeMaterial,
             ),
             IconButton(
               icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+              tooltip: 'AI Tech Lektion erstellen',
               onPressed: _generateLearningBite,
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.commentDots),
+              tooltip: 'AI Tech Wissenscheck starten',
+              onPressed: _startAiTechKnowledgeCheck,
             ),
           ],
         ),
@@ -112,14 +151,22 @@ class _LearningMaterialPreviewPageState
         appBar: AppBar(
           title: Text(name),
           centerTitle: true,
+          actionsPadding: const EdgeInsets.only(right: 8),
           actions: [
             IconButton(
               icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+              tooltip: 'AI Tech Zusammenfassung',
               onPressed: _summarizeMaterial,
             ),
             IconButton(
               icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+              tooltip: 'AI Tech Lektion erstellen',
               onPressed: _generateLearningBite,
+            ),
+            IconButton(
+              icon: const FaIcon(FontAwesomeIcons.commentDots),
+              tooltip: 'AI Tech Wissenscheck starten',
+              onPressed: _startAiTechKnowledgeCheck,
             ),
           ],
         ),
@@ -146,6 +193,7 @@ class _LearningMaterialPreviewPageState
         name: name,
         summarizeMaterial: _summarizeMaterial,
         generateLearningBite: _generateLearningBite,
+        startAiTechKnowledgeCheck: _startAiTechKnowledgeCheck,
       );
     } else if (LearningMaterialType.textTypes.contains(type.toLowerCase())) {
       return _TextPreview(
@@ -153,6 +201,7 @@ class _LearningMaterialPreviewPageState
         name: name,
         summarizeMaterial: _summarizeMaterial,
         generateLearningBite: _generateLearningBite,
+        startAiTechKnowledgeCheck: _startAiTechKnowledgeCheck,
       );
     } else {
       // Fallback: just show the URL
@@ -169,11 +218,13 @@ class _TextPreview extends StatefulWidget {
   final String name;
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
+  final Function() startAiTechKnowledgeCheck;
   const _TextPreview({
     required this.url,
     required this.name,
     required this.summarizeMaterial,
     required this.generateLearningBite,
+    required this.startAiTechKnowledgeCheck,
   });
 
   @override
@@ -221,14 +272,22 @@ class _TextPreviewState extends State<_TextPreview> {
       appBar: AppBar(
         title: Text(widget.name),
         centerTitle: true,
+        actionsPadding: const EdgeInsets.only(right: 8),
         actions: [
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+            tooltip: 'AI Tech Zusammenfassung',
             onPressed: widget.summarizeMaterial,
           ),
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+            tooltip: 'AI Tech Lektion erstellen',
             onPressed: widget.generateLearningBite,
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.commentDots),
+            tooltip: 'AI Tech Wissenscheck starten',
+            onPressed: widget.startAiTechKnowledgeCheck,
           ),
         ],
       ),
@@ -256,11 +315,13 @@ class _VideoPreview extends StatefulWidget {
   final String name;
   final Function() summarizeMaterial;
   final Function() generateLearningBite;
+  final Function() startAiTechKnowledgeCheck;
   const _VideoPreview({
     required this.url,
     required this.name,
     required this.summarizeMaterial,
     required this.generateLearningBite,
+    required this.startAiTechKnowledgeCheck,
   });
 
   @override
@@ -346,16 +407,24 @@ class _VideoPreviewState extends State<_VideoPreview> {
       appBar: AppBar(
         title: Text(widget.name),
         centerTitle: true,
+        actionsPadding: const EdgeInsets.only(right: 8),
         actions: [
           IconButton(
             // Create AI summary action
             icon: const FaIcon(FontAwesomeIcons.wandMagicSparkles),
+            tooltip: 'AI Tech Zusammenfassung',
             // Open new page to show AI summary
             onPressed: widget.summarizeMaterial,
           ),
           IconButton(
             icon: const FaIcon(FontAwesomeIcons.schoolCircleCheck),
+            tooltip: 'AI Tech Lektion erstellen',
             onPressed: widget.generateLearningBite,
+          ),
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.commentDots),
+            tooltip: 'AI Tech Wissenscheck starten',
+            onPressed: widget.startAiTechKnowledgeCheck,
           ),
         ],
       ),

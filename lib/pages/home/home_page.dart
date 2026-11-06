@@ -13,6 +13,8 @@ import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 import 'package:tech_knowl_edge_connect/pages/search/unit_overview_page.dart';
 import 'package:tech_knowl_edge_connect/models/content/unit.dart';
 import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_page.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/agents/ai_tech_agent.dart';
@@ -35,6 +37,44 @@ class _HomePageState extends State<HomePage> {
     AiTechService(),
   );
   final AiTechService _aiTechService = AiTechService();
+
+  Future<void> _startConceptAiTechKnowledgeCheck({
+    required String subjectId,
+    required String categoryId,
+    required String topicId,
+    required String unitId,
+    required String conceptId,
+    required String conceptName,
+  }) async {
+    try {
+      final learningBites = await _contentService
+          .getLearningBites(subjectId, categoryId, topicId, unitId, conceptId)
+          .first;
+      final additionalText = learningBites
+          .map((bite) => ['## ${bite.name}', ...bite.content].join('\n'))
+          .join('\n\n');
+      if (additionalText.trim().isEmpty) {
+        throw StateError('Für dieses Konzept sind keine Inhalte verfügbar.');
+      }
+      if (!mounted) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AiTechKnowledgeCheckPage(
+            title: conceptName,
+            additionalText: additionalText,
+            aiTechGenService: AiTechGenService(),
+          ),
+        ),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('AI Tech Wissenscheck konnte nicht starten: $error'),
+        ),
+      );
+    }
+  }
 
   User? _user = FirebaseAuth.instance.currentUser;
   Map<String, dynamic>? _userData;
@@ -811,6 +851,21 @@ class _HomePageState extends State<HomePage> {
         builder: (context) => CompletionDialog(
           conceptName: conceptName,
           isJourney: journeyId != null,
+          onStartAiTechKnowledgeCheck: journeyId == null
+              ? () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                  unawaited(
+                    _startConceptAiTechKnowledgeCheck(
+                      subjectId: subjectId,
+                      categoryId: categoryId,
+                      topicId: topicId,
+                      unitId: unitId,
+                      conceptId: conceptId,
+                      conceptName: conceptName,
+                    ),
+                  );
+                }
+              : null,
         ),
       );
     }

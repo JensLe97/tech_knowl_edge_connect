@@ -26,6 +26,9 @@ class AnalyzeAgent extends BaseAgent {
     final verdict = responseText.trim().toLowerCase();
 
     // Check compound keywords before prefix-only matches to avoid collisions.
+    if (verdict.contains('journey.aitechknowledgecheck')) {
+      return const JourneyIntent(JourneySkill.aiTechKnowledgeCheck);
+    }
     if (verdict.contains('journey.addbite')) {
       return const JourneyIntent(JourneySkill.addBite);
     }
@@ -55,6 +58,7 @@ Deine einzige Aufgabe: Weise die aktuelle Nutzer-Nachricht dem passenden Agenten
 Berücksichtige den bisherigen Gesprächsverlauf, um Bezüge wie "das" oder "nochmal" korrekt aufzulösen.
 
 Auswahlregeln:
+- journey.aiTechKnowledgeCheck  → Nutzer möchte einen AI Tech Wissenscheck zur aktuellen Lernreise starten ("Starte den AI Tech Wissenscheck", "Prüf mich mündlich", "Starte eine mündliche Prüfung", "Ich möchte einen AI Tech Wissenscheck machen")
 - journey.create      → Nutzer möchte ein neues Thema lernen oder eine neue Lernreise starten ("Ich will X lernen", "Erkläre mir X von Grund auf", "Starte eine Lernreise über X")
 - journey.addBite     → Nutzer ist in einer aktiven Lernreise und nennt EXPLIZIT ein konkretes neues Thema oder Konzept, das als zusätzliche Lerneinheit ergänzt werden soll – entscheidendes Merkmal: ein SPEZIFISCHES THEMA wird genannt UND die Absicht ist Hinzufügen, nicht Anpassen ("Füge eine Einheit über Rekursion hinzu", "Ich will auch Pointer lernen", "Ergänze meine Lernreise um Sortieralgorithmen", "Noch eine Aufgabe zu Big-O-Notation", "Kannst du etwas über X ergänzen?")
 - journey.update      → Nutzer reagiert auf eine Empfehlung ODER passt Schwierigkeit/Tempo/Richtung an, OHNE ein konkretes neues Thema zu nennen ("zu einfach", "zu schwer", "anderes Thema", "Ja weiter", "Nächstes Thema", "Gerne", "Machen wir", "Weiter lernen", "Ja bitte", "langsamer bitte", "das war zu viel auf einmal")
@@ -70,7 +74,7 @@ Entscheidungsregel journey.addBite vs. journey.update:
 - review              → Nutzer möchte Gelerntes zusammenfassen oder wiederholen
 - general             → Smalltalk, Dankesnachricht, organisatorisches, Ablehnung ("Nein danke", "Nicht jetzt") oder alles ohne klares Lernziel
 
-Wichtig: Antworte NUR mit einem einzigen Schlüssel aus der Liste (journey.create, journey.addBite, journey.update, feedback.give, feedback.recommend, explain, hint, quiz, review oder general). Kein weiterer Text. Wenn du zwischen journey.addBite und journey.update zweifelst: Nenne-ein-Thema → addBite, kein-spezifisches-Thema → update.
+Wichtig: Antworte NUR mit einem einzigen Schlüssel aus der Liste (journey.aiTechKnowledgeCheck, journey.create, journey.addBite, journey.update, feedback.give, feedback.recommend, explain, hint, quiz, review oder general). Kein weiterer Text. Wenn du zwischen journey.addBite und journey.update zweifelst: Nenne-ein-Thema → addBite, kein-spezifisches-Thema → update.
 ''';
   }
 }

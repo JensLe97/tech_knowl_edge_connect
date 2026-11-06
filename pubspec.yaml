@@ -56,7 +56,6 @@ dependencies:
   firebase_storage: 13.6.1
   uuid: ^4.5.1
   easy_image_viewer: ^1.5.1
-  cached_network_image: ^4.0.0
   pdfrx: ^2.10.1
   video_player: ^2.10.0
   video_player_web: ^2.4.0
@@ -70,6 +69,8 @@ dependencies:
   google_fonts: ^9.0.0
   material_ui: ^1.4.0
   timeago: ^3.7.1
+  record: ^7.1.2
+  flutter_soloud: ^4.0.4
 
 flutter_launcher_icons:
   android: true

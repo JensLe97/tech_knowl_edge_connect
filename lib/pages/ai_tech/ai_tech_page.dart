@@ -9,20 +9,23 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tech_knowl_edge_connect/components/chat/attachment_picker_sheet.dart';
 import 'package:intl/intl.dart';
 import 'package:tech_knowl_edge_connect/components/chat/chat_bubble.dart';
+import 'package:tech_knowl_edge_connect/components/dialogs/completion_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/library/learning_material_type.dart';
 import 'package:tech_knowl_edge_connect/components/chat/chat_input_bar.dart';
+import 'package:tech_knowl_edge_connect/models/ai_tech/agent_task.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task.dart' as tk;
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
 import 'package:tech_knowl_edge_connect/pages/search/learning_bite_page.dart';
 import 'package:flutter/material.dart';
 
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_service.dart';
 import 'package:tech_knowl_edge_connect/services/ai_tech/agents/ai_tech_agent.dart';
 import 'package:tech_knowl_edge_connect/services/user/user_service.dart';
 import 'package:tech_knowl_edge_connect/services/content/progress_service.dart';
 import 'package:uuid/uuid.dart';
-import 'package:tech_knowl_edge_connect/components/dialogs/completion_dialog.dart';
 import 'package:tech_knowl_edge_connect/components/chat/typing_indicator.dart';
 import 'package:tech_knowl_edge_connect/components/buttons/dialog_button.dart';
 
@@ -183,8 +186,12 @@ class _AiTechPageState extends State<AiTechPage> {
     if (!mounted) return;
     final result = await Navigator.of(context).push<LearningBiteResult>(
       MaterialPageRoute(
-        builder: (context) =>
-            LearningBitePage(learningBite: learningBite, tasks: tasks),
+        builder: (context) => LearningBitePage(
+          learningBite: learningBite,
+          tasks: tasks,
+          journeyId: journeyId,
+          journeySessionId: widget.sessionId,
+        ),
       ),
     );
 
@@ -321,8 +328,14 @@ class _AiTechPageState extends State<AiTechPage> {
             if (mounted) {
               showDialog(
                 context: context,
-                builder: (context) =>
-                    CompletionDialog(conceptName: journeyName, isJourney: true),
+                builder: (context) => CompletionDialog(
+                  conceptName: journeyName,
+                  isJourney: true,
+                  onStartAiTechKnowledgeCheck: () {
+                    Navigator.of(context, rootNavigator: true).pop();
+                    unawaited(_startJourneyAiTechKnowledgeCheck(journeyId));
+                  },
+                ),
               );
             }
 
@@ -338,6 +351,97 @@ class _AiTechPageState extends State<AiTechPage> {
           }
         }
       } catch (_) {}
+    }
+  }
+
+  Widget _buildJourneyAiTechKnowledgeCheckEntry(
+    BuildContext context, {
+    required String journeyId,
+    required bool enabled,
+    required bool hasBites,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(4, 8, 0, 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              enabled
+                  ? 'AI Tech Wissenscheck verfügbar'
+                  : hasBites
+                  ? 'Nach Abschluss verfügbar'
+                  : 'Learning Bites erforderlich',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: colorScheme.onSurfaceVariant,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          const SizedBox(width: 8),
+          OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              foregroundColor: colorScheme.primary,
+              minimumSize: const Size(0, 44),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              visualDensity: VisualDensity.compact,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: enabled
+                ? () => _startJourneyAiTechKnowledgeCheck(journeyId)
+                : null,
+            child: const Text('Starten'),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Future<void> _startJourneyAiTechKnowledgeCheck(
+    String journeyId, {
+    List<Map<String, dynamic>> additionalSources = const [],
+  }) async {
+    try {
+      final journeyData = await _service.getJourneyById(journeyId);
+      if (journeyData == null) {
+        throw StateError('Die Lernreise wurde nicht gefunden.');
+      }
+
+      final journeyTitle =
+          (journeyData['goal'] as String?)?.trim().isNotEmpty == true
+          ? (journeyData['goal'] as String).trim()
+          : 'Lernreise';
+      final sourceMaterials =
+          (journeyData['sourceMaterials'] as List<dynamic>? ?? const [])
+              .whereType<Map>()
+              .map((source) => Map<String, dynamic>.from(source))
+              .toList();
+      if (!mounted) return;
+      await Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (context) => AiTechKnowledgeCheckPage(
+            title: journeyTitle,
+            aiTechGenService: AiTechGenService(),
+            sessionId: widget.sessionId,
+            journeyId: journeyId,
+            journeySessionId: widget.sessionId,
+            sourceMaterialReferences: [
+              ...sourceMaterials,
+              ...additionalSources,
+            ],
+          ),
+        ),
+      );
+    } catch (error) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('AI Tech Wissenscheck konnte nicht starten: $error'),
+        ),
+      );
     }
   }
 
@@ -422,8 +526,9 @@ class _AiTechPageState extends State<AiTechPage> {
 
     _controller.clear();
     if (mounted) setState(() => _isAiThinking = true);
+    late final OrchestratorResponse response;
     try {
-      await _orchestrator.chat(
+      response = await _orchestrator.chat(
         userMessage: text.isNotEmpty
             ? text
             : 'Bitte analysiere die beigefügten Dateien.',
@@ -435,6 +540,17 @@ class _AiTechPageState extends State<AiTechPage> {
       );
     } finally {
       if (mounted) setState(() => _isAiThinking = false);
+    }
+
+    final intent = response.intent;
+    final journeyId = response.journeyId;
+    if (intent is JourneyIntent &&
+        intent.skill == JourneySkill.aiTechKnowledgeCheck &&
+        journeyId != null) {
+      await _startJourneyAiTechKnowledgeCheck(
+        journeyId,
+        additionalSources: fileAttachments,
+      );
     }
   }
 
@@ -566,7 +682,11 @@ class _AiTechPageState extends State<AiTechPage> {
             ),
           );
         } else if (snapshot.hasError) {
-          return Text("Fehler beim Laden der Lernreise: ${snapshot.error}");
+          return Text(
+            "Fehler beim Laden der Lernreise: ${snapshot.error}",
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          );
         } else if (snapshot.hasData && snapshot.data != null) {
           final journeyDoc = snapshot.data![0] as DocumentSnapshot;
           final journeyData = journeyDoc.data() as Map<String, dynamic>;
@@ -606,6 +726,8 @@ class _AiTechPageState extends State<AiTechPage> {
                         journeyData['goal'] ??
                             journeyData['context'] ??
                             'Lernreise',
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                       ),
                       trailing: StreamBuilder<QuerySnapshot>(
                         stream: _biteStreams.putIfAbsent(
@@ -686,68 +808,83 @@ class _AiTechPageState extends State<AiTechPage> {
                             );
                           }
                           if (!snapshot.hasData || snapshot.data == null) {
-                            return const Text('Keine Lernbites gefunden.');
+                            return _buildJourneyAiTechKnowledgeCheckEntry(
+                              context,
+                              journeyId: journeyId,
+                              enabled: false,
+                              hasBites: false,
+                            );
                           }
                           final bitesSnapshotLocal = snapshot.data!;
                           final bites = bitesSnapshotLocal.docs;
-                          if (bites.isEmpty) {
-                            return const Text('Keine Lernbites gefunden.');
-                          }
+                          final journeyCompleted =
+                              bites.every(
+                                (doc) => _completedBiteIds.contains(doc.id),
+                              ) &&
+                              bites.isNotEmpty;
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: bites.map((doc) {
-                              final biteData =
-                                  doc.data() as Map<String, dynamic>;
-                              final docId = doc.id;
-                              // determine completion from locally-cached set
-                              final bool biteCompleted = _completedBiteIds
-                                  .contains(docId);
-                              return Container(
-                                margin: const EdgeInsets.symmetric(
-                                  vertical: 6.0,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: Theme.of(
-                                    context,
-                                  ).colorScheme.surface.withAlpha(230),
-                                  borderRadius: BorderRadius.circular(12),
-                                  border: Border.all(
+                            children: [
+                              ...bites.map((doc) {
+                                final biteData =
+                                    doc.data() as Map<String, dynamic>;
+                                final docId = doc.id;
+                                final biteCompleted = _completedBiteIds
+                                    .contains(docId);
+                                return Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    vertical: 6.0,
+                                  ),
+                                  decoration: BoxDecoration(
                                     color: Theme.of(
                                       context,
-                                    ).colorScheme.outlineVariant.withAlpha(51),
-                                  ),
-                                ),
-                                child: Material(
-                                  color: Colors.transparent,
-                                  child: InkWell(
+                                    ).colorScheme.surface.withAlpha(230),
                                     borderRadius: BorderRadius.circular(12),
-                                    onTap: () =>
-                                        _startLearningBite(journeyId, docId),
-                                    child: ListTile(
-                                      title: Text(
-                                        biteData['title'] ?? 'Lernbite',
-                                      ),
-                                      subtitle: Text(
-                                        biteData['description'] ?? '',
-                                      ),
-                                      trailing: Icon(
-                                        biteCompleted
-                                            ? Icons.check_circle
-                                            : Icons.radio_button_unchecked,
-                                        color: biteCompleted
-                                            ? Theme.of(
-                                                context,
-                                              ).colorScheme.primary
-                                            : Theme.of(context)
-                                                  .colorScheme
-                                                  .onSurface
-                                                  .withAlpha(191),
+                                    border: Border.all(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .outlineVariant
+                                          .withAlpha(51),
+                                    ),
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(12),
+                                      onTap: () =>
+                                          _startLearningBite(journeyId, docId),
+                                      child: ListTile(
+                                        title: Text(
+                                          biteData['title'] ?? 'Lernbite',
+                                        ),
+                                        subtitle: Text(
+                                          biteData['description'] ?? '',
+                                        ),
+                                        trailing: Icon(
+                                          biteCompleted
+                                              ? Icons.check_circle
+                                              : Icons.radio_button_unchecked,
+                                          color: biteCompleted
+                                              ? Theme.of(
+                                                  context,
+                                                ).colorScheme.primary
+                                              : Theme.of(context)
+                                                    .colorScheme
+                                                    .onSurface
+                                                    .withAlpha(191),
+                                        ),
                                       ),
                                     ),
                                   ),
-                                ),
-                              );
-                            }).toList(),
+                                );
+                              }),
+                              _buildJourneyAiTechKnowledgeCheckEntry(
+                                context,
+                                journeyId: journeyId,
+                                enabled: journeyCompleted,
+                                hasBites: bites.isNotEmpty,
+                              ),
+                            ],
                           );
                         },
                       ),

@@ -10,6 +10,7 @@ class AiTechSession {
   final DateTime lastTimestamp;
   final SessionType sessionType;
   final String unit;
+  final String? journeyId;
 
   AiTechSession({
     required this.sessionId,
@@ -19,6 +20,7 @@ class AiTechSession {
     required this.lastTimestamp,
     required this.sessionType,
     required this.unit,
+    this.journeyId,
   });
 
   Map<String, dynamic> toMap() => {
@@ -29,6 +31,7 @@ class AiTechSession {
     'lastTimestamp': lastTimestamp,
     'sessionType': sessionType.name,
     'unit': unit,
+    if (journeyId != null) 'journeyId': journeyId,
   };
 
   factory AiTechSession.fromMap(Map<String, dynamic> map) => AiTechSession(
@@ -44,5 +47,6 @@ class AiTechSession {
       orElse: () => SessionType.study,
     ),
     unit: map['unit'] ?? '',
+    journeyId: map['journeyId'] as String?,
   );
 }

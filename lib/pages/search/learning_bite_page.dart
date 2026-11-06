@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:tech_knowl_edge_connect/components/learning/free_text_field_cloze_task.dart';
 import 'package:tech_knowl_edge_connect/components/learning/index_card_task.dart';
 import 'package:tech_knowl_edge_connect/components/learning/learning_content_page.dart';
@@ -10,15 +11,21 @@ import 'package:tech_knowl_edge_connect/models/learning/learning_bite.dart';
 import 'package:tech_knowl_edge_connect/models/learning/learning_bite_result.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task.dart';
 import 'package:tech_knowl_edge_connect/models/learning/task_type.dart';
+import 'package:tech_knowl_edge_connect/pages/ai_tech/ai_tech_knowledge_check_page.dart';
+import 'package:tech_knowl_edge_connect/services/ai_tech/ai_tech_gen_service.dart';
 
 class LearningBitePage extends StatefulWidget {
   final LearningBite learningBite;
   final List<Task> tasks;
+  final String? journeyId;
+  final String? journeySessionId;
 
   const LearningBitePage({
     super.key,
     required this.learningBite,
     required this.tasks,
+    this.journeyId,
+    this.journeySessionId,
   });
 
   @override
@@ -93,6 +100,25 @@ class _LearningBitePageState extends State<LearningBitePage>
     }
   }
 
+  Future<void> _startAiTechKnowledgeCheck() async {
+    final sessionId = widget.journeySessionId;
+    final journeyId = widget.journeyId;
+    if (!mounted) return;
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AiTechKnowledgeCheckPage(
+          title: widget.learningBite.name,
+          additionalText: widget.learningBite.content.join('\n'),
+          aiTechGenService: AiTechGenService(),
+          sessionId: sessionId,
+          journeyId: sessionId != null ? journeyId : null,
+          journeySessionId: sessionId,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> data = widget.learningBite.content;
@@ -110,10 +136,19 @@ class _LearningBitePageState extends State<LearningBitePage>
         elevation: 0,
         toolbarHeight: 80,
         titleSpacing: 0,
+        centerTitle: true,
+        actionsPadding: const EdgeInsets.only(right: 8),
+        actions: [
+          IconButton(
+            icon: const FaIcon(FontAwesomeIcons.commentDots),
+            tooltip: 'AI Tech Wissenscheck starten',
+            onPressed: _startAiTechKnowledgeCheck,
+          ),
+        ],
         title: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 0, bottom: 0, right: 48),
+              padding: const EdgeInsets.only(top: 0, bottom: 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

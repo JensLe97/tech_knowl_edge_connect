@@ -630,12 +630,28 @@ class _AiTechKnowledgeCheckPageState extends State<AiTechKnowledgeCheckPage> {
           );
         }
 
-        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+        if (snapshot.hasError) {
           return Scaffold(
             appBar: AppBar(title: Text(widget.title), centerTitle: true),
             body: Center(
               child: Padding(
                 padding: const EdgeInsets.all(24),
+                child: Text(
+                  'Fehler beim Erstellen des AI Tech Wissenschecks: '
+                  '${snapshot.error}',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+          );
+        }
+
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Scaffold(
+            appBar: AppBar(title: Text(widget.title), centerTitle: true),
+            body: const Center(
+              child: Padding(
+                padding: EdgeInsets.all(24),
                 child: Text(
                   'Der AI Tech Wissenscheck konnte nicht erstellt werden. '
                   'Bitte versuche es erneut.',

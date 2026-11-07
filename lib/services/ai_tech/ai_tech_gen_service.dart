@@ -51,10 +51,13 @@ class AiTechGenService {
       "$_generalInstructions",
     );
 
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: generationConfig,
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: generationConfig,
+        );
     final prompt = TextPart(buffer.toString());
 
     final List<Part> parts = [prompt];
@@ -119,16 +122,19 @@ class AiTechGenService {
       },
     );
 
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: GenerationConfig(
-        responseMimeType: useGoogleSearchTool
-            ? 'text/plain'
-            : 'application/json',
-        responseSchema: learningBiteSchema,
-      ),
-      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: GenerationConfig(
+            responseMimeType: useGoogleSearchTool
+                ? 'text/plain'
+                : 'application/json',
+            responseSchema: learningBiteSchema,
+          ),
+          tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+        );
 
     final userMessageLine = userMessage != null && userMessage.trim().isNotEmpty
         ? '\n• Original-Wunsch des Lernenden: "$userMessage"'
@@ -231,16 +237,19 @@ Format: {"learningBites": [{"title": "...", "type": "lesson", "content": ["...",
       },
     );
 
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: GenerationConfig(
-        responseMimeType: useGoogleSearchTool
-            ? 'text/plain'
-            : 'application/json',
-        responseSchema: taskJsonSchema,
-      ),
-      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: GenerationConfig(
+            responseMimeType: useGoogleSearchTool
+                ? 'text/plain'
+                : 'application/json',
+            responseSchema: taskJsonSchema,
+          ),
+          tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+        );
     final biteTitleLine = biteTitle != null && biteTitle.isNotEmpty
         ? '\nLerneinheit: "$biteTitle"'
         : '';
@@ -347,16 +356,19 @@ Lerninhalt:
       },
     );
 
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: GenerationConfig(
-        responseMimeType: useGoogleSearchTool
-            ? 'text/plain'
-            : 'application/json',
-        responseSchema: schema,
-      ),
-      tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: GenerationConfig(
+            responseMimeType: useGoogleSearchTool
+                ? 'text/plain'
+                : 'application/json',
+            responseSchema: schema,
+          ),
+          tools: useGoogleSearchTool ? [Tool.googleSearch()] : [],
+        );
 
     final subjectLine = subject != null && subject.isNotEmpty
         ? '\nThemenbereich: "$subject"'
@@ -408,13 +420,19 @@ Lerninhalt:
       return;
     }
 
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: 'gemini-3.1-flash-tts-preview',
-      generationConfig: GenerationConfig(
-        responseModalities: [ResponseModalities.audio],
-        speechConfig: SpeechConfig(voiceName: 'Kore', languageCode: 'de-DE'),
-      ),
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: 'gemini-3.1-flash-tts-preview',
+          generationConfig: GenerationConfig(
+            responseModalities: [ResponseModalities.audio],
+            speechConfig: SpeechConfig(
+              voiceName: 'Kore',
+              languageCode: 'de-DE',
+            ),
+          ),
+        );
     final responseStream = model.generateContentStream([
       Content.text('''
 [Audio Profile: Eine freundliche, ruhige und professionelle Lernbegleiterin]
@@ -463,13 +481,16 @@ $text
       );
     }
 
-    final transcriptionModel = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: GenerationConfig(
-        temperature: 0,
-        responseMimeType: 'text/plain',
-      ),
-    );
+    final transcriptionModel =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: GenerationConfig(
+            temperature: 0,
+            responseMimeType: 'text/plain',
+          ),
+        );
     final transcriptionResponse = await transcriptionModel
         .generateContent([
           Content.multi([
@@ -505,13 +526,16 @@ $text
         'followUpQuestion': Schema.string(),
       },
     );
-    final model = FirebaseAI.googleAI().generativeModel(
-      model: kDefaultAiModel,
-      generationConfig: GenerationConfig(
-        responseMimeType: 'application/json',
-        responseSchema: schema,
-      ),
-    );
+    final model =
+        FirebaseAI.googleAI(
+          useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+        ).generativeModel(
+          model: kDefaultAiModel,
+          generationConfig: GenerationConfig(
+            responseMimeType: 'application/json',
+            responseSchema: schema,
+          ),
+        );
     final prompt = TextPart('''
 Du bist eine sorgfältige, unterstützende Lernbegleitung.
 Thema: $subject

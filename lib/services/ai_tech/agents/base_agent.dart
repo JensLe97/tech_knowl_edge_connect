@@ -4,6 +4,9 @@ import 'package:firebase_ai/firebase_ai.dart';
 /// When `false` (default), all agents return fast mock responses in debug.
 const bool kUseRealAiInDebug = false;
 
+/// Required when replay protection is enabled for Firebase AI Logic.
+const bool kUseLimitedUseAppCheckTokens = true;
+
 /// The Gemini model used by all AI agents. Change here to switch globally.
 const String kDefaultAiModel = 'gemini-2.5-flash';
 
@@ -13,7 +16,11 @@ abstract class BaseAgent {
   final FirebaseAI _firebaseAI;
 
   BaseAgent({FirebaseAI? firebaseAI})
-    : _firebaseAI = firebaseAI ?? FirebaseAI.googleAI();
+    : _firebaseAI =
+          firebaseAI ??
+          FirebaseAI.googleAI(
+            useLimitedUseAppCheckTokens: kUseLimitedUseAppCheckTokens,
+          );
 
   /// Shared helper to generate base text content (single-shot, no history).
   Future<String> generateText(

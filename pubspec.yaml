@@ -70,7 +70,7 @@ dependencies:
   material_ui: ^1.4.0
   timeago: ^3.7.1
   record: ^7.1.2
-  flutter_soloud: ^4.0.4
+  flutter_soloud: ^5.0.0
 
 flutter_launcher_icons:
   android: true

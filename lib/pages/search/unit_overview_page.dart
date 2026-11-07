@@ -428,7 +428,7 @@ class _UnitOverviewPageState extends State<UnitOverviewPage> {
                                       20,
                                       0,
                                       20,
-                                      12,
+                                      2,
                                     ),
                                     child: Row(
                                       children: [

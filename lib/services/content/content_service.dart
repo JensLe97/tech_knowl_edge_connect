@@ -949,6 +949,7 @@ class ContentService {
         .collection('learning_bites')
         .doc(learningBiteId)
         .collection('tasks')
+        .orderBy('createdAt')
         .get();
 
     return snapshot.docs.map((doc) {

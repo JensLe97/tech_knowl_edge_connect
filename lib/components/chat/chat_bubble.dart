@@ -78,8 +78,7 @@ class ChatBubble extends StatelessWidget {
 
     final icon = LearningMaterialType.getIconForType(effectiveExt);
 
-    // Calculate dynamic cache sizes based on device screen density.
-    // The image container is max 260 width, min 160 height. We'll use 400 as a safe upper bound.
+    // Decode at display resolution while preserving the source image's aspect ratio.
     final pixelRatio = MediaQuery.of(context).devicePixelRatio;
     final int cacheSize = min((400 * pixelRatio).round(), 800);
 
@@ -158,14 +157,12 @@ class ChatBubble extends StatelessWidget {
                   child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       maxWidth: 260,
-                      minHeight: 160,
-                      minWidth: 220,
+                      maxHeight: 300,
                     ),
                     child: Image.network(
                       key: ValueKey(message),
                       message,
                       fit: BoxFit.contain,
-                      cacheHeight: cacheSize,
                       cacheWidth: cacheSize,
                       loadingBuilder: (context, child, loadingProgress) {
                         if (loadingProgress == null) return child;
